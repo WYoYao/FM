@@ -1,0 +1,14 @@
+#dumpedPlan { width: 100%; height: 100%; }
+#dumpedPlan > .head { width: calc(100% - 40px); height: 50px; padding: 0 20px 0; border-bottom: 1px solid #d9e2e8; }
+#dumpedPlan > .body { width: calc(100% - 40px); height: calc(100% - 51px); padding: 0 20px 0; }
+#dumpedPlan > .body .title { height: 30px; line-height: 30px; border-bottom: 1px solid #d9e2e8; color: #000; }
+#dumpedPlan > .body .title div { padding: 0 20px 0; float: left; width: calc(28% - 40px); }
+#dumpedPlan > .body .title .people { width: calc(16% - 40px); }
+#dumpedPlan > .body ul { height: calc(100% - 51px); overflow-x: hidden; overflow-y: auto; }
+#dumpedPlan > .body ul li { height: 38px; list-style-type: none; line-height: 38px; font-size: 14px; color: #333333; }
+#dumpedPlan > .body ul li:hover { cursor: pointer; }
+#dumpedPlan > .body ul li:nth-of-type(odd) { background: #f5f7fa; }
+#dumpedPlan > .body ul li div { padding: 0 20px 0; float: left; width: calc(28% - 40px); }
+#dumpedPlan > .body ul li .people { width: calc(16% - 40px); }
+
+/*# sourceMappingURL=dumpedPlan.css.map */

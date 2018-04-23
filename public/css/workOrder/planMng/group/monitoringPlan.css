@@ -1,0 +1,237 @@
+._font_over {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+.flex-column {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: stretch; }
+
+.flex-row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: stretch; }
+
+.complete, #app, #app .monitoring_plan {
+  height: 100%;
+  width: 100%; }
+
+.border-radius, #app .monitoring_plan .main {
+  border-radius: 6px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0; }
+
+.box-shadow, #app .monitoring_plan .main {
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.12); }
+
+#app .monitoring_plan {
+  position: relative;
+  background: #f8f8f8; }
+  #app .monitoring_plan .main {
+    position: absolute;
+    background: #ffffff;
+    top: 12px;
+    left: 10px;
+    right: 10px;
+    bottom: 0; }
+    #app .monitoring_plan .main .content {
+      margin: 0 20px;
+      height: 100%; }
+      #app .monitoring_plan .main .content .header {
+        height: 50px;
+        line-height: 50px;
+        padding: 0 20px;
+        margin: 0 -20px;
+        border-bottom: 1px solid #d9e2e8;
+        box-sizing: border-box; }
+      #app .monitoring_plan .main .content .contenter {
+        width: 100%;
+        height: calc(100% - 50px); }
+        #app .monitoring_plan .main .content .contenter .search_view {
+          display: flex;
+          flex-flow: row;
+          align-items: center;
+          justify-content: flex-start;
+          height: 50px;
+          line-height: 50px; }
+          #app .monitoring_plan .main .content .contenter .search_view .font {
+            font-size: 14px;
+            margin-left: 20px; }
+            #app .monitoring_plan .main .content .contenter .search_view .font:first-child {
+              margin-left: 0; }
+          #app .monitoring_plan .main .content .contenter .search_view .cbx {
+            display: inline-block;
+            width: 140px;
+            vertical-align: middle; }
+          #app .monitoring_plan .main .content .contenter .search_view .timetype {
+            background: #f8f8f8;
+            width: 300px;
+            line-height: 30px;
+            height: 30px;
+            display: flex;
+            flex-flow: row;
+            justify-content: flex-start;
+            align-items: center;
+            margin-left: 6px;
+            border-radius: 2px; }
+            #app .monitoring_plan .main .content .contenter .search_view .timetype .item {
+              height: 30px;
+              width: 60px;
+              box-sizing: border-box;
+              text-align: center;
+              border-radius: 2px;
+              border: 1px solid #f8f8f8; }
+              #app .monitoring_plan .main .content .contenter .search_view .timetype .item:hover, #app .monitoring_plan .main .content .contenter .search_view .timetype .item .on {
+                color: #02a9d1;
+                border: 1px solid #02a9d1; }
+        #app .monitoring_plan .main .content .contenter .status_view {
+          line-height: 50px;
+          padding-left: 20px;
+          border: 1px solid #d9e2e8;
+            border-bottom: 0px;
+          background: #f8f8f8;
+          font-size: 16px;
+          box-sizing: border-box;
+          zoom: 1; }
+          #app .monitoring_plan .main .content .contenter .status_view:after {
+            content: "\0020";
+            display: block;
+            height: 0;
+            clear: both; }
+          #app .monitoring_plan .main .content .contenter .status_view .total_count {
+            padding: 0 5px;
+            color: #637e99;
+            font-size: 12px; }
+          #app .monitoring_plan .main .content .contenter .status_view .icon_list {
+            float: right;
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+            align-content: flex-end;
+            justify-content: flex-end;
+            max-width: calc(100% - 320px);
+            max-height: 100px; }
+            #app .monitoring_plan .main .content .contenter .status_view .icon_list .item {
+              flex: 0 1;
+              height: 50px;
+              line-height: 50px;
+              margin: 0 10px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              min-width: 80px; }
+              #app .monitoring_plan .main .content .contenter .status_view .icon_list .item .icon {
+                font-family: "perficon";
+                height: 16px;
+                width: 16px;
+                text-align: center;
+                line-height: 16px;
+                font-size: 14px;
+                vertical-align: middle; }
+        #app .monitoring_plan .main .content .contenter .t_header {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: flex-start;
+          height: 60px;
+          line-height: 60px;
+          width: 100%;
+          box-sizing: border-box;
+          border: 1px solid #d9e2e8;
+          background: #f8f8f8; }
+          #app .monitoring_plan .main .content .contenter .t_header .header_name {
+            height: 59px;
+            border-right: 1px solid #d9e2e8;
+            box-sizing: border-box;
+            color: #6d6d6d;
+            text-align: center; }
+            #app .monitoring_plan .main .content .contenter .t_header .header_name:nth-child(1) {
+              text-align: left;
+              padding-left: 20px;
+              width: 230px; }
+            #app .monitoring_plan .main .content .contenter .t_header .header_name:nth-child(2) {
+              padding: 10px 2px;
+              line-height: 20px;
+              width: 74px; }
+            #app .monitoring_plan .main .content .contenter .t_header .header_name:nth-child(3) {
+              width: 64px; }
+            #app .monitoring_plan .main .content .contenter .t_header .header_name:nth-child(4), #app .monitoring_plan .main .content .contenter .t_header .header_name:nth-child(5), #app .monitoring_plan .main .content .contenter .t_header .header_name:nth-child(6) {
+              width: 62px; }
+          #app .monitoring_plan .main .content .contenter .t_header .month_title {
+            flex: 1;
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: stretch; }
+            #app .monitoring_plan .main .content .contenter .t_header .month_title .row {
+              line-height: 30px;
+              height: 30px;
+              text-align: center;
+              display: flex;
+              flex-flow: row nowrap;
+              justify-content: center;
+              align-items: stretch; }
+              #app .monitoring_plan .main .content .contenter .t_header .month_title .row:nth-child(1) {
+                box-sizing: border-box;
+                background: #ffffff;
+                border-bottom: 1px solid #d9e2e8; }
+              #app .monitoring_plan .main .content .contenter .t_header .month_title .row .item {
+                flex: 1;
+                text-align: center;
+                line-height: 30px; }
+        #app .monitoring_plan .main .content .contenter .t_bodyer {
+          max-height: calc(100% - 162px - 9px); }
+        #app .monitoring_plan .main .content .contenter .t_bodyer1 {
+          max-height: calc(100% - 212px - 9px); }
+        #app .monitoring_plan .main .content .contenter .t_bodyer, #app .monitoring_plan .main .content .contenter .t_bodyer1 {
+          display: flex;
+          flex-flow: row wrap;
+          justify-content: flex-start;
+          line-height: 30px;
+          width: 100%;
+          box-sizing: border-box;
+          border: 1px solid #d9e2e8;
+          border-top: none;
+          border-bottom: none;
+          background: #f8f8f8;
+          overflow-y: hidden;
+          overflow: overlay; }
+          #app .monitoring_plan .main .content .contenter .t_bodyer .line, #app .monitoring_plan .main .content .contenter .t_bodyer1 .line {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: flex-start;
+            border-bottom: 1px solid #d9e2e8;
+            width: 100%; }
+            #app .monitoring_plan .main .content .contenter .t_bodyer .line .body_name, #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .body_name {
+              border-right: 1px solid #d9e2e8;
+              box-sizing: border-box;
+              color: #637e99;
+              text-align: center; }
+              #app .monitoring_plan .main .content .contenter .t_bodyer .line .body_name:nth-child(1), #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .body_name:nth-child(1) {
+                text-align: left;
+                padding-left: 20px;
+                width: 230px; }
+              #app .monitoring_plan .main .content .contenter .t_bodyer .line .body_name:nth-child(2), #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .body_name:nth-child(2) {
+                width: 74px;
+                color: #333; }
+              #app .monitoring_plan .main .content .contenter .t_bodyer .line .body_name:nth-child(3), #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .body_name:nth-child(3) {
+                width: 64px;
+                color: #333; }
+              #app .monitoring_plan .main .content .contenter .t_bodyer .line .body_name:nth-child(4), #app .monitoring_plan .main .content .contenter .t_bodyer .line .body_name:nth-child(5), #app .monitoring_plan .main .content .contenter .t_bodyer .line .body_name:nth-child(6), #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .body_name:nth-child(4), #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .body_name:nth-child(5), #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .body_name:nth-child(6) {
+                width: 62px; }
+            #app .monitoring_plan .main .content .contenter .t_bodyer .line .row, #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .row {
+              flex: 1;
+              line-height: 30px;
+              height: 30px;
+              text-align: center;
+              display: flex;
+              flex-flow: row nowrap;
+              justify-content: center;
+              align-items: stretch; }
+              #app .monitoring_plan .main .content .contenter .t_bodyer .line .row .item, #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .row .item {
+                flex: 1;
+                text-align: center;
+                line-height: 30px; }
+
+/*# sourceMappingURL=monitoringPlan.css.map */

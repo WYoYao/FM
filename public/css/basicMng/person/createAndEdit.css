@@ -1,0 +1,206 @@
+#createPersonFloatWindow{
+    width:400px;
+}
+
+/* 新建编辑 */
+.createPersonBox{
+    height: calc(100% - 30px);
+    overflow: auto;
+    padding: 30px 28px 0 0px;
+}
+.createPersonBox .basicInformation{
+    padding-left:20px; 
+    margin-bottom:30px;
+}
+.createPersonBox .workInformation{
+    padding-left:20px; 
+    margin-bottom:30px;
+}
+.createPersonBox .accountformation{
+    padding-left:20px; 
+    margin-bottom:30px;
+}
+.createPersonBox .imgformation{
+    padding-left:20px;
+    margin-bottom:60px; 
+}
+.createBlock{
+
+}
+.createBlock .title{
+    height:20px;
+    padding-left:14px;
+    margin-bottom:14px;
+    border-left:4px solid #02a9d1;
+}
+.createBlock .content{
+    width: 300px;
+    height: 46px;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: row nowrap;
+    margin-bottom: 10px;
+}
+.imgBox {
+    margin-bottom:20px;
+}
+.imgBox >img{
+    display:block;
+    max-width:130px;
+    max-height:130px;
+}
+/* .createBlock > .content >.left,.createBlock > .content >.right{
+    float: left;
+} */
+.createBlock > .content > .left{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100px;
+}
+.createBlock > .content > .left >span{
+    color: #7dc8e1;
+    padding-top: 10px;
+    font-size: 20px;
+    margin-right: 6px;
+}
+.createBlock > .content >.right{
+    display: flex;
+    justify-content: center;;
+    /* align-items: center; */
+    margin-right: 10px;
+    flex-flow: nowrap column;
+    position:relative;
+}
+#employeePositionTip{
+    color: #f97c7c;
+    font-size: 10px;
+    position: absolute;
+    top: 40px;
+}
+#employeeSex >div{
+    width:188px;
+}
+#startTime{
+    width:188px;
+}
+#employeePosition >div{
+    width:188px;
+}
+#employeeMajor >div{
+    width:188px;
+}
+#functionPermissionBlock .right{
+    
+}
+.saveInformation{
+    padding: 12px 0 10px 0;
+    text-align: center;
+    border-top: 1px solid #d9e2e8;
+    margin-top: 10px;
+    position: absolute;
+    bottom: 0;
+    /* right: 50px; */
+    background: #fff;
+    width: 400px;
+}
+.saveInformation >div{
+    width:200px;
+}
+
+/* 详情 */
+.personDetailBox{
+    height: calc(100% - 30px);
+    overflow: auto;
+    padding:30px 28px 0 28px;
+}
+.personRelatedOperat{
+    display:flex;
+    flex-flow: row nowrap;
+}
+.personRelatedOperat >section{
+    margin-right:10px;
+}
+#employeeMajor{
+    position:relative;
+}
+#employeeMajor > .title{
+    width: 188px;
+    border: 1px solid #cacaca;
+    box-sizing: border-box;
+    height: 30px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    margin-top: 20px;
+    cursor: pointer;
+    position: relative;
+}
+#employeeMajor > .title >span{
+    display:block;
+    color:#637e99;
+}
+#employeeMajor > .title >i{
+    display: block;
+    font-family: 'perficon';
+    font-size: 14px;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    color:#637e99;
+}
+
+#employeeMajor >.list{
+    display:none;
+}
+#employeeMajor >.list{
+    width: 186px;
+    min-height: 100px;
+    height: 160px;
+    /* overflow: auto; */
+    border: 1px solid #d9e2e8;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    background: #fff;
+    z-index: 10;
+}
+#employeeMajor >.list >ul{
+    max-height: 120px;
+    overflow: auto;
+}
+#employeeMajor >.list li{
+    height:30px;
+    line-height:30px;
+    width:100%;
+    cursor: pointer;
+    box-sizing: border-box;
+    padding-left:20px;
+    display:flex;
+}
+#employeeMajor >.list li >i{
+    display:block;
+    width:140px;
+}
+#employeeMajor >.list li >span{
+    display:block;
+    width:20px;
+    background:url("../../../images/permissionChecked.png") no-repeat center;;
+}
+#employeeMajor >.list li.disabled{
+    background:#ccc;
+}
+#employeeMajor >.list li:hover{
+    background:#eee;
+}
+#employeeMajor >.list .opeart{
+    padding-top: 10px;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    left: 8px;
+}
+#employeeMajor >.list .opeart >div:nth-child(2){
+    margin-left:10px;
+}

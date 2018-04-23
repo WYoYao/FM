@@ -1,0 +1,226 @@
+<div class="organizationList" v-show="curPage === 'list'">
+    <div class="title">
+        组织结构
+    </div>
+    <div class="organizationBox">
+        <!-- 中心部门 -->
+        <div class="centerDepartment" id="centerDepart_">
+            <div class="top">
+                <div class="title">
+                    中心部门
+                </div>
+                <div class="operat">
+                    <div class="edit">
+                        <pbutton-white bind="true" icon="'`'" text="'修改'" @click="organizationMethods.centerDepartEdit()"></pbutton-white>
+                    </div>
+                    <div class="addPerson">
+                        <pbutton-white bind="true" icon="'J'" text="'快速添加人员'" click="windowEvent.showPwindow5"></pbutton-white>
+                    </div>
+                </div>
+            </div>
+            <div class="centerDepartmentUl" v-for="(item, index) in organizationModel.listByCenterDepartment">
+                <organization :model="item"></organization>
+            </div>
+        </div>
+        <!-- 项目通用 -->
+        <div class="projectCommon" id="projectCommon_">
+            <div class="top">
+                <div class="title">
+                    项目通用部门
+                </div>
+                <div class="operat">
+                    <div class="edit">
+                        <pbutton-white bind="true" icon="'`'" text="'修改'" @click="organizationMethods.projectCommonEdit()"></pbutton-white>
+                    </div>
+                </div>
+            </div>
+            <div class="projectCommonUl" v-for="(item, index) in organizationModel.listByProjectCommon">
+                <organization :model="item"></organization>
+            </div>
+        </div>
+    </div>
+    <!-- 快速添加人员 -->
+    <pwindow-float title="添加中心部门人员" id="fastAdd" templateid="temp_window">
+        <animate maxpx="0" minpx="-455" orientation="right"></animate>
+    </pwindow-float>
+    <script type="text/html" id="temp_window">
+        <div class="conFastAdd">
+            <h1 class="essentialInformation">基本信息</h1>
+            <ul>
+                <li class="itemFastAdd">
+                    <span><a class="starSymbol">*</a>员工识别码：</span>
+                    <div class="conItem">
+                        <ptext-text placeholder="请输入" id="identificationCode">
+                            <verify errtip="不可为空"  verifytype="space"></verify>
+                            <verify errtip="不可超过20个字"  verifytype="length" length="20"></verify>
+                        </ptext-text>
+                    </div>
+                </li>
+                <li class="itemFastAdd">
+                    <span><a class="starSymbol">*</a>姓名：</span>
+                    <div class="conItem">
+                        <ptext-text placeholder="请输入" id="personName">
+                            <verify errtip="不可为空"  verifytype="space"></verify>
+                            <verify errtip="不可超过20个字"  verifytype="length" length="20"></verify>
+                        </ptext-text>
+                    </div>
+                </li>
+                <li class="itemFastAdd">
+                    <span>性别：</span>
+                    <div class="conItem">
+                        <pcombobox-normal align="left" orientation="down" bind="true" id="'personSex'">
+                            <header  placeholder="男"></header>
+                            <item datasource="organizationModel.buttonArr" text="name" ></item>
+                        </pcombobox-normal>    
+                    </div>
+                </li>
+                <li class="itemFastAdd">
+                    <span>出生年月：</span>
+                    <div class="conItem">
+                        <ptime-form id="birthDate">
+                            <panel timetype="yMd" startyear="1900" endyear="2018"></panel>
+                        </ptime-form>
+                    </div>
+                </li>    
+                <li class="itemFastAdd">
+                    <span>手机号：</span>
+                    <div class="conItem">
+                        <ptext-text placeholder="请输入" id="phoneNumber">
+                            <verify errtip="手机号格式错误"  verifytype="mobile"></verify>
+                        </ptext-text>
+                    </div>
+                </li>
+                <li class="itemFastAdd">
+                    <span>邮箱：</span>
+                    <div class="conItem">
+                        <ptext-text placeholder="请输入" id="email">
+                            <verify errtip="邮箱格式错误"  verifytype="email"></verify>
+                        </ptext-text>
+                    </div>
+                </li>    
+            </ul>
+            <h1 class="essentialInformation">项目信息</h1>
+            <ul>
+                <li class="itemFastAdd">
+                    <span><a class="starSymbol">*</a>项目：</span>
+                    <div class="conItem">
+                        <pcombobox-custom templateid="temp_project" id="selectedProject">
+                            <header  placeholder="请选择项目" ></header>
+                        </pcombobox-custom>
+                    </div>
+                </li>
+            </ul>
+            <h1 class="essentialInformation">工作信息</h1>
+            <ul>
+                <li class="itemFastAdd">
+                    <span>员工编号：</span>
+                    <div class="conItem" id="employeeNumber">
+                        <ptext-text placeholder="输入编号">
+                            <verify errtip="不可超过20个字"  verifytype="length" length="20"></verify>
+                        </ptext-text>
+                    </div>
+                </li>
+                <!-- <li class="itemFastAdd">
+                    <span><a class="starSymbol">*</a>岗位：</span>
+                    <div class="conItem">
+                        <pcombobox-custom templateid="temp_position" id="selectedPosition">
+                            <header  placeholder="请选择岗位" ></header>
+                        </pcombobox-custom>
+                    </div>
+                </li> -->
+                <li class="itemFastAdd">
+                    <span><a class="starSymbol">*</a>岗位：</span>
+                    <div class="conItem">
+                        <pcombobox-normal id="'selectedPosition'" align="left" orientation="down" bind="true">
+                            <header  placeholder="请选择岗位"></header>
+                            <item datasource="organizationModel.postArr" text="position_name" id="position_id"></item>
+                        </pcombobox-normal>
+                    </div>
+                </li>
+                <li class="itemFastAdd">
+                    <span>专业：</span>
+                    <div class="conItem">
+                        <pcombobox-custom templateid="temp_major" id="selectedMajor">
+                            <header  placeholder="请选择专业" ></header>
+                        </pcombobox-custom>
+                    </div>
+                </li>
+            </ul>
+            <h1 class="essentialInformation">绑定账号</h1>
+            <ul>
+                <li class="itemFastAdd">
+                    <span>账号名称：</span>
+                    <div id="searchAccountInfo" class="right">
+                        <input type="text" placeholder="请输入账号" 
+                        @input="organizationMethods.searchAccountByName"
+                        @keyup.enter="organizationMethods.enterAccountAddPermission"  
+                        v-model="organizationModel.accountName">
+                        <div class="options">
+                            <ul>
+                                <li v-for="item in organizationModel.searchAccountList" 
+                                :class="{disabled:item.disabled}" 
+                                v-text="item.person_user_name"
+                                @click="organizationMethods.clickAccountAddPermission(item)"
+                                ></li>
+                            </ul>
+                        </div>                   
+                    </div>
+                </li>
+                <li class="itemFastAdd" id="jurisdictionId" style="color:#cacaca">
+                    <span >功能权限：</span>
+                    <div class="conItem" id="jurisdictionList" >
+                        --
+                    </div>
+                </li>
+                <li class="itemFastAdd" id="jurisdictionId_" style="display: none;">
+                    <span>功能权限：</span>
+                    <div class="conItem">
+                        <pcombobox-custom templateid="temp_jurisdiction" id="selectedJurisdiction">
+                            <header  placeholder="请选择权限" ></header>
+                        </pcombobox-custom>
+                    </div>
+                </li>
+            </ul>
+            <h1 class="essentialInformation">照片</h1>
+            <ul>
+                <li class="itemFastAdd">
+                    <div class="conItem">
+                        <pupload-img id="Pupload-img1" style="height:130px;width:130px;">
+                            <panel success="uploadSuccess"></panel>
+                        </pupload-img>
+                    </div>
+                </li>
+            </ul>
+            <div style="height:60px"></div>
+        </div>
+        <div class="conKeep">
+            <div class="conKeepIn">
+                <pbutton-blue bind="true"  text="'保存'" @click="windowEvent.keepFastAdd()"></pbutton-blue>
+            </div>
+        </div>
+    </script>
+    <!-- 项目模板 -->
+    <script type="text/html" id="temp_project">
+        <div class="projectCommonUl" v-for="(item, index) in organizationModel.listByProject" id="projectList">
+            <organization :model="item"></organization>
+        </div>
+    </script>
+    <!-- 专业模板 -->
+    <script type="text/html" id="temp_major">
+        <div class="projectCommonUl" v-for="(item, index) in organizationModel.majorArr" id="projectList1">
+            <organization :model="item"></organization>
+        </div>
+    </script>
+    <!-- 权限模板 -->
+    <script type="text/html" id="temp_jurisdiction">
+        <div class="projectCommonUl" v-for="(item, index) in organizationModel.jurisdiction" id="projectList2">
+            <organization :model="item"></organization>
+        </div>
+    </script>
+    <!-- 岗位模板 -->
+    <script type="text/html" id="temp_position">
+        <div class="projectCommonUl" v-for="(item, index) in organizationModel.postArr" id="projectList3">
+            <organization :model="item"></organization>
+        </div>
+    </script>
+</div>

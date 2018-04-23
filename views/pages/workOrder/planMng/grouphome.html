@@ -1,0 +1,95 @@
+<div class="group_home" v-if="onPage=='grouphome'">
+    <div class="main">
+        <div class="content">
+            <div class="header">
+                <!-- 面包屑导航Start -->
+
+                <div class="left">
+                    <pcombobox-normal sel="handler_orderTypes" id="'id_orderTypes'" align="left" orientation="down" bind="true">
+                        <header placeholder="全部"></header>
+                        <item datasource="orderTypes" text="name"></item>
+                    </pcombobox-normal>
+                </div>
+                <div class="left">
+                    <pcombobox-normal sel="handler_validTypes" id="'id_validTypes'" align="left" orientation="down" bind="true">
+                        <header placeholder="全部"></header>
+                        <item datasource="validTypes" text="name"></item>
+                    </pcombobox-normal>
+                </div>
+
+                <dir class="right">
+                    <pbutton-blue text="新建计划" @click="v.initPage('createPlan')"></pbutton-blue>
+                </dir>
+
+                <!-- 面包屑导航End -->
+            </div>
+            <div class="contenter">
+                <div class="t_header">
+
+                    <template v-if="queryGroupPlanList.valid">
+                        <div class="item"> 集团计划名称</div>
+                        <div class="item">计划频率</div>
+                        <div class="item">工单紧急程度</div>
+                        <div class="item">引用项目数</div>
+                        <div class="item">未更新项目数</div>
+                        <div class="item">操作</div>
+                    </template>
+
+                    <template v-if="!queryGroupPlanList.valid">
+                        <div class="item1"> 计划模板名称</div>
+                        <div class="item1">计划频率</div>
+                        <div class="item1">工单紧急程度</div>
+                        <div class="item1">针对对象类</div>
+                        <div class="item1">项目引用集团计划模板数</div>
+                        <div class="item1">生效时间</div>
+                        <div class="item1">作废人</div>
+                        <div class="item1">操作</div>
+                    </template>
+
+                </div>
+                <div class="t_body">
+                    <template v-if="queryGroupPlanList.valid">
+                        <div class="info" v-for="(item,index) in planList">
+                            <div class="item" :title="item.group_plan_name" v-text="item.group_plan_name"></div>
+                            <div class="item" :title="'一'+transfYMWD(item.freq_cycle)+sectionToChinese(item.freq_num)+'次'" v-text="'一'+transfYMWD(item.freq_cycle)+sectionToChinese(item.freq_num)+'次'"></div>
+                            <div class="item" :title="item.urgency" v-text="item.urgency"></div>
+                            <div class="item" :title="item.use_project_num" v-text="item.use_project_num"></div>
+                            <div class="item" :title="item.no_update_project_num" v-text="item.no_update_project_num"></div>
+                            <div class="item">
+                                <span class="ide" @click="handler_to_monitoringPlan(item)">
+                                    <em class="icon">A</em>
+                                    <span class="font">监控</span>
+                                </span>
+                                <span class="ide" @click="v.initPage('createPlan')">
+                                    <em class="icon">S</em>
+                                    <span class="font">复制</span>
+                                </span>
+                                <span class="ide" @click="v.initPage('createPlan')">
+                                    <em class="icon">`</em>
+                                    <span class="font">修改</span>
+                                </span>
+                                <span class="ide">
+                                    <em class="icon">p</em>
+                                    <span class="font">作废</span>
+                                </span>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template v-if="!queryGroupPlanList.valid">
+                        <div class="info" v-for="(item,index) in planList">
+                            <div class="item1" :title="'item.group_plan_name'" v-text="item.group_plan_name"></div>
+                            <div class="item1" :title="'一'+transfYMWD(item.freq_cycle)+sectionToChinese(item.freq_num)+'次'" v-text="'一'+transfYMWD(item.freq_cycle)+sectionToChinese(item.freq_num)+'次'"></div>
+                            <div class="item1" :title="item.urgency" v-text="item.urgency"></div>
+                            <div class="item1" :title="'强电井'" v-text="'强电井'"></div>
+                            <div class="item1" :title="index" v-text="index"></div>
+                            <div class="item1" :title="'2018.03.26 11:20'" v-text="'2018.03.26 11:20'"></div>
+                            <div class="item1" :title="'测试工程师'" v-text="'测试工程师'"></div>
+                            <div class="item1" :title="'项目计划监控'" v-text="'项目计划监控'"></div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

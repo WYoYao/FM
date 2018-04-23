@@ -1,0 +1,290 @@
+.editOrganizationBox{
+    width:100%;
+}
+.editOrganizationBox >.top{
+    width:100%;
+    height:50px;
+    position:relative;
+}
+.editOrganizationBox >.top >.goBack{
+    position:absolute;
+    top:10px;
+    left:0;
+}
+.editOrganizationBox >.top >.title{
+    position:absolute;
+    top:10px;
+    left:50%;
+    transform: translateX(-50%);
+}
+.editOrganizationBox >.top >.save{
+    position:absolute;
+    top:10px;
+    right:0
+}
+
+
+/* 四个模块 */
+.editOrganizationBox{
+    width:100%;
+    height:100%;
+   
+}
+.editOrganizationBox > .title{
+    width:100%;
+    height:48px;
+    line-height:48px;
+    text-align: center;
+}
+.editOrganizationBox .organizationBox{
+    width: 100%;
+    height: calc(100% - 50px);
+    border:1px solid #d9e2e8;
+    /* margin: 0 20px 10px 20px; */
+    background: #f7f7f7;
+    border-radius:4px;
+    overflow-y: auto;
+    padding:20px 20px 0 20px;
+    box-sizing: border-box;
+}
+/* 中心部门 */
+.organizationBox .centerDepartment{
+    min-height:10px;
+    width:100%;
+    background: #fff;
+    padding: 10px 20px 10px 20px;
+    box-sizing: border-box;
+    box-shadow: 1px 5px 12px rgba(0, 0, 0, 0.04);
+}
+#centerDepartmentUl >section{
+    display: none;
+    border-top: 1px solid #d9e2e8;
+    border-bottom: 1px solid #d9e2e8;
+}
+.organizationBox .centerDepartment >.top{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    height: 34px;
+}
+.organizationBox .centerDepartment >.top >.title{
+    color:#333;
+    font-weight:bold;
+}
+.organizationBox .centerDepartment >.top > .operat{
+    display: flex;
+    flex-flow: row nowrap;
+}
+.organizationBox .centerDepartment >.top > .operat >.edit{
+    margin-right:20px;
+}
+.organizationBox .centerDepartment .centerDepartmentUl .organizationTreeBoxName{
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px dashed #d9e2e8;
+    border-left: 1px solid #d9e2e8;
+    border-right: 1px solid #d9e2e8;
+    transform: translate(-1px,1px);
+}
+.organizationBox .centerDepartment .centerDepartmentUl .organizationTreeBoxName span{
+    display:block;
+}
+/* 项目通用部门 */
+#projectCommonUl >section{
+    display: none;
+    border-top: 1px solid #d9e2e8;
+    border-bottom: 1px solid #d9e2e8;
+}
+.organizationBox .projectCommon{
+    min-height:10px;
+    width:100%;
+    background: #fff;
+    padding: 10px 20px 10px 20px;
+    box-sizing: border-box;
+    margin-top:20px;
+    box-shadow: 1px 5px 12px rgba(0, 0, 0, 0.04)
+}
+.organizationBox .projectCommon >.top{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    height: 34px;
+}
+.organizationBox .projectCommon >.top >.title{
+    color:#333;
+    font-weight:bold;
+}
+.organizationBox .projectCommon >.top > .operat{
+    display: flex;
+    flex-flow: row nowrap;
+}
+.organizationBox .projectCommon >.top > .operat >.edit{
+    /* margin-right:20px; */
+}
+.organizationBox .projectCommon #projectCommonUl{
+    /* border:1px solid #d9e2e8; */
+}
+.organizationBox .projectCommon .projectCommonUl .organizationTreeBoxName{
+    width:100%;
+    height:50px;
+    line-height:50px;
+    border-bottom:1px dashed #d9e2e8;
+    border-left:1px solid #d9e2e8;
+    border-right:1px solid #d9e2e8;
+    transform: translate(-1px,1px);
+}
+.organizationBox .projectCommon .projectCommonUl .organizationTreeBoxName span{
+    display:block;
+}
+
+ .organizationBox .otherDepartment{
+    min-height:40px;
+    width:100%;
+    background: #fff;
+    padding: 0 20px 20px 20px;
+    box-sizing: border-box;
+    margin-top:20px;
+    box-shadow: 1px 5px 12px rgba(0, 0, 0, 0.04);
+ }
+ .organizationBox .otherDepartment span{
+     font-weight:bold;
+     display:block;
+     padding-top:10px;
+ }
+ .organizationBox .customDepartment{
+    min-height:40px;
+    width:100%;
+    background: #fff;
+    padding: 0 20px 20px 20px;
+    box-sizing: border-box;
+    margin-top:20px;
+    box-shadow: 1px 5px 12px rgba(0, 0, 0, 0.04);
+ }
+ .organizationBox .customDepartment > span{
+     font-weight:bold;
+     display:block;
+     padding-top:10px;
+ }
+
+ #operatCenterBtn > div{
+    display:flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    cursor:pointer;
+ }
+ #operatCenterBtn > div >span ,#operatCenterBtn > div >img{
+     display:block;
+ }
+ #operatCenterBtn > div >span{
+     color:#637e99;
+     margin-right:8px;
+ }
+ #operatCenterBtn > div >img{
+     margin-left:4px;
+     margin-top:1px;
+ }
+
+ #operatCommonBtn > div{
+    display:flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    cursor:pointer;
+ }
+ #operatCommonBtn > div >span ,#operatCommonBtn > div >img{
+     display:block;
+ }
+ #operatCommonBtn > div >span{
+    color:#637e99;
+    margin-right:8px;
+}
+ #operatCommonBtn > div >img{
+     margin-left:4px;
+     margin-top:1px;
+ }
+
+
+ /* 自定义分区 */
+ .customDepartment {
+     background: #fff;
+     margin-top:20px;
+ }
+ .customDepartment > .operatArea{
+    width:100%;
+    height:70px;
+    line-height:70px;
+    border-bottom:1px solid #d9e2e8;
+}
+
+.customDepartment > .operatArea >ul{
+    display:flex;
+    flex-flow: row nowrap;
+    align-items:center;
+    height: 70px;
+}
+.customDepartment > .operatArea >ul >li{
+    display:flex;
+    flex-flow: row nowrap;
+    margin-right:22px;
+    cursor:pointer;
+    height: 30px;
+    line-height: 30px;
+    padding:5px;
+}
+.customDepartment > .operatArea >ul >li.disabled{
+    opacity:0.3;
+    cursor:default;
+}
+.customDepartment > .operatArea >ul >li >div:nth-child(1){
+    margin-right:4px;
+    padding-top:3px;
+}
+.customDepartment > .partitionList_list{
+    width: 100%;
+    box-sizing: border-box;
+    border-left: 1px solid #d9e2e8;
+    border-right: 1px solid #d9e2e8;
+}
+/* 编辑自定义组件树 */
+.templateTreeBox {
+    /* border-bottom: 1px solid #d9e2e8;    */
+}
+.templateTreeBox.border{
+    border-bottom:1px solid #d9e2e8;
+}
+.templateTreeBox .managePartitionName{
+    width:100%;
+    height:50px;
+    line-height:50px;
+    /* box-sizing:border-box; */
+    border-bottom:1px solid #d9e2e8;
+    position:relative;
+    /* border-top:1px solid #d9e2e8; */
+}
+.templateTreeBox .managePartitionName .tipNull{
+    position:absolute;
+    right:50px;
+    top:0;
+    color:#ff6666;
+}
+.templateTreeBox .managePartitionName .tipRepeat{
+    position:absolute;
+    right:50px;
+    top:0;
+    color:#ff6666;
+}
+.templateTreeBox .managePartitionName  >input{
+    border:none;
+}
+.templateTreeBox .managePartitionName  >input:disabled{
+    background-color:#F5F5F5;
+}
+.templateTreeBox .managePartitionName  >input.borderBlue{
+    border:1px solid #0094c2;
+}
+.templateTreeBox .managePartitionName  >input.warningRed{
+    border:1px solid #ff6666;
+    color:#ff6666;
+}

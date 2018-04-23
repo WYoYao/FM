@@ -1,0 +1,454 @@
+#personManage{
+    height: 100%;
+    width:100%;
+    padding: 12px 10px 0 10px;
+    overflow: hidden;
+    box-sizing: border-box;
+    position:relative;
+}
+.table_list{
+    height:100%;
+
+}
+.table_top{
+    height:100%;
+}
+.table_content{
+    height:100%;
+}
+
+
+/* 登录信息 */
+.loginInfoList{
+    display:none;
+    height:100%;
+    padding:20px 20px 0 20px;
+    /* border:1px solid #d9e2e8; */
+}
+.loginInfoList .top{
+    height:50px;
+    background:#eaeef0;
+    display:flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+.loginInfoList .top .department{
+    margin-left:10px;
+    width:160px;
+}
+.loginInfoList .top .position{
+    margin-left:10px;
+    width:160px;
+}
+
+.loginInfoList .top .search{
+    width:200px;
+    margin-left:10px;
+}
+.loginInfoList .per-grid-dynamic_li{
+    cursor: auto;
+}
+.personManageList{
+    width: calc(100% - 40px);
+    margin: 20px 20px 0 20px;
+    border: 1px solid #d9e2e8;
+    box-sizing: border-box;
+    height: calc(100% - 30px);
+    display: flex;
+    flex-flow: row nowrap;
+}
+.personListLeft{
+    width: 360px;
+    height: 100%;
+    /* overflow: auto; */
+    border-right: 1px solid #d9e2e8;
+}
+.personListLeft > .title{
+    width:100%;
+    height:50px;
+    background:#f8f8f8;
+    display:flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content:space-between;
+    border-bottom:1px solid #d9e2e8;
+}
+.personListLeft > .title >.name{
+    color:#333;
+    margin-left:20px;
+}
+.personListLeft > .title >.editBtn{
+    margin-right:20px;
+    /* width:80px; */
+}
+.personListLeft > .content{
+    overflow: auto;
+    height: calc(100% - 50px);
+}
+.organizationUl .organizationTreeBoxName{
+    
+    height:50px;
+    line-height:50px;
+    border-bottom:1px dashed #d9e2e8;
+}
+.organizationUl .organizationTreeBoxName:hover{
+    cursor:pointer;
+}
+.organizationUl .organizationTreeBoxName span{
+    display: block;
+    max-width: 330px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.organizationUl .organizationTreeBoxName span.checked{
+    color:#02a9d1;
+}
+
+
+
+
+
+/* 右侧列表相关 */
+.personListRight{
+    width:calc(100% - 360px);
+    padding:20px 20px 0 20px;
+    position:relative;
+}
+.personListRight .top{
+    position: relative;
+    width: 100%;
+    height: 50px;
+    background: #eaeef0;
+}
+.personListRight .top .left{
+    position:absolute;
+    top:10px;
+    left:20px;
+    display:flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+.personListRight .top .left .state{
+    width:160px;
+}
+.personListRight .top .left .prompt{
+    margin-left:10px;
+    color:#ff6666;
+}
+.personListRight .top .right{
+    position:absolute;
+    top:10px;
+    right:20px;
+    display:flex;
+    flex-flow: row nowrap;
+    align-items:center;
+}
+.personListRight .top .newPersonBtn{
+    margin-right:10px;
+}
+.personListRight .top .switchBtn{
+    margin-right: 20px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+.personListRight .top .switchBtn .border{
+    height: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-right: 1px solid #ccc;
+}
+.personListRight .top .switchBtn >div > img{
+    display:block;
+    cursor:pointer;
+}
+.personListRight .top .switchBtn >div.disabled{
+    opacity:0.3;
+}
+
+
+/* 人员照片展示 */
+.contentList {
+    height: -moz-calc(100% - 50px );
+    height: -webkit-calc(100% - 50px);
+    height: calc(100% - 50px);
+    position: relative;
+    box-sizing: border-box;
+    padding-bottom: 14px;
+}
+
+.photoList {
+    padding-top: 30px;
+    overflow-y: auto;
+}
+
+.contentList .listHead {
+    border-bottom: 1px solid #eeeeee;
+    box-sizing: border-box;
+}
+
+    .contentList .listHead li span {
+        float: left;
+        height: 30px;
+        line-height: 30px;
+        text-align: left;
+        padding-left: 20px;
+        box-sizing: border-box;
+        font-size: 12px;
+    }
+
+.contentList .listCont {
+    overflow-y: auto;
+    color: #333333;
+    max-height: -moz-calc(100% - 31px );
+    max-height: -webkit-calc(100% - 31px);
+    max-height: calc(100% - 31px);
+    position: relative;
+    box-sizing: border-box;
+    border-bottom: 1px solid #eeeeee;
+}
+
+    .contentList .listCont li {
+        cursor: pointer;
+    }
+
+        .contentList .listCont li:nth-child(2n) {
+            background: #f5f7fa;
+        }
+
+        .contentList .listCont li:nth-child(2n+1) {
+            background: #ffffff;
+        }
+
+.contentList .listCont li:hover {
+    background: #f8f8f8;
+}
+
+.contentList .listCont li span {
+    float: left;
+    height: 36px;
+    line-height: 36px;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-left: 20px;
+    box-sizing: border-box;
+    font-size: 12px;
+}
+
+    .contentList .listCont li span .phcheck {
+        font-family: perficon;
+        color: #68c5b3;
+        font-size: 16px;
+    }
+
+.contentList .list li {
+    overflow: hidden;
+}
+
+    .contentList .list li span:nth-child(1) {
+        width: 13%;
+    }
+
+    .contentList .list li span:nth-child(2) {
+        width: 14%;
+    }
+
+    .contentList .list li span:nth-child(3) {
+        width: 12%;
+    }
+
+    .contentList .list li span:nth-child(4) {
+        width: 13%;
+    }
+
+    .contentList .list li span:nth-child(5) {
+        width: 15%;
+    }
+
+    .contentList .list li span:nth-child(6) {
+        width: 15%;
+    }
+
+    .contentList .list li span:nth-child(7) {
+        width: 10%;
+    }
+
+    .contentList .list li span:nth-child(8) {
+        width: 8%;
+    }
+
+    .photoList .positionItem .itemHead {
+        height: 26px;
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+        .photoList .positionItem .itemHead .posname {
+            position: absolute;
+            left: 0;
+            top: 0;
+            border-left: 6px solid #02a9d1;
+            padding: 0 10px;
+            font-size: 20px;
+            height: 20px;
+            line-height: 22px;
+            background: #ffffff;
+            color: #666666;
+        }
+
+        .photoList .positionItem .itemHead .line {
+            height: 12px;
+            border-bottom: 1px solid #d9d9d9;
+            display: block;
+        }
+
+    .photoList .positionItem ul {
+        overflow: hidden;
+    }
+
+        .photoList .positionItem ul li {
+            width: 140px;
+            border-radius: 6px;
+            float: left;
+            margin-right: 40px;
+            margin-bottom: 50px;
+            box-shadow: 0px 0px 10px 0 rgba(0,0,0,0.14);
+            cursor: pointer;
+        }
+
+            .photoList .positionItem ul li .pic {
+                height: 140px;
+                background: #f8f8f8;
+            }
+
+                .photoList .positionItem ul li .pic img {
+                    width: 100%;
+                    height: 100%;
+                }
+
+            .photoList .positionItem ul li .pername {
+                line-height: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                color: #666666;
+                padding-bottom: 10px;
+                padding-left: 12px;
+                padding-top: 8px;
+            }
+
+            .photoList .positionItem ul li .pernum {
+                line-height: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                color: #666666;
+                padding-bottom: 8px;
+                padding-left: 12px;
+            }
+
+            #searchAccount{
+                width:188px;
+            }
+            #searchAccountInfo{
+                display:flex;
+                flex-flow: column nowrap;
+                align-items: flex-start;
+                position:relative;
+            }
+            #searchAccountInfo >input{
+                height:30px;
+            }
+            #searchAccountInfo > div{
+                display:none;
+                position: absolute;
+                top: 36px;
+            }
+            #searchAccountInfo > div >ul{
+                width:188px;
+                height:100px;
+                overflow:auto;
+                border:1px solid #d9e2e8;
+            }
+            #searchAccountInfo > div >ul li{
+                height:30px;
+                line-height:30px;
+                width:100%;
+                cursor: pointer;
+            }
+            #searchAccountInfo > div >ul li.disabled{
+                background:#ccc;
+            }
+            #searchAccountInfo >div >ul li:hover{
+                background:#eee;
+            }
+            #permissionPackageList{
+                display:none;
+                position: relative;
+                top: 31px;
+                z-index: 100;
+                background: #fff;
+                box-sizing: border-box;
+            }
+            #permissionPackageList >ul{
+                width: 188px;
+                height: 100px;
+                overflow: auto;
+                border: 1px solid #d9e2e8;
+                box-sizing: border-box;
+            }
+            #permissionPackageList >ul li{
+                height:30px;
+                line-height:30px;
+                width:100%;
+                cursor: pointer;
+                display:flex;
+                flex-flow: row nowrap;
+            }
+            #permissionPackageList >ul li >i{
+                display:block;
+                width:160px;
+                height:100%;
+            }
+            #permissionPackageList >ul li >span{
+                display:block;
+                width:20px;
+                background:url("../../../images/permissionChecked.png") no-repeat center;;
+            }
+            #permissionPackageList >ul li.disabled{
+                background:#ccc;
+            }
+            #permissionPackageList >ul li:hover{
+                background:#eee;
+            }
+            #permissionPackageList .opeart{
+                width: 188px;
+                text-align: center;
+                border: 1px solid #d9e2e8;
+                border-top: none;
+                padding: 10px 0 4px 0;
+            }
+            #functionPermissionContent{
+                display: block;
+                width: 188px;
+                height: 30px;
+                line-height: 30px;
+                padding-left: 10px;
+                box-sizing: border-box;
+                color: #aaa;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            #imageInformationId{
+                width: 130px;
+                overflow: hidden;
+            }
+            .createBlock .imgNote{
+                color:#cacaca;
+            }
+            
+         

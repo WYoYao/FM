@@ -1,0 +1,589 @@
+<script type="text/html" id="baseInfomation">
+<div class="planCreate_page_con_left">
+    <div class="planCreate_page_con_left_tit">
+        <span>1. 基本信息</span>
+    </div>
+
+    <div class="planCreate_page_con_left_name">
+        <h4>
+            <span>*</span>
+            <i>计划名称：</i>
+            <em v-if="isQuote" v-text="addWoPlan.plan_name"></em>
+        </h4>
+        <div id="plan_name" v-if="!isQuote">
+            <ptext-text bind="true" value="addWoPlan.plan_name">
+                <verify errtip="计划名称不能为空" verifytype="space"></verify>
+                <verify errtip="集团计划名称不可超过50个字" length="50" verifytype="length"></verify>
+            </ptext-text>
+        </div>
+    </div>
+    <div class="planCreate_page_con_left_orderType">
+        <h4>
+            <span>*</span>
+            <i>工单类型：</i>
+            <em v-if="isQuote">工单类型</em>
+        </h4>
+        <div v-if="!isQuote">
+            <pcombobox-normal bind="true" id="'cbx_id_order_type'" sel="cbx_sel_order_type">
+                <header placeholder=""></header>
+                <item datasource="WorkOrderType" text="name"></item>
+            </pcombobox-normal>
+        </div>
+    </div>
+    <div class="planCreate_page_con_left_order_level">
+        <h4>
+            <span>*</span>
+            <i>工单紧急程度：</i>
+            <em v-if="isQuote">工单紧急程度</em>
+        </h4>
+        <div id="orderUrgency">
+            <pcombobox-normal bind="true" id="'cbx_id_urgency'" sel="cbx_sel_urgency">
+                <header placeholder="低"></header>
+                <item datasource="urgencyType" text="name"></item>
+            </pcombobox-normal>
+        </div>
+    </div>
+    <div class="planCreate_page_con_left_sendTime">
+        <h4>
+            <span>*</span>
+            <i>工单提前发送时间：</i>
+        </h4>
+        <div class="aheadCreateTime">
+            <!-- <span>提前：</span> -->
+            <ptext-text id="'aheadCreateTime'" value="addWoPlan.ahead_create_time" text="'提前：'" bind="true" placeholder="'请在此输入时间'" align="left">
+                <verify errtip="时间不能为空" verifytype="space"></verify>
+                <verify errtip="只能为整数" verifytype="Integer"></verify>
+                <verify errtip="提前时间只能为0-24小时" verifytype="pisdayhour"></verify>
+            </ptext-text>
+            <strong>小时</strong>
+        </div>
+    </div>
+    <div class="planCreate_page_con_left_sendTime">
+        <h4>
+
+            <i>建议执行人数：</i>
+        </h4>
+        <div class="aheadCreateTime">
+            <!-- <span>提前：</span> -->
+            <ptext-text bind="true" value="addWoPlan.execute" id="'peoplenumber'" text="'人'" placeholder="'建议执行人数'" align="right">
+                <verify errtip="只能为自然数" verifytype="ZInteger"></verify>
+            </ptext-text>
+            <!-- <strong>小时</strong> -->
+        </div>
+    </div>
+    <div class="planCreate_page_con_left_order_level">
+        <h4>
+            <span>*</span>
+            <i>计划频率：</i>
+            <em v-if="isQuote">精确设置</em>
+        </h4>
+        <div id="orderUrgency">
+            <pcombobox-normal bind="true" id="'cbx_id_sendTypes'" sel="cbx_sel_sendTypes">
+                <header placeholder="请选择"></header>
+                <item datasource="sendTypes" text="name"></item>
+                <verify errtip="计划频率不能为空" verifytype="space"></verify>
+            </pcombobox-normal>
+        </div>
+    </div>
+    <div class="planCreate_page_con_left_planRate">
+
+        <div>
+            <span>每</span>
+            <pcombobox-normal id="'cbx_id_freq_cycle'" bind="true" sel="cbx_sel_freq_cycle">
+                <header placeholder="请选择"></header>
+                <item datasource="freq_cycleType" text="name"></item>
+            </pcombobox-normal>
+
+            <ptext-text bind="true" value="addWoPlan.freq_num" id="'planRateRig'">
+                <verify errtip="不能为空" verifytype="space"></verify>
+                <verify errtip="只能为正整数" verifytype="pisPositiveInt"></verify>
+            </ptext-text>
+            <!-- <pcombobox-normal :id="'planRateRig'" bind="true">
+                                <header placeholder="请选择"></header>
+                                <item datasource="[]" text="name"></item>
+                            </pcombobox-normal> -->
+            <p>次</p>
+        </div>
+        <span id="planRace_error" class="per-input-basic">
+            <div err="" class="error-tip" style="display: block;">
+                <i>！</i>
+                <em errtext="">请选择计划频率</em>
+            </div>
+        </span>
+
+
+        <div v-if="!!+addWoPlan.sendTypes">
+            <!-- 年 -->
+            <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_year" v-if="addWoPlan.freq_cycle=='y'">
+                <li v-for="(item,index) in addWoPlan.freq_times">
+                    <span>第
+                        <i v-text="index+1"></i>次要求开始时间和结束时间</span>
+                    <section>
+                        <ptime-form bind='true' :index="index" :class="'StartTime'" sel="TimeStartSel">
+                            <panel startyear="2013" endyear="2022" timeType="Mdhm"></panel>
+                        </ptime-form>
+                        <i>至</i>
+                        <ptime-form bind='true' :index="index" :class="'EndTime'" sel="TimeEndSel">
+                            <panel startyear="2013" endyear="2022" timeType="Mdhm"></panel>
+                        </ptime-form>
+                    </section>
+                </li>
+            </ul>
+            <!-- 季 -->
+            <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_week" v-if="addWoPlan.freq_cycle=='s'">
+                <li v-for="(item,index) in addWoPlan.freq_times">
+                    <span>第
+                        <i v-text="index+1"></i>次要求开始时间和结束时间</span>
+                    <section>
+                        <span>
+                            <pcombobox-normal :index="index" :class="'StartSeason'" sel="StartSeasonSel" bind="true">
+                                <header placeholder="第一个月"></header>
+                                <item datasource="seasonType" text="name"></item>
+                            </pcombobox-normal>
+                            <ptime-form bind='true' :index="index" :class="'StartTime'" sel="TimeStartSel">
+                                <panel startyear="2013" endyear="2022" timeType="dhm"></panel>
+                            </ptime-form>
+                        </span>
+                        <i>至</i>
+                        <span>
+                            <pcombobox-normal :index="index" :class="'EndSeason'" sel="EndSeasonSel" bind="true">
+                                <header placeholder="第一个月"></header>
+                                <item datasource="seasonType" text="name"></item>
+                            </pcombobox-normal>
+                            <ptime-form bind='true' :index="index" :class="'EndTime'" sel="TimeEndSel">
+                                <panel startyear="2013" endyear="2022" timeType="dhm"></panel>
+                            </ptime-form>
+
+                        </span>
+                    </section>
+                </li>
+            </ul>
+            <!-- 月 -->
+            <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_month" v-if="addWoPlan.freq_cycle=='m'">
+                <li v-for="(item,index) in addWoPlan.freq_times">
+                    <span>第
+                        <i v-text="index+1"></i>次要求开始时间和结束时间</span>
+                    <section>
+                        <ptime-form bind='true' :index="index" :class="'StartTime'" sel="TimeStartSel">
+                            <panel startyear="2013" endyear="2022" timeType="dhm"></panel>
+                        </ptime-form>
+                        <i>至</i>
+                        <ptime-form bind='true' :index="index" :class="'EndTime'" sel="TimeEndSel">
+                            <panel startyear="2013" endyear="2022" timeType="dhm"></panel>
+                        </ptime-form>
+                    </section>
+                </li>
+            </ul>
+            <!-- 周 -->
+            <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_week" v-if="addWoPlan.freq_cycle=='w'">
+                <li v-for="(item,index) in addWoPlan.freq_times">
+                    <span>第
+                        <i v-text="index+1"></i>次要求开始时间和结束时间</span>
+                    <section>
+                        <span>
+                            <pcombobox-normal :index="index" :class="'StartWeek'" sel="StartWeekSel" bind="true">
+                                <header placeholder="周一"></header>
+                                <item datasource="weekType" text="name"></item>
+                            </pcombobox-normal>
+                            <ptime-form bind='true' :index="index" :class="'StartTime'" sel="TimeStartSel">
+                                <panel startyear="2013" endyear="2022" timeType="hm"></panel>
+                            </ptime-form>
+
+                        </span>
+                        <i>至</i>
+                        <span>
+                            <pcombobox-normal sel="EndWeekSel" :index="index" :class="'EndWeek'" bind="true">
+                                <header placeholder="周一"></header>
+                                <item datasource="weekType" text="name"></item>
+                            </pcombobox-normal>
+                            <ptime-form bind='true' :index="index" :class="'EndTime'" sel="TimeEndSel">
+                                <panel startyear="2013" endyear="2022" timeType="hm"></panel>
+                            </ptime-form>
+
+                        </span>
+                    </section>
+                </li>
+            </ul>
+            <!-- 日 -->
+            <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_day" v-if="addWoPlan.freq_cycle=='d'">
+                <li v-for="(item,index) in addWoPlan.freq_times">
+                    <span>第
+                        <i v-text="index+1"></i>次要求开始时间和结束时间</span>
+                    <section>
+                        <ptime-form bind='true' :index="index" :class="'StartTime'" sel="TimeStartSel">
+                            <panel startyear="2013" endyear="2022" timeType="hm"></panel>
+                        </ptime-form>
+                        <i>至</i>
+                        <ptime-form bind='true' :index="index" :class="'EndTime'" sel="TimeEndSel">
+                            <panel startyear="2013" endyear="2022" timeType="hm"></panel>
+                        </ptime-form>
+                    </section>
+                </li>
+            </ul>
+        </div>
+        <div class="interval" v-if="!+addWoPlan.sendTypes">
+            <span class="interval_s">任两次间隔大于</span>
+            <div class="interval_c">
+                <ptext-text bind="true" value="addWoPlan.interval.count" align="right">
+                    <verify errtip="次数不能为空" verifytype="space"></verify>
+                    <verify errtip="只能为整数" verifytype="Integer"></verify>
+                </ptext-text>
+            </div>
+            <div class="interval_u">
+                <pcombobox-normal bind="true" sel="cycleTypes_sel">
+                    <item datasource="cycleTypes" text="name"></item>
+                </pcombobox-normal>
+            </div>
+        </div>
+
+    </div>
+    <div class="planCreate_page_con_left_effectTime">
+        <h4>计划生效时间：</h4>
+        <div>
+            <span>起</span>
+            <pcombobox-normal id="'cbx_id_plan_start_type'" bind="true" sel="cbx_sel_plan_start_type">
+                <header placeholder="发布成功后立即"></header>
+                <item datasource="plan_start_type" text="name"></item>
+            </pcombobox-normal>
+        </div>
+        <span class="plan_Time_choice" v-if="addWoPlan.plan_start_type==2">
+            <ptime-form>
+                <panel startyear="2013" endyear="2022" timeType="yMdhm"></panel>
+            </ptime-form>
+        </span>
+        <section id="choiceStPlanTimeSt_error" class="per-input-basic">
+            <div err="" class="error-tip" style="display: block;">
+                <i>！</i>
+                <em errtext="">计划开始时间需大于当前时间！</em>
+            </div>
+        </section>
+        <section id="choiceStPlanTime_error" class="per-input-basic">
+            <div err="" class="error-tip" style="display: block;">
+                <i>！</i>
+                <em errtext="">计划编辑后最早选择第二天生效！</em>
+            </div>
+        </section>
+        <div>
+            <span>止</span>
+            <pcombobox-normal id="'choice_planEndTime'" bind="true">
+                <header placeholder="一直有效"></header>
+                <item datasource="model.effectTime_endList" text="name"></item>
+            </pcombobox-normal>
+        </div>
+
+        <span class="plan_Time_choice" id="plan_endTime">
+            <ptime-form bind='true'>
+                <panel startyear="2013" endyear="2022" timeType="yMdhm"></panel>
+            </ptime-form>
+        </span>
+        <section id="choicePlanTime_error" class="per-input-basic">
+            <div err="" class="error-tip" style="display: block;">
+                <i>！</i>
+                <em errtext="">计划结束时间需大于开始时间</em>
+            </div>
+        </section>
+    </div>
+</div>
+</script>
+
+<script>
+
+    // 周期实例
+    function Cycle(type) {
+        return {
+            "start_time": {
+                "cycle": type,             //周期,y/m/w/d
+                "time_week": "1",
+                "time_season": "1",
+                "time_month": "1",
+                "time_day": "1",          //周一，1号，“0612”,6月12日
+                "time_hour": "0",        //10时
+                "time_minute": "0"       //15分
+            },
+            "end_time": {
+                "cycle": type,
+                "time_week": "1",
+                "time_season": "1",
+                "time_month": "1",
+                "time_day": "1",
+                "time_hour": "0",
+                "time_minute": "0"
+            }
+        };
+    }
+
+    //  模糊设置的频率周期
+    function Interval(count, unit) {
+
+        return {
+            count: count,
+            unit: unit,
+        }
+    }
+
+
+    // 创建计划类
+    function AddWoPlan() {
+        return {
+            "execute": "1", // 执行人数 后期字段会有修改
+            "plan_name": "",                //工单计划名称 ,必须
+            "order_type": "",               //工单类型编码 ,必须
+            "urgency": "低",                  //紧急程度,高、中、低 ,必须
+            "ahead_create_time": 24,           //提前创建工单时间 ,必须
+            "freq_cycle": "m",                 //计划频率-周期,y/m/w/d ,必须
+            "freq_num": 1,                     //计划频率-次数 ,必须
+            "freq_times": [                    //计划频率-时间 ,必须
+            ],
+            "interval": {},
+            "sendTypes": "1",
+            "plan_start_type": "1",             //计划开始类型,1-发布成功后立即，2-指定时间 ,必须
+            "plan_start_time": "",             //计划开始时间,yyyyMMddhhmmss
+            "plan_end_time": "",               //计划结束时间,yyyyMMddhhmmss，空值时代表一直有效
+            "next_route": [],						//下级路由，预览后的next_route，必须
+            "draft_matters": [],               //工单事项数组,草稿的matters  ,必须
+            "published_matters": []            //工单事项数组,预览后的matters  ,必须      
+        }
+    }
+
+    Vue.component('baseInfomation', {
+        template: '#baseInfomation',
+        data: function () {
+
+            return {
+                //是否是编辑计划
+                isEdit: false,
+                // 工单类型枚举
+                WorkOrderType: [],
+                // 紧急程度枚举
+                urgencyType: [{ "name": "高", "code": "高" }, { "name": "中", "code": "中" }, { "name": "低", "code": "低" }],
+                // 日 周 月 季 年 枚举
+                freq_cycleType: [{ name: "日", code: "d" }, { name: "周", code: "w" }, { name: "月", code: "m" }, { name: "季", code: "s" }, { name: "年", code: "y" },],
+                // 精确设置
+                sendTypes: [{ name: "精确设置", code: "1" }, { name: "模糊设置", code: "0" }],
+                // 计划开始类型
+                plan_start_type: [{ name: "发布成功后立即", code: "1" }, { name: "指定时间", code: "2" }],
+                // 计划结束时间
+                plan_end_time_type: [{ name: "发布成功后立即", code: "1" }, { name: "指定时间", code: "2" }],
+                // weekType 每周所有枚举
+                weekType: [{ name: "周一", code: 1 }, { name: "周二", code: 2 }, { name: "周三", code: 3 }, { name: "周四", code: 4 }, { name: "周五", code: 5 }, { name: "周六", code: 6 }, { name: "周日", code: 7 },],
+                // 季度枚举
+                seasonType: [{ name: "第一个月", code: 1 }, { name: "第二个月", code: 2 }, { name: "第三个月", code: 3 },],
+                // 添加计划所用实例
+                addWoPlan: {
+                    freq_times: [],
+                    next_route: [],
+                    draft_matters: [],
+                    published_matters: [],
+                    interval: {},
+                },
+            }
+        },
+        // 是否是引用计划  项目中引用计划 部分基本信息不可编辑
+        //isQuote: false,
+        // 是否是项目版创建编辑计划 项目版创建编辑计划 需要设置计划生效时间
+        //isTerm: false,
+        //  是否是编辑计划
+        //isEdit: false,
+        props: ['isQuote', 'isTerm'],
+        methods: {
+            // 绑定计划频率数组
+            addfreq_times: function (type, count, bool) {
+
+                var _that = this, difference;
+
+                if (!bool) {
+                    _that.addWoPlan.freq_times = [];
+                    return;
+                }
+
+                //  传入数字不规范直接返回空
+                if (_.isNaN(+count)) {
+                    _that.freq_times = [];
+                }
+
+                // 绑定对应下拉菜单
+                difference = _that.addWoPlan.freq_times.length - count;
+                // 如果是 当前数据为空的时候直接添加
+                if (difference == 0) {
+                    _that.addWoPlan.freq_times = _.range(count).map(function () {
+                        return new Cycle(type);
+                    });
+                } else if (difference < 0) {
+                    // 比之前大的时候要保证之前的值不做改变
+                    _that.addWoPlan.freq_times = _that.addWoPlan.freq_times.concat(_.range(Math.abs(difference)).map(function () {
+                        return new Cycle(type);
+                    }))
+                } else if (difference > 0) {
+                    // 减少的时候保证之前的值不改变
+                    _that.addWoPlan.freq_times.splice(-1, difference);
+                }
+
+                _that.bind_fres_times();
+            },
+            bind_fres_times: function () {
+                var _that = this;
+
+                return new Promise(function (resolve) {
+                    _that.$nextTick(function () {
+                        var startTimes = $(".StartTime"),
+                            endTimes = $(".EndTime"),
+                            StartSeason = $(".StartSeason"),
+                            EndSeason = $(".EndSeason"),
+                            StartWeek = $(".StartWeek"),
+                            EndWeek = $(".EndWeek");
+
+                        // 循环给对应的Dom 赋值
+                        _that.addWoPlan.freq_times.forEach(function (item, index) {
+                            startTimes.eq(index).psel({ y: 2018, M: item.start_time.time_month, d: item.start_time.time_day, h: item.start_time.time_hour, m: item.start_time.time_minute });
+                            endTimes.eq(index).psel({ y: 2018, M: item.end_time.time_month, d: item.end_time.time_day, h: item.end_time.time_hour, m: item.end_time.time_minute });
+
+                            // 周和季度默认选中下拉框
+                            if (item.cycle == "s") {
+                                StartSeason.eq(index).psel(item.start_time.time_season - 1);
+                                EndSeason.eq(index).psel(item.end_time.time_season - 1);
+                            }
+
+                            if (item.cycle == "w") {
+                                StartWeek.eq(index).psel(item.start_time.time_week - 1);
+                                EndWeek.eq(index).psel(item.start_time.time_week - 1);
+                            }
+                        });
+
+                        resolve()
+                    })
+                })
+            }
+        },
+        computed: {
+            cycleTypes: function () {
+                var index = _.findIndex(this.freq_cycleType, { code: this.addWoPlan.freq_cycle })
+                return this.freq_cycleType.slice(0, index);
+            }
+        },
+        watch: {
+            "addWoPlan.plan_start_type": function (value, old) {
+                var _that = this;
+                if (value == old) return;
+
+                _that.addWoPlan.plan_start_time = value == 2 ? new Date().format("yyyyMMddhhmmss") : "";
+            },
+            //  监听频率精度
+            "addWoPlan.sendTypes": function (value, old) {
+                var _that = this;
+                if (value == old) return;
+
+                //  重置时间阶段
+                _that.addWoPlan.freq_cycle = "m";
+                _that.addWoPlan.freq_num = 1;
+
+                if (!+value) {
+
+                    _that.addWoPlan.interval = new Interval(1, "m");
+                    _that.addWoPlan.freq_times = [];
+                } else {
+                    this.addfreq_times(_that.addWoPlan.freq_cycle, _that.addWoPlan.freq_num, _that.addWoPlan.sendTypes)
+                }
+            },
+            //  监听频率次数
+            "addWoPlan.freq_num": function (value, old) {
+
+                if (value == old) return;
+
+                this.addfreq_times(this.addWoPlan.freq_cycle, value, this.addWoPlan.sendTypes)
+            },
+            // 监听频率周期
+            "addWoPlan.freq_cycle": function (value, old) {
+                if (value == old) return;
+                this.addfreq_times(value, this.addWoPlan.freq_num, this.addWoPlan.sendTypes)
+            },
+            addWoPlan: function (newValue, oldValue) {
+
+                var _that = this;
+
+                /**
+                 *  找到单个实例对应数据集的索引,然后选中该索引对应的下拉菜单
+                 * @param {脏值检查中检查到不同的实例} item 
+                 */
+                function destory(item) {
+
+                    var selector = {};
+
+                    selector.code = item.value;
+
+                    index = _.findIndex(cbx[item.key], selector);
+
+                    changeComboxbyKey(item.key, index, false);
+                }
+
+                createCheck(destory)(newValue, oldValue, Object.keys(cbx));
+            }
+        },
+        beforeMount: function (addWoPlan, isQuote, isTerm) {
+            debugger;
+            var _that = this;
+            //  判断是否是编辑计划
+            _that.isEdit = _.isPlainObject(addWoPlan);
+            //  如果是编辑计划赋值
+            if (_that.isEdit) _that.addWoPlan = addWoPlan;
+            // 是否引用
+            // if (_.isBoolean(isQuote)) _that.isQuote = isQuote;
+            // 是否项目版
+            // if (_.isBoolean(isTerm)) _that.isTerm = isTerm;
+            // 加载工单状态类型
+            var WorkOrderTypePromise = controller.queryWorkOrderType().then(function (res) {
+
+                res.forEach(function (item) {
+                    _that.WorkOrderType.push(item);
+                })
+
+                return new Promise(function (resolve) {
+                    resolve(res);
+                });
+
+            }).catch(function () {
+
+                _that.WorkOrderType = [];
+            })
+
+            //  选项加载完毕 附加默认值
+            WorkOrderTypePromise.then(function () {
+
+                var addWoPlan = { "execute": "11", "plan_name": "计划名称计划名称", "order_type": "13", "urgency": "中", "ahead_create_time": "11", "freq_cycle": "s", "freq_num": "4", "freq_times": [{ "start_time": { "cycle": "s", "time_week": "1", "time_season": 1, "time_month": "01", "time_day": "01", "time_hour": "00", "time_minute": "01" }, "end_time": { "cycle": "s", "time_week": "1", "time_season": "1", "time_month": "01", "time_day": "02", "time_hour": "00", "time_minute": "02" } }, { "start_time": { "cycle": "s", "time_week": "1", "time_season": "1", "time_month": "01", "time_day": "03", "time_hour": "00", "time_minute": "03" }, "end_time": { "cycle": "s", "time_week": "1", "time_season": "1", "time_month": "01", "time_day": "04", "time_hour": "00", "time_minute": "04" } }, { "start_time": { "cycle": "s", "time_week": "1", "time_season": "1", "time_month": "01", "time_day": "05", "time_hour": "00", "time_minute": "05" }, "end_time": { "cycle": "s", "time_week": "1", "time_season": "1", "time_month": "01", "time_day": "06", "time_hour": "00", "time_minute": "06" } }, { "start_time": { "cycle": "s", "time_week": "1", "time_season": "1", "time_month": "01", "time_day": "07", "time_hour": "00", "time_minute": "07" }, "end_time": { "cycle": "s", "time_week": "1", "time_season": "1", "time_month": "01", "time_day": "08", "time_hour": "00", "time_minute": "08" } }], "interval": {}, "sendTypes": "1", "plan_start_type": "1", "plan_start_time": "", "plan_end_time": "", "next_route": [], "draft_matters": [], "published_matters": [] };
+
+                // 编辑情况
+                if (addWoPlan) {
+
+                    new Promise(function (resolve) {
+                        //  绑定基础信息
+                        _that.addWoPlan = JSON.parse(JSON.stringify(addWoPlan));
+                        _that.$nextTick(resolve);
+                    }).then(function () {
+                        _that.addWoPlan.sendTypes = addWoPlan.sendTypes;
+                        return new Promise(function (resolve) {
+                            _that.$nextTick(resolve)
+                        })
+                    }).then(function () {
+                        _that.addWoPlan.freq_num = addWoPlan.freq_num;
+                        _that.addWoPlan.freq_cycle = addWoPlan.freq_cycle;
+                        return new Promise(function (resolve) {
+                            _that.$nextTick(resolve)
+                        })
+                    }).then(function () {
+
+                        _that.addWoPlan.freq_times = JSON.parse(JSON.stringify(addWoPlan.freq_times))
+
+                        _that.bind_fres_times().then(function () {
+                            console.log('加载完毕');
+                        })
+
+                    })
+
+                } else {
+
+                    // 新建情况
+                    _that.addWoPlan = new AddWoPlan()
+                }
+            })
+        }
+    })
+</script>

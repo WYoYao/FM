@@ -1,0 +1,59 @@
+
+<script type="text/html" id="item-tree-template">
+    <div class="organizationTreeBox">
+        <div class="organizationTreeBoxName" @click="choice(model,$event)">    
+            <span
+            class="partitionName"
+            :class="{'checked':model.checked}"
+            :style="{'text-indent':(model.lv *24 +'px')}" 
+            v-text = "model.obj_name">
+            </span>
+        </div>
+        <!-- <div style="border-bottom:1px solid #eee"></div> -->
+        <div>
+            
+            <organizationtree class="item"  v-for="model in model.child_objs" :model="model" :choice="choice" :style="{'box-sizing':'border-box'}">
+            </organizationtree>
+        </div>
+        
+    </div>
+</script>
+<script>
+    Vue.component('organizationtree', {
+        template: '#item-tree-template',
+        props: ["model", "choice"],
+
+    })
+</script>
+
+<!-- 自定义树 -->
+<script type="text/html" id="item-template">
+    <div class="templateTreeBox">
+        <div class="managePartitionName" @click="handle(model,$event)">
+            
+            <input @blur="blur(model,$event)" max-length="100"  type="text" :style="{'text-indent':(model.lv *24 +'px')}" 
+            :dis="JSON.stringify(model.lev)" 
+            :class="{warningRed:model.markNull}"
+            :disabled="model.disabled" 
+            :placeholder="model.placeholder"
+            v-model = "model.obj_name">
+            <span class="tipNull" v-if="model.markNull">名称不能为空</span>
+            <span class="tipRepeat" v-if="model.markRepeat">名称重复</span>
+        </div>
+        <!-- <div style="border-bottom:1px solid #eee"></div> -->
+        <div>
+            
+            <item class="item"  v-for="model in model.child_objs" :model="model" :blur="blur" :handle="handle" :style="{'box-sizing':'border-box'}">
+            </item>
+        </div>
+        
+    </div>
+</script>
+<script>
+    Vue.component('item', {
+        template: '#item-template',
+        props: ["model", "handle", "blur"],
+
+    })
+</script>
+

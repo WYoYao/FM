@@ -1,0 +1,191 @@
+#planInformation{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    &>.head{
+        width: calc(100% - 40px);
+        border-bottom:1px solid #d9e2e8;
+        height: 50px;
+        padding: 0 20px 0;
+        position: relative;
+        &>div{
+            float: left;
+        }
+        .path{
+            width: 300px;
+        }
+        .name{
+            width: 300px;
+            position: absolute;
+            margin: 17px auto 0;
+            height: 16px; 
+            line-height: 16px;
+            left: calc(50% - 150px);
+            text-align: center;
+        }
+        .operate{
+            margin-top: 17px;
+            height: 16px;
+            line-height: 16px;
+            float: right;
+            &>div{
+                padding-left: 20px;
+                border-left:1px solid #d9e2e8;
+                margin-left: 20px;
+            }
+            &>div:nth-last-of-type(1){
+                border-left:none;
+            }
+            div{
+                float: right;
+            }
+        }
+    }
+    &>.warn{
+        background: #fff0f0;
+        height: 30px;
+        line-height: 30px;
+        color: #ff7b7b;
+        font-size: 14px;
+        text-align: center;
+        top: 51px;
+        position: absolute;
+    }
+    &>.body{
+        width: 700px;
+        height: calc(100% - 101px);
+        padding-top: 50px;
+        padding-bottom: 20px;
+        margin: 0 auto 0;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        .state{
+            height: 14px;
+            width: 100%;
+            line-height: 14px;
+            font-size: 14px;
+        }
+        &>div div{
+            font-size: 14px;
+            height: 14px;
+            line-height: 14px;
+        }
+        .message{
+            border-bottom: 1px dashed #d9e2e8;
+            padding-bottom: 20px;
+        }
+        .title{
+            padding-left: 5px;
+            border-left: 5px solid #7a94ad;
+            margin-top: 20px;
+            color: #000;
+        }
+        .row{
+            padding-left: 10px;
+            margin-top: 14px;
+        }
+        .time{
+            color: #f89964;
+        }
+        .more{
+            padding-left: 10px;
+            height: auto;
+            margin-top: 14px;
+            ul{
+                li{
+                    list-style-type: none;
+                    line-height: 14px;
+                    margin-top: 14px; 
+                    div{
+                        float: left;
+                    }
+                }
+            }
+        }
+        .box{
+            margin-top: 15px;
+            margin-bottom: 10px;
+            height: auto;
+            .content{
+                height: auto;
+                padding-left: 10px;
+                line-height: 28px;
+                margin-top: 7px;
+                word-wrap: break-word;
+                word-break: normal;
+            }
+        }
+    }
+}
+#planChangeHistory{  
+    padding:20px;
+    width: auto;
+    height: calc(100% - 40px);
+    &>div{
+        width: 430px;
+        float: left;
+        height: 100%;
+        &:nth-of-type(1){
+            margin-right: 25px;
+        }
+        >.title{
+            line-height: 14px;
+            height: 14px;
+            padding-bottom: 10px;
+            font-size: 12px;
+            div{
+                float: left;
+            }
+        }
+        >.boxod{
+            width: 388px;
+            border: 1px solid #d9e2e8;
+            height: calc(100% - 26px);
+            padding: 0 20px 0 20px;
+            font-size: 14px;
+            line-height: 14px;
+            .message{
+                border-bottom: 1px dashed #d9e2e8;
+                padding-bottom: 30px;
+            }
+            .title{
+                padding-left: 6px;
+                border-left: 5px solid #7a94ad;
+                margin-top: 20px;
+                color: #000;
+                margin-left: -12px;
+                height: 14px;
+            }
+            .row{
+                margin-top: 14px;
+                height: 14px;
+            }
+            .box{
+                margin-top: 15px;
+                margin-bottom: 10px;
+                height: auto;
+                .content{
+                    height: auto;
+                    line-height: 28px;
+                    margin-top: 7px;
+                    word-wrap: break-word;
+                    word-break: normal;
+                }
+            }
+            .more{
+                height: auto;
+                margin-top: 14px;
+                ul{
+                    li{
+                        list-style-type: none;
+                        line-height: 14px;
+                        margin-top: 14px; 
+                        div{
+                            float: left;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

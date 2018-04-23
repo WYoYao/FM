@@ -1,0 +1,38 @@
+<script src="../js/workOrder/planMng/dumpedPlanOrder/model.js"></script>
+<script src="../js/workOrder/planMng/dumpedPlanOrder/event.js"></script>
+
+<link rel="stylesheet" href="../css/workOrder/planMng/term/dumpedPlanOrder.css">
+<div id="dumpedPlanOrder" v-if="onPage == 'dumpedPlanOrder'">
+    <div class="head">
+        <sitemap :maps='dumpedPlanOrderPaths' :createsitemap='gobackSelPath' :back='gobackLastPath' />
+    </div>
+    <div class="body">
+        <div class="sel">
+            <div>
+                <pcombobox-normal id="'workOrderStateSel'" sel="" bind="true">
+                    <header prefix="工单状态 : " placeholder="工单状态 : 所有"></header>
+                    <item datasource="allOrderState" text="name" id="id"></item>
+                </pcombobox-normal>
+            </div>
+        </div>
+        <div class="title">
+            <div class="people">处理人</div>
+            <div class="start">实际开始时间</div>
+            <div class="end">实际结束时间</div>
+            <div class="state">工单状态</div>
+        </div>
+        <ul class="grid">
+            <pscroll-small templateid="dumpedOrderList"></pscroll-small>
+        </ul>
+    </div>
+</div>
+
+
+<script type="text/html" id="dumpedOrderList">
+    <li v-for="item in dumpedOrderData">
+        <div class="people" v-text="item.participants" :title="item.participants"></div>
+        <div class="start" v-text="numTimeTransform(item.create_time)" :title="numTimeTransform(item.create_time)"></div>
+        <div class="end" v-text="numTimeTransform(item.close_time)" :title="numTimeTransform(item.close_time)"></div>
+        <div class="state" v-text="item.order_state_name" :title="item.order_state_name"></div>
+    </li>
+</script>

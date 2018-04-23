@@ -1,0 +1,17 @@
+#dumpedPlanOrder { width: 100%; height: 100%; }
+#dumpedPlanOrder > .head { border-bottom: none; height: 50px; padding: 0px 20px 0px; width: calc(100% - 40px); line-height: 30px; font-size: 16px; }
+#dumpedPlanOrder > .body { height: calc(100% - 50px); width: calc(100% - 40px); padding: 0 20px 0; }
+#dumpedPlanOrder > .body .sel { height: 30px; padding: 10px 20px 10px; width: calc(100% - 40px); background: #eaeef0; }
+#dumpedPlanOrder > .body .sel > div { width: 150px; }
+#dumpedPlanOrder > .body .title { height: 30px; line-height: 30px; font-size: 14px; border-bottom: 1px solid #d9e2e8; }
+#dumpedPlanOrder > .body .title div { float: left; height: 100%; }
+#dumpedPlanOrder > .body .grid { overflow-x: hidden; overflow-y: auto; height: calc(100% - 101px); }
+#dumpedPlanOrder > .body .grid li { font-size: 14px; list-style-type: none; height: 38px; line-height: 38px; border-bottom: 1px solid #d9e2e8; }
+#dumpedPlanOrder > .body .grid li:nth-of-type(odd) { background: #f5f7fa; }
+#dumpedPlanOrder > .body .grid li div { float: left; height: 100%; }
+#dumpedPlanOrder > .body .people { width: calc(20% - 40px); padding-left: 40px; }
+#dumpedPlanOrder > .body .start { width: 25%; }
+#dumpedPlanOrder > .body .end { width: 25%; }
+#dumpedPlanOrder > .body .state { width: 30%; }
+
+/*# sourceMappingURL=dumpedPlanOrder.css.map */

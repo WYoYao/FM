@@ -1,0 +1,110 @@
+@import "./public";
+@import "./structure";
+
+._item{
+    padding-left: 20px;
+
+    &:nth-child(1){
+        width:21%; 
+    }
+    &:nth-child(2){
+        width:20%;
+    }
+    &:nth-child(3){
+        width:25%;
+    }
+    &:nth-child(4){
+        width:22%;
+    }
+    &:nth-child(5){
+        width:12%;
+    }
+}
+
+#app{
+    @extend .complete;
+
+    .work_order_list{
+
+        .header{
+            height: 50px;
+            border-bottom: none !important;
+
+            .left{
+                float: left;
+                margin-top: 10px;
+                margin-right: 20px;
+
+                & > div{
+                    width: 200px;
+                }
+            }
+        }
+
+        @include structure{
+            width: 100%;
+            height: calc(100% - 60px);
+            border-top: 1px solid $blue-border-color;
+            .search{
+                height: 50px;
+                line-height: 50px;
+                padding-left: 20px;
+                background: $blue-block-color;
+                // margin: 0 -20px;
+
+                & > div{
+                    margin-top: 10px;
+                    margin-right: 20px;
+                    float: left;
+                    width: 200px;
+                }
+
+                border-bottom: 1px solid $blue-border-color;
+            }
+
+
+            .t_header{
+                    height: 29px;
+                    line-height: 29px;
+                    width: 100%;
+                    color: $black-font-color;
+
+                    @extend .flex-row;
+
+                    .item{
+                        @extend ._item;
+                    }
+            }
+
+            .t_body{
+                    max-height: calc(100% - 79px);
+                    width: 100%;
+                    overflow: auto;
+                    overflow: overlay;
+                    border-bottom: 1px solid $blue-border-color;
+
+                    .info{
+                        cursor: pointer;
+                        @extend .flex-row;
+
+                        .item{
+                            @extend ._item;
+                            color: $blacker-font-color;
+                            line-height: 30px;
+                            @extend ._font_over;
+
+                            .ide{
+                                cursor: pointer;
+                            }
+                        }
+                    }
+
+                    // & > :nth-child(2n+1),& > :hover{
+                    & > :nth-child(2n+1){
+                        background: $blue-block-color;
+                    }
+            }
+
+        }
+    }
+}

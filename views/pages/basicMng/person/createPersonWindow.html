@@ -1,0 +1,428 @@
+<pwindow-float id="createPersonFloatWindow" isshade="false" title="新建" templateid="createPersonWindow" onclick="pub_method.returnPop(event)">
+    <button>
+        <div class="personRelatedOperat" v-if="personInformationObj.page == 'detail'">
+            <section>
+                <pbutton-blue text="编辑" icon="`" @click="personMethods.editPersonDetail" isborder="false" id="editPersonBtn"></pbutton-blue>
+            </section>
+            <section v-if="personModel.personDetalObj.person_status == '1'">
+                <pbutton-blue text="离职" icon="p" @click="personMethods.dismissionPerson(personModel.personDetalObj.person_id)" isborder="false" id="dimissionPersonBtn"></pbutton-blue>
+            </section>
+            <section v-if="personModel.personDetalObj.person_status == '0'">
+                <pbutton-blue text="复职" icon="p" @click="personMethods.reinstatedPerson(personModel.personDetalObj.person_id)" isborder="false" id="reinstatedPersonBtn"></pbutton-blue>
+            </section>
+        </div>
+        
+    </button>
+    <animate maxpx="0" minpx="-400" orientation="right"></animate>
+</pwindow-float>
+<pwindow-confirm id="confirmDismissionPerson">
+    <button>
+        <pbutton-backred text="离职" click="personMethods.confirmDismissionFn"></pbutton-backred>
+        <pbutton-white text="取消" click="personMethods.cancelDismissionFn"></pbutton-white>
+    </button>
+</pwindow-confirm>
+<pwindow-confirm id="confirmReinstatedPerson">
+    <button>
+        <pbutton-backred text="复职" click="personMethods.confirmReinstatedFn"></pbutton-backred>
+        <pbutton-white text="取消" click="personMethods.cancelReinstatedFn"></pbutton-white>
+    </button>
+</pwindow-confirm>
+<script type="text/html" id="createPersonWindow">
+    <!-- 新建编辑 -->
+    <div class="createPersonBox" v-if="personInformationObj.page == 'create' || personInformationObj.page == 'edit'">
+        <!-- 基本信息 -->
+        <div class="basicInformation">
+            <div class="createBlock">
+                <div class="title">
+                        基本信息
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <span>*</span>
+                        <em>员工识别码：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <ptext-text placeholder="请输入20位数字" id="employeeId" input="personMethods.checkPersonId">
+                            <verify errtip="员工识别码不能为空!" verifytype="space"></verify>
+                            <verify errtip="最多输入20个字符" length="20" verifytype="length"></verify>
+                            <verify errtip="请输入数字" verifytype="positivenumber"></verify>
+                        </ptext-text>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <span>*</span>
+                        <em>姓名：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <ptext-text placeholder="请输入" id="employeeName">
+                            <verify errtip="姓名不能为空!" verifytype="space"></verify>
+                            <verify errtip="员工姓名不可超过20个字！" verifytype="length" length="20"></verify>
+                        </ptext-text>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <!-- <span>*</span> -->
+                        <em>性别：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <pcombobox-normal id="employeeSex">
+                            <header placeholder="男"></header>
+                            <item datasource="personModel.employeeSexObj" text="name"></item>
+                        </pcombobox-normal>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <!-- <span>*</span> -->
+                        <em>出生年月：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <ptime-form id="startTime" pertype="borthTimeForm">
+                            <panel timetype="yMd"></panel>
+                        </ptime-form>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <!-- <span>*</span> -->
+                        <em>手机号：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <ptext-text placeholder="请输入" id="employeePhone">
+                            <verify errtip="手机号不正确!" verifytype="mobile"></verify>
+                        </ptext-text>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <!-- <span>*</span> -->
+                        <em>邮箱：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <ptext-text placeholder="请输入" id="employeeEmail">
+                            <verify errtip="邮箱格式不正确!" verifytype="email"></verify>
+                            <verify errtip="最多输入50个字符" length="50" verifytype="length"></verify>
+                        </ptext-text>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- 工作信息 -->
+        <div class="workInformation">
+            <div class="createBlock">
+                <div class="title">
+                    工作信息
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <!-- <span>*</span> -->
+                        <em>员工编号：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <ptext-text placeholder="请输入编码" id="employeeNo">
+                            
+                        </ptext-text>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <span>*</span>
+                        <em>岗位：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <pcombobox-normal id="'employeePosition'" istree="true" bind="true" sel="personMethods.confirmChoicePosition">
+                            <header  placeholder="请选择"></header>
+                            <item datasource="personModel.employeePositionObj" text="obj_name" child="child_objs" id="id" pronametoissel="issel" orientation="right"></item>
+                        </pcombobox-normal>
+                        <section id="employeePositionTip">
+                            请选择岗位
+                        </section>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <em>专业：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <section id="employeeMajor">
+                            <div class="title" @click="personMethods.choiceMajorListShow">
+                                <span>请选择</span>
+                                <i>v</i>
+                            </div>
+                            <div class="list">
+                                <ul>
+                                    <li v-for="item in personModel.choiceMajorList" @click="personMethods.confirmChoiceMajor(item)">
+                                        <i v-text="item.name"></i>
+                                        <span v-if="item.isShow"></span>
+                                    </li>
+                                </ul>
+                                <div class="opeart">
+                                    <pbutton-blue text="确定" click="personMethods.moreSelectMajorList"></pbutton-blue>
+                                    <pbutton-white text="取消" click="personMethods.moreUnSelectPermissionList"></pbutton-white>
+                                </div>
+                            </div>
+                            
+                        </section>
+    
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- 绑定账号 -->
+        <div class="accountformation">
+            <div class="createBlock">
+                <div class="title">
+                    绑定账号
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <!-- <span>*</span> -->
+                        <em>账号名称：</em>
+                        
+                    </div>
+                    <div id="searchAccountInfo" class="right">
+                        <input type="text" placeholder="请输入账号" 
+                        @input="personMethods.searchAccountByName"
+                        @keyup.enter="personMethods.enterAccountAddPermission"  
+                        v-model="personModel.accountName">
+                        <div>
+                            <ul>
+                                <li v-for="item in personModel.searchAccountList" 
+                                :class="{disabled:item.disabled}" 
+                                v-text="item.person_user_name"
+                                @click="personMethods.clickAccountAddPermission(item)"
+                                ></li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="content" id="functionPermissionBlock">
+                    <div class="left">
+                        <!-- <span>*</span> -->
+                        <em>功能权限：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <span id="functionPermissionContent" :title="personModel.functionPermissionObj.func_pack_names" v-text="personModel.functionPermissionObj.func_pack_names"></span>
+                        <section id="permissionPackageList">
+                            <ul>
+                                <li v-for="item in personModel.permissionPackageList"
+                                 @click="personMethods.moreSelectPermissionItem(item)">
+                                    <i v-text="item.func_pack_name"></i>
+                                    <span v-if="item.isShow"></span>
+                                </li>
+                            </ul>
+                            <div class="opeart">
+                                <pbutton-blue text="确定" click="personMethods.moreSelectPermissionList"></pbutton-blue>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+               
+            </div>
+            
+        </div>
+
+        <!-- 照片 -->
+        <div class="imgformation">
+            <div class="createBlock">
+                <div class="title">
+                    照片
+                </div>
+                <div class="acont picCont">
+                    <div class="idPhoto" id="imageInformationId">
+                        <pupload-img pertype="uplodImgBox" number="1">
+                            <p class="tip">图片格式为jpg、png，最多上传1张</p>
+                        </pupload-img>
+                    </div>
+                    <!--<div class="perImg" pertype="personImgBox">
+                        <img src="/images/person.png" />
+                    </div>-->
+                    <div class="imgNote">
+                        图片格式为jpg、png<br/>
+                        建议尺寸50mm*35mm
+                    </div>
+                </div>
+                
+                
+            </div>
+            
+        </div>
+        <!-- 保存 -->
+        <div class="saveInformation">
+            <pbutton-blue text="保存" click="personMethods.createPersonSave"></pbutton-blue>
+        </div>
+    </div>
+    <!-- 人员详情 -->
+    <div class="personDetailBox" v-if="personInformationObj.page == 'detail'">
+        <!-- 基本信息 -->
+        <div class="basicInformation">
+            <div class="createBlock">
+                <div class="title">
+                        基本信息
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <!-- <span>*</span> -->
+                        <em>员工识别码：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <span v-text="personModel.personDetalObj.id_number"></span>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <!-- <span>*</span> -->
+                        <em>姓名：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <span v-text="personModel.personDetalObj.name"></span>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <!-- <span>*</span> -->
+                        <em>性别：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <span v-text="personModel.personDetalObj.gender == 'male' ? '男':'女'"></span>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <!-- <span>*</span> -->
+                        <em>出生年月：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <span v-text="personModel.personDetalObj.birthday"></span>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <!-- <span>*</span> -->
+                        <em>手机号：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <span v-text="personModel.personDetalObj.phone_num"></span>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <!-- <span>*</span> -->
+                        <em>邮箱：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <span v-text="personModel.personDetalObj.person_mail"></span>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- 工作信息 -->
+        <div class="workInformation">
+            <div class="createBlock">
+                <div class="title">
+                    工作信息
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <!-- <span>*</span> -->
+                        <em>员工编号：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <span v-text="personModel.personDetalObj.person_num"></span>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <!-- <span>*</span> -->
+                        <em>岗位：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <span v-text="personModel.personDetalObj.position_name"></span>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="left">
+                        <em>专业：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <span v-text="personMethods.arrayObjectTransfString(personModel.personDetalObj.specialty_name,'name','、')"></span>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- 绑定账号 -->
+        <div class="accountformation">
+            <div class="createBlock">
+                <div class="title">
+                    绑定账号
+                </div>
+                <div class="content">
+                        <div class="left">
+                            <em>绑定账号：</em>
+                            
+                        </div>
+                        <div class="right">
+                            <span v-text="personModel.personDetalObj.person_user_name"></span>
+                        </div>
+                    </div>
+                <div class="content" id="functionPermissionBlock">
+                    <div class="left">
+                        <!-- <span>*</span> -->
+                        <em>功能权限：</em>
+                        
+                    </div>
+                    <div class="right">
+                        <span v-text="personModel.personDetalObj.func_pack_names"></span>
+                        
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+
+        <!-- 照片 -->
+        <div class="imgformation">
+            <div class="createBlock">
+                <div class="title">
+                    照片
+                </div>
+                
+            </div>
+            <div class="imgBox">
+                <img :src="personModel.personDetalObj.head_portrait" alt="">
+            </div>
+        </div>
+        
+    </div>
+</script>

@@ -1,0 +1,162 @@
+<div class="table_list" v-if="personModel.curPage == 'list'">
+    <div class="table_top">
+        <ptab-navigation text="name" icon="icon" :id="'navBar'" datasource="personModel.buttonMenus" templateid='tabTemplate' sel="personMethods.tabChange(model,event)"></ptab-navigation>
+
+    </div>
+</div>
+
+
+
+<script type="text/html" id='tabTemplate'>
+    <div class="table_content">
+        
+            
+        <!-- 人员管理 -->
+        <div id="personManageList" class="personManageList">
+            <!-- 组织结构树 -->
+            <div class="personListLeft">
+                <div class="title">
+                    <div class="name">
+                        组织结构
+                    </div>
+                    <div class="editBtn">
+                        <pbutton-white bind="true" icon ="'`'" text="'编辑自定义部门'" @click="personMethods.editOrganizationList()"></pbutton-white>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="organizationUl" v-for="(item, index) in personModel.organizationList">
+                        <!-- <modal class="item" :model="item" :choice="partitionMethod.choice">
+                        </modal> -->
+                        <organizationtree :model="item" :choice="personMethods.choiceOption">
+                        </organizationtree>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="personListRight">
+                <div class="top">
+                    <div class="left">
+                        <div class="state" id="personState">
+                            <pcombobox-normal sel="personMethods.choicePersonState">
+                                <header placeholder="状态：全部" prefix="状态："></header>
+                                <item datasource="personModel.personStateSelect" text="name" id="id"></item>
+                            </pcombobox-normal>
+                        </div>
+                        <!-- <div class="prompt">
+                            <span>提示：</span><i v-text="'还有' + personModel.personNum + '位员工未绑定账号'"></i>    
+                        </div> -->
+                    </div>
+                    <div class="right">
+                        <div class="switchBtn">
+                            <div class="personList" @click="personMethods.showPersonList()">
+                                <img src="../images/personList.png" alt="">
+                            </div>
+                            <div class="border">
+
+                            </div>
+                            <div class="personShow disabled" @click="personMethods.showPersonPicList()">
+                                <img src="../images/personShow.png" alt="">
+                            </div>
+                        </div>
+                        <div class="newPersonBtn">
+                            <pbutton-white icon ="J" text="新建人员" click="personMethods.createAndEditShow"></pbutton-white>
+                        </div>
+                        <div class="uploadBtn" style="width:120px;height:33px;">
+                            <pupload-attachment id='upload' text="批量上传" number="1" accept="">
+                                <panel success='personMethods.batchUpload'></panel>
+                            </pupload-attachment>
+                            
+
+                            <!-- <pbutton-white icon ="d" text="批量上传" click="personMethods.batchUpload()"></pbutton-white> -->
+                        </div>
+                        <div class="downloadBtn" style="margin-left:10px">
+                            <pbutton-white icon ="D" text="下载模板" click="personMethods.downloadTemplate"></pbutton-white>
+                        </div>
+                    </div>
+                    
+                </div>
+                <!-- 人员列表 -->
+                <div id="personInfoList" class="infoList" style="height:100%">
+                    <pgrid-multifunction bind="true" id="'personInfoListGrid'">
+                        <panel datasource="personModel.personInfoGrid"  lineclick="personMethods.viewPersonDetail"  sortevent="personMethods.personInfoGridSort"></panel>
+                        <header>
+                            <column name="员工编号" source="person_num" width="20%"  sort="true" defaultsort="desc"></column>
+                            <column name="姓名" source="name" width="20%"></column>
+                            <column :title="account" name="手机号" source="phone_num" width="20%"></column>
+                            <column name="专业" source="specialty_name" width="20%"></column>
+                            <column name="账号" source="person_num" width="20%"></column>
+                            <column bind="true" source="person_id" width="0%" visible="false"></column>
+                        </header>
+                    </pgrid-multifunction>
+                    <div v-show="personModel.personInfoGrid.length == 0">
+                        <pnotice-nodata text="暂无数据" icon="../images/sassNodata.png"></pnotice-nodata>
+                    </div>
+                </div>
+                <!-- 人员缩略图列表 -->
+                <div id="perPicTable"  class="contentList photoList"style="display: none;">
+                    <div class="positionItem" v-for="(info,index) in personModel.personGroup">
+                        <div class="itemHead">
+                            <span class="posname" v-text="info.position_name"></span>
+                            <span class="line"></span>
+                        </div>
+                        <ul>
+                            <li v-for="item in info.persons" @click="personMethods.viewPersonDetail(item)">
+                                <div class="pic">
+                                    <img v-bind:src="!item.head_portrait?'../images/person.png':item.head_portrait" />
+                                </div>
+                                <div class="pername" v-bind:title="item.name" v-text="item.name">
+                                 
+                                </div>
+                                <div class="pernum" v-bind:title="item.person_num" v-text="item.person_num">
+                                   
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="newNoData" v-show="personModel.personGroup && personModel.personGroup.length==0">
+                        <pnotice-nodata text="暂无数据" icon="../images/sassNodata.png"></pnotice-nodata>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 登录信息 -->
+        <div id="loginInfoList" class="loginInfoList">
+            <div class="top">
+                <!-- <div class="department">
+                    <pcombobox-normal sel="personMethods.choiceDepartment" >
+                        <header placeholder="部门：请选择" prefix="部门："></header>
+                        <item datasource="personModel.loginInfoDepartment" text="name"></item>
+                    </pcombobox-normal>
+                </div> -->
+                <!-- <div class="position">
+                    <pcombobox-normal sel="personMethods.choicePosition" >
+                        <header placeholder="岗位：请选择" prefix="岗位："></header>
+                        <item datasource="personModel.loginInfoPosition" text="name"></item>
+                    </pcombobox-normal>
+                </div> -->
+                <div class="search" id="personNameSearch">
+                    <psearch-delay bind="true" placeholder="'输入人员姓名查找'" change="personMethods.searchPersonByName()"></psearch-delay>
+                </div>
+            </div>
+            <div class="infoList" style="height:100%">
+                <pgrid-multifunction bind="true">
+                    <panel bind="true" datasource="personModel.loginInfoGrid" sortevent="personMethods.loginInfoSort"></panel>
+                    <header>
+                        <column name="姓名" source="name" width="20%"></column>
+                        <column name="登录时间" source="login_time" width="20%" sort="true" defaultsort="desc"></column>
+                        <column :title="account" name="账号" source="person_user_name" width="20%"></column>
+                        <column name="登录设备" source="login_device" width="20%"></column>
+                        <column name="登录距离项目距离" source="distance" width="20%" sort="true" defaultsort="desc"></column>
+                    </header>
+                    
+                   
+
+                </pgrid-multifunction>
+                <div v-show="personModel.loginInfoGrid.length == 0">
+                    <pnotice-nodata text="暂无数据" icon="../images/sassNodata.png"></pnotice-nodata>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</script>

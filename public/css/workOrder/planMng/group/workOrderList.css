@@ -1,0 +1,108 @@
+._font_over, #app .work_order_list .main .content .contenter .t_body .info .item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+.flex-column {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: stretch; }
+
+.flex-row, #app .work_order_list .main .content .contenter .t_header, #app .work_order_list .main .content .contenter .t_body .info {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: stretch; }
+
+.complete, #app, #app .work_order_list {
+  height: 100%;
+  width: 100%; }
+
+.border-radius, #app .work_order_list .main {
+  border-radius: 6px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0; }
+
+.box-shadow, #app .work_order_list .main {
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.12); }
+
+._item, #app .work_order_list .main .content .contenter .t_header .item, #app .work_order_list .main .content .contenter .t_body .info .item {
+  padding-left: 20px; }
+  ._item:nth-child(1), #app .work_order_list .main .content .contenter .t_header .item:nth-child(1), #app .work_order_list .main .content .contenter .t_body .info .item:nth-child(1) {
+    width: 21%; }
+  ._item:nth-child(2), #app .work_order_list .main .content .contenter .t_header .item:nth-child(2), #app .work_order_list .main .content .contenter .t_body .info .item:nth-child(2) {
+    width: 20%; }
+  ._item:nth-child(3), #app .work_order_list .main .content .contenter .t_header .item:nth-child(3), #app .work_order_list .main .content .contenter .t_body .info .item:nth-child(3) {
+    width: 25%; }
+  ._item:nth-child(4), #app .work_order_list .main .content .contenter .t_header .item:nth-child(4), #app .work_order_list .main .content .contenter .t_body .info .item:nth-child(4) {
+    width: 22%; }
+  ._item:nth-child(5), #app .work_order_list .main .content .contenter .t_header .item:nth-child(5), #app .work_order_list .main .content .contenter .t_body .info .item:nth-child(5) {
+    width: 12%; }
+
+#app .work_order_list {
+  position: relative;
+  background: #f8f8f8; }
+  #app .work_order_list .header {
+    height: 50px;
+    border-bottom: none !important; }
+    #app .work_order_list .header .left {
+      float: left;
+      margin-top: 10px;
+      margin-right: 20px; }
+      #app .work_order_list .header .left > div {
+        width: 200px; }
+  #app .work_order_list .main {
+    position: absolute;
+    background: #ffffff;
+    top: 12px;
+    left: 10px;
+    right: 10px;
+    bottom: 0; }
+    #app .work_order_list .main .content {
+      margin: 0 20px;
+      height: 100%; }
+      #app .work_order_list .main .content .header {
+        height: 50px;
+        line-height: 50px;
+        padding: 0 20px;
+        margin: 0 -20px;
+        border-bottom: 1px solid #d9e2e8;
+        box-sizing: border-box; }
+      #app .work_order_list .main .content .contenter {
+        width: 100%;
+        height: calc(100% - 60px);
+        border-top: 1px solid #d9e2e8; }
+        #app .work_order_list .main .content .contenter .search {
+          height: 50px;
+          line-height: 50px;
+          padding-left: 20px;
+          background: #f8f8f8;
+          border-bottom: 1px solid #d9e2e8; }
+          #app .work_order_list .main .content .contenter .search > div {
+            margin-top: 10px;
+            margin-right: 20px;
+            float: left;
+            width: 200px; }
+        #app .work_order_list .main .content .contenter .t_header {
+          height: 29px;
+          line-height: 29px;
+          width: 100%;
+          color: #000000; }
+        #app .work_order_list .main .content .contenter .t_body {
+          max-height: calc(100% - 79px);
+          width: 100%;
+          overflow: auto;
+          overflow: overlay;
+          border-bottom: 1px solid #d9e2e8; }
+          #app .work_order_list .main .content .contenter .t_body .info {
+            cursor: pointer; }
+            #app .work_order_list .main .content .contenter .t_body .info .item {
+              color: #333333;
+              line-height: 30px; }
+              #app .work_order_list .main .content .contenter .t_body .info .item .ide {
+                cursor: pointer; }
+          #app .work_order_list .main .content .contenter .t_body > :nth-child(2n+1) {
+            background: #f8f8f8; }
+
+/*# sourceMappingURL=workOrderList.css.map */

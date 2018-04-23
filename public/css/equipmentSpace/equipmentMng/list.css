@@ -1,0 +1,604 @@
+.component {
+    width: 100%;
+    height: 100%;
+}
+.equipmentlist .noDataDiv{
+    display: none;
+}
+#equipmentMng {
+    width: 100%;
+    height: 100%;
+}
+
+.fontdot {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.equipmentlist {
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    right: 10px;
+    bottom: 0px;
+    border: 1px solid #d9e2e8;
+    border-radius: 5px;
+    background: #ffffff;
+    box-sizing: border-box;
+    min-height: 702px;
+}
+
+    .equipmentlist .content {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+        border: 1px solid #d9e2e8;
+        background: #ffffff;
+    }
+
+        .equipmentlist .content .left {
+            float: left;
+            width: 172px;
+            height: 100%;
+            background: #f9f9f9;
+        }
+
+    .equipmentlist .left .item {
+        position: relative;
+        height: 25%;
+        border: 1px solid #d9e2e8;
+        border-top: none;
+        box-sizing: border-box;
+        cursor: pointer;
+        display: table;
+        width: 100%;
+        border-left: 6px solid rgba(0,0,0,0);
+    }
+
+        .equipmentlist .left .item .vertCell {
+            display: table-cell;
+            vertical-align: middle;
+            width: 100%;
+        }
+
+    .equipmentlist .item .number {
+        /*position: absolute;
+    top: 50%;
+    width: 100%;
+    margin-top: -46px;*/
+        text-align: center;
+        font-size: 40px;
+        line-height: 1;
+        color: #666666;
+    }
+
+    .equipmentlist .on .numbers {
+        /*position: absolute;
+    top: 56px;
+    width: 100%;*/
+        text-align: center;
+        font-size: 36px;
+        line-height: 1;
+        color: #666666;
+    }
+
+    .equipmentlist .on .name {
+        /*position: absolute;
+    top: 100px;
+    width: 100%;*/
+        text-align: center;
+        font-size: 16px;
+        line-height: 1;
+        margin-top: 12px;
+        height: 16px;
+        color: #666666;
+    }
+
+    .equipmentlist .on .add {
+        /*position: absolute;
+        top: 50%;
+        width: 100%;*/
+        margin-top: 20px;
+        text-align: center;
+        font-size: 16px;
+        line-height: 1;
+        height: 16px;
+        color: #02a9d1;
+    }
+
+    .equipmentlist .item .numberlong {
+        font-size: 30px;
+    }
+
+    .equipmentlist .item .remark {
+        /*position: absolute;
+    top: 50%;
+    width: 100%;*/
+        margin-top: 12px;
+        text-align: center;
+        font-size: 16px;
+        line-height: 1;
+        color: #666666;
+    }
+
+    .equipmentlist .left .on {
+        border-right: none;
+        background: #ffffff;
+        border-left: 6px solid #02a9d1;
+    }
+
+    .equipmentlist .left .item:last-child {
+        border-bottom: none;
+    }
+
+    .equipmentlist .content .right {
+        position: absolute;
+        left: 192px;
+        right: 20px;
+        height: 100%;
+    }
+
+        .equipmentlist .content .right .searchHeader {
+            position: relative;
+            line-height: 50px;
+            height: 50px;
+            width: 100%;
+        }
+
+        .equipmentlist .content .right .spaceHeader {
+            height: 20px;
+            width: 100%;
+        }
+
+    .equipmentlist .searchHeader .searchtxt,
+    .equipmentlist .searchHeader .addequipment,
+    .equipmentlist .searchHeader .systemMgn {
+        position: absolute;
+        top: 10px;
+        display: inline-block;
+        line-height: 30px;
+        height: 30px;
+    }
+
+    .equipmentlist .searchHeader .searcjIcon {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 30px;
+        width: 30px;
+        line-height: 30px;
+        font-family: perficon;
+        color: #7b94ad;
+        text-align: center;
+        cursor: pointer;
+        z-index: 3;
+        display: block;
+    }
+
+    .equipmentlist .searchHeader .clearSearch {
+        position: absolute;
+        right: 30px;
+        top: 0;
+        height: 30px;
+        width: 30px;
+        line-height: 30px;
+        font-family: perficon;
+        color: #7b94ad;
+        text-align: center;
+        cursor: pointer;
+        z-index: 3;
+        display: block;
+    }
+
+    .equipmentlist .searchHeader .searchtxt {
+        left: 0;
+        width: 350px;
+    }
+
+    .equipmentlist .searchHeader .addequipment {
+        right: 100px;
+        /* width: 125px; */
+    }
+
+    .equipmentlist .searchHeader .systemMgn {
+        right: 0;
+        /* width: 110px; */
+    }
+
+    .equipmentlist .queryblock {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border: 1px solid #d9e2e8;
+        max-height: 380px;
+        overflow-y: auto;
+        overflow-y: overlay;
+    }
+
+        .equipmentlist .queryblock .line {
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .equipmentlist .queryblock .qname {
+            float: left;
+            display: block;
+            line-height: 36px;
+            font-size: 14px;
+            color: #333333;
+            height: 36px;
+            width: 96px;
+            padding-left: 20px;
+            box-sizing: border-box;
+        }
+
+        .equipmentlist .queryblock .list {
+            width: calc(100% - 105px);
+            position: relative;
+            padding-right: 40px;
+            box-sizing: border-box;
+            margin-left: 105px;
+            overflow: hidden;
+            line-height: 36px;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+        .equipmentlist .queryblock .list.heightRegular{
+            height: 36px;
+        }
+        .equipmentlist .queryblock .list.heightAuto{
+            height: auto;
+        }
+        .equipmentlist .queryblock .itine {
+            display: block;
+            float: left;
+            height: 20px;
+            line-height: 20px;
+            border: 1px solid #ffffff;
+            padding: 0 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 8px;
+            box-sizing: border-box;
+            color: #666666;
+        }
+        .equipmentlist .queryblock .btnLi{
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 20;
+            color: #637e99;
+            cursor: pointer;
+        }
+            .equipmentlist .queryblock .btnLi .btnBox{
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                padding-right: 10px;
+            }
+        .equipmentlist .queryblock .itine.place{
+            color:#666666  !important;
+            cursor: auto;
+        }
+
+            .equipmentlist .queryblock .itine:hover {
+                color: #05a9d1;
+            }
+
+    .equipmentlist .totalline {
+        display: block;
+        height: 50px;
+        font-size: 14px;
+        line-height: 50px;
+        text-align: right;
+        color: #333333;
+        box-sizing: border-box;
+        border-bottom: 1px solid #d9e2e8;
+    }
+
+    .equipmentlist .queryblock .noitline {
+        color: #bbbbbb;
+    }
+
+    .equipmentlist .queryblock .onitine {
+        border: 1px solid #a7d7e7;
+        border-radius: 4px;
+        color: #05a9d1;
+        cursor: default;
+        /* box-sizing: border-box; */
+    }
+
+    .equipmentlist .right .thead {
+        height: 30px;
+        width: 100%;
+        border-bottom: 1px solid #eeeeee;
+        position: relative;
+    }
+
+    .equipmentlist .right .tbody {
+        position: absolute;
+        top: 81px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .equipmentlist .newNoData {
+        top: 50%;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        margin-top: -70px;
+    }
+
+        .equipmentlist .newNoData .noPic {
+            height: 132px;
+            background: url('/images/nodata2.png') no-repeat top center;
+        }
+
+        .equipmentlist .newNoData p {
+            color: #6d6d6d;
+            text-align: center;
+        }
+
+    .equipmentlist .right .tbody > li {
+        position: relative;
+        cursor: pointer;
+    }
+
+        .equipmentlist .right .tbody > li::after {
+            content: '';
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+
+        .equipmentlist .right .tbody > li:nth-child(2n) {
+            background: #f5f7fa;
+        }
+
+        .equipmentlist .right .tbody > li:nth-child(2n+1) {
+            background: #ffffff;
+        }
+
+        .equipmentlist .right .tbody > li:last-child {
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .equipmentlist .right .tbody > li:hover {
+            background: #f8f8f8;
+        }
+
+    .equipmentlist .right .eqleft-item {
+        padding-right: 200px;
+        height: 36px;
+    }
+
+        .equipmentlist .right .eqleft-item .eq-item {
+            width: 20%;
+        }
+        .equipmentlist .right .eqleft-item .eq-item:nth-of-type(2){
+            width: 25%;
+        }
+        .equipmentlist .right .eqleft-item .eq-item:nth-of-type(3){
+            width: 15%;
+        }
+        .equipmentlist .right .eqleft-item .eq-item:nth-of-type(4){
+            width: 25%;
+        }
+        .equipmentlist .right .eqleft-item .eq-item:nth-of-type(5){
+            width: 15%;
+        }
+    .equipmentlist .right .eqfixed-item {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 200px;
+    }
+
+        .equipmentlist .right .eqfixed-item .eq-item {
+            width: 100%;
+        }
+
+    .equipmentlist .right .desleft-item {
+        padding-right: 290px;
+        height: 36px;
+    }
+
+        .equipmentlist .right .desleft-item .eq-item {
+            width: 20%;
+        }
+
+    .equipmentlist .right .desfixed-item {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        width: 290px;
+    }
+
+        .equipmentlist .right .desfixed-item .eq-item {
+            width: 100%;
+        }
+
+        .equipmentlist .right .desfixed-item .eq-item .year{
+            float: left;
+            margin-right: 10px;
+        }
+
+    .equipmentlist .right .eq-item {
+        position: relative;
+        float: left;
+        display: block;
+        height: 36px;
+        width: 16%;
+        line-height: 36px;
+        text-align: left;
+        font-size: 12px;
+        padding-left: 20px;
+        box-sizing: border-box;
+        white-space: nowrap;
+    }
+
+    .equipmentlist .right .eq-fitem {
+        width: 20%;
+    }
+
+    .equipmentlist .right .eq-item .overicon {
+        position: relative;
+        background: url(/images/useLong.png) no-repeat center center;
+        height: 18px;
+        width: 55px;
+        cursor: pointer;
+        margin-left: 10px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .equipmentlist .right .eq-item .willovericon {
+        position: relative;
+        background: url(/images/scrapped.png) no-repeat center center;
+        height: 18px;
+        width: 55px;
+        cursor: pointer;
+        margin-left: 10px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .equipmentlist .right .eq-item .tiptext {
+        display: none;
+        position: absolute;
+        top: 25px;
+        right: 0;
+        padding: 0 10px;
+        height: 30px;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        text-align: center;
+        line-height: 30px;
+        font-size: 14px;
+        color: #333333;
+        background: #ffffff;
+        z-index: 3;
+        box-shadow: 0 -1px 12px 0 rgba(29, 43, 72, 0.1);
+    }
+
+        .equipmentlist .right .eq-item .tiptext.bottom {
+            top: initial;
+            bottom: 25px;
+        }
+
+    .equipmentlist .right .eq-item .overicon:hover .tiptext,
+    .equipmentlist .right .eq-item .willovericon:hover .tiptext {
+        display: block;
+    }
+
+    .equipmentlist .block {
+        height: 100%;
+        width: 100%;
+    }
+
+        /* .equipmentlist .block .tbody {
+            cursor: pointer;
+        } */
+
+    .equipmentlist .right .eq-item .stateicon {
+        height: 20px;
+        background: #b5b5b5;
+        margin-top: 8px;
+        margin-right: 10px;
+        line-height: 20px;
+        text-align: center;
+        text-indent: 0;
+        color: #ffffff;
+        border-radius: 20px;
+        float: left;
+        min-width: 70px;
+        padding: 0px 10px;
+        box-sizing: border-box;
+    }
+    .equipmentlist .right .eq-item .signImg{
+        margin-top: 9px;
+    }
+    .equipmentlist .right .eq-item .link {
+        color: #7c91a8;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+    .equipmentlist .right .eq-item .hgd {
+        display: block;
+        position: absolute;
+        width: 95%;
+        left: 46px;
+        top: 30px;
+        border: 1px solid #d0d0d0;
+        background: #ffffff;
+        z-index: 4;
+        overflow-y: auto;
+        max-height: 200px;
+        border-radius: 2px;
+        box-shadow: 0 -1px 12px 0 rgba(29, 43, 72, 0.1);
+    }
+
+    .equipmentlist .right .eq-item:hover .hgd {
+        display: block;
+    }
+
+    .equipmentlist .right .eq-item .hgd .work_orders {
+        height: 40px;
+        line-height: 40px;
+        border-top: 1px solid #e6e6e6;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-indent: 0;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+        .equipmentlist .right .eq-item .hgd .work_orders:first-child {
+            border-top: none;
+        }
+
+        .equipmentlist .right .eq-item .hgd .work_orders .stateicon {
+            margin-top: 10px;
+        }
+
+    .equipmentlist .right .eq-item .bf {
+        display: none;
+        color: #7088a0;
+        margin-right: 20px;
+        float: right;
+    }
+
+    /* .equipmentlist .right .eq-item:hover .bf {
+        display: inline;
+    } */
+    .equipmentlist .right .tbody > li:hover .bf {
+        display: inline;
+    }
+
+.hgd.top {
+    top: 30px;
+}
+
+.hgd.bottom {
+    top: initial !important;
+    bottom: 10px !important;
+}
+
+.ready {
+    display: none;
+}
+
+[v-cloak] {
+	display:none;
+ }

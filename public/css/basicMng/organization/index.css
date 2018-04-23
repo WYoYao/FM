@@ -1,0 +1,326 @@
+.organizationList{
+    width:100%;
+    height:100%;
+   
+}
+.organizationList > .title{
+    width:100%;
+    height:48px;
+    line-height:48px;
+    text-align: center;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.cancel,.keep {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+.organizationList .organizationBox{
+    width: 100%;
+    height: calc(100% - 50px);
+    border:1px solid #d9e2e8;
+    /* margin: 0 20px 10px 20px; */
+    background: #f7f7f7;
+    border-radius:4px;
+    overflow-y: auto;
+    padding:20px 20px 20px 20px;
+    box-sizing: border-box;
+}
+.inputPrompt{
+    color: #f00;
+    vertical-align: middle;
+    position: absolute;
+    right: 15px;
+    top: -1px;
+    display: none;
+}
+#selectedProject .per-combobox-con,#selectedMajor .per-combobox-con,#selectedJurisdiction .per-combobox-con{
+    overflow-y: scroll;
+}
+/* 中心部门 */
+.organizationBox .centerDepartment{
+    min-height:120px;
+    width:100%;
+    background: #fff;
+    padding: 20px 20px 20px 20px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 1px 5px 12px rgba(0, 0, 0, 0.04);
+}
+.organizationBox .centerDepartment >.top{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+}
+.organizationBox .centerDepartment >.top >.title{
+    color:#333;
+    font-weight:bold;
+}
+.organizationBox .centerDepartment >.top > .operat{
+    display: flex;
+    flex-flow: row nowrap;
+}
+.organizationBox .centerDepartment >.top > .operat >.edit{
+    margin-right:20px;
+}
+.organizationBox .centerDepartment >.centerDepartmentUl{
+    border:1px solid #d9e2e8;
+}
+.organizationBox .centerDepartment .centerDepartmentUl .organizationTreeBoxName{
+    width:100%;
+    height:50px;
+    line-height:50px;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    border-bottom:1px dashed #d9e2e8;
+    position: relative;
+}
+.organizationBox .centerDepartment .centerDepartmentUl .organizationTreeBoxName input{
+    display:block;
+    width: 100%;
+    border:  1px solid transparent;
+    cursor: default;
+    transform: translate(-1px,-2px);
+
+}
+/* 项目通用部门 */
+
+.organizationBox .projectCommon{
+    min-height:120px;
+    width:100%;
+    background: #fff;
+    padding: 0 20px 20px 20px;
+    box-sizing: border-box;
+    margin-top:20px;
+}
+.organizationBox .projectCommon >.top{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+}
+.organizationBox .projectCommon >.top >.title{
+    color:#333;
+    font-weight:bold;
+}
+.organizationBox .projectCommon >.top > .operat{
+    display: flex;
+    flex-flow: row nowrap;
+}
+.organizationBox .projectCommon >.projectCommonUl{
+    border:1px solid #d9e2e8;
+}
+.organizationBox .projectCommon .projectCommonUl .organizationTreeBoxName{
+    width:100%;
+    height:50px;
+    line-height:50px;
+    border: 1px solid transparent;
+    border-bottom:1px dashed #d9e2e8;
+    position: relative;
+}
+.organizationBox .projectCommon .projectCommonUl .organizationTreeBoxName input{
+    display:block;
+    width: 100%;
+    border:  1px solid transparent;
+    cursor: default;
+    transform: translate(-1px,-2px);
+}
+
+.organizationBox .otherDepartment{
+    min-height:40px;
+    width:100%;
+    background: #fff;
+    padding: 0 20px 20px 20px;
+    box-sizing: border-box;
+    margin-top:20px;
+}
+.organizationBox .otherDepartment span{
+    font-weight:bold;
+    display:block;
+    padding-top:10px;
+}
+.frameWrap_{
+    position: absolute;
+    background: #fff;
+    border: 1px solid #d9e2e8;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 0px;
+    border-radius: 6px 6px 0 0;
+    overflow: hidden;
+}
+.organizationBox{
+    width: 100%;
+    height: calc(100% - 50px);
+    border: 1px solid #d9e2e8;
+    background: #f7f7f7;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+.operation{
+    margin-bottom: 10px
+}
+.operation>div{
+    display: inline-block;
+    color:#637e99;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.operation button{
+    cursor: pointer;
+}
+.operation .btnGray_{
+    cursor: default;
+}
+.operation>.btnGray{
+    opacity: 0.3;
+    cursor: default;
+}
+.imgOp{
+    width: 18px;
+    vertical-align: text-top;
+    margin-right: 5px;
+}
+/* 快速添加中心部门人员 */
+.essentialInformation{
+    border-left: 4px solid #02a9d1;
+    padding-left: 10px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+.itemFastAdd{
+    vertical-align: middle;
+    padding: 12px 0;
+}
+.itemFastAdd>span{
+    vertical-align: middle;
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    margin-right: 10px;
+    color: #666;
+}    
+.conItem{
+    display: inline-block;
+    width: 185px;
+    vertical-align: middle;
+}
+.starSymbol{
+    font-size: 22px;
+    display: inline-block;
+    transform: translateY(7px);
+    color: #02a9d1;
+    padding-right: 4px;
+}
+.conFastAdd{
+    min-width: 455px;
+    padding: 24px;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: scroll;
+}
+.conKeep{
+    position: fixed;
+    bottom: 0px;
+    border-top: 1px solid #d9d9d9;
+    width: 455px;
+    text-align: center;
+    height: 60px;
+    z-index: 4;
+}
+.conKeepIn{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background: #fff;
+    align-items: center;
+    justify-content: center;
+}
+#projectList input{
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    padding: 5px;
+    color: #333;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+.selected{
+    background: #eee;
+}
+.disabled{
+    opacity: 0.3;
+}
+#projectList1 input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    padding: 5px;
+    color: #333;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+#projectList2 input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    padding: 5px;
+    color: #333;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+#projectList3 input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    padding: 5px;
+    color: #333;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+#searchAccountInfo {
+    width: 184px;
+    display: inline-block;
+}
+#searchAccountInfo > input{
+    font-size: 14px;
+    padding: 7px;
+}
+#searchAccountInfo .options{
+    position: relative;
+}
+#searchAccountInfo .options ul{
+    border: 1px solid #ddd;
+    border-bottom: 0px; 
+    width: 100%;
+    position: absolute;
+}
+#searchAccountInfo .options li{
+    padding:5px;
+    border-bottom: 1px solid #ddd;
+    background:#fff;
+    cursor: default;
+}
+#jurisdictionList{
+    color:#cacaca; 
+    width: 184px;
+    word-wrap: unset;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.conKeepIn>div{
+    width: 200px;
+}

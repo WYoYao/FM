@@ -1,0 +1,22 @@
+<script type="text/html" id="sitemap">
+    <!-- 面包屑导航Start -->
+    <div class="sitemap">
+        
+        <div class="back" @click="back(maps)">I</div>
+
+        <template v-for="(item,index) in maps">
+            <span class="parents" @click="createsitemap(item)" :title="item.name" v-if="index!=(maps.length-1)">&nbsp;&nbsp;{{item.name}}&nbsp;/</span>
+            <span class="children" :title="item.name" v-if="index==(maps.length-1)">&nbsp;&nbsp;{{item.name}}</span>
+        </template>
+
+    </div>
+    <!-- 面包屑导航End -->
+</script>
+
+
+<script>
+    Vue.component('sitemap', {
+        template: '#sitemap',
+        props: ["maps", "createsitemap", "back"],
+    })
+</script>

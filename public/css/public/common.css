@@ -1,0 +1,33 @@
+body {
+    height: 100%;
+    background: #f0f3f6;
+    min-width: 1280px;
+    overflow: hidden;
+    max-width: 100%;
+    position: relative;
+}
+
+.frameWrap {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #d9e2e8;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 0px 20px 10px;
+    box-sizing: border-box;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 0px;
+    border-radius: 6px 6px 0 0;
+    overflow: hidden;
+}
+
+
+.frameWrapContent {
+    height: calc(100% - 47px);
+    border: 1px solid #D9E2E8;
+    box-sizing: border-box;
+    width:100%;
+    overflow:auto;
+    overflow-x:hidden;
+}

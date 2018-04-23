@@ -1,0 +1,26 @@
+<% include ../../../template/pageHead.html %>
+<link rel="stylesheet" href="../css/public/common.css" />
+<link rel="stylesheet" href="../css/basicMng/person/index.css" />
+<link rel="stylesheet" href="../css/basicMng/person/createAndEdit.css" />
+<link rel="stylesheet" href="../css/basicMng/person/editOrganization.css" />
+<script type="text/javascript" src="../js/basicMng/person/model.js"></script>
+<script type="text/javascript" src="../js/basicMng/person/controller.js"></script>
+<script type="text/javascript" src="../js/basicMng/person/event.js"></script>
+
+<!-- 组织人员结构树 -->
+<% include organizationTree.html %>
+
+<div id="personManage" class="">
+    <!-- 人员管理列表 初始页 -->
+    <% include list.html %>
+
+    <!-- 编辑组织结构 -->
+    <% include editOrganization.html %>
+
+    <!-- 创建人员弹框  包括新建编辑详情 -->
+    <% include createPersonWindow.html %>
+    
+</div>
+
+
+<% include ../../../template/pageFoot.html %>

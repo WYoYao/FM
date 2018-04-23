@@ -1,0 +1,40 @@
+<% include ../../../template/pageHead.html %>
+    <script src="../js/workOrder/planMng/lodash.min.js"></script>
+    <script src="../js/workOrder/planMng/public.js"></script>
+    <script src="../js/workOrder/planMng/group/controller.js"></script>
+    <script src="../js/workOrder/planMng/group/model.js"></script>
+
+    <!-- 面包屑导航样式 -->
+    <link rel="stylesheet" href="../css/workOrder/planMng/group/sitemap.css">
+
+    <!-- 创建/编辑计划  -->
+    <link rel="stylesheet" href="../css/workOrder/planMng/group/createPlan/planCreate.css">
+    <link rel="stylesheet" href="../css/workOrder/planMng/group/createPlan/see_orderDetail.css">
+    <script src="../js/workOrder/planMng/createPlan/event.js"></script>
+    <script src="../js/workOrder/planMng/createPlan/model.js"></script>
+
+    <!-- 创建计划预览 -->
+    <link rel="stylesheet" href="../css/workOrder/planMng/group/createPlan/planCreate_next.css">
+    <link rel="stylesheet" href="../css/workOrder/planMng/group/createPlan/myWorkOrderCreate.css">
+    <script src="../js/workOrder/planMng/createPlanLook/event.js"></script>
+    <script src="../js/workOrder/planMng/createPlanLook/model.js"></script>
+
+    <!-- 计划监控 -->
+    <link rel="stylesheet" href="../css/workOrder/planMng/group/monitoringPlan.css">
+    <script src="../js/workOrder/planMng/monitoringPlan/event.js"></script>
+    <script src="../js/workOrder/planMng/monitoringPlan/model.js"></script>
+
+
+    <div id="app">
+        <!-- 项目计划监控 -->
+        <%include ./grouphome.html %>
+            <!-- 项目计划监控 -->
+            <%include ./monitoringPlan.html %>
+                <!-- 创建计划  -->
+                <%include ./createPlan/planCreate.html %>
+                    <!-- 预览计划 -->
+                    <%include ./createPlan/planCreate_next.html %>
+    </div>
+
+
+    <% include ../../../template/pageFoot.html %>

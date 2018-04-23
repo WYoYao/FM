@@ -1,0 +1,147 @@
+<script type="text/html" id="matter">
+    <div class="matter-kind leo">
+        <div class="matter-all">
+            <div class="matter-title">
+                <div class="matter-title-div">
+                    <input type="text" maxlength="100" v-model="matter.matter_name" placeholder="请输入事项名称" class="matter-name" />
+                    <span class="counter">
+                        <b v-text="matter.matter_name.length"></b>/100</span>
+                </div>
+            </div>
+            <div class="matter-content">
+
+                <!-- 对象 和 标准流程 Start -->
+                <div class="matter-regular">
+                    <div class="regular-text-div">
+                        <div class="regular-obj-text">
+                            <div class="textarea-div">
+                                <span>我要对</span>
+                                <div>
+                                    <!-- <textarea v-model="model.desc_forepart" placeholder="例如：@消防水泵" :class="{'textareaError':model.desc_aftpart.length+model.desc_forepart.length>1000 && model.desc_forepart.length>0}"
+                                            :maxlength="1000 - model.desc_aftpart.length" @keydown="publicMethod.keydownMatterContent(model, index0, $event, 2)"
+                                            @input="publicMethod.changeMatterContent(model, index0, $event, null, null, null, 2)"></textarea> -->
+                                    <textarea placeholder="例如：@消防水泵" :class="{'textareaError':false}" v-model="matter.desc_forepart" maxlength="1000"></textarea>
+                                    <div class="textareadiv"></div>
+
+                                    <aite :str="desc_str" :cb="getObj" ref="aite" v-if="desc_str"></aite>
+
+                                    
+                                </div>
+                            </div>
+                            <div class="add-obj-sop-content">
+                                <div class="add-obj" :class="desc_str?'eleDisable':''" @click="desc_str='@'">
+                                    <span>@添加对象</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="regular-sop-text">
+                            <div class="textarea-div">
+                                <span>进行</span>
+                                <div>
+                                    <!-- <textarea v-model="model.desc_aftpart" placeholder="例如：#季度维保" :class="{'textareaError':model.desc_aftpart.length+model.desc_forepart.length>1000 && model.desc_aftpart.length>0}"
+                                            :maxlength="1000 - model.desc_forepart.length" @keydown="publicMethod.keydownMatterContent(model, index0, $event, 3)"
+                                            @input="publicMethod.changeMatterContent(model, index0, $event, null, null, null, 3)"></textarea> -->
+                                    <textarea placeholder="例如：#季度维保" :class="{'textareaError':false}" v-model="matter.desc_aftpart" :maxlength="1000"></textarea>
+                                    <div class="textareadiv"></div>
+                                    <aite :str="desc_sop_str" ref="aite" :cb="getSOPObj" v-if="desc_sop_str"></aite>
+                                    <hashtag :str="desc_sop_c_str" :order_type="2" :desc_objs="matter.desc_objs" :cb="getSOPObj" ref="hashtag" v-if="desc_sop_c_str"></hashtag>
+                                 
+                                </div>
+                            </div>
+                            <div class="add-obj-sop-content">
+                                <div class="add-sop" :class="{'eleDisable':true}">
+                                    <span>#添加标准操作</span>
+                                </div>
+                                <div class="add-content">
+                                    <span>添加工作内容</span>
+                                </div>
+                            </div>
+                            <span class="counter">
+                                <b v-text="0">0</b>/1000</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 对象 和标准流程  End   -->
+
+                <div class="checkbox-del-div">
+                    <div class="checkbox-div">
+                        <!-- <div class="pcheckbox" v-for="(controlRequire, controlRequireIndex) in frameModel.controlRequireList" @click="publicMethod.setMattersControlRequire(controlRequire, $event, index0, controlRequireIndex)"
+                                    :class="publicMethod.isDisableControlRequire(controlRequire, index0, controlRequireIndex) ? 'eleDisable' : ''"> -->
+                        <div class="pcheckbox eleDisable">
+                            <!--:class="controlRequire.code == 'obj_first_photo' && (!$root.allMatters[index0].desc_objs || !$root.allMatters[index0].desc_objs.length) || controlRequire.code == 'obj_first_sign' && (!$root.allMatters[index0].desc_objs || !$root.allMatters[index0].desc_objs.length || $root.allMatters[index0].onlyCustomizedObjs) ? 'eleDisable' : ''">-->
+
+                            <span class="pcheckbox_input pcheckbox-checked"></span>
+                            <span class="pswitch_label"></span>
+                        </div>
+                    </div>
+                    <!--<div class="del-div" @click="publicMethod.deleteMatter(index0,$event)">-->
+                    <!-- <div class="del-div" > -->
+                    <div class="del-div">
+                        <em>p</em>
+                        <span>删除该事项</span>
+                    </div>
+                </div>
+            </div>
+            <div class="matter-error">
+                <div class="error error-test">
+                    <div>
+                        <em>!</em>
+                        <span>事项名称不可为空</span>
+                    </div>
+                </div>
+                <div class="error error-test">
+                    <div>
+                        <em>!</em>
+                        <span>同一张工单内的事项名称不可重复</span>
+                    </div>
+                </div>
+                <div class="error error-test">
+                    <div>
+                        <em>!</em>
+                        <span>事项内容不可为空</span>
+                    </div>
+                </div>
+                <!-- <template v-for="(item, errIndex) in model.unMatchedSopList"> -->
+                <template>
+                    <div class="error error-match">
+                        <div>
+                            <em>!</em>
+                            <span v-text="'消防水泵控制箱A'">消防水泵控制箱A-1</span>与
+                            <span v-text="'季度检修'">季度检修</span>的适用对象不匹配，请检查
+                        </div>
+                        <!-- <div class="ignore" > -->
+                        <div class="ignore">
+                            <span>忽略</span>
+                        </div>
+                    </div>
+                </template>
+                <!-- <template v-for="(item, errIndex) in model.invalidObjList"> -->
+                <template>
+                    <div class="error error-invalid">
+                        <div>
+                            <em>!</em>添加的
+                            <span>季度检修</span>已被作废，请前往编辑
+                        </div>
+                        <!-- <div class="ignore" > -->
+                        <div class="ignore">
+                            <span>忽略</span>
+                        </div>
+                    </div>
+                </template>
+                <!-- <template v-for="(item, errIndex) in model.invalidSopList"> -->
+                <template>
+                    <div class="error error-invalid">
+                        <div>
+                            <em>!</em>
+                            <span>季度检修</span>无效，请重新选择
+                        </div>
+                        <!-- <div class="ignore" > -->
+                        <div class="ignore">
+                            <span>忽略</span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</script>

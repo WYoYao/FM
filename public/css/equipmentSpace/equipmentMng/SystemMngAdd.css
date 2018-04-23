@@ -1,0 +1,301 @@
+.addSystemCont {
+    overflow: hidden;
+    border: 1px solid #d9e2e8;
+    box-sizing: border-box;
+}
+
+    .addSystemCont .leftCont {
+        width: 60%;
+        height: 100%;
+        border-right: 1px solid #d9e2e8;
+        box-sizing: border-box;
+        float: left;
+    }
+
+        .addSystemCont .leftCont .leftHead {
+            height: 50px;
+            border-bottom: 1px solid #d9e2e8;
+            padding-right: 20px;
+        }
+
+            .addSystemCont .leftCont .leftHead .dropItem {
+                float: right;
+                margin-left: 30px;
+            }
+
+            .addSystemCont .leftCont .leftHead .dropTitle {
+                float: left;
+                height: 30px;
+                line-height: 30px;
+                margin-right: 10px;
+                margin-top: 10px;
+            }
+
+            .addSystemCont .leftCont .leftHead .dropBox {
+                float: left;
+                width: 180px;
+                margin-top: 10px;
+            }
+
+        .addSystemCont .leftCont .treeList {
+            height: -moz-calc(100% - 51px);
+            height: -webkit-calc(100% - 51px);
+            height: calc(100% - 51px);
+            overflow: auto;
+        }
+
+            .addSystemCont .leftCont .treeList .buildItem {
+                cursor: default;
+                border-bottom: 1px solid #d9e2e8;
+            }
+
+        .addSystemCont .leftCont .buildItem .buildTitle {
+            height: 50px;
+            padding-left: 50px;
+            line-height: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .addSystemCont .leftCont .buildItem .buildTitle .arrow {
+                font-family: 'perficon';
+                width: 24px;
+                height: 24px;
+                line-height: 24px;
+                position: absolute;
+                top: 11px;
+                margin-left: -34px;
+                color: #7a94ad;
+                text-align: center;
+                cursor: pointer;
+                border-radius: 100%;
+                box-sizing: border-box;
+                border: 1px solid transparent;
+            }
+
+                .addSystemCont .leftCont .buildItem .buildTitle .arrow:hover {
+                    border: 1px solid #cacaca;
+                }
+
+        .addSystemCont .leftCont .buildItem .systemCont {
+            display: block;
+        }
+
+        .addSystemCont .leftCont .buildItem .noData {
+            height: 50px;
+            line-height: 50px;
+            color: #bbbbbb;
+            padding-left: 72px;
+        }
+        /*.addSystemCont .leftCont .buildItem .noDataDiv{
+            display: none;
+        }*/
+        .addSystemCont .leftCont .buildItem .systemList li {
+            height: 50px;
+            line-height: 50px;
+            padding-left: 72px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+            .addSystemCont .leftCont .buildItem .systemList li:hover {
+                background: #f8f8f8;
+            }
+
+            .addSystemCont .leftCont .buildItem .systemList li.sel {
+                background: #02a9d1;
+                color: #ffffff;
+            }
+
+    .addSystemCont .rightCont {
+        width: 40%;
+        height: 100%;
+        float: right;
+        box-sizing: border-box;
+        position: relative;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+
+        .addSystemCont .rightCont .detailHead {
+            font-size: 18px;
+            padding-top: 18px;
+            padding-bottom: 16px;
+            padding-left: 26px;
+        }
+
+        .addSystemCont .rightCont .noData {
+            background: url(/images/sysNodata.png) no-repeat center;
+            position: absolute;
+            top: 58px;
+            bottom: 0px;
+            width: 100%;
+        }
+
+.equipmentDetail .sys_i_content {
+    width: 100%;
+    padding-left: 0;
+}
+
+.addSystemCont .rightCont .detailFloat .detailItem {
+    padding-left: 26px;
+    padding-right: 20px;
+}
+
+    .addSystemCont .rightCont .detailFloat .detailItem .cont {
+        padding-top: 10px;
+        line-height: 24px;
+        word-break: break-all;
+    }
+
+    .addSystemCont .rightCont .detailFloat .detailItem .ipt-upload-item {
+        margin-bottom: 10px;
+        margin-top: 0px;
+        min-width: 200px;
+    }
+
+    .addSystemCont .rightCont .detailFloat .detailItem:hover {
+        background: #f5f5f5;
+    }
+
+    .addSystemCont .rightCont .detailFloat .detailItem .contShow {
+        position: relative;
+        padding-right: 60px;
+    }
+
+        .addSystemCont .rightCont .detailFloat .detailItem .contShow .name {
+            margin-right: 8px;
+            line-height: 44px;
+            height: 44px;
+            color: #777777;
+            flex-shrink: 0;
+            flex-grow: 0;
+        }
+
+        .addSystemCont .rightCont .detailFloat .detailItem .contShow .unit {
+            margin-left: 6px;
+        }
+
+        .addSystemCont .rightCont .detailFloat .detailItem .contShow .edit {
+            position: absolute;
+            right: 4px;
+            color: #637e99;
+            height: 16px;
+            line-height: 16px;
+            margin-top: 14px;
+            display: none;
+            cursor: pointer;
+        }
+
+            .addSystemCont .rightCont .detailFloat .detailItem .contShow .edit em {
+                font-family: 'perficon';
+                font-size: 16px;
+                margin-right: 4px;
+            }
+
+    .addSystemCont .rightCont .detailFloat .detailItem .canEdit:hover .edit {
+        display: block;
+    }
+
+    .addSystemCont .rightCont .detailFloat .detailItem .editShow {
+        min-height: 58px;
+        display: flex;
+    }
+
+        .addSystemCont .rightCont .detailFloat .detailItem .editShow:after {
+            content: '';
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+
+        .addSystemCont .rightCont .detailFloat .detailItem .editShow .editInput {
+            /* min-width: 200px; */
+            /* float: left; */
+            flex-grow: 1;
+            flex-shrink: 1;
+            margin-top: 7px;
+            position: relative;
+            line-height: 30px;
+        }
+
+            .addSystemCont .rightCont .detailFloat .detailItem .editShow .editInput .per-switch-checkbox {
+                margin-right: 10px;
+            }
+
+            .addSystemCont .rightCont .detailFloat .detailItem .editShow .editInput .tf {
+                line-height: 30px;
+                text-align: center;
+            }
+
+                .addSystemCont .rightCont .detailFloat .detailItem .editShow .editInput .tf:nth-child(1) {
+                    float: left;
+                }
+
+                .addSystemCont .rightCont .detailFloat .detailItem .editShow .editInput .tf:nth-child(2) {
+                    float: left;
+                    text-align: center;
+                    margin: 0 12px;
+                }
+
+                .addSystemCont .rightCont .detailFloat .detailItem .editShow .editInput .tf:nth-child(3) {
+                    float: left;
+                }
+
+        .addSystemCont .rightCont .detailFloat .detailItem .editShow .editDown {
+            width: 226px;
+            float: left;
+            margin-top: 7px;
+            position: relative;
+        }
+
+        .addSystemCont .rightCont .detailFloat .detailItem .editShow .editText {
+            height: 122px;
+            width: 200px;
+            float: left;
+            margin-top: 7px;
+        }
+
+        .addSystemCont .rightCont .detailFloat .detailItem .editShow .name {
+            flex-shrink: 0;
+            flex-grow: 0;
+            margin-right: 8px;
+            color: #777777;
+            height: 44px;
+            line-height: 44px;
+        }
+
+        .addSystemCont .rightCont .detailFloat .detailItem .editShow .sure {
+            float: right;
+            font-family: 'perficon';
+            font-size: 16px;
+            color: #68c5b3;
+            margin-left: 26px;
+            margin-top: 14px;
+            cursor: pointer;
+        }
+
+        .addSystemCont .rightCont .detailFloat .detailItem .editShow .cancel {
+            float: right;
+            font-family: 'perficon';
+            font-size: 16px;
+            color: #7a94ad;
+            margin-top: 14px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        /*second version start*/
+.verticalView.addsystems_verticalView{
+    position: relative;
+    width: calc(100% + 5px);
+    height: 100%;
+    overflow-y: auto;
+    float: left;
+
+}
+.verticalView.addsystems_verticalView::-webkit-scrollbar {
+    display: none;
+}
+        /*second version end*/

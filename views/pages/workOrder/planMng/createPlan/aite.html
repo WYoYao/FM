@@ -1,0 +1,178 @@
+<div class="aite-bubble" :class="{'click-aite':true}" id="111">
+    <div class="aite-title">
+        <span class="returnImg">
+            <img src="../images/return_left.png" alt="返回图片" v-show="true"  />
+        </span>
+        <!--<span>请选择</span>-->
+        <span>
+            <em v-show="true">选择</em>
+            <em v-text="'分类'">分类</em>
+        </span>
+    </div>
+    <div class="aite-body free-aite-pops">
+        <!--即时搜索，只有复选-->
+        <div class="timely-checkbox">
+            <!-- <div class="aite-list" v-for="(model, index) in commonData.publicModel.curLevelList" > -->
+            <div class="aite-list" >
+                <div>
+                    <p :title="'title'">
+                        <!-- <span v-for="charObj in model.obj_name_arr"  :class="'redMark'">空</span> -->
+                        <span v-text="'空'" :class="'redMark'">空</span>
+                    </p>
+                    <p :title="'title'">
+                        <!-- <em v-for="charObj in parent.linked_names_arr" v-text="charObj.char" :class="charObj.mark ? 'redMark' : ''">建</em> -->
+                        <em v-text="'建'" :class="true ? 'redMark' : ''">建</em>
+                    </p>
+                </div>
+                <div>
+                    <div :id="'searchCheckbox'" class="pcheckbox">
+                        <span class="pcheckbox_input" :class="true ? 'pcheckbox-checked' : ''"></span>
+                        <span class="pswitch_label"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--无级别 只有复选-->
+        <div class="only-checkbox">
+            <!-- <div class="aite-list" v-for="(model, index1) in commonData.publicModel.curLevelList" > -->
+            <div class="aite-list" >
+                <div :title="'model.obj_name'">
+                    <span v-text="'model.obj_name'"></span>
+                </div>
+                <div>
+                    <div class="pcheckbox">
+                        <span class="pcheckbox_input" :class="true ? 'pcheckbox-checked' : ''"></span>
+                        <span class="pswitch_label"></span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--树1-3级，专业、系统搜索、复选-->
+        <div class="both-all">
+            <div class="system-major" v-show="true">
+                <div>
+                    <span>添加筛选条件:</span>
+                </div>
+                <pcombobox-normal isborder="false" id="'major-need'">
+                    <header placeholder="专业"></header>
+                    <item datasource="[]" text="name"></item>
+                </pcombobox-normal>
+                <!--<div>+</div>-->
+                <pcombobox-normal isborder="false" id="'system'">
+                    <header placeholder="系统"></header>
+                    <item datasource="[]" text="system_name"></item>
+                </pcombobox-normal>
+            </div>
+            <div class="tree-body" :class="{'equip-trees':true}">
+                <div class="tree-box">
+                    <ptree-normal datasource="[]" >
+                        <item text="obj_name" issearch="false" child="content"></item>
+                    </ptree-normal>
+                </div>
+                <div class="last-level-box">
+                    <!-- <div class="aite-list" v-for="(obj,index1) in commonData.publicModel.curLevelList" > -->
+                    <div class="aite-list" >
+                        <div :title="'obj.obj_name'">
+                            <span v-text="'obj.obj_name'">建筑体</span>
+                        </div>
+                        <div>
+                            <div :id="'noLeftLevelCheckbox'" class="pcheckbox">
+                                <span class="pcheckbox_input" :class="true ? 'pcheckbox-checked' : ''"></span>
+                                <span class="pswitch_label"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--自定义-->
+        <div class="customize">
+            <div v-show="true" class="customize-tips">
+                <span>未找到相关内容，您输入的内容将被添加为自定义</span>
+            </div>
+            <div v-show="true" class="customize-tips">
+                <span class="redMark" v-show="true">自定义名称不允许重复</span>
+            </div>
+            <div class="customText" v-show="true">
+                <p>自定义</p>
+                <ptext-text id="selfText" placeholder="请输入自定义内容">
+                    <verify errtip="请输入自定义内容" verifytype="space"></verify>
+                    <verify errtip="最多只能输入40个字符" length="40" verifytype="length"></verify>
+                </ptext-text>
+            </div>
+            <div class="belong">
+                <div class="belong-title">
+                    <h4>所属类别
+                        <span class="aite-cus-tips" v-text="'commonData.publicModel.aiteTips'"></span>
+                    </h4>
+                </div>
+                <div class="belong-category">
+                    <div class="category"  :class="true ? 'selectDiv' : ''">
+                        <span>对象</span>
+                    </div>
+                    <div class="category"  :class="true ? 'selectDiv' : ''">
+                        <span>部件</span>
+                    </div>
+                    <div class="category"  :class="true ? 'selectDiv' : ''">
+                        <span>工具</span>
+                    </div>
+                    <div class="category"  :class="true ? 'selectDiv' : ''">
+                        <span>其他</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--选择大类-->
+        <div class="none-both initTab">
+            <div class="aite-list" >
+                <div>
+                    <span>建筑体</span>
+                </div>
+            </div>
+            <div class="aite-list" >
+                <div>
+                    <span>楼层</span>
+                </div>
+            </div>
+            <div class="aite-list" >
+                <div>
+                    <span>房间</span>
+                </div>
+            </div>
+            <div class="aite-list" >
+                <div>
+                    <span>系统</span>
+                </div>
+            </div>
+            <div class="aite-list" >
+                <div>
+                    <span>设备</span>
+                </div>
+            </div>
+            <div class="aite-list"  v-if="true">
+                <div>
+                    <span>部件</span>
+                </div>
+            </div>
+            <div class="aite-list"  v-if="true">
+                <div>
+                    <span>工具</span>
+                </div>
+            </div>
+        </div>
+        <!--loading-->
+        <ploading-part data-loading="aitePopLoading" text="加载中..."></ploading-part>
+    </div>
+    <div class="aite-footer">
+        <div>
+            <pbutton-white text="自定义" ></pbutton-white>
+        </div>
+        <div class="sureBtnDivs">
+            <pbutton-blue text="确定" id="sureBtn" ></pbutton-blue>
+        </div>
+        <div class="sureBtnDivs">
+            <pbutton-blue text="确定" id="sureBtn" ></pbutton-blue>
+        </div>
+    </div>
+</div>

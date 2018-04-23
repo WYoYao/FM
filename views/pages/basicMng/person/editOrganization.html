@@ -1,0 +1,146 @@
+<div class="frameWrap" style="display:none" v-show="personModel.curPage == 'editOrganization'">
+    <div class="editOrganizationBox">
+        <div class="top">
+            <div class="goBack">
+                <pbutton-white text="取消" click="personMethods.goBackPersonManageList"></pbutton-white>
+            </div>
+            <div class="title">
+                编辑自定义部门
+            </div>
+            <div class="save">
+                <pbutton-blue text="保存" click="personMethods.updateCustomDeptInfo"></pbutton-blue>
+            </div>
+        </div>
+        <div class="organizationBox">
+            <div class="organizationContent">
+                <!-- 中心部门 -->
+                <div class="centerDepartment">
+                    <div class="top">
+                        <div class="title">
+                            中心部门
+                        </div>
+                        <div class="operat">
+                            <div id="operatCenterBtn" @click="personMethods.changeCenterDepatState">
+                                <div class="openCenterBtn">
+                                    <span>展开详情</span>
+                                    <img src="../images/down_btn.png" alt="">
+                                </div>
+                                <div style="display:none;" class="closeCenterBtn">
+                                    <span>收起详情</span>
+                                    <img src="../images/up_btn.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="centerDepartmentUl" >
+                        <section>
+                            <div class="centerDepartmentUl" v-for="(item, index) in personModel.listByCenterDepartment">
+                                <organizationtree :model="item" :choice="function(){return false;}"></organizationtree>
+                            </div>
+                        </section>
+                        
+                    </div>
+                    
+                </div>
+                <!-- 项目通用 -->
+                <div class="projectCommon">
+                    <div class="top">
+                        <div class="title">
+                            项目通用部门
+                        </div>
+                        <div class="operat">
+                            <div id="operatCommonBtn" @click="personMethods.changeCommonDepatState">
+                                <div class="openCommonBtn">
+                                    <span>展开详情</span>
+                                    <img src="../images/down_btn.png" alt="">
+                                </div>
+                                <div style="display:none;" class="closeCommonBtn">
+                                    <span>收起详情</span>
+                                    <img src="../images/up_btn.png" alt="">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="projectCommonUl">
+                        <section>
+                            <div class="projectCommonUl" v-for="(item, index) in personModel.listByProjectCommon">
+                                <organizationTree :model="item" :choice="function(){return false;}"></organizationTree>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- 其他 -->
+                <div class="otherDepartment">
+                    <span>其他</span>
+                </div>
+
+                <!-- 自定义部门 -->
+                <div class="customDepartment">
+                    <span>自定义部门</span>
+                    <div class="operatArea">
+                        <ul class="operatAreaBtnList">
+                            <li id="addSiblingDepart" class="disabled" @click="personMethods.addSiblingDepart()">
+                                <div>
+                                    <img src="../images/addSiblingDepart.png" alt="">
+                                </div>
+                                <div>
+                                    添加同级部门
+                                </div>
+                            </li>
+                            <li id="addSonDepart" class="disabled" @click="personMethods.addSonDepart()">
+                                <div>
+                                    <img src="../images/addSonDepart.png" alt="">
+                                </div>
+                                <div>
+                                    添加下级部门
+                                </div>
+                            </li>
+                            <li id="addSiblingPosition" class="partitionManageChoiceParent disabled" @click="personMethods.addSiblingPosition()">
+                                <div>
+                                    <img src="../images/addSiblingPosition.png" alt="">
+                                </div>
+                                <div>
+                                    添加同级岗位
+                                </div>
+                            </li>
+                            <li id="addSonPosition" class="disabled" @click="personMethods.addSonPosition()">
+                                <div>
+                                    <img src="../images/addSonPosition.png" alt="">
+                                </div>
+                                <div>
+                                    添加下级岗位
+                                </div>
+                            </li>
+                            <li id="deletePartition" class="disabled" @click="personMethods.deletePartition()">
+                                <div>
+                                    <img src="../images/deletePartition.png" alt="">
+                                </div>
+                                <div>
+                                    删除
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="partitionList_list">
+                        <div class="partitionManageUl" v-for="(item, index) in personModel.personCustomTree">
+                            <item class="item" :model="item" :handle="personMethods.handle" :blur="personMethods.blur">
+                            </item>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+    <pwindow-confirm id="confirmDeleteModal">
+        <button>
+            <pbutton-backred text="确定" click="personMethods.confirmDeleteFn"></pbutton-backred>
+            <pbutton-white text="取消" click="personMethods.cancelDeleteFn"></pbutton-white>
+        </button>
+    </pwindow-confirm>
+</div>

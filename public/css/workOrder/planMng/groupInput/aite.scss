@@ -1,0 +1,355 @@
+.aite-list{
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border-bottom: 1px solid #e4e4e4;
+    padding-left: 14px;
+    padding-right: 14px;
+    cursor: pointer;
+}
+
+@mixin ck{
+    .ck{
+        float: right;
+        height: 100%;
+
+        .pcheckbox{
+            overflow: hidden;
+            color: #637e99;
+            line-height: 16px;
+            cursor: pointer;
+            display: inline-block;
+            margin-top: 14px;
+
+            .pswitch_label {
+                float: left;
+            }
+
+            .pcheckbox-checked {
+                background: #7a94ad;
+            }
+        }
+    }
+}
+
+.aite-bubble {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    z-index: 15;
+    width: 360px;
+    height: 450px;
+    background-color: white;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid #d9d9d9;
+    -webkit-box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+
+    .aite-title {
+        width: 100%;
+        height: 45px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        text-align: center;
+        background-color: #f2f2f2;
+        line-height: 45px;
+        border-bottom: 1px solid #eee;
+
+        img {
+            /*float: left;*/
+            margin-top: 8px;
+            /*margin-left: 15px;*/
+            /*cursor: pointer;*/
+            /*position: absolute;*/
+            /*left: 14px;*/
+            /*left: 0;*/
+            /*top: 0;*/
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            /*padding: 8px 6px 8px 15px;*/
+        }
+
+        span {
+            clear: both;
+        }
+
+        span.returnImg{
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            left: 0;
+            top: 8px;
+            line-height: 30px;
+            vertical-align: top;
+            text-align: center;
+            /*float: left;*/
+            /*margin-top: 8px;*/
+            cursor: pointer;
+        }
+    }
+
+    .aite-body{
+        width: 100%;
+        height: calc(100% - 105px);
+        overflow-y: auto;
+        background-color: white;
+        position: relative;
+
+        & > div {
+            width: 100%;
+            height: 100%;
+        }
+
+        .index{
+            .aite-list{
+                @extend .aite-list;
+            }
+        }
+
+
+        .build{
+            
+            .aite-list{
+                @extend .aite-list;
+
+                .name{
+                    display: inline-block;
+                    max-width: 230px;
+                    height: 100%;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    vertical-align: top;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                }
+
+                @include ck;
+            }
+        }
+
+        .system,.floor{
+
+            .level-box{
+                width: 50%;
+                height: 100%;
+                float: left;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                vertical-align: top;
+                overflow-y: auto;
+                border-right: 1px solid #cacaca;
+
+                .aite-list{
+                    @extend .aite-list;
+
+                    .name{
+                        display: inline-block;
+                        max-width: 100px;
+                        height: 100%;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                        vertical-align: top;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                    }
+
+                    @include ck;
+                }
+                .aite_on,.aite-list:hover{
+                    background: #02a9d1 !important;
+                    color: #fff !important;
+                }
+
+            }
+        }
+
+        .room{
+            .tree-box{
+                width: 50%;
+                height: 100%;
+                float: left;
+                box-sizing: border-box;
+                border-right: 1px solid #cacaca;
+                vertical-align: top;
+            }
+            .last-level-box{
+                width: 50%;
+                height: 100%;
+                float: left;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                vertical-align: top;
+                overflow-y: auto;
+
+                .aite-list{
+                    @extend .aite-list;
+
+                    .name{
+                        display: inline-block;
+                        max-width: 100px;
+                        height: 100%;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                        vertical-align: top;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                    }
+
+                    @include ck;
+                }
+            }
+        }
+
+        .equip{
+            .system-major{
+                width: 100%;
+                height: 35px;
+                line-height: 35px;
+                box-sizing: border-box;
+                font-size: 12px;
+                padding: 0 8px 0 14px;
+                border-bottom: 1px solid #d9d9d9;
+
+                .title {
+                    line-height: 35px;
+                    color: #888;
+                    max-width: 78px;
+                }
+
+                & > div{
+                    display: inline-block;
+                    box-sizing: border-box;
+                    line-height: normal;
+                    width: auto !important;
+                    max-width: 125px;
+                    vertical-align: text-bottom;
+                }
+
+                .major-need{
+                    vertical-align: initial;
+                }
+            }
+
+            .tree-body{
+                width: 100%;
+                height: calc(100% - 35px);
+
+                .tree-box{
+                    width: 50%;
+                    height: 100%;
+                    float: left;
+                    box-sizing: border-box;
+                    border-right: 1px solid #cacaca;
+                    vertical-align: top;
+                }
+                .last-level-box{
+                    width: 50%;
+                    height: 100%;
+                    float: left;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    vertical-align: top;
+                    overflow-y: auto;
+
+                    .aite-list{
+                        @extend .aite-list;
+
+                        .name{
+                            display: inline-block;
+                            max-width: 100px;
+                            height: 100%;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            box-sizing: border-box;
+                            vertical-align: top;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+                        }
+
+                        @include ck;
+                    }
+                }
+            }
+
+
+
+        }
+
+    }
+
+    .aite-footer {
+        width: 100%;
+        height: 60px;
+        text-align: center;
+        line-height: 60px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        background-color: white;
+        border-top: 1px solid #d9d9d9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        line-height: normal;
+
+        & > div {
+            display: inline;
+            /*vertical-align: top;*/
+        }
+
+        & > div:first-of-type {
+            margin-right: 15px;
+        }
+
+        .sureBtnDivs{
+            display: inline-block;
+            vertical-align: top;
+        }
+    }
+
+    // .aite-list{
+    //     width: 100%;
+    //     height: 44px;
+    //     line-height: 44px;
+    //     -webkit-box-sizing: border-box;
+    //     -moz-box-sizing: border-box;
+    //     box-sizing: border-box;
+    //     border-bottom: 1px solid #e4e4e4;
+    //     padding-left: 14px;
+    //     padding-right: 14px;
+    //     cursor: pointer;
+
+    //     & > div:first-of-type {
+    //         display: inline-block;
+    //         max-width: 230px;
+    //         height: 100%;
+    //         -webkit-box-sizing: border-box;
+    //         -moz-box-sizing: border-box;
+    //         box-sizing: border-box;
+    //         vertical-align: top;
+    //         text-overflow: ellipsis;
+    //         overflow: hidden;
+    //         white-space: nowrap;
+
+    //     }
+    // }
+}

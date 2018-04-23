@@ -1,0 +1,22 @@
+<div id="planCreate_bg" v-if="onPage=='createPlan'">
+    <div class="planCreate_box">
+        <div class="planCreate_page">
+            <div class="planCreate_page_top">
+                <div class="planCreate_page_back">
+                    <pbutton-white text="取消" @click="onPage='grouphome'"></pbutton-white>
+                </div>
+                <div class="planCreate_page_save">
+                    <pbutton-blue text="下一步" @click="onPage='createPlanLook'"></pbutton-blue>
+                </div>
+            </div>
+            <div class="planCreate_page_con">
+                <baseinfomation :addwoplan='addWoPlan' :isquote="isquote" :isterm="isterm" ref='baseinfomation'>
+                </baseinfomation>
+                <div class="planCreate_page_con_rig">
+                    <%include ./workMatter.html %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%include ./addContent.html %>

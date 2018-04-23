@@ -1,0 +1,113 @@
+@import "./public";
+@import "./structure";
+
+._item{
+    flex: 1;
+    padding-left: 20px;
+}
+
+#app{
+    @extend .complete;
+
+    .group_home{
+
+        .header{
+
+            .left{
+                float: left;
+                margin-top: 10px;
+                margin-right: 20px;
+
+                & > div{
+                    width: 140px;
+                }
+            }
+
+            .right{
+                float: right;
+                margin: 10px 0;
+                height: 30px;
+
+                & > div{
+                    width: 90px;
+                }
+            }
+        }
+
+        @include structure{
+            width: 100%;
+            height: calc(100% - 50px);
+
+            .t_header{
+                height: 29px;
+                line-height: 29px;
+                width: 100%;
+                color: $black-font-color;
+
+                @extend .flex-row;
+
+
+                .item,.item1{
+                    @extend ._item;
+                }
+
+                .item:nth-last-child(1){
+                    flex: 1.4;
+                }
+            }
+
+            .t_body{
+                max-height: calc(100% - 29px);
+                width: 100%;
+                overflow: auto;
+                overflow: overlay;
+
+                .info{
+
+                    @extend .flex-row;
+
+                    .item{
+                         @extend ._item;
+                         color: $blacker-font-color;
+                         line-height: 30px;
+                         @extend ._font_over;
+
+                         .ide{
+                             cursor: pointer;
+                        
+                            .icon,.font{
+                                color: $blue-font-color;
+                            }
+
+                            .icon{
+                                font-family: $icon;
+                                height: 15px;
+                                width: 15px;
+                            }
+
+                            .font{
+                                margin-right: 10px;
+                            }
+                         }
+                    }
+
+                    .item:nth-last-child(1){
+                        flex: 1.4;
+                    }
+
+                    .item1{
+                         @extend ._item;
+                         color: $blacker-font-color;
+                         line-height: 30px;
+                         @extend ._font_over;
+                    }
+                }
+
+                // & > :nth-child(2n+1),& > :hover{
+                & > :nth-child(2n+1){
+                    background: $blue-block-color;
+                }
+            }
+        }
+    }
+}

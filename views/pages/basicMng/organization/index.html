@@ -1,0 +1,25 @@
+<% include ../../../template/pageHead.html %>
+<link rel="stylesheet" href="../css/public/common.css" />
+<link rel="stylesheet" href="../css/basicMng/organization/index.css" />
+<script type="text/javascript" src="../js/basicMng/organization/model.js"></script>
+<script type="text/javascript" src="../js/basicMng/organization/controller.js"></script>
+<script type="text/javascript" src="../js/basicMng/organization/event.js"></script>
+
+    <!-- 树模板 -->
+    <% include templateTree.html %>
+<div id="organizationManage" class="frameWrap">
+    <!-- 列表 初始页 -->
+    <% include list.html %>
+
+    <!-- 中心部门 -->
+    <% include centerDepartment.html %>
+
+    <!-- 项目通用 -->
+    <% include projectGeneral.html %>    
+
+    <ploading-global id="globalloading"></ploading-global>
+
+    <pnotice-message id="message"></pnotice-message>
+
+</div>
+<% include ../../../template/pageFoot.html %>

@@ -1,0 +1,66 @@
+<script src="../js/workOrder/planMng/groupPlan/model.js"></script>
+<script src="../js/workOrder/planMng/groupPlan/event.js"></script>
+
+<link rel="stylesheet" href="../css/workOrder/planMng/term/groupPlan.css">
+
+<div id="groupPlan" v-if="onPage == 'groupPlan'">
+
+    <div class="head">
+
+        <div class="path">
+            <sitemap :maps='groupPlanPaths' :createsitemap='gobackSelPath' :back='gobackLastPath' />
+        </div>
+        
+        <div class="cite">
+            <pcombobox-normal id="'isPlanSite'" sel="" bind="true">
+                <header prefix="是否引用："></header>
+                <item datasource="planSiteType" text="name" id="id"></item>
+            </pcombobox-normal>
+        </div>
+
+        <div class="type">
+            <pcombobox-normal id="'groupPlanTypeCombo'" sel="" bind="true">
+                <header prefix="计划类型："></header>
+                <item datasource="allPlanType" text="tab_name" id="order_type"></item>
+            </pcombobox-normal>
+        </div>
+
+        <div class="text MT">
+            集团计划总数:{{groupPlanUse.unUse}}&nbsp;&nbsp;&nbsp;未引用计划数&nbsp;&nbsp;&nbsp;{{groupPlanUse.total}}&nbsp;&nbsp;&nbsp;
+        </div>
+
+    </div>
+
+    <div class="body">
+
+        <div class="title">
+            <div class="name">集团计划名称</div>
+            <div class="type">工单类型</div>
+            <div class="freq">计划频率</div>
+            <div class="urgency">工单紧急程度</div>
+            <div class="cite">是否引用</div>
+            <div class="operate">操作</div>
+        </div>
+
+        <ul>
+            <pscroll-small templateid="groupPlanList"></pscroll-small>
+        </ul>
+
+    </div>
+</div>
+
+
+
+<script type="text/html" id="groupPlanList">
+    <li v-for="item in groupPlanList">
+        <div class="name MT" v-text="item.group_plan_name" :title="item.group_plan_name"></div>
+        <div class="type" v-text="item.order_type_name" :title="item.order_type_name"></div>
+        <div class="freq" v-text="'每' + transfYMWD(item.freq_cycle) + item.freq_cycle + '次'" :title="'每' + transfYMWD(item.freq_cycle) + item.freq_cycle + '次'"></div>
+        <div class="urgency" v-text="item.urgency" :title="item.urgency"></div>
+        <div class="cite" v-text="item.use_status == 1 ? '是' : '否'" :title="item.use_status == 1 ? '是' : '否'"></div>
+        <div class="operate">
+            <div><pbutton-blue bind="true" text="'引用计划'" @click="getThisPlan(item,'site')" isborder="false"></pbutton-blue></div>
+            <div><pbutton-blue bind="true" text="'复制计划'" @click="getThisPlan(item,'copy')" isborder="false"></pbutton-blue></div>
+        </div>
+    </li>
+</script>

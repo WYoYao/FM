@@ -1,0 +1,55 @@
+<div class="organizationList" v-show="curPage === 'centerDepartMent'" id="centerDepart">
+    <div class="title">
+        <div class="cancel">
+            <pbutton-white bind="true" text="'取消'" @click="organizationMethods.cancelChange()"></pbutton-white>
+        </div>
+        修改组织结构-中心部门
+        <div class="keep">
+            <pbutton-blue bind="true" text="'保存'" @click="organizationMethods.keepCenterDepart()"></pbutton-blue>
+        </div>
+    </div>
+
+    <div class="organizationBox">
+        <!-- 中心部门 -->
+        <div class="centerDepartment">
+            <div class="top">
+                <div class="title">
+                    中心部门
+                </div>
+            </div>
+            <div class="operation">
+                <div :class="{btnGray: !operationState[0].usable}" @click="operation(operationState[0].id,listByCenterDepartment)">
+                    <img alt="" src="../images/add_same.png" class="imgOp">
+                    <button :class="{btnGray_: !operationState[0].usable}">添加同级部门</button>
+                </div>
+                <div :class="{btnGray: !operationState[1].usable}" @click="operation(operationState[1].id,listByCenterDepartment)">
+                    <img alt="" src="../images/add_sub.png" class="imgOp">
+                    <button :class="{btnGray_: !operationState[1].usable}">添加下级部门</button>
+                </div>
+                <div :class="{btnGray: !operationState[2].usable}" @click="operation(operationState[2].id,listByCenterDepartment)">
+                    <img alt="" src="../images/add_same.png" class="imgOp">
+                    <button :class="{btnGray_: !operationState[2].usable}">添加同级岗位</button>
+                </div>
+                <div :class="{btnGray: !operationState[3].usable}" @click="operation(operationState[3].id,listByCenterDepartment)">
+                    <img alt="" src="../images/add_sub.png" class="imgOp">
+                    <button :class="{btnGray_: !operationState[3].usable}">添加下级岗位</button>
+                </div>
+                <div :class="{btnGray: !operationState[4].usable}" @click="windowEvent.showPwindow3()">
+                    <img alt="" src="../images/remove.png" class="imgOp">
+                    <button :class="{btnGray_: !operationState[4].usable}">删除</button>
+                </div>
+            </div>
+            <div class="centerDepartmentUl" v-for="(item, index) in organizationModel.listByCenterDepartment">
+                <organization :model="item"></organization>
+            </div>
+
+        </div>
+
+    </div>
+    <pwindow-confirm title="您确定要删除该岗位/部门吗" id="pwindow3">
+        <button>
+            <pbutton-backred text="确定" click="windowEvent.remove(4,'listByCenterDepartment',2)"></pbutton-backred>
+            <pbutton-white text="取消" click="windowEvent.hidePwindow3"></pbutton-white>
+        </button>
+    </pwindow-confirm>  
+</div>

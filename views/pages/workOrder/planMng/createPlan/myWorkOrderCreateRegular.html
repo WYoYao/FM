@@ -1,0 +1,53 @@
+<div class="matter-regular">
+    <div class="regular-text-div">
+        <div class="regular-obj-text">
+            <div class="textarea-div">
+                <span>我要对</span>
+                <div>
+                    <!-- <textarea v-model="model.desc_forepart" placeholder="例如：@消防水泵" :class="{'textareaError':model.desc_aftpart.length+model.desc_forepart.length>1000 && model.desc_forepart.length>0}"
+                        :maxlength="1000 - model.desc_aftpart.length" @keydown="publicMethod.keydownMatterContent(model, index0, $event, 2)"
+                        @input="publicMethod.changeMatterContent(model, index0, $event, null, null, null, 2)"></textarea> -->
+                    <textarea placeholder="例如：@消防水泵" :class="{'textareaError':true}" :maxlength="1000"></textarea>
+                    <div class="textareadiv"></div>
+
+                    <aite :str="str" :cb="getObj" ref="aite"></aite>
+
+                    <div class="textarea-prop">
+                        <% include ./hashtag.html %>
+                    </div>
+                </div>
+            </div>
+            <div class="add-obj-sop-content">
+                <div class="add-obj eleDisable">
+                    <span>@添加对象</span>
+                </div>
+            </div>
+        </div>
+        <div class="regular-sop-text">
+            <div class="textarea-div">
+                <span>进行</span>
+                <div>
+                    <!-- <textarea v-model="model.desc_aftpart" placeholder="例如：#季度维保" :class="{'textareaError':model.desc_aftpart.length+model.desc_forepart.length>1000 && model.desc_aftpart.length>0}"
+                        :maxlength="1000 - model.desc_forepart.length" @keydown="publicMethod.keydownMatterContent(model, index0, $event, 3)"
+                        @input="publicMethod.changeMatterContent(model, index0, $event, null, null, null, 3)"></textarea> -->
+                    <textarea placeholder="例如：#季度维保" :class="{'textareaError':true}" :maxlength="1000"></textarea>
+                    <div class="textareadiv"></div>
+                    <div class="textarea-prop">
+                        <% include ./aite.html %>
+                            <% include ./hashtag.html %>
+                    </div>
+                </div>
+            </div>
+            <div class="add-obj-sop-content">
+                <div class="add-sop" :class="{'eleDisable':true}">
+                    <span>#添加标准操作</span>
+                </div>
+                <div class="add-content">
+                    <span>添加工作内容</span>
+                </div>
+            </div>
+            <span class="counter">
+                <b v-text="0">0</b>/1000</span>
+        </div>
+    </div>
+</div>

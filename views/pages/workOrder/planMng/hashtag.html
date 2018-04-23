@@ -1,0 +1,115 @@
+<script type="text/html" id="hashtag">
+<div class="hashtag-bubble" v-show="isShow" :class="{'click-aite':true}">
+    <div class="all-hashtag">
+        <div class="hashtag-sop">
+            <div class="sop-header">
+                <span>选择标准操作</span>
+                <div class="sop-header-btn sopHeaderBtns">
+                    <span v-show="!filter"  @click="filter=true">筛选</span>
+                    <span v-show="filter" @click="filter=false">收起</span>
+                </div>
+            </div>
+            <div class="sop-body">
+                <div class="sop-list" v-show="SopList.length">
+                    <div class="aite-list" v-for="(model,index) in SopList" @click="model.selected=!model.selected" :index="'index'" :title="'model.sop_name'">
+                        <div>
+                         
+                            <span>
+                                <em v-for="charObj in model.sop_name_arr" v-text="charObj.char" :class="charObj.mark ? 'redMark' : ''"></em>
+                            </span>
+
+                            <div :id="model.sop_id" class="pcheckbox">
+                                <span class="pcheckbox_input" :class="model.selected ? 'pcheckbox-checked' : ''"></span>
+                                <span class="pswitch_label"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--搜索无结果-->
+                <div class="sop-nodata" v-show="onBlock=='Search' && !SopList.length">
+                    <pnotice-nodata text="暂无数据" subtitle="哎呀，什么都没有找到！" icon="../images/sassNodata.png"></pnotice-nodata>
+                </div>
+                <div class="sop-nodata" v-show="onBlock=='index' && !SopList.length">
+                    <pnotice-nodata text="暂无推荐" subtitle="请搜索您需要的标准操作" icon="../images/sassNodata.png"></pnotice-nodata>
+                </div>
+                <!--loading-->
+                <ploading-part data-loading="hashPopLoading" text="加载中..."></ploading-part>
+            </div>
+            <div class="sop-footer">
+                <pbutton-blue text="确定" id="able-btn"></pbutton-blue>
+            </div>
+        </div>
+        <div class="hashtag-filter" v-show="filter">
+            <div class="sop-header">
+                <span>筛选条件</span>
+                <div class="sop-header-btn">
+                    <span>清空已选</span>
+                    <span>确定</span>
+                </div>
+            </div>
+            <div class="filter-body">
+                <div class="filter-box">
+                    <div class="filter-div" v-show="criteria.brands.length">
+                        <div class="filter-type">
+                            <span>品牌:</span>
+                        </div>
+                        <div class="filter-name">
+                            <div class="filter-all">
+                                <span class="sel-all all_brands">全部</span>
+                            </div>
+                            <div class="filter-other">
+                                <span v-for="(item,index) in criteria.brands" v-text="item.name" :title="item.name" :class="item.seleced ? 'sel-span' : ''"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="filter-div" v-show="criteria.order_type.length">
+                        <div class="filter-type">
+                            <span>工单类型:</span>
+                        </div>
+                        <div class="filter-name">
+                            <div class="filter-all">
+                                <span class="sel-all all_order_type">全部</span>
+                            </div>
+                            <div class="filter-other">
+                                <span v-for="(item,index) in criteria.order_type" v-text="item.name" :title="item.name" :class="item.seleced ? 'sel-span' : ''"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="filter-div" v-show="criteria.fit_objs.length">
+                        <div class="filter-type">
+                            <span>适用对象:</span>
+                        </div>
+                        <div class="filter-name">
+                            <div class="filter-all">
+                                <span class="sel-all all_fit_objs">全部</span>
+                            </div>
+                            <div class="filter-other">
+                              
+                                <span v-for="(item,index) in criteria.fit_objs" v-text="item.name" :title="item.name" :class="item.seleced ? 'sel-span' : ''"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="filter-div" v-show="criteria.labels.length">
+                        <div class="filter-type">
+                            <span>自定义:</span>
+                        </div>
+                        <div class="filter-name">
+                            <div class="filter-all">
+                                <span class="sel-all all_labels" onclick="publicMethod.toggleAllTag(event, 4)">全部</span>
+                            </div>
+                            <div class="filter-other">
+                                <span v-for="(item,index) in criteria.labels" v-text="item.name" :title="item.name" :class="item.seleced ? 'sel-span' : ''"></span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</script>

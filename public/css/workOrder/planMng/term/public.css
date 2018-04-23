@@ -1,0 +1,69 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background: #e5e8ea;
+    padding: 15px 10px 0;
+    width: calc(100% - 20px);
+    height: calc(100% - 15px);
+    overflow: hidden;
+}
+#app{
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    background: white;
+    box-shadow: -5px 6px 10px rgba(13, 4, 8, 0.1);
+}
+
+
+.MT {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    white-space: nowrap;
+}
+
+.clear {
+    zoom: 1;
+}
+  
+.clear:after {
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+}
+
+
+
+
+
+
+
+
+.grayblue{
+    color: #637e99;
+}
+.greyblue{
+    color:#7a94ad;
+}
+.gray{
+    color: #6d6d6d;
+}
+.black3{
+    color: #333333;
+}
+.black{
+    color: #000;
+}
+.orange{
+    color: #f89054;
+}
+.orange2{
+    color: #f9a173;
+}
+.red{
+    color: #ff7b7b;
+}

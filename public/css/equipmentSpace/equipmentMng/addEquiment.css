@@ -1,0 +1,337 @@
+.eqaddressWrap {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 16px 10px 0;
+}
+
+.eqaddressGridWrap {
+    height: 100%;
+    width: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.eqaddressGrid {
+    border: 1px solid #d9e2e8;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px 20px 0;
+}
+
+.eqaddressFloatWrap {
+    width: 352px;
+    margin: 0 auto;
+    position: relative;
+    padding-top: 30px;
+    padding-right: 20px;
+}
+
+    .eqaddressFloatWrap .addWrap {
+        height: 100%;
+    }
+
+    .eqaddressFloatWrap .selWrap {
+        height: 100%;
+        overflow: auto;
+    }
+
+    .eqaddressFloatWrap .addWrap .inputTempWrap {
+        height: calc(100% - 50px);
+        overflow: auto;
+    }
+
+    .eqaddressFloatWrap .inputTemp {
+        min-height: 30px;
+        line-height: 30px;
+        margin-bottom: 28px;
+    }
+
+    .eqaddressFloatWrap .inputname {
+        float: left;
+        width: 118px;
+        text-align: right;
+        height: 30px;
+    }
+
+        .eqaddressFloatWrap .inputname em {
+            margin-right: 5px;
+            color: #02a9d1;
+            vertical-align: top;
+            line-height: 41px;
+            font-size: 20px;
+        }
+
+    .eqaddressFloatWrap .inputwrap {
+        float: left;
+        width: 220px;
+        margin-left: 12px;
+    }
+
+    .eqaddressFloatWrap .butWrap {
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        bottom: 0;
+        border-top: 1px solid #ccc;
+        line-height: 50px;
+    }
+
+        .eqaddressFloatWrap .butWrap > div {
+            width: 180px;
+        }
+
+
+
+
+    .eqaddressFloatWrap .selTemp {
+        min-height: 30px;
+        line-height: 30px;
+        /* margin-top: 20px; */
+        position: relative;
+        padding: 6px 31px;
+        padding-right: 64px;
+        box-sizing: border-box;
+        float: left;
+        width: 100%;
+    }
+
+        /*.eqaddressFloatWrap .selTemp[type="brands"]{
+padding-bottom: 10px;}*/
+
+        .eqaddressFloatWrap .selTemp:hover {
+            background: #f5f5f5;
+        }
+
+    .eqaddressFloatWrap .selname {
+        float: left;
+        color: #777777;
+    }
+
+.tempDiv {
+    min-height: 42px;
+    line-height: 30px;
+    box-sizing: border-box;
+    float: left;
+    margin-bottom: 0px;
+}
+
+
+.eqaddressFloatWrap .selcon {
+    margin-left: 15px;
+    float: left;
+    width: 181px;
+    /*padding-bottom: 10px;*/
+    box-sizing: border-box;
+}
+
+.eqaddressFloatWrap .selBut {
+    position: absolute;
+    right: 20px;
+    top: 5px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.eqaddressFloatWrap .selTemp.bxDiv.selTempEdit .editInput .selBut {
+    top: 0;
+    gtv5;
+}
+
+.eqaddressFloatWrap .selBut .Ficon {
+    font-family: 'perficon';
+    display: inline-block;
+    margin-left: 16px;
+    color: #7a94ad;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+    .eqaddressFloatWrap .selBut .Ficon.co {
+        color: #69c5b4;
+    }
+
+.eqaddressFloatWrap .selInput .selBut {
+    display: none;
+}
+
+.eqaddressFloatWrap .selTemp:hover .selBut {
+    display: block;
+}
+
+.eqaddressFloatWrap .selTemp.selTempEdit .selInput {
+    display: none;
+}
+
+.eqaddressFloatWrap .selTemp.selTempEdit .editInput {
+    display: block;
+    /*width: 200px;*/
+}
+
+.eqaddressFloatWrap .selTemp.bxDiv.selTempEdit .editInput {
+    position: relative;
+    float: left;
+}
+
+.eqaddressFloatWrap .selTemp.selTempSel .selInput {
+    display: block;
+    word-break: break-all;
+}
+
+.spanLine {
+    float: left;
+    height: 18px;
+    line-height: 18px;
+    margin-top: 5px;
+}
+
+.eqaddressFloatWrap .selTemp.selTempSel .editInput {
+    display: none;
+}
+
+.eqaddressFloatWrap .insurerWrap {
+    position: relative;
+}
+
+.eqaddressFloatWrap .insureraddBut {
+    position: absolute;
+    right: -70px;
+    top: 3px;
+    width: 70px;
+}
+
+    .eqaddressFloatWrap .insureraddBut > div {
+        display: inline-block;
+        margin-left: 10px;
+    }
+
+
+.eqaddressFloatWrap .editbrand {
+    position: relative;
+    line-height: 30px;
+}
+
+    .eqaddressFloatWrap .editbrand .insurerWrap {
+        min-height: 40px;
+    }
+
+    .eqaddressFloatWrap .editbrand .inputTemp {
+        margin-top: 0;
+        overflow: hidden;
+    }
+
+        .eqaddressFloatWrap .editbrand .inputTemp .inputwrap {
+            margin-left: 0;
+        }
+
+    .eqaddressFloatWrap .editbrand .insureraddBut {
+        right: -100px;
+    }
+
+    .eqaddressFloatWrap .editbrand .inputname {
+        display: none;
+    }
+
+.bxEditWrap {
+    width: 100%;
+    float: left;
+    min-height: 42px;
+    line-height: 42px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.eqaddressFloatWrap .bxDiv {
+    padding-right: 0;
+}
+
+
+
+.eqaddressFloatWrap .bxTemp {
+    position: relative;
+    min-height: 80px;
+    width: 100%;
+}
+
+.eqaddressFloatWrap .bxDiv .insureraddBut {
+    right: 65px;
+}
+
+.insuranceGridPop {
+    width: 380px;
+    min-height: 60px;
+    max-height: 186px;
+    position: fixed;
+    z-index: 5;
+    top: 0;
+    background: #fff;
+    /* border: 1px solid #ccc; */
+    box-shadow: 0 0 7px rgba(0,0,0,0.2);
+    background: #fff;
+    border-radius: 3px;
+    display: none;
+    transform: translate(0,-100%);
+}
+
+    .insuranceGridPop:before {
+        content: '';
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        box-shadow: 2px 3px 6px rgba(0,0,0,0.1);
+        transform: rotate(45deg);
+        bottom: -6px;
+        background: #fff;
+        left: 40%;
+        z-index: 6;
+    }
+
+    .insuranceGridPop .header {
+        height: 40px;
+        line-height: 40px;
+        border-bottom: 1px solid #cecece;
+        box-sizing: border-box;
+    }
+
+    .insuranceGridPop ul {
+        padding: 0 5px;
+        box-sizing: border-box;
+        max-height: 146px;
+        overflow: auto;
+    }
+
+        .insuranceGridPop ul li {
+            height: 36px;
+            line-height: 36px;
+            /*border-bottom: 1px solid #cecece;*/
+            box-sizing: border-box;
+        }
+
+            .insuranceGridPop ul li > span, .insuranceGridPop .header > span {
+                width: 50%;
+                float: left;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                padding: 0 10px;
+                box-sizing: border-box;
+            }
+
+                .insuranceGridPop ul li > span.span2 {
+                    cursor: pointer;
+                    color: #69c5b4;
+                }
+
+.eqaddressFloatWrap .selTemp .editInput .per-input-basic {
+    min-height: 30px;
+    height: auto;
+}
+
+    .eqaddressFloatWrap .selTemp .editInput .per-input-basic input {
+        height: 30px;
+    }
+
+    .eqaddressFloatWrap .selTemp .editInput .per-input-basic .error-tip {
+        position: static;
+    }

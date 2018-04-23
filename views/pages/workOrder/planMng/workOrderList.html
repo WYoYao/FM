@@ -1,0 +1,47 @@
+<div class="work_order_list" v-if="onPage=='workOrderList'">
+    <div class="main">
+        <div class="content">
+            <div class="header">
+                <!-- 面包屑导航Start -->
+
+                <sitemap :maps='maps' :createsitemap='createsitemap' :back='back' />
+
+                <!-- 面包屑导航End -->
+            </div>
+            <div class="contenter">
+                <!-- 查询行Start -->
+                <div class="search">
+
+                    <pcombobox-normal sel="">
+                        <header placeholder="全部" prefix=" 工单状态："></header>
+                        <item datasource="[]" text="name"></item>
+                    </pcombobox-normal>
+
+                    <pcombobox-normal sel="">
+                        <header placeholder="全部" prefix="时间类型："></header>
+                        <item datasource="[]" text="name"></item>
+                    </pcombobox-normal>
+                </div>
+
+                <!-- <div class="table"> -->
+                <div class="t_header">
+                    <div class="item">工单类型</div>
+                    <div class="item">创建时间</div>
+                    <div class="item">工作事项</div>
+                    <div class="item">时间类型</div>
+                    <div class="item">工单状态</div>
+                </div>
+                <div class="t_body">
+                    <div class="info" v-for="(item,index) in _.range(10)">
+                        <div class="item" :title="'工单类型'+index" v-text="'工单类型'+index"></div>
+                        <div class="item" :title="'创建时间'+index" v-text="'创建时间'+index"></div>
+                        <div class="item" :title="'工作事项'+index" v-text="'工作事项'+index"></div>
+                        <div class="item" :title="'时间类型'+index" v-text="'时间类型'+index"></div>
+                        <div class="item" :title="'工单状态'+index" v-text="'工单状态'+index"></div>
+                    </div>
+                </div>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+</div>

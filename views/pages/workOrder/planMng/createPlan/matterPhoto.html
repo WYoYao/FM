@@ -1,0 +1,10 @@
+<div class="img-div" v-if="model.desc_photos && model.desc_photos.length">
+    <div class="single-img-div" v-for="(photo, indexPhoto) in model.desc_photos">
+        <div>
+            <img :src="photo" alt="屏幕快照"/>
+        </div>
+        <div class="close-div" @click="publicMethod.deleteMatterPhoto(model, indexPhoto)">
+            <img src="../images/perclose.png" alt="关闭按钮"/>
+        </div>
+    </div>
+</div>

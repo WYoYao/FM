@@ -1,0 +1,41 @@
+
+<script type="text/html" id="organizationManageTree1">
+    <div class="organizationTreeBox">
+        <div class="organizationTreeBoxName" @click="choice(model,$event)" >    
+            <input readonly 
+            @blur="activeObjInit()"
+            :id="model.id"
+            class="partitionName"
+            :class = "{disabled: (model.disabled !== undefined ? model.disabled : false),selected: (model.selected !== undefined ? model.selected : false)}"
+            :style="{'text-indent':(model.lv *24 +'px')}" 
+            :dis="JSON.stringify(model)" 
+            v-model="model.obj_name" :value = "model.obj_name">
+            <div class="inputPrompt">请输入岗位/部门名称</div>
+        </div>
+        <!-- <div style="border-bottom:1px solid #eee"></div> -->
+        <div>
+            
+            <organization class="item"  v-for="model in model.child_objs" :model="model" :style="{'box-sizing':'border-box'}">
+            </organization>
+        </div>
+        
+    </div>
+</script>
+<script>
+    Vue.component('organization', {
+        template: '#organizationManageTree1',
+        props: ["model"],
+        methods: {
+            choice: function(model,event){ //赋值活动对象
+                
+                organizationModel.activeDataObj=model;
+                
+            },
+            activeObjInit: function(){  //初始化活动对象
+                // setTimeout(function(){
+                //     organizationModel.activeDataObj={};
+                // },500)
+            }
+        }
+    })
+</script>

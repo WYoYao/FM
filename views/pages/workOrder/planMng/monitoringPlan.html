@@ -1,0 +1,216 @@
+<div class="monitoring_plan" v-show="onPage=='monitoringPlan'">
+    <div class="main">
+        <div class="content">
+            <div class="header">
+                <!-- 面包屑导航Start -->
+
+                <sitemap :maps='maps' :createsitemap='createsitemap' :back='back' />
+
+                <!-- 面包屑导航End -->
+            </div>
+            <div class="contenter">
+
+                <!-- 搜索面板Start  -->
+                <div class="search_view">
+                    <span class="font">项目是否引用集团计划：</span>
+                    <div class="cbx">
+                        <pcombobox-normal sel="">
+                            <header placeholder="全部"></header>
+                            <item datasource="[]" text="name"></item>
+                        </pcombobox-normal>
+                    </div>
+                    <span class="font">项目是否更新集团计划：</span>
+                    <div class="cbx">
+                        <pcombobox-normal sel="">
+                            <header placeholder="全部"></header>
+                            <item datasource="[]" text="name"></item>
+                        </pcombobox-normal>
+                    </div>
+                    <span class="font">发单时间：</span>
+                    <div class="cbx">
+                        <ptime-calendar id="divCalendar" orientation="down" sel="">
+                            <panel timetype="M" align="left" double="false" commontime="['M','pM']"></panel>
+                        </ptime-calendar>
+                    </div>
+                    <span class="font">计划频率</span>
+                    <div class="timetype">
+                        <div class="item">每日</div>
+                        <div class="item on">每周</div>
+                        <div class="item">每月</div>
+                        <div class="item">每季度</div>
+                        <div class="item">每年</div>
+                    </div>
+                </div>
+                <!-- 搜索面板End  -->
+
+                <!-- 状态栏 Start -->
+                <div class="status_view">
+                    集团维保计划
+
+                    <span class="total_count">
+                        目前有15个项目未引用该计划
+                    </span>
+
+                    <!-- icon Start -->
+                    <ul class="icon_list">
+                        <li class="item">
+                            <span class="icon">
+                                l
+                            </span>
+                            Hello World1
+                        </li>
+                        <li class="item">
+                            <span class="icon">
+                                l
+                            </span>
+                            Hello World1
+                        </li>
+                        <li class="item">
+                            <span class="icon">
+                                l
+                            </span>
+                            Hello World1
+                        </li>
+                        <li class="item">
+                            <span class="icon">
+                                l
+                            </span>
+                            Hello World1
+                        </li>
+                        <li class="item">
+                            <span class="icon">
+                                l
+                            </span>
+                            Hello World1
+                        </li>
+                        <li class="item">
+                            <span class="icon">
+                                l
+                            </span>
+                            Hello World1
+                        </li>
+                    </ul>
+                    <!-- icon End   -->
+
+                </div>
+                <!-- 状态栏 End -->
+
+                <!-- 表头 Start -->
+                <div class="t_header">
+                    <div class="header_name">
+                        项目名称
+                    </div>
+                    <div class="header_name">
+                        是否更新集团计划
+                    </div>
+                    <div class="header_name">
+                        发单总数
+                    </div>
+                    <div class="header_name">
+                        未发出
+                    </div>
+                    <div class="header_name">
+                        执行中
+                    </div>
+                    <div class="header_name">
+                        已完成
+                    </div>
+                    <div class="month_title">
+                        <div class="row">八月</div>
+                        <ul class="row">
+                            <li class="item">1</li>
+                            <li class="item">2</li>
+                            <li class="item">3</li>
+                            <li class="item">4</li>
+                            <li class="item">5</li>
+                            <li class="item">6</li>
+                            <li class="item">7</li>
+                            <li class="item">8</li>
+                            <li class="item">9</li>
+                            <li class="item">10</li>
+                            <li class="item">11</li>
+                            <li class="item">12</li>
+                            <li class="item">13</li>
+                            <li class="item">14</li>
+                            <li class="item">15</li>
+                            <li class="item">16</li>
+                            <li class="item">17</li>
+                            <li class="item">18</li>
+                            <li class="item">19</li>
+                            <li class="item">20</li>
+                            <li class="item">21</li>
+                            <li class="item">22</li>
+                            <li class="item">23</li>
+                            <li class="item">24</li>
+                            <li class="item">25</li>
+                            <li class="item">26</li>
+                            <li class="item">27</li>
+                            <li class="item">28</li>
+                            <!-- <li class="item">29</li>
+                            <li class="item">30</li>
+                            <li class="item">31</li> -->
+                        </ul>
+                    </div>
+                </div>
+                <!-- 表头 End -->
+
+                <!-- 表体 Start -->
+                <div class="t_bodyer">
+
+                    <!-- 行 Start -->
+                    <template v-for="item in _.range(30)">
+
+                        <div class="line">
+
+                            <div class="body_name">1</div>
+                            <div class="body_name">2</div>
+                            <div class="body_name">3</div>
+                            <div class="body_name">4</div>
+                            <div class="body_name">5</div>
+                            <div class="body_name">6</div>
+
+                            <ul class="row">
+                                <li class="item">1</li>
+                                <li class="item">2</li>
+                                <li class="item">3</li>
+                                <li class="item">4</li>
+                                <li class="item">5</li>
+                                <li class="item">6</li>
+                                <li class="item">7</li>
+                                <li class="item">8</li>
+                                <li class="item">9</li>
+                                <li class="item">10</li>
+                                <li class="item">11</li>
+                                <li class="item">12</li>
+                                <li class="item">13</li>
+                                <li class="item">14</li>
+                                <li class="item">15</li>
+                                <li class="item">16</li>
+                                <li class="item">17</li>
+                                <li class="item">18</li>
+                                <li class="item">19</li>
+                                <li class="item">20</li>
+                                <li class="item">21</li>
+                                <li class="item">22</li>
+                                <li class="item">23</li>
+                                <li class="item">24</li>
+                                <li class="item">25</li>
+                                <li class="item">26</li>
+                                <li class="item">27</li>
+                                <li class="item">28</li>
+                                <!-- <li class="item">29</li>
+                        <li class="item">30</li>
+                        <li class="item">31</li> -->
+                            </ul>
+
+                        </div>
+
+                    </template>
+                    <!-- 行 End -->
+
+                </div>
+                <!-- 表体 End -->
+            </div>
+        </div>
+    </div>
+</div>

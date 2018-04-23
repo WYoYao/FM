@@ -1,0 +1,199 @@
+<div class="detail-alert">
+    <!-- v-show="commonData.publicModel.detailSopShow"-->
+    <div class="alert-all">
+        <div class="alert-shade" @click="publicMethod.closeDetailSop">
+            <div class="alert-box" @click="publicMethod.preventBubble">
+                <div class="alert-content">
+                    <div class="alert-container">
+                        <div class="alert-header">
+                            <div class="alert-title">
+                                <h3>
+                                    <img src="../images/return.png" @click="publicMethod.backToUpperLevel" v-show="true">
+                                    <span v-text="'commonData.publicModel.detailSopData.sop_name'" :title="'commonData.publicModel.detailSopData.sop_name'">这是详细的sop</span>
+                                    <em v-text="'commonData.publicModel.detailSopData.version'">V2.0</em>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="alert-body">
+                            <div class="detail-table-div">
+                                <div class="detail-table">
+                                    <table cellspacing="0">
+                                        <tr>
+                                            <td>编号</td>
+                                            <td v-text="'commonData.publicModel.detailSopData.sop_id'" :title="'commonData.publicModel.detailSopData.sop_id'">
+                                                <span></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>专业要求</td>
+                                            <td>
+                                                <span :title="'publicMethod.filterProfessionalDemand(commonData.publicModel.detailSopData.domains,commonData.publicModel.domainList)'"
+                                                    v-text="'publicMethod.filterProfessionalDemand(commonData.publicModel.detailSopData.domains,commonData.publicModel.domainList)'"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>所需工具</td>
+                                            <td>
+                                                <span :title="'publicMethod.filterUseTool(commonData.publicModel.detailSopData.tools)'" v-text="'publicMethod.filterUseTool(commonData.publicModel.detailSopData.tools)'"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>工单类型</td>
+                                            <td>
+                                                <span :title="'publicMethod.filterProfessionalDemand(commonData.publicModel.detailSopData.order_type,commonData.publicModel.detailSopOrderList)'"
+                                                    v-text="'publicMethod.filterProfessionalDemand(commonData.publicModel.detailSopData.order_type,commonData.publicModel.detailSopOrderList)'"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>适用对象</td>
+                                            <td>
+                                                <span :title="'publicMethod.filterUseObject(commonData.publicModel.detailSopData.fit_objs)'" v-text="'publicMethod.filterUseObject(commonData.publicModel.detailSopData.fit_objs)'"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>品牌</td>
+                                            <td>
+                                                <span :title="'publicMethod.filterbrandsAndLabelsArr(commonData.publicModel.detailSopData.brands)'" v-text="'publicMethod.filterbrandsAndLabelsArr(commonData.publicModel.detailSopData.brands)'"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>自定义</td>
+                                            <td>
+                                                <span :title="'publicMethod.filterbrandsAndLabelsArr(commonData.publicModel.detailSopData.labels)'" v-text="'publicMethod.filterbrandsAndLabelsArr(commonData.publicModel.detailSopData.labels)'"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>相关资料</td>
+                                            <td>
+                                                <!-- <div
+                                                    v-for="(linked,index) in commonData.publicModel.detailSopData.related_data"> -->
+                                                <div>
+                                                    <!-- <a :href="linked.url.substr(0,7).toLowerCase() =='http://' ? linked.url : 'http://' + linked.url" target="_blank" v-text="linked.name"
+                                                        :title="linked.name"></a> -->
+                                                    <a></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="detail-step">
+                                <!-- <div class="single-step" v-for="(step,index) in commonData.publicModel.detailSopData.steps"> -->
+                                <div class="single-step">
+                                    <h4>步骤
+                                        <span v-text="'1'"></span>
+                                    </h4>
+                                    <!-- <div class="step-content-sop" v-for="(stepContent,index) in step.step_content"> -->
+                                    <div class="step-content-sop">
+                                        <div class="step-content-div" v-if="true">
+                                            <div class="unable-prev" v-if="true">
+                                                <div class="unable-prev-title">
+                                                    <span>作业前检查项:</span>
+                                                </div>
+                                                <div class="unable-prev-body">
+                                                    <span v-text="'stepContent.pre_conform'"></span>
+                                                </div>
+                                            </div>
+                                            <div class="unable-prev" v-if="true">
+                                                <div class="unable-prev-title">
+                                                    <span>标准作业要求:</span>
+                                                </div>
+                                                <div class="unable-prev-body">
+                                                    <span v-text="'stepContent.content'"></span>
+                                                </div>
+                                            </div>
+                                            <div class="unable-prev" v-if="true">
+                                                <div class="unable-prev-title">
+                                                    <span>注意事项:</span>
+                                                </div>
+                                                <div class="unable-prev-body">
+                                                    <span v-text="'stepContent.notice'"></span>
+                                                </div>
+                                            </div>
+                                            <div class="unable-prev unable-result" v-if="true">
+                                                <div class="unable-prev-title">
+                                                    <span>操作记录要求:</span>
+                                                </div>
+                                                <div class="unable-prev-body">
+                                                    <!-- <div class="single-list" v-for="(results,index) in stepContent.confirm_result"> -->
+                                                    <div class="single-list">
+                                                        <div class="list-nub">
+                                                            <span v-text="'index+1'"></span>.
+                                                        </div>
+                                                        <div class="list-con">
+                                                            <div class="obj-parents-links">
+                                                                <span v-text="'results.obj_name'"></span>
+                                                                <em v-text="'yn_method.getParentsLinks(results.parents)'"></em>
+                                                            </div>
+                                                            <div class="info-point-list">
+                                                                <ul v-if="true">
+                                                                    <!-- <li v-for="point in results.info_points" v-text="point.name"></li> -->
+                                                                    <li v-text="'point.name'"></li>
+                                                                </ul>
+                                                                <ul v-if="true">
+                                                                    <!-- <li v-for="custom in results.customs" v-text="custom.name"></li> -->
+                                                                    <li v-text="'custom.name'"></li>
+                                                                </ul>
+                                                            </div>
+                                                            <!--
+                                                            <div v-if="results.customs && results.customs.length"
+                                                                 v-for="custom in results.customs">
+                                                                <span v-text="custom.name"></span>
+                                                                &lt;!&ndash;  <span v-text="yn_method.contolTransfer(custom.type)"></span>
+                                                                  <span v-if="custom.type==2 || custom.type==3">选项:</span>
+                                                                  <span v-if="custom.items" v-for="sel in custom.items" v-text="sel"></span>
+                                                                  <span v-if="custom.type==5">单位:</span>
+                                                                  <span v-if="custom.type==5" v-text="custom.unit"></span>&ndash;&gt;
+                                                            </div>
+-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="unable-prev" v-if="true">
+                                                <div class="unable-prev-title">
+                                                    <span>专业限定:</span>
+                                                </div>
+                                                <div class="unable-prev-body">
+                                                    <span v-text="'publicMethod.filterProfessionalTrans(stepContent.domain)'"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="step-sop-div" v-if="true">
+                                            <div class="sop-name-div">
+                                                <span v-text="'stepContent.sop_name'"></span>
+                                            </div>
+                                            <div class="sop-version-div">
+                                                <span>版本:</span>
+                                                <em v-text="'stepContent.version'"></em>
+                                                <span>最后修改时间:</span>
+                                                <em v-text="'stepContent.update_time'"></em>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="step-sop-div" v-if="step.from_sop" @click="publicMethod.quoteOuterSopDetail(step,$event)"> -->
+                                    <div class="step-sop-div" v-if="true">
+                                        <div class="sop-name-div">
+                                            <span v-text="'step.sop_name'"></span>
+                                        </div>
+                                        <div class="sop-version-div">
+                                            <span>版本:</span>
+                                            <em v-text="'step.version'"></em>
+                                            <span>最后修改时间:</span>
+                                            <em v-text="'step.update_time'"></em>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="alert-close" @click="publicMethod.closeDetailSop"> -->
+                <div class="alert-close">
+                    <img src="../images/alert_close_btn.png" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

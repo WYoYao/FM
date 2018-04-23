@@ -1,0 +1,92 @@
+<script src="../js/workOrder/planMng/planManage/controller.js"></script>
+<script src="../js/workOrder/planMng/planManage/model.js"></script>
+<script src="../js/workOrder/planMng/planManage/event.js"></script>
+
+<link rel="stylesheet" href="../css/workOrder/planMng/term/planManage.css">
+
+<div id="planManage" v-if="onPage == 'planManage'">
+    <div class="head">
+        <div class="plantype">
+            <pcombobox-normal id="'planTypeCombo'" sel="refreshRenderGrid(false)" bind="true">
+                <header></header>
+                <item datasource="allPlanType" text="tab_name" id="order_type"></item>
+            </pcombobox-normal>
+        </div>
+        <div class="planSource">
+            <pcombobox-normal id="'planSourceCombo'" sel="refreshRenderGrid(false)" bind="true">
+                <header></header>
+                <item datasource="allPlanSource" text="name" id="id"></item>
+            </pcombobox-normal>
+        </div>
+        <div class="other">发布时间</div>
+        <div class="time">
+            <ptime-calendar id="planTypeTime" orientation="down" sel="planTypeTimeSel">
+                <panel timetype="M" align="left" double="false" iscommontime="false"></panel>
+            </ptime-calendar>
+        </div>
+        <div class="search">
+            <psearch-delay id="'planKeyword'" bind="true" change="refreshRenderGrid(false)" placeholder="'输入计划名称或编号查找'"></psearch-delay>
+        </div>
+        <div class="box">
+            <pbutton-blue bind="true" text="'集团计划(' + groupPlanUse.unUse + '/' + groupPlanUse.total + ')'" @click="openGroupModule"></pbutton-blue>
+        </div>
+        <div class="box">
+            <pbutton-white text="已作废计划" @click="lookDiscardGroupPlan"></pbutton-white>
+        </div>
+        <div class="box">
+            <pbutton-white text="自定义计划" @click="createTermPlan"></pbutton-white>
+        </div>
+    </div>
+    <div class="body">
+        <div class="head">
+            <div class="top">
+                <div class="text black3">计划频率</div>
+                <div class="tab">
+                    <div v-for="item in allFreq" @click="changePlanFreq(item)" :class="{'sel':item.sel}">{{item.name}}</div>
+                </div>
+                <div class="icon"></div>
+            </div>
+            <div class="bottom">
+                <div class="name gray">维保名称</div>
+                <div class="period gray">维保周期</div>
+                <div class="time" id="getCellWidth">
+
+                    <div>
+
+                        <div class="lastMonth grayblue" :style="{width:dateData.lastMonth.width+'px'}" @click="changeMonth('last')">{{dateData.lastMonth.name}}</div>
+                        <div class="thisMonth grayblue" :style="{width:dateData.thisMonth.width+'px'}">{{dateData.thisMonth.name}}</div>
+                        <div class="nextMonth grayblue" :style="{width:dateData.nextMonth.width+'px'}" @click="changeMonth('next')">{{dateData.nextMonth.name}}</div>
+
+                    </div>
+
+                    <div>
+                        <div class="day" v-for="item in dateData.day" :style="{width:dateData.width+'px'}">{{item}}</div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="grid clear">
+            <div class="row clear" v-for="(item,index) in planData">
+                <div class="name grayblue MT" :style="{height:item.grid.length*60 - 1 + 'px','line-height':item.grid.length*60 - 1 + 'px'}" @click="openPlanDetail(item)">
+                    {{item.plan_name}}
+                    <div class="warn1" v-if="item.plan_from == 1" v-show="item.plan_update_status == 0">&nbsp;&nbsp;已引用集团计划&nbsp;&nbsp;</div>
+                    <div class="warn2" v-if="item.plan_from == 1" v-show="item.plan_update_status == 1 && item.remind_type == 1">&nbsp;&nbsp;已引用集团计划，集团计划已修改&nbsp;&nbsp;</div>
+                </div>
+                <div class="period black3" :style="{height:item.grid.length*60 - 1 + 'px','line-height':item.grid.length*60 - 1 + 'px'}">{{item.freq_cycle_desc}}</div>
+                <div class="state">
+                    <div v-for="(model,times) in item.grid">
+                        <div v-for="(box,boxIndex) in model" :style="{width:box.width+'px'}">
+                            <div v-if="box.type != 0" @click="openOrderDetail(box)">
+                                <div v-show="box.type == 1"></div>
+                                <!-- <div v-show="box.type != 1">{{box.type}}</div> -->
+                                <img v-show="box.type != 1" :src=" '../../../../images/orderState/' + box.type + '.png'" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
