@@ -68,12 +68,13 @@ Vue.component('aite', {
         // 获取返回值单层
         getValue: function (arr) {
             var _that = this;
-            return _.filter(arr, { selected: true }).map(function (item) {
-                return {
-                    obj_id: item.obj_id,
-                    obj_name: item.obj_name,
-                }
-            })
+            return _.filter(arr, { selected: true });
+            // return _.filter(arr, { selected: true }).map(function (item) {
+            //     return {
+            //         obj_id: item.obj_id,
+            //         obj_name: item.obj_name,
+            //     }
+            // })
         },
         querySelectedDeep: function (list, index) {
 
@@ -92,12 +93,14 @@ Vue.component('aite', {
         getValueDeep: function (arr) {
             var _that = this;
 
-            return _that.querySelectedDeep(arr, 2).map(function (item) {
-                return {
-                    obj_id: item.obj_id,
-                    obj_name: item.obj_name,
-                }
-            })
+            return _that.querySelectedDeep(arr, 2);
+
+            // return _that.querySelectedDeep(arr, 2).map(function (item) {
+            //     return {
+            //         obj_id: item.obj_id,
+            //         obj_name: item.obj_name,
+            //     }
+            // })
         },
         // 返回对应的值
         submit: function () {

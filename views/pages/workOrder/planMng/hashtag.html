@@ -1,5 +1,5 @@
 <script type="text/html" id="hashtag">
-<div class="hashtag-bubble" v-show="isShow" :class="{'click-aite':true}">
+<div class="hashtag-bubble" v-show="isShow" @click.stop="void 0" :class="{'click-aite':true}">
     <div class="all-hashtag">
         <div class="hashtag-sop">
             <div class="sop-header">
@@ -35,7 +35,7 @@
                 <!--loading-->
                 <ploading-part data-loading="hashPopLoading" text="加载中..."></ploading-part>
             </div>
-            <div class="sop-footer">
+            <div class="sop-footer" @click.capture="submit()">
                 <pbutton-blue text="确定" id="able-btn"></pbutton-blue>
             </div>
         </div>
@@ -43,8 +43,8 @@
             <div class="sop-header">
                 <span>筛选条件</span>
                 <div class="sop-header-btn">
-                    <span>清空已选</span>
-                    <span>确定</span>
+                    <span @click='clearSelect()'>清空已选</span>
+                    <span @click='submitSelect()'>确定</span>
                 </div>
             </div>
             <div class="filter-body">
@@ -54,11 +54,11 @@
                             <span>品牌:</span>
                         </div>
                         <div class="filter-name">
-                            <div class="filter-all">
-                                <span class="sel-all all_brands">全部</span>
+                            <div class="filter-all" @click="selectedAll(criteria.brands)">
+                                <span class="all_brands sel-all" :class="va(criteria.brands)?'sel-span':''">全部</span>
                             </div>
                             <div class="filter-other">
-                                <span v-for="(item,index) in criteria.brands" v-text="item.name" :title="item.name" :class="item.seleced ? 'sel-span' : ''"></span>
+                                <span v-for="(item,index) in criteria.brands" v-text="item.name" :title="item.name" @click="item.selected=!item.selected" :class="(item.selected ) ? 'sel-span' : ''"></span>
                             </div>
 
                         </div>
@@ -68,11 +68,11 @@
                             <span>工单类型:</span>
                         </div>
                         <div class="filter-name">
-                            <div class="filter-all">
-                                <span class="sel-all all_order_type">全部</span>
+                            <div class="filter-all" @click="selectedAll(criteria.order_type)">
+                                <span class="all_order_type sel-all" :class="va(criteria.order_type)?'sel-span':''">全部</span>
                             </div>
                             <div class="filter-other">
-                                <span v-for="(item,index) in criteria.order_type" v-text="item.name" :title="item.name" :class="item.seleced ? 'sel-span' : ''"></span>
+                                <span v-for="(item,index) in criteria.order_type" v-text="item.name" @click="item.selected=!item.selected" :title="item.name" :class="(item.selected  ) ? 'sel-span' : ''"></span>
                             </div>
 
                         </div>
@@ -82,12 +82,12 @@
                             <span>适用对象:</span>
                         </div>
                         <div class="filter-name">
-                            <div class="filter-all">
-                                <span class="sel-all all_fit_objs">全部</span>
+                            <div class="filter-all" @click="selectedAll(criteria.fit_objs)">
+                                <span class="all_fit_objs sel-all" :class="va(criteria.fit_objs)?'sel-span':''">全部</span>
                             </div>
                             <div class="filter-other">
                               
-                                <span v-for="(item,index) in criteria.fit_objs" v-text="item.name" :title="item.name" :class="item.seleced ? 'sel-span' : ''"></span>
+                                <span v-for="(item,index) in criteria.fit_objs" v-text="item.name" @click="item.selected=!item.selected" :title="item.name" :class="(item.selected ) ? 'sel-span' : ''"></span>
                             </div>
 
                         </div>
@@ -97,13 +97,12 @@
                             <span>自定义:</span>
                         </div>
                         <div class="filter-name">
-                            <div class="filter-all">
-                                <span class="sel-all all_labels" onclick="publicMethod.toggleAllTag(event, 4)">全部</span>
+                            <div class="filter-all" @click="selectedAll(criteria.labels)">
+                                <span class="all_labels sel-all" :class="va(criteria.labels)?'sel-span':''">全部</span>
                             </div>
                             <div class="filter-other">
-                                <span v-for="(item,index) in criteria.labels" v-text="item.name" :title="item.name" :class="item.seleced ? 'sel-span' : ''"></span>
+                                <span v-for="(item,index) in criteria.labels" v-text="item.name" @click="item.selected=!item.selected" :title="item.name" :class="(item.selected ) ? 'sel-span' : ''"></span>
                             </div>
-
                         </div>
                     </div>
 

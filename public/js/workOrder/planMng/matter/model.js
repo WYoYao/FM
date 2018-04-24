@@ -11,6 +11,7 @@ Vue.component('matter', {
             desc_str: "", // @输入框查询字符串
             desc_sop_str: "", // # 输入框查询 对象
             desc_sop_c_str: "", // # 输入框查询 操作事件
+            addcontent: false,
             matter: {
                 // 事项名称
                 matter_name: "",
@@ -60,8 +61,19 @@ Vue.component('matter', {
 
         },
         // 获取SOP
-        getSOPObj: function () {
-            console.log(arguments);
+        getSOPObj: function (arr) {
+            var _that = this;
+            _that.matter.desc_sops = _that.matter.desc_sops.concat(arr);
+            _that.matter.desc_aftpart = _that.matter.desc_sops.map(function (item) {
+                return (item.hasOwnProperty('sop_name') ? "#" : "@") + (item.sop_name || item.obj_name) + " ";
+            }).join("");
+
+            _that.desc_sop_str = "";
+            _that.desc_sop_c_str = "";
+        },
+        // 工作内容
+        workContent: function () {
+            this.addcontent = false;
         }
     },
     computed: {
@@ -160,7 +172,7 @@ Vue.component('matter', {
             _that.matter.desc_sops = _that.matter.desc_sops.filter(function (item, index) {
                 return arr.map(function (params) {
                     return params.name;
-                }).indexOf(item.obj_name) != -1;
+                }).indexOf(item.obj_name || item.sop_name) != -1;
             });
 
             var search = /(@|#)(\S*?)\s{1}/.exec(str);
@@ -175,6 +187,9 @@ Vue.component('matter', {
 
                     _that.desc_sop_c_str = '#' + search[2];
                 }
+            } else {
+                _that.desc_sop_str = "";
+                _that.desc_sop_c_str = "";
             }
         },
         //

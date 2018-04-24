@@ -436,17 +436,17 @@ textarea::-webkit-input-placeholder {
     height: 100%;
 }
 
-.matter-content .textarea-div textarea {
+.matter-content .textarea-div > textarea {
     outline: none;
     border: none;
 }
 
-.matter-content .textarea-div textarea:hover {
+.matter-content .textarea-div > textarea:hover {
     outline: none;
     border: none;
 }
 
-.matter-content .textarea-div textarea:focus {
+.matter-content .textarea-div > textarea:focus {
     outline: none;
     border: none;
 }
@@ -459,7 +459,7 @@ textarea::-webkit-input-placeholder {
     left: 0;
 }
 
-.matter-content .textarea-div textarea.textareaError {
+.matter-content .textarea-div > textarea.textareaError {
     border: 1px solid #ef6767 !important;
 }
 
@@ -1037,6 +1037,7 @@ textarea::-webkit-input-placeholder {
 }
 
 .regular-obj-text .textarea-div > div textarea {
+    border:none;
     height: 70px;
     font-size: 14px;
     position: absolute;
@@ -1093,7 +1094,8 @@ textarea::-webkit-input-placeholder {
 /*height: 85px;*/
 /*}*/
 
-.regular-sop-text .textarea-div > div textarea {
+.regular-sop-text .textarea-div > div > textarea {
+    border: none;
     height: 70px;
     font-size: 14px;
     position: absolute;
@@ -1375,7 +1377,7 @@ textarea::-webkit-input-placeholder {
 }
 
 .prev-body {
-    display: none;
+    /* display: none; */
 }
 
 .title-tip-div {
@@ -1440,10 +1442,15 @@ textarea::-webkit-input-placeholder {
 }
 
 .edit-clear-div .clear-div {
-    display: none;
+    /* display: none; */
 }
 
 .edit-clear-div .clear-div + div {
+    position: absolute;
+    top: 40px;
+    left: -310px;
+    z-index: 50;
+
     line-height: normal;
 }
 
@@ -1546,10 +1553,15 @@ textarea::-webkit-input-placeholder {
 }
 
 .obj-fragment-div {
-    position: absolute;
+    position: absolute !important;
     bottom: 10px;
     left: 20px;
     cursor: pointer;
+
+    display: initial !important;
+    vertical-align: auto !important;
+    width: auto !important;
+    height:auto !important;
 }
 
 .obj-fragment-div .aite-bubble {
@@ -1700,9 +1712,12 @@ textarea::-webkit-input-placeholder {
     position: relative;
 }
 
-.add-info-btn .aite-bubble .list-body > div {
-    display: none;
+.add-info-btn .aite-bubble .list-body .pcheckbox {
+    float: right;
+    margin-top: 15px;
 }
+
+.add-info-btn .aite-bubble .list-body > 
 
 /*添加对象和信息点的bubble satrt*/
 .result .aite-bubble {
@@ -1715,7 +1730,7 @@ textarea::-webkit-input-placeholder {
 }
 
 .result .add-info-btn .aite-bubble {
-    display: none;
+    /* display: none; */
 }
 
 .result .aite-bubble .aite-body {

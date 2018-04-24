@@ -29,7 +29,7 @@
                                 </div>
                             </div>
                             <div class="add-obj-sop-content">
-                                <div class="add-obj" :class="desc_str?'eleDisable':''" @click="desc_str='@'">
+                                <div class="add-obj" :class="desc_str?'eleDisable':''" @click.stop="desc_str='@'">
                                     <span>@添加对象</span>
                                 </div>
                             </div>
@@ -38,26 +38,23 @@
                             <div class="textarea-div">
                                 <span>进行</span>
                                 <div>
-                                    <!-- <textarea v-model="model.desc_aftpart" placeholder="例如：#季度维保" :class="{'textareaError':model.desc_aftpart.length+model.desc_forepart.length>1000 && model.desc_aftpart.length>0}"
-                                            :maxlength="1000 - model.desc_forepart.length" @keydown="publicMethod.keydownMatterContent(model, index0, $event, 3)"
-                                            @input="publicMethod.changeMatterContent(model, index0, $event, null, null, null, 3)"></textarea> -->
                                     <textarea placeholder="例如：#季度维保" :class="{'textareaError':false}" v-model="matter.desc_aftpart" :maxlength="1000"></textarea>
                                     <div class="textareadiv"></div>
                                     <aite :str="desc_sop_str" ref="aite" :cb="getSOPObj" v-if="desc_sop_str"></aite>
                                     <hashtag :str="desc_sop_c_str" :order_type="2" :desc_objs="matter.desc_objs" :cb="getSOPObj" ref="hashtag" v-if="desc_sop_c_str"></hashtag>
-                                 
+                                    <addcontent v-if="addcontent" :cb="workContent" ref="workContent"></addcontent>
                                 </div>
                             </div>
                             <div class="add-obj-sop-content">
-                                <div class="add-sop" :class="{'eleDisable':true}">
+                                <div class="add-obj" :class="desc_sop_c_str?'eleDisable':''" @click.stop="desc_sop_c_str='#'">
                                     <span>#添加标准操作</span>
                                 </div>
-                                <div class="add-content">
+                                <div class="add-content" @click="addcontent=true">
                                     <span>添加工作内容</span>
                                 </div>
                             </div>
                             <span class="counter">
-                                <b v-text="0">0</b>/1000</span>
+                                <b v-text="matter.desc_aftpart.length"></b>/1000</span>
                         </div>
                     </div>
                 </div>

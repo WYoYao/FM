@@ -91,13 +91,13 @@ var aite_controller = createController([
         // 查询房间
         name: "Room",
         url: "restObjectService/queryFloor",
-        argu: { need_back_parents: false }
+        argu: { need_back_parents: true }
     },
     {
         // 查询空间
         name: "Space",
         url: "restObjectService/querySpace",
-        argu: { need_back_parents: false },
+        argu: { need_back_parents: true },
         convert: addSelected
     },
     {
