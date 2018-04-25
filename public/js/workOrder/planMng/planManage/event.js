@@ -32,135 +32,137 @@ function getThisAndLastMonthDays(num){
     return {last:last,this:now}
 }
 
+// 数据处理流程控制
+function dataControll(data){
 // 以下5个函数为工单数据转表格数据计算函数
 // 在流程控制函数中将数据分割为计划粒度，根据计划类型处理计划数据
 // 第一轮筛选出在界面显示的工单并对其开始和结束时间进行切割
 // 第二轮将工单进行分行处理，将work_orders数据转换为row数据
 // 第三轮将分行的工单数据转换为基于单元格子的数据
-// 日计划类型因为工单长度为基础长度，所以不需要第一轮处理
+// 日计划类型因为工单长度为基础长度，所以不需要第一轮处理，但开始和结束日期必须处于页面显示日期之内，否则有BUG
 // 这块重构比改起来块
-// 所有工单数据的开始和结束日期必须严格处于页面显示日期之间，否则第三轮代码就是纯粹的BUG，
-// 主要原因是日计划没有经过第一轮的筛选
-// 数据处理流程控制
-function dataControll(data){
+    // 日工单数据转行数据
+    function dayOrderDataToRow(plan){
+        var len = plan.freq_num;
+        var arr = [];
+        for(var i=0;i<len;i++){arr.push([])};
+        plan.work_order_date.forEach(function(day){
+            for(var i=0;i<len;i++){
+                    if(day.work_order[i]){
+                        arr[i].push(day.work_order[i]);
+                    }
+            }
+        })
+        plan.rowData = arr;
+        plan.row = len;
+        return plan;
+    }
+    // 非日计划类型工单筛选与日期预处理
+    function orderDataFilter(plan){
+        var that = v._instance;
+        var orderGather = plan.work_orders.map(function(order){
+            if((that.dateData.startTime < order.ask_start_time && order.ask_start_time < that.dateData.endTime) || (that.dateData.startTime < order.ask_end_time && order.ask_end_time < that.dateData.endTime)){
+                order.ask_start_time = order.ask_start_time > that.dateData.startTime ? order.ask_start_time : that.dateData.startTime;
+                order.ask_end_time   = order.ask_end_time > that.dateData.endTime ? that.dateData.endTime : order.ask_end_time;
+                return order
+            }
+        })
+        plan.work_orders = orderGather;
+        return plan;
+    }
+    // 非日计划类型工单数据转行数据
+    function orderDataToRow(plan){
+        var row = 0;
+        // 行数据
+        var rowData = [];
+        // 上一次工单结束时间
+        var lastEndTime = 0;
+        plan.work_orders.forEach(function(order){
+            if(order){
+                if(order.ask_start_time <= lastEndTime){
+                    // 如果工单开始时间小于等于上一条工单的结束时间,行数加一
+                    row ++;
+                    // 新建一行数据并推入行数据
+                    var a = [order];
+                    rowData.push(a);
+                }else{
+                    // 如果工单开始时间大于上一条工单的结束时间,则行数不变,将行数据最后一行取出推入该数据
+                    var a = rowData.pop();
+                    // 如果之前行数据为空则推入第一行数据
+                    if(a == undefined){
+                        a = [];
+                        row += 1;
+                    }
+                    a.push(order);
+                    // 将数据推回行数据
+                    rowData.push(a);
+                }
+                // 更新上一条工单的结束时间
+                lastEndTime = order.ask_end_time;
+            }
+        })
+        // 将转换后的行数据放入计划数据
+        plan.row = row;
+        plan.rowData = rowData;
+        return plan;
+    }
+    // 行数据转换
+    function rowDataTransform(data){
+        data.forEach(function(plan){
+            // 无工单计划补足
+            plan.row == 0 ? plan.row = 1 : void 0;
+            plan.rowData == [] ? plan.rowData = [[]] : void 0;
+            var days = v.instance.dateData.day.length;//页面显示天数总长度
+            var cell = window.document.getElementById('getCellWidth').offsetWidth/v.instance.dateData.day.length;//单格宽度
+            plan.grid = [];
+            for(var i=0;i<plan.row;i++){
+                plan.grid.push([]);
+                for(var a=0;a<days;a++){
+                    plan.grid[i].push({type:0,id:null,width:cell-1});
+                }
+            }
+            plan.rowData.forEach(function(row,index){
+                row.forEach(function(order){ 
+                    if(order){
+                        var l = getDaysIndex(numToObj(order.ask_start_time));
+                        var r = getDaysIndex(numToObj(order.ask_end_time));
+                        if(l == r){
+                            plan.grid[index][l] = {type:order.order_state,id:order.order_id,width:cell-1};
+                        }else{
+                            plan.grid[index].splice(l,r-l);
+                            plan.grid[index][l] = {type:order.order_state,id:order.order_id,width:cell*(r-l+1)-1};
+                        }
+                    }   
+                })
+            })
+        })
+        return data;
+    }
+    function getDaysIndex(obj){
+        var time = JSON.parse(JSON.stringify(v.instance.dateData));
+        var min = numToObj(time.startTime);
+        var max = numToObj(time.endTime);
+        var mid = {m:new Date(v.instance.centerMonth).getMonth() + 1,d:time.day - 4};
+        var a;
+        if(obj.m == min.m){
+            a = obj.d == min.d ? 0 : 1;
+        }else if(obj.m == mid.m){
+            a = 1 + obj.d;
+        }else{
+            a = 1 + min.d + (obj.d == max.d ? 2 : 1);
+        }
+        return a;
+    }
+    function numToObj(num){
+        return {
+            m: Number(num.substring(4,6)),
+            d: Number(num.substring(6,8))
+        }
+    }
+
     var arr = data.map(function(plan){
         return plan.freq_cycle == 'd' ? dayOrderDataToRow(plan) : orderDataToRow(orderDataFilter(plan));
     })
     return rowDataTransform(arr);
-}
-function dayOrderDataToRow(plan){
-    var len = plan.freq_num;
-    var arr = [];
-    for(var i=0;i<len;i++){arr.push([])};
-    plan.work_order_date.forEach(function(day){
-        for(var i=0;i<len;i++){
-                if(day.work_order[i]){
-                    arr[i].push(day.work_order[i]);
-                }
-        }
-    })
-    plan.rowData = arr;
-    plan.row = len;
-    return plan;
-}
-// 非日计划类型工单筛选与日期预处理
-function orderDataFilter(plan){
-    var that = v._instance;
-    var orderGather = plan.work_orders.map(function(order){
-        if((that.dateData.startTime < order.ask_start_time && order.ask_start_time < that.dateData.endTime) || (that.dateData.startTime < order.ask_end_time && order.ask_end_time < that.dateData.endTime)){
-            order.ask_start_time = order.ask_start_time > that.dateData.startTime ? order.ask_start_time : that.dateData.startTime;
-            order.ask_end_time   = order.ask_end_time > that.dateData.endTime ? that.dateData.endTime : order.ask_end_time;
-            return order
-        }
-    })
-    plan.work_orders = orderGather;
-    return plan;
-}
-// 工单数据转行数据
-function orderDataToRow(plan){
-    var row = 0;
-    // 行数据
-    var rowData = [];
-    // 上一次工单结束时间
-    var lastEndTime = 0;
-    plan.work_orders.forEach(function(order){
-        if(order){
-            if(order.ask_start_time <= lastEndTime){
-                // 如果工单开始时间小于等于上一条工单的结束时间,行数加一
-                row ++;
-                // 新建一行数据并推入行数据
-                var a = [order];
-                rowData.push(a);
-            }else{
-                // 如果工单开始时间大于上一条工单的结束时间,则行数不变,将行数据最后一行取出推入该数据
-                var a = rowData.pop();
-                // 如果之前行数据为空则推入第一行数据
-                if(a == undefined){
-                    a = [];
-                    row += 1;
-                }
-                a.push(order);
-                // 将数据推回行数据
-                rowData.push(a);
-            }
-            // 更新上一条工单的结束时间
-            lastEndTime = order.ask_end_time;
-        }
-    })
-    // 将转换后的行数据放入计划数据
-    plan.row = row;
-    plan.rowData = rowData;
-    return plan;
-}
-function rowDataTransform(data){
-    data.forEach(function(plan){
-        // 无工单计划补足
-        plan.row == 0 ? plan.row = 1 : void 0;
-        plan.rowData == [] ? plan.rowData = [[]] : void 0;
-        var days = v.instance.dateData.day.length;
-        var cell = window.document.getElementById('getCellWidth').offsetWidth/v.instance.dateData.day.length;
-        plan.grid = [];
-        for(var i=0;i<plan.row;i++){
-            plan.grid.push([]);
-            for(var a=0;a<days;a++){
-                plan.grid[i].push({type:0,id:null,width:cell-1});
-            }
-        }
-        plan.rowData.forEach(function(row,index){
-            row.forEach(function(order){ 
-                if(order){
-                    var l = getDaysIndex(numToObj(order.ask_start_time));
-                    var r = getDaysIndex(numToObj(order.ask_end_time));
-                    if(l == r){
-                        plan.grid[index][l] = {type:order.order_state,id:order.order_id,width:cell-1};
-                    }else{
-                        plan.grid[index].splice(l,(r-l));
-                        plan.grid[index][l] = {type:order.order_state,id:order.order_id,width:cell*(r-l+1)-1};
-                    }
-                }   
-            })
-        })
-    })
-    return data;
-}
-function getDaysIndex(obj){
-    var time = JSON.parse(JSON.stringify(v.instance.dateData));
-    var min = numToObj(time.startTime);
-    var max = numToObj(time.endTime);
-    var mid = {m:new Date(v.instance.centerMonth).getMonth() + 1,d:time.day - 4};
-    var a;
-    if(obj.m == min.m){
-        a = obj.d == min.d ? 0 : 1;
-    }else if(obj.m == mid.m){
-        a = 1 + obj.d;
-    }else{
-        a = 1 + min.d + (obj.d == max.d ? 2 : 1);
-    }
-    return a;
-}
-function numToObj(num){
-    return {
-        m: Number(num.substring(4,6)),
-        d: Number(num.substring(6,8))
-    }
+    
 }

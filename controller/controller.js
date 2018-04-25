@@ -5,13 +5,25 @@ function controller() {
 
 controller.prototype.personManage = function (req, res, next) {
     return function (req, res, next) {
-        res.render('./pages/basicMng/person/index', { host: commonLibUrl });
+        var puser = JSON.parse(JSON.stringify(req.session.puser));
+        var resArr = puser.authors;
+        var newArr = [];
+        resArr.forEach(function(item){
+            newArr.push(item.authorizationId)
+        });
+        res.render('./pages/basicMng/person/index', { host: commonLibUrl, user:newArr });
     };
 }
 
 controller.prototype.organizationManage = function (req, res, next) {
     return function (req, res, next) {
-        res.render('./pages/basicMng/organization/index', { host: commonLibUrl });
+        var puser = JSON.parse(JSON.stringify(req.session.puser));
+        var resArr = puser.authors;
+        var newArr = [];
+        resArr.forEach(function(item){
+            newArr.push(item.authorizationId)
+        });
+        res.render('./pages/basicMng/organization/index', { host: commonLibUrl, user:newArr});
     };
 }
 

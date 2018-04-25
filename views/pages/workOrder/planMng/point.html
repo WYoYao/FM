@@ -1,0 +1,175 @@
+<script type="text/html" id="point">
+<!-- 添加信息点面板 Start -->
+<!--  判断当前是否显示 -->
+<div class="aite-bubble" @click.stop="void 0" style="width:540px;">
+    <div class="aite-title">
+        <span class="returnImg" v-show="page=='auto'">
+            <img src="../images/return_left.png" alt="返回图片" @click="page='index'"
+            />
+        </span>
+        <span>
+            <em v-show="page!='auto'">选择</em>
+            <em v-show="page=='auto'">自定义</em>
+        </span>
+    </div>
+    <div class="list-search" v-show="page!='auto'">
+        <div class="info-search-box">
+            <input type="text" class="keyinput" v-model="searchKey">
+            <div class="icon-div">
+                <i v-show="InfoPointForObject.searchKey" @click="searchKey='';InfoPointForObject.key=''">x</i>
+                <i @click="InfoPointForObject.key=searchKey">f</i>
+            </div>
+        </div>
+        <div class="search-result">
+            <div class="key-result">
+                <span>共搜索到
+                    <em class="search-num" v-text="InfoPoints.length"></em>个相关结果</span>
+            </div>
+        </div>
+    </div>
+    <div class="aite-body" :class="{'result-aite-body-nosearch': true,'custom-no-searchAll':true}">
+    
+        <div class="list-body">
+            <!--无级别 只有复选-->
+            <div class="only-checkbox" v-show="page!='auto'">
+                <div class="aite-list" v-for="(info,index) in InfoPoints" @click="info.selected =! info.selected">
+                    <div :title="info.name">
+                        <span v-text="info.name"></span>
+                        <div :id="'classSelectInfoPoint'" class="pcheckbox">
+                            <span class="pcheckbox_input" :class="info.selected ? 'pcheckbox-checked' : ''"></span>
+                            <span class="pswitch_label"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--自定义-->
+            <div class="customize" v-show="page=='auto'">
+                <div>
+                    <p>说明文字</p>
+                    <ptext-text placeholder="'请输入要采集内容的说明或介绍'" bind="true" value="customize.name">
+                        <verify errtip="请输入自定义内容" verifytype="space"></verify>
+                        <verify errtip="最多只能输入40个字符" length="40" verifytype="length"></verify>
+                    </ptext-text>
+                </div>
+                <div>
+                    <p>使用控件</p>
+                    <div>
+                        <pcombobox-normal bind="true" id="'sel-controller'" sel="changeCustomizeType">
+                            <header placeholder="请选择"></header>
+                            <item datasource="controlsList" text="name"></item>
+                        </pcombobox-normal>
+                    </div>
+                </div>
+                <div v-show="customize.type!='1'">
+                    <div class="single-select-input">
+                        <div class="selection-input" v-show="customize.type=='5'">
+                            <p>
+                                <span>单位</span>
+                                <em></em>
+                            </p>
+                            <div class="unit-div">
+                                <ptext-text bind="true" value="customize.unit" placeholder="'请输入要采集数据的单位'">
+                                    <verify errtip="请输入单位" verifytype="space"></verify>
+                                </ptext-text>
+                            </div>
+                        </div>
+
+                        <div class="selection-input" v-show="customize.type=='4' || customize.type=='5'" v-for="(model,index) in customize.wrong_ranges"
+                            :key="model._id">
+                            <p>
+                                <span>异常范围</span>
+                                <em></em>
+                            </p>
+                            <div class="wrong">
+                                <div class="qj">
+                                    <pcombobox-normal id="'_that.customize.wrong_ranges['+index+']'" bind="true" sel="itemClick">
+                                        <header placeholder="请选择"></header>
+                                        <item datasource="wrongType" text="name"></item>
+                                    </pcombobox-normal>
+                                </div>
+                                <!-- 区间 Start -->
+                                <div class="ty" v-if="model.type=='range'">
+                                    <ptext-text bind="true" value="model.values.start" placeholder="'请输入要采集数据的单位'">
+                                        <verify errtip="请输入数字" verifytype="space"></verify>
+                                    </ptext-text>
+                                </div>
+                                <div class="i" v-if="model.type=='range'">
+                                    ~
+                                </div>
+                                <div class="ty" v-if="model.type=='range'">
+                                    <ptext-text bind="true" value="model.values.end" placeholder="'请输入要采集数据的单位'">
+                                        <verify errtip="请输入数字" verifytype="space"></verify>
+                                    </ptext-text>
+                                </div>
+                                <!-- 区间 End -->
+
+                                <!-- 非区间 Start -->
+                                <div class="ty" v-if="model.type!='range'">
+                                    <pcombobox-normal id="'_that.customize.wrong_ranges['+index+']'" bind="true" sel="uRangesTypeSel">
+                                        <header placeholder="请选择"></header>
+                                        <item datasource="uRangesType" text="name"></item>
+                                    </pcombobox-normal>
+                                </div>
+                                <div class="total" v-if="model.type!='range'">
+                                    <ptext-text bind="true" value="model.value" placeholder="'请输入要采集数据的单位'">
+                                        <verify errtip="请输入数字" verifytype="space"></verify>
+                                    </ptext-text>
+                                </div>
+                                <!-- 非区间 End -->
+
+                                <em class="icon" @click="customize.wrong_ranges.splice(index,1)">
+                                    p
+                                </em>
+                            </div>
+                        </div>
+
+
+                        <div class="selection-input" v-for="(i,index) in customize.items" v-show="customize.type=='2' || customize.type=='3'">
+                            <p>
+                                <span>选项</span>
+                                <em v-text="index+1"></em>
+                            </p>
+                            <div>
+                                <ptext-text bind="true" value="i.str">
+                                    <verify errtip="'最多只能输入100个字符'" length="100" verifytype="length"></verify>
+                                </ptext-text>
+                                <div :id="'classSelectInfoPoint'" class="pcheckbox_input_con" @click="i.isWrongs=!i.isWrongs">
+                                    <span class="pcheckbox_input" :class="i.isWrongs ? 'pcheckbox-checked' : ''"></span>
+                                    <span class="pswitch_label">异常项</span>
+                                </div>
+                                <i @click="customize.items.splice(index,1)">p</i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="self-add-select" v-show="customize.type=='2' || customize.type=='3'">
+                        <div class="self-add-btn" @click="customize.items.push(new Item())">
+                            <i>J</i>添加选项
+                        </div>
+                    </div>
+                    <div class="self-add-select" v-show="customize.type=='4' || customize.type=='5'">
+                        <div class="self-add-btn" @click="customize.wrong_ranges.push(new Wrong())">
+                            <i>J</i>添加选项
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--搜索无结果-->
+            <div class="sop-nodata" v-show="page!='auto' && !InfoPoints.length">
+                <pnotice-nodata text="暂无数据" subtitle="哎呀，什么都没有找到！" icon="../images/sassNodata.png"></pnotice-nodata>
+            </div>
+            <!--loading-->
+            <ploading-part data-loading="resultPopLoading" text="加载中..."></ploading-part>
+        </div>
+    </div>
+    <div class="aite-footer" id="abc">
+        <div class="customize-btn-div" v-show="page!='auto'" @click.capture="page='auto'">
+            <pbutton-white text="自定义"></pbutton-white>
+        </div>
+        <div class="sureBtnDivs" @click.capture="submit">
+            <pbutton-blue text="确定" id="sureBtn"></pbutton-blue>
+        </div>
+    </div>
+</div>
+<!-- 添加信息点面板 End -->
+</script>

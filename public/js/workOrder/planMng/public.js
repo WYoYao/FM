@@ -325,13 +325,16 @@ v.pushComponent({
     data: {
         onPage: "",
         noData: "--",
+        model: "plan",
+        // userSelCache:{},
+        // 默认的以及自定义的工单状态
+        allOrderState:[],
+        // 该数组内对象Id需要根据拿到的工单状态集合获取,默认的几种工单执行状态
+        workOrderState:[{name:"全部",id:"0"},{name:"未发出",id:"1"},{name:"执行中",id:"2"},{name:"已完成",id:"3"}],
+        // 工单时间状态
+        orderTimeType:[{name:"全部",id:0},{name:"临时性工单",id:1},{name:"计划性工单",id:1}],
     },
     methods: {
-        timeFormatting: function (str) { //时间格式化
-            var str = str || '';
-            var nstr = str.substr(0, 4) + "." + str.substr(4, 2) + "." + str.substr(6, 2) + " " + str.substr(8, 2) + ":" + str.substr(10, 2);
-            return nstr;
-        },
         transfYMWD: function (str) { //通过年月周天转换对应的中文
             var obj = {
                 y: "年",
@@ -380,20 +383,27 @@ v.pushComponent({
             }
             return chnStr;
         },
-        numTimeTransform: function (str) {
+        // yyyymmddhhMMss => yyyy.mm.dd hh:MM  type === '0'
+        // yyyymmddhhMMss => yyyy.mm.dd        type === '1'
+        timeFormat : function(str,type){
             str = str || "";
-            return str.length > 0 ? str.substring(0, 4) + '.' + str.substring(4, 6) + '.' + str.substring(6, 8) + ' ' + str.substring(8, 10) + ':' + str.substring(10, 12) : this.noData
-        },
-        numTimeFormat: function (str) {
-            str = str || "";
-            return str.length > 0 ? str.substring(0, 4) + '.' + str.substring(4, 6) + '.' + str.substring(6, 8) : this.noData
+            if((typeof str) != 'string'){str = str + "";}
+            switch(type){
+                case '0':
+                    return str.length > 0 ? str.substring(0, 4) + '.' + str.substring(4, 6) + '.' + str.substring(6, 8) + ' ' + str.substring(8, 10) + ':' + str.substring(10, 12) : this.noData    
+                break;
+                case '1':
+                    return str.length > 0 ? str.substring(0, 4) + '.' + str.substring(4, 6) + '.' + str.substring(6, 8) : this.noData
+                break;
+            }
         },
         gobackSelPath: function (value) {
+            // here集团版项目计划详情跳转到集团计划详情时会重复引用同一页面导致页面不变
             v.goBack(value.path, true);
         },
         gobackLastPath: function (maps) {
             v.goBack(maps.slice(-2, -1)[0].path, true);
-        }
+        },
     },
     filters: {
 
@@ -404,9 +414,10 @@ $(function () {
 
     if (v.name.hasOwnProperty('grouphome')) v.initPage('grouphome');
 
-    if (v.name.hasOwnProperty('term')) v.initPage('planManage');
+    if (v.name.hasOwnProperty('planManage')) v.initPage('planManage');
 
-    // v.initPage('planManage');
+    v.instance.model = v.name.hasOwnProperty('createPlan') ? 'group' : 'plan';
+
 });
 
 

@@ -90,10 +90,11 @@
           width: 100%;
           color: #000000; }
         #app .work_order_list .main .content .contenter .t_body {
-          max-height: calc(100% - 79px);
+          height: calc(100% - 80px);
           width: 100%;
           overflow: auto;
           overflow: overlay;
+          position: relative;
           border-bottom: 1px solid #d9e2e8; }
           #app .work_order_list .main .content .contenter .t_body .info {
             cursor: pointer; }

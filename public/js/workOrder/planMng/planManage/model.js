@@ -22,9 +22,10 @@ v.pushComponent({
             day:[],
             width:0
         },
-        centerMonth:0,
+        centerMonth:null,
+        // planManage页面下方表格高度
+        residueHeight:0,
         
-
     },
     methods: {
         // 选择显示的计划频率
@@ -94,14 +95,14 @@ v.pushComponent({
         planTypeTimeSel : function(){
             // 更新中心月份数据，调用页面渲染函数
             this.centerMonth = $("#planTypeTime").psel().startTime;
-            this.refreshRenderGrid(true)
+            this.refreshRenderGrid(true);
         },
         // 首页点击切换月份
         changeMonth : function(type){
             // 更新中心月份数据，更新插件时间，调用页面渲染函数
             this.centerMonth = getCenterMonth(this.centerMonth,type);
             $("#planTypeTime").psel({startTime:this.centerMonth},false);
-            this.refreshRenderGrid(true)
+            this.refreshRenderGrid(true);
         },
         // 查看已经废弃的计划
         lookDiscardGroupPlan : function(){
@@ -109,7 +110,7 @@ v.pushComponent({
         },
         // 跳转到集团计划首页
         openGroupModule : function(){
-            window.open("./group");
+            v.initPage('groupPlan');
         },
         // 查看计划详情
         openPlanDetail : function(item){
@@ -124,20 +125,24 @@ v.pushComponent({
             v.initPage("createPlan");
         },
         // 重新渲染表格
-        // type为true时同时刷新时间部分和计划部分
+        // type为true时同时刷新时间部分和计划部分,否则只刷新计划部分
         refreshRenderGrid : function(type){
+            $("#planManagePartLoad").pshow();
             if(type){this.createTimeData()}
             // 构建参数
             var param = this.createPlanOrderParam();
             var arr = param.freq_cycle == 'd' ? [{name:"dayOrder",data:param}] : [{name:"planOrder",data:param}];
-            // 获取数据交互promise数组
+            // 获取promise数组
             var list = getData(arr);
             list[0].then(function(data){
                 data = JSON.parse(JSON.stringify(data.Content));
                 v.instance.planData = dataControll(data);
+                $("#planManagePartLoad").phide();
             }).catch(function(err){
                 // console.log(err);
+                $("#planManagePartLoad").phide();
             })
+            v.instance.planData = dataControll(prc.data);
         },
         // 统一获取向后台获取计划工单数据时的参数
         createPlanOrderParam : function(){
@@ -157,8 +162,9 @@ v.pushComponent({
 
     },
     beforeMount : function(){
-        // 如果该页面为第一次渲染
-        if(this.firstRender.planManage){
+        if(this.centerMonth === null ){ this.centerMonth = new Date().getTime(); }   
+        // 如果工单状态为空说明为第一次加载，则获取常量数据
+        if(this.allOrderState == []){
             var list = getData([
                 {name:"orderState",data:{"dict_type": "work_order_state"}},
                 {name:"workType",data:{"dict_type": "work_type"}},
@@ -172,22 +178,8 @@ v.pushComponent({
                     unUse:data.Item.plan_unused_num
                 }
             })
-            this.firstRender.planManage = false;
         }
         this.$nextTick(function(){
-            // 是否恢复之前配置，该配置配置，反正数据要重新拿
-            if(this.configCache.planManage){
-                var a = this.configCache.planManage;
-                this.centerMonth = a.time;
-                $("#planTypeTime").psel({startTime:a.time},false);
-                $("#planTypeCombo").psel(a.planType,false);
-                $("#planSourceCombo").psel(a.planSource,false);
-            }else{
-                this.centerMonth = new Date().getTime();
-                $("#planTypeTime").psel({startTime:this.centerMonth},false);
-                $("#planTypeCombo").psel(0,false);
-                $("#planSourceCombo").psel(0,false);
-            }
             this.refreshRenderGrid(true);
         })
     }
@@ -323,6 +315,171 @@ window.prc = {
           }
         ]
       },
+      {
+            "plan_id": "JH1510145828954",
+            "plan_name": "wxmz",
+            "remind_type": 1,
+            "plan_end_time": "--",
+            "freq_cycle": "w",
+            "freq_num": 1,
+            "freq_cycle_desc": "每周1次",
+            "row_count": 1,
+            "work_orders": [
+              {
+                "order_id": "Wo13010200015dc32a0ca3b746e5bff69575a5769577",
+                "ask_start_time": "20180802000000",
+                "ask_end_time": "20181002000000",
+                "order_state": "4",
+                "is_next_order": false
+              },
+              {
+                "order_id": "Wo1301020001f253969a926444c48834a3764b5039b8",
+                "ask_start_time": "20180509000000",
+                "ask_end_time": "20180509000000",
+                "order_state": "4",
+                "is_next_order": false
+              },
+              {
+                "order_id": "",
+                "ask_start_time": "20180516000000",
+                "ask_end_time": "20180523000000",
+                "order_state": "",
+                "is_next_order": true
+              }
+            ]
+          },
+          {
+                "plan_id": "JH1510145828954",
+                "plan_name": "wxmz",
+                "remind_type": 1,
+                "plan_end_time": "--",
+                "freq_cycle": "w",
+                "freq_num": 1,
+                "freq_cycle_desc": "每周1次",
+                "row_count": 1,
+                "work_orders": [
+                  {
+                    "order_id": "Wo13010200015dc32a0ca3b746e5bff69575a5769577",
+                    "ask_start_time": "20180802000000",
+                    "ask_end_time": "20181002000000",
+                    "order_state": "4",
+                    "is_next_order": false
+                  },
+                  {
+                    "order_id": "Wo1301020001f253969a926444c48834a3764b5039b8",
+                    "ask_start_time": "20180509000000",
+                    "ask_end_time": "20180509000000",
+                    "order_state": "4",
+                    "is_next_order": false
+                  },
+                  {
+                    "order_id": "",
+                    "ask_start_time": "20180516000000",
+                    "ask_end_time": "20180523000000",
+                    "order_state": "",
+                    "is_next_order": true
+                  }
+                ]
+              },
+              {
+                    "plan_id": "JH1510145828954",
+                    "plan_name": "wxmz",
+                    "remind_type": 1,
+                    "plan_end_time": "--",
+                    "freq_cycle": "w",
+                    "freq_num": 1,
+                    "freq_cycle_desc": "每周1次",
+                    "row_count": 1,
+                    "work_orders": [
+                      {
+                        "order_id": "Wo13010200015dc32a0ca3b746e5bff69575a5769577",
+                        "ask_start_time": "20180802000000",
+                        "ask_end_time": "20181002000000",
+                        "order_state": "4",
+                        "is_next_order": false
+                      },
+                      {
+                        "order_id": "Wo1301020001f253969a926444c48834a3764b5039b8",
+                        "ask_start_time": "20180509000000",
+                        "ask_end_time": "20180509000000",
+                        "order_state": "4",
+                        "is_next_order": false
+                      },
+                      {
+                        "order_id": "",
+                        "ask_start_time": "20180516000000",
+                        "ask_end_time": "20180523000000",
+                        "order_state": "",
+                        "is_next_order": true
+                      }
+                    ]
+                  },
+                  {
+                        "plan_id": "JH1510145828954",
+                        "plan_name": "wxmz",
+                        "remind_type": 1,
+                        "plan_end_time": "--",
+                        "freq_cycle": "w",
+                        "freq_num": 1,
+                        "freq_cycle_desc": "每周1次",
+                        "row_count": 1,
+                        "work_orders": [
+                          {
+                            "order_id": "Wo13010200015dc32a0ca3b746e5bff69575a5769577",
+                            "ask_start_time": "20180802000000",
+                            "ask_end_time": "20181002000000",
+                            "order_state": "4",
+                            "is_next_order": false
+                          },
+                          {
+                            "order_id": "Wo1301020001f253969a926444c48834a3764b5039b8",
+                            "ask_start_time": "20180509000000",
+                            "ask_end_time": "20180509000000",
+                            "order_state": "4",
+                            "is_next_order": false
+                          },
+                          {
+                            "order_id": "",
+                            "ask_start_time": "20180516000000",
+                            "ask_end_time": "20180523000000",
+                            "order_state": "",
+                            "is_next_order": true
+                          }
+                        ]
+                      },
+                      {
+                            "plan_id": "JH1510145828954",
+                            "plan_name": "wxmz",
+                            "remind_type": 1,
+                            "plan_end_time": "--",
+                            "freq_cycle": "w",
+                            "freq_num": 1,
+                            "freq_cycle_desc": "每周1次",
+                            "row_count": 1,
+                            "work_orders": [
+                              {
+                                "order_id": "Wo13010200015dc32a0ca3b746e5bff69575a5769577",
+                                "ask_start_time": "20180802000000",
+                                "ask_end_time": "20181002000000",
+                                "order_state": "4",
+                                "is_next_order": false
+                              },
+                              {
+                                "order_id": "Wo1301020001f253969a926444c48834a3764b5039b8",
+                                "ask_start_time": "20180509000000",
+                                "ask_end_time": "20180509000000",
+                                "order_state": "4",
+                                "is_next_order": false
+                              },
+                              {
+                                "order_id": "",
+                                "ask_start_time": "20180516000000",
+                                "ask_end_time": "20180523000000",
+                                "order_state": "",
+                                "is_next_order": true
+                              }
+                            ]
+                          },
   {
         "plan_id": "JH1510145828954",
         "plan_name": "wxmz",

@@ -3,7 +3,7 @@
 
 <link rel="stylesheet" href="../css/workOrder/planMng/term/dumpedPlan.css">
 
-<div id="dumpedPlan" v-if="onPage == 'dumpedPlan'">
+<div id="dumpedPlan" v-show="onPage == 'dumpedPlan'">
     <div class="head">
         <sitemap :maps='dumpedPlanPaths' :createsitemap='gobackSelPath' :back='gobackLastPath' />
     </div>
@@ -16,6 +16,7 @@
         </div>
         <ul>
             <pscroll-small templateid="dumpedPlanList"></pscroll-small>
+            <ploading-part id="dumpedPlanPartLoad"></ploading-part>
         </ul>
     </div>
 </div>
@@ -23,7 +24,7 @@
     <li v-for="item in dumpedPlanList"  @click.stop="openDumpedPlan(item)">
         <div class="name MT" v-text="item.plan_name" :title="item.plan_name"></div>
         <div class="work MT" v-text="item.matters_desc" :title="item.matters_desc"></div>
-        <div class="start MT" v-text="numTimeTransform(item.plan_start_time)" :title="numTimeTransform(item.plan_start_time)"></div>
+        <div class="start MT" v-text="timeFormat(item.plan_start_time,'0')" :title="timeFormat(item.plan_start_time,'0')"></div>
         <div class="people MT" v-text="item.destroy_person_name" :title="item.destroy_person_name"></div>
     </li>
 </script>

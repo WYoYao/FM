@@ -4,7 +4,7 @@
 #dumpedPlan > .body .title { height: 30px; line-height: 30px; border-bottom: 1px solid #d9e2e8; color: #000; }
 #dumpedPlan > .body .title div { padding: 0 20px 0; float: left; width: calc(28% - 40px); }
 #dumpedPlan > .body .title .people { width: calc(16% - 40px); }
-#dumpedPlan > .body ul { height: calc(100% - 51px); overflow-x: hidden; overflow-y: auto; }
+#dumpedPlan > .body ul { height: calc(100% - 51px); position: relative; overflow-x: hidden; overflow-y: auto; }
 #dumpedPlan > .body ul li { height: 38px; list-style-type: none; line-height: 38px; font-size: 14px; color: #333333; }
 #dumpedPlan > .body ul li:hover { cursor: pointer; }
 #dumpedPlan > .body ul li:nth-of-type(odd) { background: #f5f7fa; }

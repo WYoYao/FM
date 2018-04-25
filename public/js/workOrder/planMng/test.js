@@ -1,21 +1,23 @@
+console.log(
+    [
+        {
+            name: "大于",
+            code: "gt",
+        }, {
+            name: "大于等于",
+            code: "gte",
+        }, {
+            name: "小于",
+            code: "lt",
+        }, {
+            name: "小于等于",
+            code: "lte",
+        }].map(function (item) {
+            var o = {};
+            o[item.code] = item.name;
+            return o;
+        }).reduce(function (con, params) {
+            return Object.assign({}, con, params)
 
 
-
-console.log(/^(?![^12].)(?!2[5-9])[0-9]\d?$/.test("25"))
-
-console.log(/^(?![^12].)(?!2[5-9])[0-9]\d?$/.test("100"))
-
-console.log(/^(?![^12].)(?!2[5-9])[0-9]\d?$/.test("-1"))
-
-console.log(/^(?![^12].)(?!2[5-9])[0-9]\d?$/.test("1.2"))
-
-console.log(/^(?![^12].)(?!2[5-9])[0-9]\d?$/.test("25.5"))
-
-console.log(/^(?![^12].)(?!2[5-9])[0-9]\d?$/.test("0"))
-console.log(/^(?![^12].)(?!2[5-9])[0-9]\d?$/.test("1"))
-console.log(/^(?![^12].)(?!2[5-9])[0-9]\d?$/.test("10"))
-console.log(/^(?![^12].)(?!2[5-9])[0-9]\d?$/.test("14"))
-console.log(/^(?![^12].)(?!2[5-9])[0-9]\d?$/.test("15"))
-console.log(/^(?![^12].)(?!2[5-9])[0-9]\d?$/.test("20"))
-console.log(/^(?![^12].)(?!2[5-9])[0-9]\d?$/.test("24"))
-console.log(/^(?![^12].)(?!2[5-9])[0-9]\d?$/.test("25"))
+        }, {}))

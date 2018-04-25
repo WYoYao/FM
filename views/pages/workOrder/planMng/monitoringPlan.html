@@ -4,7 +4,7 @@
             <div class="header">
                 <!-- 面包屑导航Start -->
 
-                <sitemap :maps='maps' :createsitemap='createsitemap' :back='back' />
+                <!-- <sitemap :maps='maps' :createsitemap='createsitemap' :back='back' /> -->
 
                 <!-- 面包屑导航End -->
             </div>
@@ -12,33 +12,29 @@
 
                 <!-- 搜索面板Start  -->
                 <div class="search_view">
-                    <span class="font">项目是否引用集团计划：</span>
-                    <div class="cbx">
+                    <!-- <span class="font">项目是否引用集团计划：</span> -->
+                    <!-- <div class="cbx">
                         <pcombobox-normal sel="">
                             <header placeholder="全部"></header>
                             <item datasource="[]" text="name"></item>
                         </pcombobox-normal>
-                    </div>
+                    </div> -->
                     <span class="font">项目是否更新集团计划：</span>
                     <div class="cbx">
-                        <pcombobox-normal sel="">
+                        <pcombobox-normal sel="createGroupOrderGrid" bind="true" id="'isUpdateGroupPlan'">
                             <header placeholder="全部"></header>
-                            <item datasource="[]" text="name"></item>
+                            <item datasource="isUpdateGPWO" text="name" id="id"></item>
                         </pcombobox-normal>
                     </div>
                     <span class="font">发单时间：</span>
                     <div class="cbx">
-                        <ptime-calendar id="divCalendar" orientation="down" sel="">
+                        <ptime-calendar id="divCalendar" orientation="down" sel="selOrderTime">
                             <panel timetype="M" align="left" double="false" commontime="['M','pM']"></panel>
                         </ptime-calendar>
                     </div>
                     <span class="font">计划频率</span>
                     <div class="timetype">
-                        <div class="item">每日</div>
-                        <div class="item on">每周</div>
-                        <div class="item">每月</div>
-                        <div class="item">每季度</div>
-                        <div class="item">每年</div>
+                        <div class="item" v-for="model in fiveFreq" v-text="model.name" :class="{'on':model.sel}" @click="selGroupFreq(model)"></div>
                     </div>
                 </div>
                 <!-- 搜索面板End  -->
@@ -53,36 +49,6 @@
 
                     <!-- icon Start -->
                     <ul class="icon_list">
-                        <li class="item">
-                            <span class="icon">
-                                l
-                            </span>
-                            Hello World1
-                        </li>
-                        <li class="item">
-                            <span class="icon">
-                                l
-                            </span>
-                            Hello World1
-                        </li>
-                        <li class="item">
-                            <span class="icon">
-                                l
-                            </span>
-                            Hello World1
-                        </li>
-                        <li class="item">
-                            <span class="icon">
-                                l
-                            </span>
-                            Hello World1
-                        </li>
-                        <li class="item">
-                            <span class="icon">
-                                l
-                            </span>
-                            Hello World1
-                        </li>
                         <li class="item">
                             <span class="icon">
                                 l
@@ -116,39 +82,9 @@
                         已完成
                     </div>
                     <div class="month_title">
-                        <div class="row">八月</div>
+                        <div class="row" v-text="timeData.month" id="monitoringWidth">八月</div>
                         <ul class="row">
-                            <li class="item">1</li>
-                            <li class="item">2</li>
-                            <li class="item">3</li>
-                            <li class="item">4</li>
-                            <li class="item">5</li>
-                            <li class="item">6</li>
-                            <li class="item">7</li>
-                            <li class="item">8</li>
-                            <li class="item">9</li>
-                            <li class="item">10</li>
-                            <li class="item">11</li>
-                            <li class="item">12</li>
-                            <li class="item">13</li>
-                            <li class="item">14</li>
-                            <li class="item">15</li>
-                            <li class="item">16</li>
-                            <li class="item">17</li>
-                            <li class="item">18</li>
-                            <li class="item">19</li>
-                            <li class="item">20</li>
-                            <li class="item">21</li>
-                            <li class="item">22</li>
-                            <li class="item">23</li>
-                            <li class="item">24</li>
-                            <li class="item">25</li>
-                            <li class="item">26</li>
-                            <li class="item">27</li>
-                            <li class="item">28</li>
-                            <!-- <li class="item">29</li>
-                            <li class="item">30</li>
-                            <li class="item">31</li> -->
+                            <li v-for="item in timeData.day" v-text="item"></li>
                         </ul>
                     </div>
                 </div>
@@ -158,49 +94,21 @@
                 <div class="t_bodyer">
 
                     <!-- 行 Start -->
-                    <template v-for="item in _.range(30)">
+                    <template v-for="item in monitoringGrid">
 
                         <div class="line">
 
-                            <div class="body_name">1</div>
-                            <div class="body_name">2</div>
-                            <div class="body_name">3</div>
-                            <div class="body_name">4</div>
-                            <div class="body_name">5</div>
-                            <div class="body_name">6</div>
+                            <div class="body_name" v-text="item.project_name" v-text="item.project_name"></div>
+                            <div class="body_name" v-text="item.is_update_group_plan == 1 ? '已更新' : '未更新'" v-text="item.is_update_group_plan == 1 ? '已更新' : '未更新'"></div>
+                            <div class="body_name" v-text="item.create_wo_total" v-text="item.create_wo_total"></div>
+                            <div class="body_name" v-text="item.uncreate_wo_total" v-text="item.uncreate_wo_total"></div>
+                            <div class="body_name" v-text="item.executing_wo_total" v-text="item.executing_wo_total"></div>
+                            <div class="body_name" v-text="item.finished_wo_total" v-text="item.finished_wo_total"></div>
 
-                            <ul class="row">
-                                <li class="item">1</li>
-                                <li class="item">2</li>
-                                <li class="item">3</li>
-                                <li class="item">4</li>
-                                <li class="item">5</li>
-                                <li class="item">6</li>
-                                <li class="item">7</li>
-                                <li class="item">8</li>
-                                <li class="item">9</li>
-                                <li class="item">10</li>
-                                <li class="item">11</li>
-                                <li class="item">12</li>
-                                <li class="item">13</li>
-                                <li class="item">14</li>
-                                <li class="item">15</li>
-                                <li class="item">16</li>
-                                <li class="item">17</li>
-                                <li class="item">18</li>
-                                <li class="item">19</li>
-                                <li class="item">20</li>
-                                <li class="item">21</li>
-                                <li class="item">22</li>
-                                <li class="item">23</li>
-                                <li class="item">24</li>
-                                <li class="item">25</li>
-                                <li class="item">26</li>
-                                <li class="item">27</li>
-                                <li class="item">28</li>
-                                <!-- <li class="item">29</li>
-                        <li class="item">30</li>
-                        <li class="item">31</li> -->
+                            <ul class="row" v-for="row in item.grid">
+                                <li v-for="grid in row">
+
+                                </li>
                             </ul>
 
                         </div>

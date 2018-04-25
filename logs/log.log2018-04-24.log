@@ -1,0 +1,46 @@
+[2018-04-23 09:56:30.424] [ERROR] log_file - 获取restObjectService/queryBuild的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1024:11)
+    at _exceptionWithHostPort (util.js:1046:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1182:14)
+[2018-04-23 10:11:43.896] [ERROR] log_file - Error: ENOENT: no such file or directory, open 'e:\Web_EMS\pweb_productList\pweb_saas\facilities\FM\views\pages\workOrder\planMng\hashtag.html'
+    at Object.fs.openSync (fs.js:646:18)
+    at fs.readFileSync (fs.js:551:33)
+    at Object.exports.parse (e:\Web_EMS\pweb_productList\pweb_saas\facilities\node_modules\public_nodejs\ejs\lib\ejs.js:159:19)
+    at exports.compile (e:\Web_EMS\pweb_productList\pweb_saas\facilities\node_modules\public_nodejs\ejs\lib\ejs.js:223:15)
+    at Object.exports.render (e:\Web_EMS\pweb_productList\pweb_saas\facilities\node_modules\public_nodejs\ejs\lib\ejs.js:283:10)
+    at View.exports.renderFile [as engine] (e:\Web_EMS\pweb_productList\pweb_saas\facilities\node_modules\public_nodejs\ejs\lib\ejs.js:317:20)
+    at View.render (e:\Web_EMS\pweb_productList\pweb_saas\facilities\node_modules\public_nodejs\express\lib\view.js:76:8)
+    at Function.app.render (e:\Web_EMS\pweb_productList\pweb_saas\facilities\node_modules\public_nodejs\express\lib\application.js:506:10)
+    at ServerResponse.res.render (e:\Web_EMS\pweb_productList\pweb_saas\facilities\node_modules\public_nodejs\express\lib\response.js:759:7)
+    at e:\Web_EMS\pweb_productList\pweb_saas\facilities\FM\controller\controller.js:20:13
+[2018-04-23 15:01:35.792] [ERROR] log_file - 获取restObjectService/queryBuild的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1024:11)
+    at _exceptionWithHostPort (util.js:1046:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1182:14)
+[2018-04-23 17:09:18.530] [ERROR] log_file - 获取restObjectService/queryEquip的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1024:11)
+    at _exceptionWithHostPort (util.js:1046:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1182:14)
+[2018-04-23 17:52:45.368] [ERROR] log_file - 获取restObjectService/queryBuild的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1024:11)
+    at _exceptionWithHostPort (util.js:1046:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1182:14)
+[2018-04-23 17:56:31.205] [ERROR] log_file - 获取restSopService/queryRecommendSop的数据err："缺少必填项"
+[2018-04-23 17:59:20.577] [ERROR] log_file - 获取restSopService/queryRecommendSop的数据err："缺少必填项"
+[2018-04-23 18:02:52.414] [ERROR] log_file - 获取restSopService/queryRecommendSop的数据err："缺少必填项"
+[2018-04-23 18:08:43.811] [ERROR] log_file - 获取restSopService/queryRecommendSop的数据err："缺少必填项"
+[2018-04-23 18:09:42.870] [ERROR] log_file - 获取restSopService/queryRecommendSop的数据err："缺少必填项"
+[2018-04-23 18:10:37.111] [ERROR] log_file - 获取restSopService/queryRecommendSop的数据err："缺少必填项"
+[2018-04-23 18:11:53.703] [ERROR] log_file - 获取restSopService/queryRecommendSop的数据err："缺少必填项"
+[2018-04-23 18:16:14.117] [ERROR] log_file - 获取restSopService/queryRecommendSop的数据err："缺少必填项"
+[2018-04-23 18:17:03.476] [ERROR] log_file - 获取restSopService/queryRecommendSop的数据err："缺少必填项"
+[2018-04-23 18:20:36.109] [ERROR] log_file - 获取restSopService/queryRecommendSop的数据err："缺少必填项"
+[2018-04-23 18:21:37.208] [ERROR] log_file - 获取restSopService/queryRecommendSop的数据err："缺少必填项"
+[2018-04-23 18:23:10.705] [ERROR] log_file - 获取restSopService/queryRecommendSop的数据err："缺少必填项"
+[2018-04-23 18:24:51.270] [ERROR] log_file - 获取restSopService/queryRecommendSop的数据err："缺少必填项"
+[2018-04-23 18:33:27.236] [ERROR] log_file - 获取restSopService/queryRecommendSop的数据err："缺少必填项"
+[2018-04-23 18:36:13.423] [ERROR] log_file - 获取restSopService/queryRecommendSop的数据err："缺少必填项"
+[2018-04-23 20:20:15.310] [ERROR] log_file - 获取restSopService/querySopListForSel的数据err：Error: connect ETIMEDOUT 52.14.61.47:80
+    at Object._errnoException (util.js:1024:11)
+    at _exceptionWithHostPort (util.js:1046:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1182:14)

@@ -57,10 +57,34 @@ var controller = createController([
         url: "restGroupPlanService/queryGroupPlanList",
         argu: {}
     },
-    {
+    {//查询工单计划发出工单列表
         name: "queryWoListByPlanId",
         url: "restWoPlanService/queryWoListByPlanId",
         argu: {}
+    },
+    // 查询非日类型集团计划项目版及其工单信息
+    {
+        name:"queryWoPlanExecuteList",
+        url:"restGroupPlanService/queryWoPlanExecuteList",
+        argu:{
+
+        }
+    },
+    // 查询日类型集团计划项目版及其工单信息
+    {
+        name:"queryWoPlanDayExecuteList",
+        url:"restGroupPlanService/queryWoPlanDayExecuteList",
+        argu:{
+            
+        }
+    },
+    //查询未引用此集团计划得项目列表
+    {
+        name:"queryUnuseGroupPlanProjectList",
+        url:"restGroupPlanService/queryUnuseGroupPlanProjectList",
+        argu:{
+
+        }
     }
 ], {
         queryWoTypeList() {

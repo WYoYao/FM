@@ -1,8 +1,22 @@
 <div class="table_list" v-if="personModel.curPage == 'list'">
+    <!-- 人员管理，登录信息 -->
+    <% if (user.indexOf('personalManagement') != '-1' && user.indexOf('loginInformation') != '-1') { %>
     <div class="table_top">
-        <ptab-navigation text="name" icon="icon" :id="'navBar'" datasource="personModel.buttonMenus" templateid='tabTemplate' sel="personMethods.tabChange(model,event)"></ptab-navigation>
-
+        <ptab-navigation text="name" icon="icon" id="navBar" datasource="personModel.buttonMenus1" templateid='tabTemplate' sel="personMethods.tabChange(model,event)"></ptab-navigation>
     </div>
+    <% } %>
+    <!-- 人员管理 -->
+    <% if (user.indexOf('personalManagement') != '-1') { %>
+        <div class="table_top">
+            <ptab-navigation text="name" icon="icon" id="navBar" datasource="personModel.buttonMenus2" templateid='tabTemplate' sel="personMethods.tabChange(model,event)"></ptab-navigation>
+        </div>
+    <% } %>
+     <!-- 登录信息 -->
+     <% if (user.indexOf('loginInformation') != '-1') { %>
+        <div class="table_top">
+            <ptab-navigation text="name" icon="icon" id="navBar" datasource="personModel.buttonMenus3" templateid='tabTemplate' sel="personMethods.tabChange(model,event)"></ptab-navigation>
+        </div>
+    <% } %>
 </div>
 
 
@@ -19,9 +33,11 @@
                     <div class="name">
                         组织结构
                     </div>
+                    <% if (user.indexOf('editCustomDepartment') != '-1') { %>
                     <div class="editBtn">
-                        <pbutton-white bind="true" icon ="'`'" text="'编辑自定义部门'" @click="personMethods.editOrganizationList()"></pbutton-white>
+                        <pbutton-blue  icon ="`" isborder="false" text="编辑自定义部门" click="personMethods.editOrganizationList()"></pbutton-blue>
                     </div>
+                    <% } %>
                 </div>
                 <div class="content">
                     <div class="organizationUl" v-for="(item, index) in personModel.organizationList">
@@ -58,9 +74,12 @@
                                 <img src="../images/personShow.png" alt="">
                             </div>
                         </div>
+                        <% if (user.indexOf('addPerson') != '-1') { %>
                         <div class="newPersonBtn">
                             <pbutton-white icon ="J" text="新建人员" click="personMethods.createAndEditShow"></pbutton-white>
                         </div>
+                        <% }%>
+                        <% if (user.indexOf('bulkUploadPerson') != '-1') { %>
                         <div class="uploadBtn" style="width:120px;height:33px;">
                             <pupload-attachment id='upload' text="批量上传" number="1" accept="">
                                 <panel success='personMethods.batchUpload'></panel>
@@ -69,6 +88,7 @@
 
                             <!-- <pbutton-white icon ="d" text="批量上传" click="personMethods.batchUpload()"></pbutton-white> -->
                         </div>
+                        <% }%>
                         <div class="downloadBtn" style="margin-left:10px">
                             <pbutton-white icon ="D" text="下载模板" click="personMethods.downloadTemplate"></pbutton-white>
                         </div>
@@ -84,13 +104,11 @@
                             <column name="姓名" source="name" width="20%"></column>
                             <column :title="account" name="手机号" source="phone_num" width="20%"></column>
                             <column name="专业" source="specialty_name" width="20%"></column>
-                            <column name="账号" source="person_num" width="20%"></column>
+                            <column name="账号" source="person_user_name" width="20%"></column>
                             <column bind="true" source="person_id" width="0%" visible="false"></column>
                         </header>
+                        <pnotice-nodata text="暂无数据"></pnotice-nodata>
                     </pgrid-multifunction>
-                    <div v-show="personModel.personInfoGrid.length == 0">
-                        <pnotice-nodata text="暂无数据" icon="../images/sassNodata.png"></pnotice-nodata>
-                    </div>
                 </div>
                 <!-- 人员缩略图列表 -->
                 <div id="perPicTable"  class="contentList photoList"style="display: none;">
@@ -113,8 +131,8 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="newNoData" v-show="personModel.personGroup && personModel.personGroup.length==0">
-                        <pnotice-nodata text="暂无数据" icon="../images/sassNodata.png"></pnotice-nodata>
+                    <div id="newNoData" v-show="personModel.personGroup && personModel.personGroup.length==0">
+                        <pnotice-nodata text="暂无数据"></pnotice-nodata>
                     </div>
                 </div>
             </div>
@@ -139,21 +157,21 @@
                 </div>
             </div>
             <div class="infoList" style="height:100%">
-                <pgrid-multifunction bind="true">
+                <pgrid-multifunction id="'loginInfoGrid'" bind="true">
                     <panel bind="true" datasource="personModel.loginInfoGrid" sortevent="personMethods.loginInfoSort"></panel>
                     <header>
                         <column name="姓名" source="name" width="20%"></column>
                         <column name="登录时间" source="login_time" width="20%" sort="true" defaultsort="desc"></column>
                         <column :title="account" name="账号" source="person_user_name" width="20%"></column>
                         <column name="登录设备" source="login_device" width="20%"></column>
-                        <column name="登录距离项目距离" source="distance" width="20%" sort="true" defaultsort="desc"></column>
+                        <column name="登录距离项目距离" source="distance+'km'" width="20%" sort="true" defaultsort="desc"></column>
                     </header>
                     
                    
 
                 </pgrid-multifunction>
                 <div v-show="personModel.loginInfoGrid.length == 0">
-                    <pnotice-nodata text="暂无数据" icon="../images/sassNodata.png"></pnotice-nodata>
+                    <pnotice-nodata text="暂无数据"></pnotice-nodata>
                 </div>
             </div>
         </div>

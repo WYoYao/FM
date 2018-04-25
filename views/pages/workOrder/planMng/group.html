@@ -58,39 +58,54 @@
                     <script src="/js/workOrder/planMng/aite/controller.js"></script>
                     <script src="/js/workOrder/planMng/aite/model.js"></script>
 
-                    <!-- 添加工作内容弹窗 -->
-                    <%include ./addcontent.html %>
-                        <script src="/js/workOrder/planMng/addcontent/controller.js"></script>
-                        <script src="/js/workOrder/planMng/addcontent/model.js"></script>
+                    <!-- 添加信息点弹窗 -->
+                    <%include ./point.html %>
+                        <script src="/js/workOrder/planMng/point/model.js"></script>
 
-                        <!-- 创建计划@弹窗 -->
-                        <%include ./matter.html %>
-                            <!-- <link rel="stylesheet" href="/css/workOrder/planMng/group/matter.css"> -->
-                            <!-- <script src="/js/workOrder/planMng/aite/controller.js"></script> -->
-                            <script src="/js/workOrder/planMng/matter/model.js"></script>
+                        <!--  添加对象和信息点  -->
+                        <%include ./addinfo.html %>
+                            <script src="/js/workOrder/planMng/addinfo/controller.js"></script>
+                            <script src="/js/workOrder/planMng/addinfo/model.js"></script>
 
+                            <!-- 编辑信息点弹窗 -->
+                            <%include ./idepoint.html %>
+                                <script src="/js/workOrder/planMng/idepoint/model.js"></script>
 
+                                <!-- 添加工作内容弹窗 -->
+                                <%include ./addcontent.html %>
+                                    <script src="/js/workOrder/planMng/addcontent/controller.js"></script>
+                                    <script src="/js/workOrder/planMng/addcontent/model.js"></script>
 
-
-
-
-                            <!--  创建的计划每个事项 End -->
-
-
-                            <div id="app">
-                                <!-- 工单列表 -->
-                                <%include ./workOrderList.html %>
-
-                                    <!-- 项目计划监控 -->
-                                    <%include ./grouphome.html %>
-                                        <!-- 项目计划监控 -->
-                                        <%include ./monitoringPlan.html %>
-                                            <!-- 创建计划  -->
-                                            <%include ./createPlan/planCreate.html %>
-                                                <!-- 预览计划 -->
-                                                <%include ./createPlan/planCreate_next.html %>
-
-                            </div>
+                                    <!-- 创建计划@弹窗 -->
+                                    <%include ./matter.html %>
+                                        <!-- <link rel="stylesheet" href="/css/workOrder/planMng/group/matter.css"> -->
+                                        <!-- <script src="/js/workOrder/planMng/aite/controller.js"></script> -->
+                                        <script src="/js/workOrder/planMng/matter/model.js"></script>
 
 
-                            <% include ../../../template/pageFoot.html %>
+
+
+
+
+
+
+                                        <!--  创建的计划每个事项 End -->
+
+
+                                        <div id="app">
+                                            <!-- 工单列表 -->
+                                            <%include ./workOrderList.html %>
+
+                                                <!-- 项目计划监控 -->
+                                                <%include ./grouphome.html %>
+                                                    <!-- 项目计划监控 -->
+                                                    <%include ./monitoringPlan.html %>
+                                                        <!-- 创建计划  -->
+                                                        <%include ./createPlan/planCreate.html %>
+                                                            <!-- 预览计划 -->
+                                                            <%include ./createPlan/planCreate_next.html %>
+
+                                        </div>
+
+
+                                        <% include ../../../template/pageFoot.html %>

@@ -10,12 +10,16 @@
                     中心部门
                 </div>
                 <div class="operat">
+                    <% if (user.indexOf('editOrganization') != '-1') { %>
                     <div class="edit">
                         <pbutton-white bind="true" icon="'`'" text="'修改'" @click="organizationMethods.centerDepartEdit()"></pbutton-white>
                     </div>
+                    <% } %>
+                    <% if (user.indexOf('addEditPerson') != '-1') { %>
                     <div class="addPerson">
                         <pbutton-white bind="true" icon="'J'" text="'快速添加人员'" click="windowEvent.showPwindow5"></pbutton-white>
                     </div>
+                    <% } %>
                 </div>
             </div>
             <div class="centerDepartmentUl" v-for="(item, index) in organizationModel.listByCenterDepartment">
@@ -29,9 +33,11 @@
                     项目通用部门
                 </div>
                 <div class="operat">
+                    <% if (user.indexOf('editOrganization') !='-1') { %>
                     <div class="edit">
                         <pbutton-white bind="true" icon="'`'" text="'修改'" @click="organizationMethods.projectCommonEdit()"></pbutton-white>
                     </div>
+                    <% } %>
                 </div>
             </div>
             <div class="projectCommonUl" v-for="(item, index) in organizationModel.listByProjectCommon">
@@ -40,9 +46,11 @@
         </div>
     </div>
     <!-- 快速添加人员 -->
+   
     <pwindow-float title="添加中心部门人员" id="fastAdd" templateid="temp_window">
         <animate maxpx="0" minpx="-455" orientation="right"></animate>
     </pwindow-float>
+    
     <script type="text/html" id="temp_window">
         <div class="conFastAdd">
             <h1 class="essentialInformation">基本信息</h1>
@@ -50,9 +58,10 @@
                 <li class="itemFastAdd">
                     <span><a class="starSymbol">*</a>员工识别码：</span>
                     <div class="conItem">
-                        <ptext-text placeholder="请输入" id="identificationCode">
-                            <verify errtip="不可为空"  verifytype="space"></verify>
-                            <verify errtip="不可超过20个字"  verifytype="length" length="20"></verify>
+                        <ptext-text placeholder="'请输入20位以内数字'" :id="'identificationCode'" bind="true" @input="organizationMethods.queryById">
+                            <verify errtip="员工识别码不能为空！"  verifytype="space"></verify>
+                            <verify errtip="请输入数字"  verifytype="pisNumber"></verify>
+                            <verify errtip="最多输入20个字符！"  verifytype="length" length="20"></verify>
                         </ptext-text>
                     </div>
                 </li>
@@ -60,8 +69,8 @@
                     <span><a class="starSymbol">*</a>姓名：</span>
                     <div class="conItem">
                         <ptext-text placeholder="请输入" id="personName">
-                            <verify errtip="不可为空"  verifytype="space"></verify>
-                            <verify errtip="不可超过20个字"  verifytype="length" length="20"></verify>
+                            <verify errtip="姓名不能为空"  verifytype="space"></verify>
+                            <verify errtip="员工姓名不可超过20个字！"  verifytype="length" length="20"></verify>
                         </ptext-text>
                     </div>
                 </li>
@@ -85,8 +94,9 @@
                 <li class="itemFastAdd">
                     <span>手机号：</span>
                     <div class="conItem">
-                        <ptext-text placeholder="请输入" id="phoneNumber">
-                            <verify errtip="手机号格式错误"  verifytype="mobile"></verify>
+                        <ptext-text placeholder="请输入11位手机号" id="phoneNumber">
+                            <verify errtip="手机号格式不正确！"  verifytype="mobile"></verify>
+                            <verify errtip="手机号应为11个字符！"  verifytype="length" length="11"></verify>
                         </ptext-text>
                     </div>
                 </li>
@@ -94,7 +104,8 @@
                     <span>邮箱：</span>
                     <div class="conItem">
                         <ptext-text placeholder="请输入" id="email">
-                            <verify errtip="邮箱格式错误"  verifytype="email"></verify>
+                            <verify errtip="邮箱格式不正确！"  verifytype="email"></verify>
+                            <verify errtip="邮箱不可超过50个字！"  verifytype="length" length="50"></verify>
                         </ptext-text>
                     </div>
                 </li>    
@@ -107,7 +118,11 @@
                         <pcombobox-custom templateid="temp_project" id="selectedProject">
                             <header  placeholder="请选择项目" ></header>
                         </pcombobox-custom>
+                        <div class="promptForm" v-if="organizationModel.verifi3">
+                            请选择项目
+                        </div>
                     </div>
+                    
                 </li>
             </ul>
             <h1 class="essentialInformation">工作信息</h1>
@@ -115,8 +130,8 @@
                 <li class="itemFastAdd">
                     <span>员工编号：</span>
                     <div class="conItem" id="employeeNumber">
-                        <ptext-text placeholder="输入编号">
-                            <verify errtip="不可超过20个字"  verifytype="length" length="20"></verify>
+                        <ptext-text placeholder="请输入编号">
+                            <verify errtip="员工编号不可超过50个字！"  verifytype="length" length="20"></verify>
                         </ptext-text>
                     </div>
                 </li>
@@ -135,7 +150,11 @@
                             <header  placeholder="请选择岗位"></header>
                             <item datasource="organizationModel.postArr" text="position_name" id="position_id"></item>
                         </pcombobox-normal>
+                        <div class="promptForm" v-if="organizationModel.verifi4">
+                            请选择岗位
+                        </div>
                     </div>
+                    
                 </li>
                 <li class="itemFastAdd">
                     <span>专业：</span>
@@ -185,8 +204,7 @@
             <ul>
                 <li class="itemFastAdd">
                     <div class="conItem">
-                        <pupload-img id="Pupload-img1" style="height:130px;width:130px;">
-                            <panel success="uploadSuccess"></panel>
+                        <pupload-img id="fastAddImg" style="height:130px;width:130px;">
                         </pupload-img>
                     </div>
                 </li>
@@ -203,6 +221,10 @@
     <script type="text/html" id="temp_project">
         <div class="projectCommonUl" v-for="(item, index) in organizationModel.listByProject" id="projectList">
             <organization :model="item"></organization>
+            <!-- <div>
+                <button class="buttonBlue">确定</button>
+                <button class="buttonWhite">取消</button>
+            </div> -->
         </div>
     </script>
     <!-- 专业模板 -->

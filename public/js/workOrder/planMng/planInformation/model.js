@@ -1,65 +1,110 @@
 v.pushComponent({
-    name: "planInformation",
-    data: {
-        planId:"",
-        planType:"",
-        planInfo:{},
-        historyRecordList:{},
-        planInformationPaths:[],
-    },
-    methods: {
-        // 废弃计划
-        deletePlan : function(){
+  name: "planInformation",
+  data: {
+    planId:"",
+    // 计划类型 
+    // 'order'工单计划 'group'集团计划 'groupD'已作废集团计划 'orderD'已作废工单计划 'project'项目计划
+    planType:"",
+    // 计划信息
+    planInfo:{},
+    // 计划修改历史
+    historyRecordList:{},
+    planInformationPaths:[],
+  },
+  methods: {
+    // 废弃计划
+    deletePlan : function(){
+      getData([this.planType == 'group' ? {name:"deleteGroupPlan",data:{group_plan_id:this.planId}} : {name:"deleteOrderPlan",data:{plan_id:this.planId}}])[0].then(function(data){
 
-        },
-        // 查看计划历史工单信息
-        lookHistoryOrderInfo : function(){
-            v.initPage('dumpedPlanOrder',{orderPlanId:this.planInfo.plan_id})
-        },
-        // 修改计划
-        changePlan : function(){
+      }).catch(function(err){
 
-        },
-        // 复制计划
-        copyPlan : function(){
+      })
+    },
+    // 查看计划历史工单信息
+    lookHistoryOrderInfo : function(){
+        v.initPage('planWorkOrder',{orderPlanId:this.planId})
+    },
+    // 修改计划
+    changePlan : function(){
 
-        },
-        // 查看计划版本记录
-        lookVersionRemark : function(){
-            $("#planChangeHistoryWindow").pshow();
-        },
-        comparePlanEffect: function (str) { //与当前时间做比较，判断计划生效时间
-            if (str != '') {
-                var _st = this.timeFormatting(str);
-                var _st_tran = Date.parse(new Date(_st));
-                var date = new Date();
-                var _curr_t = Date.parse(new Date()); //当前时间
-                if (_st_tran > _curr_t) {
-                    return 1;
-                } else {
-                    return 2;
-                }
-            }
-        },
     },
-    filters: {
-        
+    // 复制计划
+    copyPlan : function(){
+
     },
-    beforeMount : function(){
-        if(v.name.hasOwnProperty('term')){
-            this.planInformationPaths = this.lastPage == 'dumpedPlan' ? [
-                {name:"首页",path:"planManage"},{name:"已作废计划列表",path:"dumpedPlan"},{name:"已作废计划详情"}
-            ] : [
-                {name:"首页",path:"planManage"},{name:"计划详情"}
-            ];
+    // 跳转到项目计划监控
+    GoProPlan : function(){
+
+    },
+    // 查看计划版本记录
+    lookVersionRemark : function(){
+      $("#planChangeHistoryWindow").pshow();
+    },
+    // 查看项目计划中的工单
+    lookAllOrder : function(){
+
+    },
+    // 查看项目所有计划
+    lookAllPlan : function(){
+
+    },
+    //与当前时间做比较，判断计划生效时间
+    comparePlanEffect: function (str) { 
+      if (str != '') {
+        var _st = this.timeFormat(str,'0');
+        var _st_tran = Date.parse(new Date(_st));
+        var date = new Date();
+        var _curr_t = Date.parse(new Date()); //当前时间
+        if (_st_tran > _curr_t) {
+          return 1;
+        } else {
+          return 2;
         }
-        var arr = [{name:this.planType == 'order' ? "orderPlanInfo" : "groupPlanInfo",data:{planId:this.planId}}];
-        getData(arr)[0].then(function(data){
-            this.planInfo = JSON.parse(JSON.stringify(data.Content));
-        }).catch(function(err){
-
-        })
+      }
+    },
+  },
+  filters: {
+      
+  },
+  beforeMount : function(){
+    // 生成路径
+    switch(this.planType){
+      case 'group':
+        this.planInformationPaths = [{name:"首页",path:""},{name:"集团计划详情"}];
+      break;
+      case 'order':
+        this.planInformationPaths = [{name:"首页",path:"planManage"},{name:"计划详情"}]
+      break;
+      case 'groupD':
+        this.planInformationPaths = [{name:"首页",path:""},{name:"已作废集团计划详情"}];
+      break;
+      case 'orderD':
+        this.planInformationPaths = [{name:"首页",path:"planManage"},{name:"已作废计划列表",path:"planManage"},{name:"已作废计划详情"}];
+      break;
+      case 'project':
+        this.planInformationPaths = [{name:"首页",path:""},{name:"集团计划详情",path:"planInfomation"},{name:"项目计划监控",path:""},{name:"项目计划详情"}];
+      break;
     }
+    
+    // 获取计划信息
+    var arr = [{name:(this.planType === 'order' || this.planType === 'orderD' || this.planType === 'project') ? "orderPlanInfo" : "groupPlanInfo",data:{planId:this.planId}}];
+    getData(arr)[0].then(function(data){
+      this.planInfo = JSON.parse(JSON.stringify(data.Content));
+    }).catch(function(err){
+        
+    })
+
+    // 如果当前计划为工单计划或已作废工单计划，则获取计划历史信息，点不点随意，先准备总是没错的
+    if(this.planType === 'order' || this.planType === 'orderD'){
+      var arr = [{name:"planChangeHistory",data:{plan_id:this.planId}}];
+      getData(arr)[0].then(function(data){
+        this.historyRecordList = JSON.parse(JSON.stringify(data.Content.splice(0,2)));
+      }).catch(function(err){
+
+      })
+    }
+
+  }
 });
 
 
@@ -81,7 +126,10 @@ var abc = {
   "urgency": "低",
   "ahead_create_time": 1,
   "freq_cycle": "w",
-  "remind_type": "1",
+  "remind_type": "3",
+  "plan_update_status":"0",
+  "plan_from":"1",
+  "plan_update_type":"2",
   "freq_num": 1,
   "freq_times": [
     {
@@ -194,6 +242,695 @@ var def={"data": [
     "freq_num": 1,
     "freq_times": [
       {
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
+        "start_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "00",
+          "time_minute": "00"
+        },
+        "end_time": {
+          "cycle": "d",
+          "time_day": "1",
+          "time_hour": "01",
+          "time_minute": "00"
+        }
+      },{
         "start_time": {
           "cycle": "d",
           "time_day": "1",

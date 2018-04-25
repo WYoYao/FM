@@ -1,142 +1,86 @@
 /*事件注册*/
 $(function () {
     organizationLogger.init();
-    $("#birthDate").psel({y:2017,M:1,d:1});
+    $("#birthDate").psel({ y: 2017, M: 1, d: 1 });
     //矫正树的底部边框样式
     windowEvent.borderInit();
-    
-    //快速添加人员-项目list的input点击事件
-    // $("#projectList input").on('click',function(){
-    //     //分三种状态：1.disabled 不可用；2.selected 已选中 3.初始化状态
-    //     if($(this).hasClass('disabled')){
-    //         return false;
-    //     }
-    //     var arr = organizationModel.listByProject;
-    //     var id = $(this).attr('id');
-    //     if($(this).hasClass('selected')){
-    //         (function find(arr,id){
-    //             var find = arguments.callee;
-    //             for(var i=0;i<arr.length;i++){     
-    //                 if(arr[i].id == id){
-    //                     arr[i].selected = false;
-    //                     if (arr[i].child_objs && arr[i].child_objs.length) {
-    //                         (function find_(arr){
-    //                             var find = arguments.callee;
-    //                             for(var i=0;i<arr.length;i++){     
-    //                                 arr[i].disabled = false;         
-    //                                 if (arr[i].child_objs && arr[i].child_objs.length) {
-    //                                     find(arr[i].child_objs);
-    //                                 } 
-    //                             }
-    //                         })(arr[i].child_objs)
-    //                     }   
-    //                     break;
-    //                 }      
-    //                 if (arr[i].child_objs && arr[i].child_objs.length) {
-    //                     find(arr[i].child_objs,id);
-    //                 } 
-    //             }
-    //         })(arr,id)
-    //     }else{
-    //         (function find(arr,id){
-    //             var find = arguments.callee;
-    //             for(var i=0;i<arr.length;i++){     
-    //                 if(arr[i].id == id){
-    //                     arr[i].selected = true;
-    //                     if (arr[i].child_objs && arr[i].child_objs.length) {
-    //                         (function find_(arr){
-    //                             var find = arguments.callee;
-    //                             for(var i=0;i<arr.length;i++){     
-    //                                 arr[i].disabled = true;  
-    //                                 arr[i].selected = false;                                                    
-    //                                 if (arr[i].child_objs && arr[i].child_objs.length) {
-    //                                     find(arr[i].child_objs);
-    //                                 } 
-    //                             }
-    //                         })(arr[i].child_objs)
-    //                     }    
-    //                     break;
-    //                 }      
-    //                 if (arr[i].child_objs && arr[i].child_objs.length) {
-    //                     find(arr[i].child_objs,id);
-    //                 } 
-    //             }
-    //         })(arr,id);
-    //     }
-    //     var headerString = '';
-    //     (function find_(arr){
-    //         var find = arguments.callee;
-    //         for(var i=0;i<arr.length;i++){     
-    //             if(arr[i].selected){
-    //                 headerString += (headerString.length === 0 ? '' : ',') + arr[i].obj_name;
-    //             }        
-    //             if (arr[i].child_objs && arr[i].child_objs.length) {
-    //                 find(arr[i].child_objs);
-    //             } 
-    //         }
-    //     })(arr)
-    //     $("#selectedProject .per-combobox_name").html((headerString === '' ? '请选择项目' : headerString));
-    // });
 });
 
 //工具
 var tools = {
     //去除两端空格
-    trim: function(x) {
-        return x.replace(/^\s+|\s+$/gm,'');
+    trim: function (x) {
+        return x.replace(/^\s+|\s+$/gm, '');
+    },
+    isIE: function() {   //ie?
+        if (!!window.ActiveXObject || "ActiveXObject" in window){
+            return true;
+        }else{
+            return false;
+        }
     }
+ 
 }
 
 //全局事件
 var windowEvent = {
-    remove: function(opId,listName,type){
-        organizationMethods.operation(opId,organizationModel[listName],type)
+    remove: function (opId, listName, type) {
+        organizationMethods.operation(opId, organizationModel[listName], type)
     },
-    showPwindow3: function(){
-        
-        if(organizationModel.operationState[4].usable){
+    showPwindow3: function () {
+        if (organizationModel.operationState[4].usable) {
             clearTimeout(organizationModel.timer);
-         
             $("#pwindow3").pshow();
-        }    
+        }
     },
-    hidePwindow3: function(){
+    hidePwindow3: function () {
+
         $("#pwindow3").phide();
         organizationMethods.operationStateInit();
     },
-    showPwindow2: function(){
-        if(organizationModel.operationState[4].usable){
+    showPwindow2: function () {
+        if (organizationModel.operationState[4].usable) {
             clearTimeout(organizationModel.timer);
             $("#pwindow2").pshow();
-        }    
+        }
     },
-    hidePwindow2: function(){
+    hidePwindow2: function () {
+
         $("#pwindow2").phide();
         organizationMethods.operationStateInit();
     },
     //树的节点的事件绑定
-    windowInit: function(){
-        $('#projectCommon, #centerDepart').off('click','.organizationTreeBoxName').off('blur','.organizationTreeBoxName>input');
-        $('#projectCommon, #centerDepart').on('click','.organizationTreeBoxName' ,function () {
-            clearTimeout(organizationModel.timer);
+    windowInit: function () {
+        $('#projectCommon, #centerDepart').off('click', '.organizationTreeBoxName').off('blur', '.organizationTreeBoxName>input');
+        $('#projectCommon, #centerDepart').on('click', '.organizationTreeBoxName', function () {
+            //  console.log(tools.isIE());    //判断edge
+            
+            
+            // if(tools.isIE() && (obj.obj_name == '中心部门')){  //edge浏览器js
+            //     var that=$("#projectCommon .organizationTreeBoxName>input:focus, #centerDepart .organizationTreeBoxName>input:focus");
+            //     $(that).trigger("blur");
+            // }   
+
+            clearTimeout(organizationModel.timer);   
             $('#projectCommon .organizationTreeBoxName input,#centerDepart .organizationTreeBoxName input').css('borderColor', 'transparent');
             $('#centerDepart .organizationTreeBoxName:last,#projectCommon .organizationTreeBoxName:last').css('borderBottom', 'none');
-            $(this).find('input').css('border', '1px solid #0ff');
-            var obj=JSON.parse($(this).find('input').attr('dis'));
-            if(obj.obj_name === '中心部门' ){
+            $(this).find('input').css('background', '#f8f8f8');
+            console.log(1)
+            var obj = JSON.parse($(this).find('input').attr('dis'));
+            if (obj.obj_name === '中心部门') {
                 organizationModel.operationState[0].usable = false;
                 organizationModel.operationState[1].usable = false;
                 organizationModel.operationState[2].usable = false;
                 organizationModel.operationState[3].usable = true;
                 organizationModel.operationState[4].usable = false;
-            }else if(!obj.child_objs){
-                if(organizationModel.curPage === 'centerDepartMent'){
+            } else if (!obj.child_objs) {
+                if (organizationModel.curPage === 'centerDepartMent') {
                     organizationModel.operationState[0].usable = false;
                     organizationModel.operationState[1].usable = false;
                     organizationModel.operationState[2].usable = true;
                     organizationModel.operationState[3].usable = false;
                     organizationModel.operationState[4].usable = true;
-                }else{
+                } else {
                     organizationModel.operationState[0].usable = true;
                     organizationModel.operationState[1].usable = false;
                     organizationModel.operationState[2].usable = true;
@@ -144,205 +88,143 @@ var windowEvent = {
                     organizationModel.operationState[4].usable = true;
                 }
 
-            }else{
+            } else {
                 organizationModel.operationState[0].usable = true;
                 organizationModel.operationState[1].usable = true;
                 organizationModel.operationState[2].usable = true;
                 organizationModel.operationState[3].usable = true;
                 organizationModel.operationState[4].usable = true;
             }
-            setTimeout(() => {
-                if(obj.obj_name !== '中心部门'){
-                    $(this).find('input').removeAttr('readonly').focus();
+            var that = this;
+ 
+            setTimeout(function () {
+                if (obj.obj_name !== '中心部门') {
+                    $(that).find('input').removeAttr('readonly').focus();
                 }
+                
             }, 200)
         })
-    
+
         //改变树的元素的状态为未选择
-        $('#projectCommon , #centerDepart').on('blur', '.organizationTreeBoxName>input',function () {   
-            if(tools.trim($(this).val()) === ""){
-                console.log("123")
+        $('#projectCommon , #centerDepart').on('blur', '.organizationTreeBoxName>input', function () {
+            console.log(2)
+            if (tools.trim($(this).val()) === "") {
                 $(this).parent().find(".inputPrompt").show().addClass("inputPromptShow");
-            }else{
+            } else {
                 $(this).parent().find(".inputPrompt").hide().removeClass("inputPromptShow");
             }
-            $('#projectCommon .organizationTreeBoxName input,#centerDepart .organizationTreeBoxName input').css('borderColor', 'transparent');
+            $('#projectCommon .organizationTreeBoxName input,#centerDepart .organizationTreeBoxName input').css('background', '#fff');
             $('#centerDepart .organizationTreeBoxName:last,#projectCommon .organizationTreeBoxName:last').css('borderBottom', 'none');
-            organizationModel.timer=setTimeout(function () {
+            organizationModel.timer = setTimeout(function () {
                 organizationMethods.operationStateInit();
                 organizationModel.activeDataObj = {};
             }, 200)
         })
     },
     //插件—多选树事件
-    multiselectPluginEvent: function(targetElementId,model,headerId,placeHolder){
-        $("#"+targetElementId+" input").on('click',function(){
+    multiselectPluginEvent: function (targetElementId, model, headerId, placeHolder) {
+        $("#" + targetElementId + " input").on('click', function () {
             //分三种状态：1.disabled 不可用；2.selected 已选中 3.初始化状态
-            if($(this).hasClass('disabled')){
+            if ($(this).hasClass('disabled')) {
                 return false;
             }
             var arr = organizationModel[model];
             var id = $(this).attr('id');
-            if($(this).hasClass('selected')){
-                (function find(arr,id){
+            if ($(this).hasClass('selected')) {
+                (function find(arr, id) {
                     var find = arguments.callee;
-                    for(var i=0;i<arr.length;i++){     
-                        if(arr[i].id == id){
+                    for (var i = 0; i < arr.length; i++) {
+                        if (arr[i].id == id) {
                             arr[i].selected = false;
                             if (arr[i].child_objs && arr[i].child_objs.length) {
-                                (function find_(arr){
+                                (function find_(arr) {
                                     var find = arguments.callee;
-                                    for(var i=0;i<arr.length;i++){     
-                                        arr[i].disabled = false;         
+                                    for (var i = 0; i < arr.length; i++) {
+                                        arr[i].disabled = false;
                                         if (arr[i].child_objs && arr[i].child_objs.length) {
                                             find(arr[i].child_objs);
-                                        } 
+                                        }
                                     }
                                 })(arr[i].child_objs)
-                            }   
+                            }
                             break;
-                        }      
+                        }
                         if (arr[i].child_objs && arr[i].child_objs.length) {
-                            find(arr[i].child_objs,id);
-                        } 
+                            find(arr[i].child_objs, id);
+                        }
                     }
-                })(arr,id)
-            }else{
-                (function find(arr,id){
+                })(arr, id)
+            } else {
+                (function find(arr, id) {
                     var find = arguments.callee;
-                    for(var i=0;i<arr.length;i++){     
-                        if(arr[i].id == id){
+                    for (var i = 0; i < arr.length; i++) {
+                        if (arr[i].id == id) {
                             arr[i].selected = true;
                             if (arr[i].child_objs && arr[i].child_objs.length) {
-                                (function find_(arr){
+                                (function find_(arr) {
                                     var find = arguments.callee;
-                                    for(var i=0;i<arr.length;i++){     
-                                        arr[i].disabled = true;  
-                                        arr[i].selected = false;                                                    
+                                    for (var i = 0; i < arr.length; i++) {
+                                        arr[i].disabled = true;
+                                        arr[i].selected = false;
                                         if (arr[i].child_objs && arr[i].child_objs.length) {
                                             find(arr[i].child_objs);
-                                        } 
+                                        }
                                     }
                                 })(arr[i].child_objs)
-                            }    
+                            }
                             break;
-                        }      
+                        }
                         if (arr[i].child_objs && arr[i].child_objs.length) {
-                            find(arr[i].child_objs,id);
-                        } 
+                            find(arr[i].child_objs, id);
+                        }
                     }
-                })(arr,id);
+                })(arr, id);
             }
             var headerString = '';
-            (function find_(arr){
+            (function find_(arr) {
                 var find = arguments.callee;
-                for(var i=0;i<arr.length;i++){     
-                    if(arr[i].selected){
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].selected) {
                         headerString += (headerString.length === 0 ? '' : ',') + arr[i].obj_name;
-                    }        
+                    }
                     if (arr[i].child_objs && arr[i].child_objs.length) {
                         find(arr[i].child_objs);
-                    } 
+                    }
                 }
             })(arr)
-            $("#"+headerId+" .per-combobox_name").html((headerString === '' ? placeHolder : headerString));
+            $("#" + headerId + " .per-combobox_name").html((headerString === '' ? placeHolder : headerString));
         });
     },
     //项目初始化
-    projectInit : function(){
+    projectInit: function () {
         var targetElementId = "projectList";
         var model = "listByProject";
         var headerId = "selectedProject";
-        this.multiselectPluginEvent(targetElementId,model,headerId,"请选择项目");
+        this.multiselectPluginEvent(targetElementId, model, headerId, "请选择项目");
     },
     // 专业事件绑定
-    majorInit : function(){
+    majorInit: function () {
         var targetElementId = "projectList1";
         var model = "majorArr";
         var headerId = "selectedMajor";
-        this.multiselectPluginEvent(targetElementId,model,headerId,"请选择专业");
+        this.multiselectPluginEvent(targetElementId, model, headerId, "请选择专业");
     },
     // 权限事件绑定
-    jurisdictionInit : function(){
+    jurisdictionInit: function () {
         var targetElementId = "projectList2";
         var model = "jurisdiction";
         var headerId = "selectedJurisdiction";
-        this.multiselectPluginEvent(targetElementId,model,headerId,"请选择权限");
+        this.multiselectPluginEvent(targetElementId, model, headerId, "请选择权限");
     },
-    // 岗位事件绑定
-    // positionInit : function(){
-    //     var targetElementId = "projectList3";
-    //     var model = "postArr";
-    //     var headerId = "selectedPosition";
-    //     $("#"+targetElementId+" input").on('click',function(){
-    //         //分三种状态：1.disabled 不可用；2.selected 已选中 3.初始化状态
-    //         if($(this).hasClass('disabled') || $(this).hasClass('selected')){
-    //             $("#selectedPosition > .per-combobox-wrap").hide();
-    //             return false;
-    //         }
-    //         var arr = organizationModel[model];
-
-    //         var id = $(this).attr('id');
-
-    //         // if($(this).hasClass('selected')){
-    //         //     (function find(arr,id){
-    //         //         var find = arguments.callee;
-    //         //         for(var i=0;i<arr.length;i++){     
-    //         //             if(arr[i].id == id){
-    //         //                 arr[i].selected = false;  
-    //         //                 break;
-    //         //             }      
-    //         //             if (arr[i].child_objs && arr[i].child_objs.length) {
-    //         //                 find(arr[i].child_objs,id);
-    //         //             } 
-    //         //         }
-    //         //     })(arr,id)
-    //         // }else{
-    //             (function find(arr,id){
-    //                 var find = arguments.callee;
-    //                 for(var i=0;i<arr.length;i++){     
-    //                     if(arr[i].id == id){
-    //                         arr[i].selected = true;
-    //                     }else{
-    //                         if(arr[i].selected === true){
-    //                             arr[i].selected = false;
-    //                         }   
-    //                     }   
-    //                     if (arr[i].child_objs && arr[i].child_objs.length) {
-    //                         find(arr[i].child_objs,id);
-    //                     } 
-    //                 }
-    //             })(arr,id);
-    //         // }
-
-    //         var headerString = '';
-
-    //         (function find_(arr){
-    //             var find = arguments.callee;
-    //             for(var i=0;i<arr.length;i++){     
-    //                 if(arr[i].selected){
-    //                     headerString += (headerString.length === 0 ? '' : ',') + arr[i].obj_name;
-    //                 }        
-    //                 if (arr[i].child_objs && arr[i].child_objs.length) {
-    //                     find(arr[i].child_objs);
-    //                 } 
-    //             }
-    //         })(arr)
-
-    //         $("#"+headerId+" .per-combobox_name").html((headerString === '' ? '请选择岗位' : headerString));
-
-    //         $("#selectedPosition > .per-combobox-wrap").hide();
-    //     });
-    // },
     //显示快速添加中心部门人员
-    showPwindow5 : function () {
+    showPwindow5: function () {
         $('#fastAdd').pshow();
-        function fastAddInit () {
+        function fastAddInit() {
             $("#identificationCode").precover();
             $("#personName").precover();
             $("#personSex").psel("男");
             $("#phoneNumber").precover();
-            $("#birthDate").psel({y:2017,M:1,d:1});
+            $("#birthDate").psel({ y: 2017, M: 1, d: 1 });
             $("#email").precover();
             $("#employeeNumber").precover();
             $("#email").precover();
@@ -354,18 +236,18 @@ var windowEvent = {
             $("#selectedPosition .per-combobox_name").html("请选择岗位");
             $("#selectedJurisdiction .per-combobox_name").html("请选择权限");
             $("#selectedMajor .per-combobox_name").html("请选择专业");
-
+            organizationModel.accountId = "";
             //初始化专业
             arr = organizationModel.majorArr;
-            (function find_(arr){
+            (function find_(arr) {
                 var find = arguments.callee;
-                for(var i=0;i<arr.length;i++){     
-                    if(arr[i].selected){
-                        arr[i].selected = false;  
-                    } 
-                    if(arr[i].disabled){
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].selected) {
+                        arr[i].selected = false;
+                    }
+                    if (arr[i].disabled) {
                         arr[i].disabled = false;
-                    }    
+                    }
                     if (arr[i].child_objs && arr[i].child_objs.length) {
                         find(arr[i].child_objs);
                     }
@@ -373,15 +255,15 @@ var windowEvent = {
             })(arr);
             //初始化权限
             arr = organizationModel.jurisdiction;
-            (function find_(arr){
+            (function find_(arr) {
                 var find = arguments.callee;
-                for(var i=0;i<arr.length;i++){     
-                    if(arr[i].selected){
-                        arr[i].selected = false;  
-                    } 
-                    if(arr[i].disabled){
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].selected) {
+                        arr[i].selected = false;
+                    }
+                    if (arr[i].disabled) {
                         arr[i].disabled = false;
-                    }     
+                    }
                     if (arr[i].child_objs && arr[i].child_objs.length) {
                         find(arr[i].child_objs);
                     }
@@ -389,15 +271,15 @@ var windowEvent = {
             })(arr);
             //初始化项目
             arr = organizationModel.listByProject;
-            (function find_(arr){
+            (function find_(arr) {
                 var find = arguments.callee;
-                for(var i=0;i<arr.length;i++){     
-                    if(arr[i].selected){
-                        arr[i].selected = false;  
-                    } 
-                    if(arr[i].disabled){
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].selected) {
+                        arr[i].selected = false;
+                    }
+                    if (arr[i].disabled) {
                         arr[i].disabled = false;
-                    }    
+                    }
                     if (arr[i].child_objs && arr[i].child_objs.length) {
                         find(arr[i].child_objs);
                     }
@@ -406,47 +288,53 @@ var windowEvent = {
         }
         fastAddInit();
     },
-    borderInit : function (){
-        setTimeout(function(){
+    borderInit: function () {
+        setTimeout(function () {
             $('#centerDepart .organizationTreeBoxName,#projectCommon .organizationTreeBoxName').css('borderBottom', '1px dashed #ddd');
             $('#centerDepart_ .organizationTreeBoxName,#projectCommon_ .organizationTreeBoxName').css('borderBottom', '1px dashed #ddd');
             $('#centerDepart .organizationTreeBoxName:last,#projectCommon .organizationTreeBoxName:last').css('borderBottom', 'none');
             $('#centerDepart_ .organizationTreeBoxName:last,#projectCommon_ .organizationTreeBoxName:last').css('borderBottom', 'none');
-            $("#projectCommon .centerDepartmentUl,#projectCommon_ .projectCommonUl").css({'borderBottom':'none','borderTop':'none'});
-            $($("#projectCommon .centerDepartmentUl").get(0)).css({'borderTop':'1px solid #ddd'});
-            $($("#projectCommon_ .projectCommonUl").get(0)).css({'borderTop':'1px solid #ddd'});
-            $("#projectCommon .centerDepartmentUl:last,#projectCommon_ .projectCommonUl:last").css({'borderBottom':'1px solid #ddd'});
-        },10)
+            $("#projectCommon .centerDepartmentUl,#projectCommon_ .projectCommonUl").css({ 'borderBottom': 'none', 'borderTop': 'none' });
+            $($("#projectCommon .centerDepartmentUl").get(0)).css({ 'borderTop': '1px solid #ddd' });
+            $($("#projectCommon_ .projectCommonUl").get(0)).css({ 'borderTop': '1px solid #ddd' });
+            $("#projectCommon .centerDepartmentUl:last,#projectCommon_ .projectCommonUl:last").css({ 'borderBottom': '1px solid #ddd' });
+        }, 10)
     },
-    keepFastAdd : function(){
+    keepFastAdd: function () {
         //验证必填项
-        if(!$('#identificationCode').pverifi() || !$('#personName').pverifi() || ($("#selectedProject .per-combobox_name").html() == "请选择项目") || !$("#selectedPosition").psel()){
-            $("#message").pshow({ text: "请检查必填项信息完整", state: "failure" })
+        var verifi1 = $('#identificationCode').pverifi();
+        var verifi2 = $('#personName').pverifi();
+        organizationModel.verifi3 = ($("#selectedProject .per-combobox_name").html() == "请选择项目");
+        organizationModel.verifi4 = !$("#selectedPosition").psel();
+        var verifi5 = $('#phoneNumber').pverifi();
+        var verifi6 = $('#email').pverifi();
+
+        // if(!$('#identificationCode').pverifi() || !$('#personName').pverifi() || ($("#selectedProject .per-combobox_name").html() == "请选择项目") || !$("#selectedPosition").psel()){
+        //     // $("#message").pshow({ text: "请检查必填项信息完整", state: "failure" })
+        //     return false;
+        // }
+        // if(!$('#phoneNumber').pverifi()){
+        //     // $("#message").pshow({ text: "表单存在错误，请改正后保存", state: "failure" })
+        //     return false;
+        // }
+        // if(!$('#email').pverifi()){
+        //     // $("#message").pshow({ text: "表单存在错误，请改正后保存", state: "failure" })
+        //     return false;
+        // }
+        if (!verifi1 || !verifi2 || organizationModel.verifi3 || organizationModel.verifi4 || !verifi5 || !verifi6) {
+            console.log("验证未通过");
             return false;
         }
-        //提取岗位id
-        // var arr = organizationModel.postArr;
-        // var positions = [];
-        // (function find_(arr){
-        //     var find = arguments.callee;
-        //     for(var i=0;i<arr.length;i++){     
-        //         if(arr[i].selected){
-        //             positions.push(arr[i].obj_id);
-        //         }    
-        //         if (arr[i].child_objs && arr[i].child_objs.length) {
-        //             find(arr[i].child_objs);
-        //         }
-        //     }
-        // })(arr);
+        $('#globalloading').pshow();
         //提取专业
         var majors = [];
         arr = organizationModel.majorArr;
-        (function find_(arr){
+        (function find_(arr) {
             var find = arguments.callee;
-            for(var i=0;i<arr.length;i++){     
-                if(arr[i].selected){
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].selected) {
                     majors.push(arr[i].obj_id);
-                }    
+                }
                 if (arr[i].child_objs && arr[i].child_objs.length) {
                     find(arr[i].child_objs);
                 }
@@ -455,12 +343,12 @@ var windowEvent = {
         //提取权限
         var jurisdiction = [];
         arr = organizationModel.jurisdiction;
-        (function find_(arr){
+        (function find_(arr) {
             var find = arguments.callee;
-            for(var i=0;i<arr.length;i++){     
-                if(arr[i].selected){
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].selected) {
                     jurisdiction.push(arr[i].obj_id);
-                }    
+                }
                 if (arr[i].child_objs && arr[i].child_objs.length) {
                     find(arr[i].child_objs);
                 }
@@ -469,12 +357,12 @@ var windowEvent = {
         //提取项目
         var projects = [];
         arr = organizationModel.listByProject;
-        (function find_(arr){
+        (function find_(arr) {
             var find = arguments.callee;
-            for(var i=0;i<arr.length;i++){     
-                if(arr[i].selected){
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].selected) {
                     projects.push(arr[i].obj_id);
-                }    
+                }
                 if (arr[i].child_objs && arr[i].child_objs.length) {
                     find(arr[i].child_objs);
                 }
@@ -493,26 +381,59 @@ var windowEvent = {
             "person_num": $('#employeeNumber').pval(),               //员工编号
             "position_id": $("#selectedPosition").psel().id,              //岗位id
             "specialty": majors,        //专业编码
-            "head_portrait": "key",            //系统头像
+            //"head_portrait": "key",            //系统头像
             "person_user_id": organizationModel.accountId,           //账号id(暂时为空)
-            "person_user_name": (organizationModel.accountId === "" ? $('#searchAccountInfo>input').val() : ""),         //账号名称
-            "func_pack_ids": (organizationModel.accountId === "" ? jurisdiction : "")  //权限包id数组
-        } 
-        // console.log(JSON.stringify(addpeople));
-        //保存
-        organizationController.addPersonMultipleProject(addpeople).then(function(result){
-            if(result && result.length >0){
-                $("#globalnotice").pshow({
-                    text: result,
-                    state: "failure"
-                });
-            }else{
-                $("#message").pshow({ text: "保存成功！", state: "success" });
-                setTimeout(function(){
-                    location.href = location.href;
-                },1000)
+            "person_user_name": $('#searchAccountInfo>input').val(),         //账号名称
+            "func_pack_ids": jurisdiction //权限包id数组
+        }
+        //提取图片
+        var filesImg = $("#fastAddImg").pval();
+        if (filesImg.length > 0 && filesImg[0].name) {
+            var attachments = {
+                path: filesImg[0].url,
+                fileName: filesImg[0].name,
+                toPro: "head_portrait",
+                fileSuffix: filesImg[0].suffix,
+                fileType: 1
             }
-       })
+            addpeople['attachments'] = attachments;
+            //保存2     
+            organizationController.addPersonMultipleProjectWithImg(addpeople).then(function (result) {
+                if (result && result.length > 0) {
+                    $("#globalnotice").pshow({
+                        text: (result[0] === null ? "账号名称已存在" : result),
+                        state: "failure"
+                    });
+                } else {
+                    $("#message").pshow({ text: "保存成功！", state: "success" });
+                    setTimeout(function () {
+                        location.href = location.href;
+                    }, 1000)
+                }
+            })
+        } else {
+            //保存1
+            organizationController.addPersonMultipleProject(addpeople).then(function (result) {
+                if (result && result.length > 0) {
+                    $("#globalnotice").pshow({
+                        text: result,
+                        state: "failure"
+                    });
+                } else {
+                    $("#message").pshow({ text: "保存成功！", state: "success" });
+                    setTimeout(function () {
+                        location.href = location.href;
+                    }, 1000)
+                }
+            })
+        }
+
+        console.log(JSON.stringify(addpeople));
+
     }
 }
-  
+function sayClick(gh) {
+    console.log(123)
+    console.log(this);
+    console.log(gh);
+}

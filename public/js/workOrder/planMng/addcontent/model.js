@@ -17,21 +17,34 @@ Vue.component('addcontent', {
     data: function () {
 
         return {
-            customize: {
-                name: "",
-                type: "1",
-                items: [],
-                wrongs: [],
-                wrong_ranges: [],
-                unit: "",
-            },
-            InfoPoints: [],
-            InfoPointForObject: {
-                argu: "",
-                list: []
-            },
+            leo: false,
+            uRangesType: [
+                {
+                    name: "大于",
+                    code: "gt",
+                }, {
+                    name: "大于等于",
+                    code: "gte",
+                }, {
+                    name: "小于",
+                    code: "lt",
+                }, {
+                    name: "小于等于",
+                    code: "lte",
+                }],
+            wrongType: [
+                {
+                    name: "区间",
+                    code: 1,
+                },
+                {
+                    name: "非区间",
+                    code: 0,
+                }
+            ],
+
             onItem: "",
-            searchKey: "",
+            onPoint: "",
             // 自定义的控件
             controlsList: [
                 { name: "普通文本", type: "1" },
@@ -55,86 +68,157 @@ Vue.component('addcontent', {
             },
             content_str: "",
             desc_work: {
-                "work_name": "***",      //工作内容名称
-                "pre_conform": "***",    //强制确认
-                "content": "***",        //操作内容
-                //操作内容中涉及的对象
+                "work_name": "1",
+                "pre_conform": "",
+                "content": "@上格云-001-2号楼 @上格云-001-1号楼 ",
                 "content_objs": [
                     {
-                        "obj_id": "",	        //对象id
-                        "obj_name": "",	    //对象名称
-                        "obj_type": ""      //对象类型,子项见后边
+                        "obj_id": "Bd1301020001002",
+                        "obj_name": "上格云-001-2号楼",
+                        "selected": true
+                    },
+                    {
+                        "obj_id": "Bd1301020001001",
+                        "obj_name": "上格云-001-1号楼",
+                        "selected": true
                     }
                 ],
-                "notice": "***",        //注意事项
-                "confirm_result": [	//需确认的操作结果
+                "notice": "",
+                "confirm_result": [
                     {
-                        "obj_id": "*** ",
-                        "obj_name": "*** ",
-                        "obj_type": "***",
-                        "parents": [
-                            { "parent_ids": ["***", "***", "***"], "parent_names": ["建筑1", "楼层1", "空间"] },
-                            { "parent_ids": ["***", "***"], "parent_names": ["专业1", "系统1"] },
-                            { "parent_ids": ["***", "***", "***"], "parent_names": ["专业1", "系统大类", "设备大类"] }
-                        ],
                         "info_points": [
                             {
-                                "id": "***", "code": "***", "name": "***", "unit": "***", "cmpt": "Numberentry02",
-                                "wrong_ranges": [{ "type": "gt", "values": "12" }, { "type": "lt", "values": "6" }]
+                                "code": "BuildLocalName",
+                                "id": "build_0_BuildLocalName",
+                                "name": "建筑本地名称",
+                                "selected": true
                             },
                             {
-                                "id": "***", "code": "***", "name": "***", "unit": "***", "cmpt": "Multiselect01",
-                                "cmpt_data": [{ "code": "***", "name": "***" }], "wrongs": ["选项1", "选项2"]
+                                "code": "BuildLocalID2",
+                                "id": "build_0_BuildLocalID2",
+                                "name": "建筑本地编码2",
+                                "selected": true
+                            },
+                            {
+                                "code": "BuildLocalName2",
+                                "id": "build_0_BuildLocalName2",
+                                "name": "建筑本地名称2",
+                                "selected": true
                             }
                         ],
-                        "customs": [//自定义项，type：1-文本，2-单选，3-多选,4、无单位的数字,5、有单位的数字
-                            { "name": "确认信息2", "type": "1" },
-                            { "name": "确认信息2", "type": "2", "items": ["选项1", "选项2", "选项3"], "wrongs": ["选项1", "选项2"] },
-                            { "name": "确认信息3", "type": "3", "items": ["选项1", "选项2", "选项3"], "wrongs": ["选项1", "选项2"] },
-                            //非区间异常的type项有：gt-大于,gte-大于等于，lt-小于,lte-小于等于,区间的type项为range,满足一个子项就认为出现异常
-                            { "name": "确认信息4", "type": "4", "wrong_ranges": [{ "type": "gt", "values": "12" }, { "type": "lt", "values": "6" }] },
+                        "parents": [],
+                        "customs": [
                             {
-                                "name": "确认信息5", "type": "5", "unit": "***", "wrong_ranges": [{ "type": "range", "values": ["12", "20"] }]
+                                "name": "多选",
+                                "type": "3",
+                                "items": [
+                                    "1",
+                                    "2",
+                                    "3"
+                                ],
+                                "wrongs": [
+                                    "1",
+                                    "2",
+                                    "3"
+                                ]
+                            },
+                            {
+                                "name": "区间",
+                                "type": "5",
+                                "wrong_ranges": [
+                                    {
+                                        "type": "range",
+                                        "values": [
+                                            "1",
+                                            "10"
+                                        ]
+                                    },
+                                    {
+                                        "type": "gte",
+                                        "values": "2"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "非区间",
+                                "type": "4",
+                                "wrong_ranges": [
+                                    {
+                                        "type": "gte",
+                                        "values": "10"
+                                    }
+                                ]
                             }
-                        ]
+                        ],
+                        "obj_id": "Bd1301020001002",
+                        "obj_name": "上格云-001-2号楼",
+                        "selected": true
                     },
+                    {
+                        "info_points": [],
+                        "parents": [],
+                        "customs": [],
+                        "obj_id": "Bd1301020001001",
+                        "obj_name": "上格云-001-1号楼",
+                        "selected": true
+                    }
                 ],
-                "domain": "***",                //专业code
-                "domain_name": "***"            //专业名称
+                "domain": "",
+                "domain_name": ""
             }
+            // desc_work: {
+            //     "work_name": "",      //工作内容名称
+            //     "pre_conform": "",    //强制确认
+            //     "content": "",        //操作内容
+            //     //操作内容中涉及的对象
+            //     "content_objs": [
+            //         {
+            //             "obj_id": "",	        //对象id
+            //             "obj_name": "",	    //对象名称
+            //             "obj_type": ""      //对象类型,子项见后边
+            //         }
+            //     ],
+            //     "notice": "",        //注意事项
+            //     "confirm_result": [	//需确认的操作结果
+            //         {
+            //             "obj_id": " ",
+            //             "obj_name": " ",
+            //             "obj_type": "",
+            //             "parents": [
+            //                 { "parent_ids": ["", "", ""], "parent_names": ["建筑1", "楼层1", "空间"] },
+            //                 { "parent_ids": ["", ""], "parent_names": ["专业1", "系统1"] },
+            //                 { "parent_ids": ["", "", ""], "parent_names": ["专业1", "系统大类", "设备大类"] }
+            //             ],
+            //             "info_points": [
+            //                 {
+            //                     "id": "", "code": "", "name": "", "unit": "", "cmpt": "Numberentry02",
+            //                     "wrong_ranges": [{ "type": "gt", "values": "12" }, { "type": "lt", "values": "6" }]
+            //                 },
+            //                 {
+            //                     "id": "", "code": "", "name": "", "unit": "", "cmpt": "Multiselect01",
+            //                     "cmpt_data": [{ "code": "", "name": "" }], "wrongs": ["选项1", "选项2"]
+            //                 }
+            //             ],
+            //             "customs": [//自定义项，type：1-文本，2-单选，3-多选,4、无单位的数字,5、有单位的数字
+            //                 { "name": "确认信息2", "type": "1" },
+            //                 { "name": "确认信息2", "type": "2", "items": ["选项1", "选项2", "选项3"], "wrongs": ["选项1", "选项2"] },
+            //                 { "name": "确认信息3", "type": "3", "items": ["选项1", "选项2", "选项3"], "wrongs": ["选项1", "选项2"] },
+            //                 //非区间异常的type项有：gt-大于,gte-大于等于，lt-小于,lte-小于等于,区间的type项为range,满足一个子项就认为出现异常
+            //                 { "name": "确认信息4", "type": "4", "wrong_ranges": [{ "type": "gt", "values": "12" }, { "type": "lt", "values": "6" }] },
+            //                 {
+            //                     "name": "确认信息5", "type": "5", "unit": "", "wrong_ranges": [{ "type": "range", "values": ["12", "20"] }]
+            //                 }
+            //             ]
+            //         },
+            //     ],
+            //     "domain": "",                //专业code
+            //     "domain_name": ""            //专业名称
+            // }
         }
     },
     props: ["cb"],
     methods: {
-        // 查询某个对象对应的信息点
-        queryInfoPointForObject: function (item) {
-            var _that = this;
-            // 传入空的时候
-            if (!_.isPlainObject(item)) {
-                _that.InfoPointForObject.argu = void 0;
-                _that.InfoPointForObject.list = [];
-                _that.InfoPoints = [];
-                return;
-            }
-
-            var _that = this;
-            _that.InfoPointForObject.argu = item;
-
-            addcontent_controller.queryInfoPointForObject({
-                obj_id: item.obj_id,
-                obj_type: {
-                    "Bd": "build",
-                    "Fl": "floor",
-                    "Sp": "space",
-                    "Sy": "system",
-                    "Eq": "equip",
-                }[item.obj_id.slice(0, 2)]
-            }).then(function (res) {
-                _that.InfoPointForObject.list = res;
-                _that.InfoPoints = res;
-            })
-        },
-
+        // 获取对象
         get_content_Obj: function (arr) {
             var _that = this;
 
@@ -174,6 +258,27 @@ Vue.component('addcontent', {
 
 
         },
+        // 获取单个对象的信息点
+        get_point: function (obj) {
+            var _that = this;
+            // 返回什么附加什么
+            if (obj.info_points.length) {
+                _that.onItem.info_points = obj.info_points;
+                _that.onItem = void 0;
+                return;
+            }
+            if (obj.customs.length) {
+                _that.onItem.customs = _that.onItem.customs.concat(obj.customs);
+                _that.onItem = void 0;
+                return;
+            }
+            //  什么否没返回直接置空
+            _that.onItem.customs = [];
+            _that.onItem.info_points = [];
+
+            _that.onItem = void 0;
+
+        },
         //转换成父级链字符串形式
         getParentsLinks: function (parents) {
             if (!parents || !parents.length) return '';
@@ -184,33 +289,56 @@ Vue.component('addcontent', {
             }
             return str + ')';
         },
-        search: function () {
-            var _that = this;
-            if (_that.searchKey.length) {
-                _that.InfoPoints = _that.InfoPointForObject.list.filter(function (item) {
-                    return item.name.indexOf(_that.searchKey) != -1;
-                })
+        // 获取key 集合
+        getkeys: function (list, key) {
+            if (!_.isArray(list) || !list.length) return [];
+            return list.map(function (item) {
+                return item[key];
+            })
+        },
+        // 获取异常范围
+        getError: function (item) {
+            var str = "";
+            var type = [
+                {
+                    name: "大于",
+                    code: "gt",
+                }, {
+                    name: "大于等于",
+                    code: "gte",
+                }, {
+                    name: "小于",
+                    code: "lt",
+                }, {
+                    name: "小于等于",
+                    code: "lte",
+                }];
+            if (item.type == 2 || item.type == 3) {
+                str = item.wrongs.join();
+            } else if (item.type == 4 || item.type == 5) {
+
+                str = item.wrong_ranges.map(function (info) {
+
+                    if (info.type == "range") {
+                        return info.values.join('~');
+                    } else {
+                        return (_.find(type, { code: info.type }) || {}).name + info.values;
+                    }
+                }).join();
             }
 
-            return _that.InfoPoints = _that.InfoPointForObject.list;
+            return str.length ? ("异常范围：" + str) : '';
+        },
+        idecallback: function (item) {
+            var _that = this;
+            Object.assign(_that.onPoint, item);
+            _that.onPoint = void 0;
         }
     },
     computed: {
-        InfoPoints: function () {
-            var _that = this;
-            if (_that.searchKey.length) {
-                return _that.InfoPointForObject.list.filter(function (item) {
-                    return item.name.indexOf(_that.searchKey) != -1;
-                })
-            }
 
-            return _that.InfoPointForObject.list;
-        }
     },
     watch: {
-        "onItem": function (item) {
-            this.queryInfoPointForObject(item);
-        },
         "desc_work.content": function (newValue, old) {
             var _that = this;
             var str = newValue;
@@ -289,18 +417,9 @@ Vue.component('addcontent', {
             _that.desc_work.domain = item.code;
             _that.desc_work.domain_name = item.name;
         }
-
-        // 修改自定义信息点的类型
-        window.changeCustomizeType = function (item) {
-            _that.customize.type = item.type;
-            if (item.type == '2' || item.type == '3') {
-                _that.customize.items = [{ str: "" }];
-            } else {
-                _that.customize.items = [];
-            }
-        }
     },
     destroyed: function () {
+
         window.clear_pre_conform = undefined;
     }
 })

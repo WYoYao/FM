@@ -87,6 +87,9 @@
               #app .monitoring_plan .main .content .contenter .search_view .timetype .item:hover, #app .monitoring_plan .main .content .contenter .search_view .timetype .item .on {
                 color: #02a9d1;
                 border: 1px solid #02a9d1; }
+            #app .monitoring_plan .main .content .contenter .search_view .timetype .on {
+              color: #02a9d1;
+              border: 1px solid #02a9d1; }
         #app .monitoring_plan .main .content .contenter .status_view {
           line-height: 50px;
           padding-left: 20px;

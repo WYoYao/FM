@@ -4,17 +4,19 @@
 
 <link rel="stylesheet" href="../css/workOrder/planMng/term/planManage.css">
 
-<div id="planManage" v-if="onPage == 'planManage'">
+<div id="planManage" v-show="onPage == 'planManage'">
+
     <div class="head">
+
         <div class="plantype">
             <pcombobox-normal id="'planTypeCombo'" sel="refreshRenderGrid(false)" bind="true">
-                <header></header>
+                <header placeholder="全部"></header>
                 <item datasource="allPlanType" text="tab_name" id="order_type"></item>
             </pcombobox-normal>
         </div>
         <div class="planSource">
             <pcombobox-normal id="'planSourceCombo'" sel="refreshRenderGrid(false)" bind="true">
-                <header></header>
+                <header placeholder="全部"></header>
                 <item datasource="allPlanSource" text="name" id="id"></item>
             </pcombobox-normal>
         </div>
@@ -36,17 +38,30 @@
         <div class="box">
             <pbutton-white text="自定义计划" @click="createTermPlan"></pbutton-white>
         </div>
+
     </div>
-    <div class="body">
-        <div class="head">
-            <div class="top">
+
+    <div class="body" id="countHT">
+
+        <!-- 表头Start -->
+        <div class="head" id="countHH">
+
+            <div class="top clear">
                 <div class="text black3">计划频率</div>
                 <div class="tab">
                     <div v-for="item in allFreq" @click="changePlanFreq(item)" :class="{'sel':item.sel}">{{item.name}}</div>
                 </div>
-                <div class="icon"></div>
+                <div class="icon clear">
+                    <div v-for="item in allOrderState">
+                        <img :src="'../../../../images/orderState/' + box.type + '.png'" alt="">
+                        <span v-text="item.name"></span>
+                    </div>
+                </div>
             </div>
+
+            <!-- 时间窗Start -->
             <div class="bottom">
+
                 <div class="name gray">维保名称</div>
                 <div class="period gray">维保周期</div>
                 <div class="time" id="getCellWidth">
@@ -66,27 +81,44 @@
 
                 </div>
             </div>
+            <!-- 时间窗End -->
+
         </div>
-        <div class="grid clear">
-            <div class="row clear" v-for="(item,index) in planData">
-                <div class="name grayblue MT" :style="{height:item.grid.length*60 - 1 + 'px','line-height':item.grid.length*60 - 1 + 'px'}" @click="openPlanDetail(item)">
-                    {{item.plan_name}}
-                    <div class="warn1" v-if="item.plan_from == 1" v-show="item.plan_update_status == 0">&nbsp;&nbsp;已引用集团计划&nbsp;&nbsp;</div>
-                    <div class="warn2" v-if="item.plan_from == 1" v-show="item.plan_update_status == 1 && item.remind_type == 1">&nbsp;&nbsp;已引用集团计划，集团计划已修改&nbsp;&nbsp;</div>
-                </div>
-                <div class="period black3" :style="{height:item.grid.length*60 - 1 + 'px','line-height':item.grid.length*60 - 1 + 'px'}">{{item.freq_cycle_desc}}</div>
-                <div class="state">
-                    <div v-for="(model,times) in item.grid">
-                        <div v-for="(box,boxIndex) in model" :style="{width:box.width+'px'}">
-                            <div v-if="box.type != 0" @click="openOrderDetail(box)">
-                                <div v-show="box.type == 1"></div>
-                                <!-- <div v-show="box.type != 1">{{box.type}}</div> -->
-                                <img v-show="box.type != 1" :src=" '../../../../images/orderState/' + box.type + '.png'" alt="">
-                            </div>
-                        </div>
+        <!-- 表头End -->
+
+        <!-- 表格Start -->
+        <ul class="grid clear" :style="{'max-height':residueHeight + 'px'}">
+            <pscroll-small templateid="planManageList"></pscroll-small>
+            <ploading-part id="planManagePartLoad"></ploading-part>
+        </ul>
+        <!-- 表格End -->
+
+    </div>
+</div>
+
+<script type="text/html" id="planManageList">
+
+    <li class="row clear" v-for="(item,index) in planData">
+        
+        <div class="name grayblue MT" :style="{height:item.grid.length*60 - 1 + 'px','line-height':item.grid.length*60 - 1 + 'px'}" @click="openPlanDetail(item)">
+            <span v-text="item.plan_name"></span>
+            <div class="warn1" v-if="item.plan_from == 1" v-show="item.plan_update_status == 0">&nbsp;&nbsp;已引用集团计划&nbsp;&nbsp;</div>
+            <div class="warn2" v-if="item.plan_from == 1" v-show="item.plan_update_status == 1 && item.remind_type == 1">&nbsp;&nbsp;已引用集团计划，集团计划已修改&nbsp;&nbsp;</div>
+        </div>
+        
+        <div class="period black3" :style="{height:item.grid.length*60 - 1 + 'px','line-height':item.grid.length*60 - 1 + 'px'}" v-text="item.freq_cycle_desc"></div>
+        
+        <div class="state">
+            <div v-for="(model,times) in item.grid">
+                <div v-for="(box,boxIndex) in model" :style="{width:box.width+'px'}">
+                    <div v-if="box.type != 0" @click="openOrderDetail(box)">
+                        <div v-show="box.type == 1"></div>
+                        <img v-show="box.type != 1" :src=" '../../../../images/orderState/' + box.type + '.png'" alt="">
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+
+    </li>
+    
+</script>

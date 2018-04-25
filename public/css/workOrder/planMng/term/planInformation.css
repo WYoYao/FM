@@ -1,13 +1,13 @@
 #planInformation { width: 100%; height: 100%; position: relative; }
+#planInformation .icon { font-family: 'perficon'; }
 #planInformation > .head { width: calc(100% - 40px); border-bottom: 1px solid #d9e2e8; height: 50px; padding: 0 20px 0; position: relative; }
 #planInformation > .head > div { float: left; }
-#planInformation > .head .path { width: 300px; }
 #planInformation > .head .name { width: 300px; position: absolute; margin: 17px auto 0; height: 16px; line-height: 16px; left: calc(50% - 150px); text-align: center; }
 #planInformation > .head .operate { margin-top: 17px; height: 16px; line-height: 16px; float: right; }
 #planInformation > .head .operate > div { padding-left: 20px; border-left: 1px solid #d9e2e8; margin-left: 20px; }
 #planInformation > .head .operate > div:nth-last-of-type(1) { border-left: none; }
 #planInformation > .head .operate div { float: right; }
-#planInformation > .warn { background: #fff0f0; height: 30px; line-height: 30px; color: #ff7b7b; font-size: 14px; text-align: center; top: 51px; position: absolute; }
+#planInformation > .warn { background: #fff0f0; width: 100%; height: 30px; line-height: 30px; color: #ff7b7b; font-size: 14px; text-align: center; top: 51px; position: absolute; }
 #planInformation > .body { width: 700px; height: calc(100% - 101px); padding-top: 50px; padding-bottom: 20px; margin: 0 auto 0; overflow-y: scroll; overflow-x: hidden; }
 #planInformation > .body .state { height: 14px; width: 100%; line-height: 14px; font-size: 14px; }
 #planInformation > .body > div div { font-size: 14px; height: 14px; line-height: 14px; }
@@ -26,7 +26,7 @@
 #planChangeHistory > div:nth-of-type(1) { margin-right: 25px; }
 #planChangeHistory > div > .title { line-height: 14px; height: 14px; padding-bottom: 10px; font-size: 12px; }
 #planChangeHistory > div > .title div { float: left; }
-#planChangeHistory > div > .boxod { width: 388px; border: 1px solid #d9e2e8; height: calc(100% - 26px); padding: 0 20px 0 20px; font-size: 14px; line-height: 14px; }
+#planChangeHistory > div > .boxod { width: 388px; border: 1px solid #d9e2e8; height: calc(100% - 46px); padding: 0 20px 20px 20px; font-size: 14px; line-height: 14px; overflow-x: hidden; overflow-y: auto; position: relative; }
 #planChangeHistory > div > .boxod .message { border-bottom: 1px dashed #d9e2e8; padding-bottom: 30px; }
 #planChangeHistory > div > .boxod .title { padding-left: 6px; border-left: 5px solid #7a94ad; margin-top: 20px; color: #000; margin-left: -12px; height: 14px; }
 #planChangeHistory > div > .boxod .row { margin-top: 14px; height: 14px; }

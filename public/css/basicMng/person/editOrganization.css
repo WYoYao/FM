@@ -60,6 +60,8 @@
     display: none;
     border-top: 1px solid #d9e2e8;
     border-bottom: 1px solid #d9e2e8;
+    margin-top: 12px;
+    margin-bottom: 12px;
 }
 .organizationBox .centerDepartment >.top{
     display: flex;
@@ -96,6 +98,8 @@
     display: none;
     border-top: 1px solid #d9e2e8;
     border-bottom: 1px solid #d9e2e8;
+    margin-top:12px;
+    margin-bottom:12px;
 }
 .organizationBox .projectCommon{
     min-height:10px;
@@ -238,8 +242,11 @@
     cursor:default;
 }
 .customDepartment > .operatArea >ul >li >div:nth-child(1){
-    margin-right:4px;
-    padding-top:3px;
+    margin-right: 8px;
+    padding-top: 1px;
+}
+.customDepartment > .operatArea >ul >li >div:nth-child(2){
+    color:#637e99;
 }
 .customDepartment > .partitionList_list{
     width: 100%;
@@ -288,3 +295,4 @@
     border:1px solid #ff6666;
     color:#ff6666;
 }
+

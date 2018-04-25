@@ -3,7 +3,7 @@
 
 <link rel="stylesheet" href="../css/workOrder/planMng/term/groupPlan.css">
 
-<div id="groupPlan" v-if="onPage == 'groupPlan'">
+<div id="groupPlan" v-show="onPage == 'groupPlan'">
 
     <div class="head">
 
@@ -12,14 +12,14 @@
         </div>
         
         <div class="cite">
-            <pcombobox-normal id="'isPlanSite'" sel="" bind="true">
+            <pcombobox-normal id="'isPlanSite'" sel="getGroupPlanList" bind="true">
                 <header prefix="是否引用："></header>
                 <item datasource="planSiteType" text="name" id="id"></item>
             </pcombobox-normal>
         </div>
 
         <div class="type">
-            <pcombobox-normal id="'groupPlanTypeCombo'" sel="" bind="true">
+            <pcombobox-normal id="'groupPlanTypeCombo'" sel="getGroupPlanList" bind="true">
                 <header prefix="计划类型："></header>
                 <item datasource="allPlanType" text="tab_name" id="order_type"></item>
             </pcombobox-normal>
@@ -43,6 +43,7 @@
         </div>
 
         <ul>
+            <ploading-part id="groupPlanPartLoad"></ploading-part>
             <pscroll-small templateid="groupPlanList"></pscroll-small>
         </ul>
 
@@ -52,7 +53,7 @@
 
 
 <script type="text/html" id="groupPlanList">
-    <li v-for="item in groupPlanList">
+    <li v-for="(item,index) in groupPlanList">
         <div class="name MT" v-text="item.group_plan_name" :title="item.group_plan_name"></div>
         <div class="type" v-text="item.order_type_name" :title="item.order_type_name"></div>
         <div class="freq" v-text="'每' + transfYMWD(item.freq_cycle) + item.freq_cycle + '次'" :title="'每' + transfYMWD(item.freq_cycle) + item.freq_cycle + '次'"></div>

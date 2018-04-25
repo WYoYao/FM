@@ -3,11 +3,11 @@
 <script src="../js/workOrder/planMng/workOrderDetail/event.js"></script>
 
 <link rel="stylesheet" href="../css/workOrder/planMng/term/workOrderDetail.css">
-<div id="workOrderDetail" v-if="onPage == 'workOrderDetail'">
+<div id="workOrderDetail" v-show="onPage == 'workOrderDetail'">
 
     <!-- here页面头部导航 -->
     <div class="nav">
-        <sitemap :maps='workOrderDetailPaths' :createsitemap='workOrderDetailClick' :back='workOrderDetailGoBack' />
+        <sitemap :maps='workOrderDetailPaths' :createsitemap='gobackSelPath' :back='gobackLastPath' />
     </div>
 
     <!-- 页面下方表格 -->
@@ -22,9 +22,9 @@
 
             <div>
                 <div class="key">要求开始时间</div>
-                <div class="value" v-text="orderDetailData.ask_start_time? timeFormatting(orderDetailData.ask_start_time):'' ">2017.5.1 08:00</div>
+                <div class="value" v-text="orderDetailData.ask_start_time? timeFormat(orderDetailData.ask_start_time,'0'):'' ">2017.5.1 08:00</div>
                 <div class="key keyLB">要求结束时间</div>
-                <div class="value" v-text="orderDetailData.ask_end_time?timeFormatting(orderDetailData.ask_end_time) : ''">2017.7.1 08:00</div>
+                <div class="value" v-text="orderDetailData.ask_end_time?timeFormat(orderDetailData.ask_end_time,'0') : ''">2017.7.1 08:00</div>
             </div>
 
             <div>
@@ -188,7 +188,7 @@
                         <div>
                             <span v-text="wo_exec_controls.control_code == 'apply'?'申请':'审核'"></span>
                             <i>时间：</i>
-                            <i v-text="timeFormatting(wo_exec_controls.operate_start_time)"></i>
+                            <i v-text="timeFormat(wo_exec_controls.operate_start_time,'0')"></i>
                         </div>
                     </div>
                     <div class="see_check_content">
@@ -225,7 +225,7 @@
                 </li>
                 <li>
                     <i>操作时间</i>
-                    <span v-text="timeFormatting(wo_exec_controls.operate_start_time)">20170921150500</span>
+                    <span v-text="timeFormat(wo_exec_controls.operate_start_time,'0')">20170921150500</span>
                 </li>
                 <li>
                     <i>指派给</i>
@@ -239,7 +239,7 @@
                 </li>
                 <li>
                     <i>开始时间</i>
-                    <span v-text="timeFormatting(operatList.start_time)">20170921150500</span>
+                    <span v-text="timeFormat(operatList.start_time,'0')">20170921150500</span>
                 </li>
                 <li>
                     <i>停留时长</i>
@@ -250,72 +250,3 @@
 
     </div>
 </div>
-
-<!-- <pwindow-modal id="createAssignSet" templateid="createAssignSet_con" title="指派"></pwindow-modal>
-<pwindow-modal id="stopOrder" templateid="stopOrder_con" title="终止工单"></pwindow-modal> -->
-
-<!-- 指派设置 -->
-<!-- <script type="text/html" id="createAssignSet_con">
-    <div class="createAssignSet_con">
-        <div class="createAssignSet_con_box">
-            <p class="createAssignSet_con_box_tit">
-                请选择该人员或岗位可指派的范围
-            </p>
-            <div class="createAssignSet_con_box_list">
-                <div class="createAssignSet_con_box_list_div" v-for="(items, index) in personPositionList">
-                    <div class="createAssignSet_con_box_list_div_ul" v-if="items.type == '2'">
-                        <div class="createAssignSet_con_box_list_div_posi">
-                            <span  @click="personPositionShow(event)">r</span>
-                            <em v-text="items.name">岗位A</em>
-                            <div class="position_parent_checkbox" @click.stop='clickAdditem(items)'>
-                                <span class="checkboxChioce" :class="{state:items.isSelected}"></span>
-
-                            </div>
-                        </div>
-                        <ul class="createAssignSet_con_box_list_div_pers choicePersonPosition_con_persion_position">
-                            <li v-for="info in items.persons">
-                                <span v-text="info.name" :id="info.person_id">人员1</span>
-                                <div @click.stop='clickAdditem(info)'>
-                                    <span class="checkboxChioce" :class="{state:info.isSelected}"></span>
-
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <ul class="choicePersonPosition_con_box_list_div_pers choicePersonPosition_con_choice_person" v-if="items.type == '3'">
-                            <li class="personChoice1">
-                                <span v-text="items.name"></span>
-                                <div class="persion_checkbox" @click.stop='clickAdditem(items)'>
-                                    <span class="checkboxChioce" :class="{state:items.isSelected}"></span>
-
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <button class="createAssignSet_con_btn">
-            <pbutton-blue bind="true" id="'createAssignSet_con_btn_yes'" text="'确定'" @click="createAssignSetYes()"></pbutton-blue>
-            <pbutton-white id="createAssignSet_con_btn_cancle" text="取消" click="workOrderMngMethod.createAssignSetHide()"></pbutton-white>
-        </button>
-    </div>
-</script> -->
-
-<!-- 保存成功失败提示 -->
-<!-- <pnotice-message id="publishNotice" text="成功"></pnotice-message> -->
-
-<!-- 中止工单 -->
-<!-- <script type="text/html" id="stopOrder_con">
-    <div class="stopWorkOrder_con">
-        <div class="stopWorkOrder_con_operat">
-            <textarea name="" id="stopWorkOrderTArea" v-model="stop_order_content" maxlength="200"></textarea>
-        </div>
-        <span class="stopWorkOrder_con_operat_span">(<i v-text="stop_order_content.length">0</i>/200)</span>
-    </div>
-    <div class="stopWorkOrder_con_btn">
-        <pbutton-blue bind="true" id="'stop_order_btn_yes'" text="'确定'"@click="stopOrderSetYes()"></pbutton-blue>
-        <pbutton-white id="stop_order_no" text="取消" click="workOrderMngMethod.stopOrderSetHide()"></pbutton-white>
-    </div>
-</script> -->

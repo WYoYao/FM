@@ -1,32 +1,57 @@
 <pwindow-float id="createPersonFloatWindow" isshade="false" title="新建" templateid="createPersonWindow" onclick="pub_method.returnPop(event)">
     <button>
         <div class="personRelatedOperat" v-if="personInformationObj.page == 'detail'">
+            <% if (user.indexOf('deletePerson   ') != '-1') { %>
+            <section>
+                <pbutton-blue text="删除" icon="p" @click="personMethods.deletePersonShow(personModel.personDetalObj.person_id)" isborder="false" id="deletePersonBtn"></pbutton-blue>
+            </section>
+            <% }%>
+            <% if (user.indexOf('editPerson') != '-1') { %>
             <section>
                 <pbutton-blue text="编辑" icon="`" @click="personMethods.editPersonDetail" isborder="false" id="editPersonBtn"></pbutton-blue>
             </section>
+            <% }%>
+            <% if (user.indexOf('personStatusSetting') != '-1') { %>
             <section v-if="personModel.personDetalObj.person_status == '1'">
-                <pbutton-blue text="离职" icon="p" @click="personMethods.dismissionPerson(personModel.personDetalObj.person_id)" isborder="false" id="dimissionPersonBtn"></pbutton-blue>
+                <pbutton-blue text="离职" icon="#" @click="personMethods.dismissionPerson(personModel.personDetalObj.person_id)" isborder="false" id="dimissionPersonBtn"></pbutton-blue>
             </section>
+            <% }%>
+            <% if (user.indexOf('personStatusSetting') != '-1') { %>
             <section v-if="personModel.personDetalObj.person_status == '0'">
-                <pbutton-blue text="复职" icon="p" @click="personMethods.reinstatedPerson(personModel.personDetalObj.person_id)" isborder="false" id="reinstatedPersonBtn"></pbutton-blue>
+                <pbutton-blue text="复职" icon="#" @click="personMethods.reinstatedPerson(personModel.personDetalObj.person_id)" isborder="false" id="reinstatedPersonBtn"></pbutton-blue>
             </section>
+            <% }%>
         </div>
         
     </button>
     <animate maxpx="0" minpx="-400" orientation="right"></animate>
 </pwindow-float>
-<pwindow-confirm id="confirmDismissionPerson">
+<!-- 删除 -->
+<pwindow-confirm id="confirmDeletePerson" onclick="pub_method.returnPop(event)">
+        <button>
+            <pbutton-backred text="删除" click="personMethods.confirmDeletePersonFn"></pbutton-backred>
+            <pbutton-white text="取消" click="personMethods.cancelDeletePersonFn"></pbutton-white>
+        </button>
+    </pwindow-confirm>
+<!-- 离职 -->
+<pwindow-confirm id="confirmDismissionPerson" onclick="pub_method.returnPop(event)">
     <button>
         <pbutton-backred text="离职" click="personMethods.confirmDismissionFn"></pbutton-backred>
         <pbutton-white text="取消" click="personMethods.cancelDismissionFn"></pbutton-white>
     </button>
 </pwindow-confirm>
-<pwindow-confirm id="confirmReinstatedPerson">
+<!-- 复职 -->
+<pwindow-confirm id="confirmReinstatedPerson" onclick="pub_method.returnPop(event)">
     <button>
         <pbutton-backred text="复职" click="personMethods.confirmReinstatedFn"></pbutton-backred>
         <pbutton-white text="取消" click="personMethods.cancelReinstatedFn"></pbutton-white>
     </button>
 </pwindow-confirm>
+
+<!-- 选择岗位名称弹框 -->
+<pwindow-modal id="positionWindow" title="选择岗位" templateid="positionWindowTemp" onclick="pub_method.returnPop(event)"></pwindow-modal>
+
+
 <script type="text/html" id="createPersonWindow">
     <!-- 新建编辑 -->
     <div class="createPersonBox" v-if="personInformationObj.page == 'create' || personInformationObj.page == 'edit'">
@@ -43,11 +68,11 @@
                         
                     </div>
                     <div class="right">
-                        <ptext-text placeholder="请输入20位数字" id="employeeId" input="personMethods.checkPersonId">
+                        <ptext-text placeholder="不超过20位数字" id="employeeId" input="personMethods.checkPersonId" blur="personMethods.employeeIdBlur">
                             <verify errtip="员工识别码不能为空!" verifytype="space"></verify>
                             <verify errtip="最多输入20个字符" length="20" verifytype="length"></verify>
-                            <verify errtip="请输入数字" verifytype="positivenumber"></verify>
                         </ptext-text>
+                        <span id="employeeIdTip">请输入正整数或0</span>
                     </div>
                 </div>
                 <div class="content">
@@ -71,7 +96,7 @@
                     </div>
                     <div class="right">
                         <pcombobox-normal id="employeeSex">
-                            <header placeholder="男"></header>
+                            <header placeholder="男" click="personMethods.repeatOtherSelect"></header>
                             <item datasource="personModel.employeeSexObj" text="name"></item>
                         </pcombobox-normal>
                     </div>
@@ -130,8 +155,8 @@
                         
                     </div>
                     <div class="right">
-                        <ptext-text placeholder="请输入编码" id="employeeNo">
-                            
+                        <ptext-text placeholder="请输入编号" id="employeeNo">
+                            <verify errtip="最多输入20个字符" length="20" verifytype="length"></verify>
                         </ptext-text>
                     </div>
                 </div>
@@ -142,10 +167,14 @@
                         
                     </div>
                     <div class="right">
-                        <pcombobox-normal id="'employeePosition'" istree="true" bind="true" sel="personMethods.confirmChoicePosition">
+                        <div id="employeePosition">
+                            <span id="employeePositionName"></span>
+                            <pbutton-white text="添加" click="personMethods.positionTreeWindowShow"></pbutton-white>
+                        </div>
+                        <!-- <pcombobox-normal id="'employeePosition'" istree="true" bind="true" sel="personMethods.confirmChoicePosition">
                             <header  placeholder="请选择"></header>
                             <item datasource="personModel.employeePositionObj" text="obj_name" child="child_objs" id="id" pronametoissel="issel" orientation="right"></item>
-                        </pcombobox-normal>
+                        </pcombobox-normal> -->
                         <section id="employeePositionTip">
                             请选择岗位
                         </section>
@@ -158,12 +187,12 @@
                     </div>
                     <div class="right">
                         <section id="employeeMajor">
-                            <div class="title" @click="personMethods.choiceMajorListShow">
+                            <div class="title employeeMajorTitle" @click="personMethods.choiceMajorListShow">
                                 <span>请选择</span>
                                 <i>v</i>
                             </div>
-                            <div class="list">
-                                <ul>
+                            <div class="list employeeMajorList">
+                                <ul class="employeeMajorListUl">
                                     <li v-for="item in personModel.choiceMajorList" @click="personMethods.confirmChoiceMajor(item)">
                                         <i v-text="item.name"></i>
                                         <span v-if="item.isShow"></span>
@@ -171,7 +200,7 @@
                                 </ul>
                                 <div class="opeart">
                                     <pbutton-blue text="确定" click="personMethods.moreSelectMajorList"></pbutton-blue>
-                                    <pbutton-white text="取消" click="personMethods.moreUnSelectPermissionList"></pbutton-white>
+                                    <pbutton-white text="清空" click="personMethods.moreUnSelectPermissionList"></pbutton-white>
                                 </div>
                             </div>
                             
@@ -203,7 +232,6 @@
                         <div>
                             <ul>
                                 <li v-for="item in personModel.searchAccountList" 
-                                :class="{disabled:item.disabled}" 
                                 v-text="item.person_user_name"
                                 @click="personMethods.clickAccountAddPermission(item)"
                                 ></li>
@@ -220,7 +248,8 @@
                     </div>
                     <div class="right">
                         <span id="functionPermissionContent" :title="personModel.functionPermissionObj.func_pack_names" v-text="personModel.functionPermissionObj.func_pack_names"></span>
-                        <section id="permissionPackageList">
+                        
+                        <section id="permissionPackageList" class="permissionPackageList">
                             <ul>
                                 <li v-for="item in personModel.permissionPackageList"
                                  @click="personMethods.moreSelectPermissionItem(item)">
@@ -284,7 +313,7 @@
                         
                     </div>
                     <div class="right">
-                        <span v-text="personModel.personDetalObj.id_number"></span>
+                        <span :title="personModel.personDetalObj.id_number" v-text="personModel.personDetalObj.id_number"></span>
                     </div>
                 </div>
                 <div class="content">
@@ -294,7 +323,7 @@
                         
                     </div>
                     <div class="right">
-                        <span v-text="personModel.personDetalObj.name"></span>
+                        <span :title="personModel.personDetalObj.name" v-text="personModel.personDetalObj.name"></span>
                     </div>
                 </div>
                 <div class="content">
@@ -304,7 +333,7 @@
                         
                     </div>
                     <div class="right">
-                        <span v-text="personModel.personDetalObj.gender == 'male' ? '男':'女'"></span>
+                        <span :title="personModel.personDetalObj.gender == 'male' ? '男':'女'" v-text="personModel.personDetalObj.gender == 'male' ? '男':'女'"></span>
                     </div>
                 </div>
                 <div class="content">
@@ -314,7 +343,7 @@
                         
                     </div>
                     <div class="right">
-                        <span v-text="personModel.personDetalObj.birthday"></span>
+                        <span :title="personModel.personDetalObj.birthday" v-text="personModel.personDetalObj.birthday"></span>
                     </div>
                 </div>
                 <div class="content">
@@ -324,7 +353,7 @@
                         
                     </div>
                     <div class="right">
-                        <span v-text="personModel.personDetalObj.phone_num"></span>
+                        <span :title="personModel.personDetalObj.phone_num" v-text="personModel.personDetalObj.phone_num"></span>
                     </div>
                 </div>
                 <div class="content">
@@ -334,7 +363,7 @@
                         
                     </div>
                     <div class="right">
-                        <span v-text="personModel.personDetalObj.person_mail"></span>
+                        <span :title="personModel.personDetalObj.person_mail" v-text="personModel.personDetalObj.person_mail"></span>
                     </div>
                 </div>
             </div>
@@ -354,7 +383,7 @@
                         
                     </div>
                     <div class="right">
-                        <span v-text="personModel.personDetalObj.person_num"></span>
+                        <span :title="personModel.personDetalObj.person_num" v-text="personModel.personDetalObj.person_num"></span>
                     </div>
                 </div>
                 <div class="content">
@@ -364,7 +393,7 @@
                         
                     </div>
                     <div class="right">
-                        <span v-text="personModel.personDetalObj.position_name"></span>
+                        <span :title="personModel.personDetalObj.position_name" v-text="personModel.personDetalObj.position_name"></span>
                     </div>
                 </div>
                 <div class="content">
@@ -373,7 +402,8 @@
                         
                     </div>
                     <div class="right">
-                        <span v-text="personMethods.arrayObjectTransfString(personModel.personDetalObj.specialty_name,'name','、')"></span>
+                        <span  :title="personMethods.arrayObjectTransfString(personModel.personDetalObj.specialty_name,'name','、')" 
+                        v-text="personMethods.arrayObjectTransfString(personModel.personDetalObj.specialty_name,'name','、')"></span>
                     </div>
                 </div>
             </div>
@@ -392,7 +422,7 @@
                             
                         </div>
                         <div class="right">
-                            <span v-text="personModel.personDetalObj.person_user_name"></span>
+                            <span :title="personModel.personDetalObj.person_user_name"  v-text="personModel.personDetalObj.person_user_name"></span>
                         </div>
                     </div>
                 <div class="content" id="functionPermissionBlock">
@@ -402,7 +432,7 @@
                         
                     </div>
                     <div class="right">
-                        <span v-text="personModel.personDetalObj.func_pack_names"></span>
+                        <span :title="personModel.personDetalObj.func_pack_names"  v-text="personModel.personDetalObj.func_pack_names"></span>
                         
                     </div>
                 </div>
@@ -424,5 +454,19 @@
             </div>
         </div>
         
+    </div>
+</script>
+
+<script type="text/html" id="positionWindowTemp">
+    <div class="choicePositionTree">
+        <section>
+            <div class="centerDepartmentUl" v-for="(item, index) in personModel.employeePositionObj">
+                <organizationtree :model="item" :choice="personMethods.selectPositionTree"></organizationtree>
+            </div>
+        </section> 
+        <div class="choicePositionOperaBtn">
+            <pbutton-blue text="确定" id="confirmSelectOptionBtn" click="personMethods.confirmSelectOptionFn"></pbutton-blue>
+            <pbutton-white text="取消" click="personMethods.cancelSelectOptionFn"></pbutton-white>
+        </div> 
     </div>
 </script>

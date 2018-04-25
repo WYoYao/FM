@@ -50,25 +50,32 @@
             width: 100%;
             .top{
                 width: calc(100% - 2px);
-                height: 49px;
+                // height: 49px;
+                height: auto;
+                min-height: 49px;
                 border: 1px solid #d9e2e8;
                 border-bottom: none;
                 background: #f8f8f8;
+                position: relative;
                 .text{
                     color: #333333;
-                    font-size: 16px;
-                    line-height: 49px;
-                    float: left;
-                    margin-left: 20px;
                     width: 70px;
-                    margin-right: 20px;
+                    height: 49px;
+                    line-height: 49px;
+                    font-size: 16px;
+                    position: absolute;
+                    top: 50%;
+                    left: 20px;
+                    margin-top: -25px;
                 }
                 .tab{
                     width: 300px;
                     height: 30px;
-                    margin-top: 10px;
                     line-height: 30px;
-                    float: left;
+                    position: absolute;
+                    top: 50%;
+                    left: 110px;
+                    margin-top: -15px;
                     background: #eef0f1;
                     &:hover{
                         cursor: pointer;
@@ -90,6 +97,15 @@
                 }
                 .icon{
                     float: right;
+                    width: calc(100% - 430px);
+                    height: auto;
+                    div{
+                        float: left;
+                        height: 25px;
+                        line-height: 25px;
+                        font-size: 14px;
+                        margin-right: 20px;
+                    }
                 }
             }
             .bottom{
@@ -150,12 +166,21 @@
         &>.grid{
             width: calc(100% - 2px);
             border: 1px solid #d9e2e8;
-            border-bottom: none;
-            // border-right: none;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
             .row{
                 width: 100%;
                 &>div{
                     float: left;
+                }
+                &:nth-last-of-type(1){
+                    &>div{
+                        border-bottom: none;
+                    }
+                    .state>div:nth-last-of-type(1) div{
+                        border-bottom: none;
+                    }
                 }
                 .name{
                     width: calc(12.5% - 41px);
@@ -220,6 +245,7 @@
                     }
                 }
             }
+
         }
     }
 }

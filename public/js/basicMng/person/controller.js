@@ -243,6 +243,24 @@ var personController = {
             });
         });
     },
+    deleteProjectPersonById:function(_data){//删除人员
+        return new Promise(function (resolve, reject) {
+            pajax.post({
+                url: 'restPersonService/deleteProjectPersonById',
+                data: _data,
+                success: function (res) {
+                    var data = res ;
+                    resolve(data);
+                },
+                error: function (err) {
+                    reject(err);
+                },
+                complete: function () {
+
+                }
+            });
+        });
+    },
     regainPersonById: function (_data) { //根据Id恢复已废弃的人员信息
         return new Promise(function (resolve, reject) {
             pajax.post({

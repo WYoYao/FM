@@ -10,13 +10,14 @@
 #planManage > .head .box div { float: left; }
 #planManage > .body { width: 100%; height: calc(100% - 50px); }
 #planManage > .body > .head { width: 100%; }
-#planManage > .body > .head .top { width: calc(100% - 2px); height: 49px; border: 1px solid #d9e2e8; border-bottom: none; background: #f8f8f8; }
-#planManage > .body > .head .top .text { color: #333333; font-size: 16px; line-height: 49px; float: left; margin-left: 20px; width: 70px; margin-right: 20px; }
-#planManage > .body > .head .top .tab { width: 300px; height: 30px; margin-top: 10px; line-height: 30px; float: left; background: #eef0f1; }
+#planManage > .body > .head .top { width: calc(100% - 2px); height: auto; min-height: 49px; border: 1px solid #d9e2e8; border-bottom: none; background: #f8f8f8; position: relative; }
+#planManage > .body > .head .top .text { color: #333333; width: 70px; height: 49px; line-height: 49px; font-size: 16px; position: absolute; top: 50%; left: 20px; margin-top: -25px; }
+#planManage > .body > .head .top .tab { width: 300px; height: 30px; line-height: 30px; position: absolute; top: 50%; left: 110px; margin-top: -15px; background: #eef0f1; }
 #planManage > .body > .head .top .tab:hover { cursor: pointer; }
 #planManage > .body > .head .top .tab div { float: left; height: 100%; color: #6d6d6d; width: 60px; text-align: center; }
 #planManage > .body > .head .top .tab .sel { border: 1px solid #02a9d1; color: #02a9d1; width: 58px; height: 28px; line-height: 28px; }
-#planManage > .body > .head .top .icon { float: right; }
+#planManage > .body > .head .top .icon { float: right; width: calc(100% - 430px); height: auto; }
+#planManage > .body > .head .top .icon div { float: left; height: 25px; line-height: 25px; font-size: 14px; margin-right: 20px; }
 #planManage > .body > .head .bottom { width: calc(100% - 2px); height: 59px; border: 1px solid #d9e2e8; border-bottom: none; border-right: none; }
 #planManage > .body > .head .bottom > div { float: left; height: 59px; }
 #planManage > .body > .head .bottom .name { width: calc(12.5% - 21px); padding-left: 20px; border-right: 1px solid #d9e2e8; background: #f7f9fb; line-height: 59px; }
@@ -28,9 +29,11 @@
 #planManage > .body > .head .bottom .time > div:nth-of-type(2) { background: #f7f9fb; height: 24px; line-height: 24px; }
 #planManage > .body > .head .bottom .time > div div { float: left; border-right: 1px solid #d9e2e8; text-align: center; height: 100%; }
 #planManage > .body > .head .bottom .time > div div:nth-last-of-type(1) { border-right: none; }
-#planManage > .body > .grid { width: calc(100% - 2px); border: 1px solid #d9e2e8; border-bottom: none; }
+#planManage > .body > .grid { width: calc(100% - 2px); border: 1px solid #d9e2e8; overflow-x: hidden; overflow-y: auto; position: relative; }
 #planManage > .body > .grid .row { width: 100%; }
 #planManage > .body > .grid .row > div { float: left; }
+#planManage > .body > .grid .row:nth-last-of-type(1) > div { border-bottom: none; }
+#planManage > .body > .grid .row:nth-last-of-type(1) .state > div:nth-last-of-type(1) div { border-bottom: none; }
 #planManage > .body > .grid .row .name { width: calc(12.5% - 41px); cursor: pointer; border-right: 1px solid #d9e2e8; padding: 0 20px 0; border-bottom: 1px solid #d9e2e8; position: relative; }
 #planManage > .body > .grid .row .name div { color: white; height: 14px; font-size: 12px; line-height: 14px; top: 5px; left: 20px; border-radius: 20px; position: absolute; }
 #planManage > .body > .grid .row .name .warn1 { background: #f79862; }
