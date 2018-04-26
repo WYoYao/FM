@@ -1,20 +1,18 @@
+// 跳入本页需要在cache中存入
+// 计划类型     planType : 'order'工单计划 'group'集团计划 'groupD'已作废集团计划 'orderD'已作废工单计划 'project'项目计划
+// 计划ID      planId
 v.pushComponent({
   name: "planInformation",
   data: {
-    planId:"",
-    // 计划类型 
-    // 'order'工单计划 'group'集团计划 'groupD'已作废集团计划 'orderD'已作废工单计划 'project'项目计划
-    planType:"",
     // 计划信息
     planInfo:{},
     // 计划修改历史
     historyRecordList:{},
-    planInformationPaths:[],
   },
   methods: {
     // 废弃计划
     deletePlan : function(){
-      getData([this.planType == 'group' ? {name:"deleteGroupPlan",data:{group_plan_id:this.planId}} : {name:"deleteOrderPlan",data:{plan_id:this.planId}}])[0].then(function(data){
+      getData([this.cache.planType == 'group' ? {name:"deleteGroupPlan",data:{group_plan_id:this.cache.planId}} : {name:"deleteOrderPlan",data:{plan_id:this.cache.planId}}])[0].then(function(data){
 
       }).catch(function(err){
 
@@ -22,7 +20,11 @@ v.pushComponent({
     },
     // 查看计划历史工单信息
     lookHistoryOrderInfo : function(){
-        v.initPage('planWorkOrder',{orderPlanId:this.planId})
+        this.cache = {
+          name:"计划历史工单",
+          orderPlanId:this.cache.planId
+        }
+        v.initPage('planWorkOrder');
     },
     // 修改计划
     changePlan : function(){
@@ -67,27 +69,9 @@ v.pushComponent({
       
   },
   beforeMount : function(){
-    // 生成路径
-    switch(this.planType){
-      case 'group':
-        this.planInformationPaths = [{name:"首页",path:""},{name:"集团计划详情"}];
-      break;
-      case 'order':
-        this.planInformationPaths = [{name:"首页",path:"planManage"},{name:"计划详情"}]
-      break;
-      case 'groupD':
-        this.planInformationPaths = [{name:"首页",path:""},{name:"已作废集团计划详情"}];
-      break;
-      case 'orderD':
-        this.planInformationPaths = [{name:"首页",path:"planManage"},{name:"已作废计划列表",path:"planManage"},{name:"已作废计划详情"}];
-      break;
-      case 'project':
-        this.planInformationPaths = [{name:"首页",path:""},{name:"集团计划详情",path:"planInfomation"},{name:"项目计划监控",path:""},{name:"项目计划详情"}];
-      break;
-    }
     
     // 获取计划信息
-    var arr = [{name:(this.planType === 'order' || this.planType === 'orderD' || this.planType === 'project') ? "orderPlanInfo" : "groupPlanInfo",data:{planId:this.planId}}];
+    var arr = [{name:(this.cache.planType === 'order' || this.cache.planType === 'orderD' || this.cache.planType === 'project') ? "orderPlanInfo" : "groupPlanInfo",data:{planId:this.cache.planId}}];
     getData(arr)[0].then(function(data){
       this.planInfo = JSON.parse(JSON.stringify(data.Content));
     }).catch(function(err){
@@ -95,8 +79,8 @@ v.pushComponent({
     })
 
     // 如果当前计划为工单计划或已作废工单计划，则获取计划历史信息，点不点随意，先准备总是没错的
-    if(this.planType === 'order' || this.planType === 'orderD'){
-      var arr = [{name:"planChangeHistory",data:{plan_id:this.planId}}];
+    if(this.cache.planType === 'order' || this.cache.planType === 'orderD'){
+      var arr = [{name:"planChangeHistory",data:{plan_id:this.cache.planId}}];
       getData(arr)[0].then(function(data){
         this.historyRecordList = JSON.parse(JSON.stringify(data.Content.splice(0,2)));
       }).catch(function(err){

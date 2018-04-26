@@ -4,6 +4,16 @@ $(function () {
     $("#birthDate").psel({ y: 2017, M: 1, d: 1 });
     //矫正树的底部边框样式
     windowEvent.borderInit();
+    //校验员工识别码
+    $("#identificationCode>input").on("input",function(){
+        var regu = /^\d{1,20}$/;
+        if(!regu.test($(this).val())){
+            $("#identificationCode").pshowTextTip("请输入非负整数")
+        }else if($(this).val().length > 0){
+            $("#identificationCode").pshowTextTip("")
+        }
+    });
+
 });
 
 //工具
@@ -12,7 +22,8 @@ var tools = {
     trim: function (x) {
         return x.replace(/^\s+|\s+$/gm, '');
     },
-    isIE: function() {   //ie?
+    //判断ie
+    isIE: function() {   
         if (!!window.ActiveXObject || "ActiveXObject" in window){
             return true;
         }else{
@@ -34,7 +45,6 @@ var windowEvent = {
         }
     },
     hidePwindow3: function () {
-
         $("#pwindow3").phide();
         organizationMethods.operationStateInit();
     },
@@ -45,7 +55,6 @@ var windowEvent = {
         }
     },
     hidePwindow2: function () {
-
         $("#pwindow2").phide();
         organizationMethods.operationStateInit();
     },
@@ -53,19 +62,11 @@ var windowEvent = {
     windowInit: function () {
         $('#projectCommon, #centerDepart').off('click', '.organizationTreeBoxName').off('blur', '.organizationTreeBoxName>input');
         $('#projectCommon, #centerDepart').on('click', '.organizationTreeBoxName', function () {
-            //  console.log(tools.isIE());    //判断edge
-            
-            
-            // if(tools.isIE() && (obj.obj_name == '中心部门')){  //edge浏览器js
-            //     var that=$("#projectCommon .organizationTreeBoxName>input:focus, #centerDepart .organizationTreeBoxName>input:focus");
-            //     $(that).trigger("blur");
-            // }   
-
             clearTimeout(organizationModel.timer);   
             $('#projectCommon .organizationTreeBoxName input,#centerDepart .organizationTreeBoxName input').css('borderColor', 'transparent');
             $('#centerDepart .organizationTreeBoxName:last,#projectCommon .organizationTreeBoxName:last').css('borderBottom', 'none');
             $(this).find('input').css('background', '#f8f8f8');
-            console.log(1)
+            
             var obj = JSON.parse($(this).find('input').attr('dis'));
             if (obj.obj_name === '中心部门') {
                 organizationModel.operationState[0].usable = false;
@@ -97,17 +98,17 @@ var windowEvent = {
             }
             var that = this;
  
-            setTimeout(function () {
-                if (obj.obj_name !== '中心部门') {
-                    $(that).find('input').removeAttr('readonly').focus();
-                }
-                
-            }, 200)
+            // setTimeout(function () {
+            //     if (obj.obj_name !== '中心部门') {
+            //         $(that).find('input')[0].removeAttribute("readonly");
+            //         $(that).find('input').focus();
+            //         console.log($(that).find('input'))
+            //     }  
+            // }, 200)
         })
 
         //改变树的元素的状态为未选择
         $('#projectCommon , #centerDepart').on('blur', '.organizationTreeBoxName>input', function () {
-            console.log(2)
             if (tools.trim($(this).val()) === "") {
                 $(this).parent().find(".inputPrompt").show().addClass("inputPromptShow");
             } else {

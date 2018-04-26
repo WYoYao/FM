@@ -4,13 +4,13 @@
 <link rel="stylesheet" href="../css/workOrder/planMng/term/planWorkOrder.css">
 <div id="planWorkOrder" v-show="onPage == 'planWorkOrder'">
     <div class="head">
-        <sitemap :maps='planWorkOrderPaths' :createsitemap='gobackSelPath' :back='gobackLastPath' />
+        <sitemap :maps='paths.path' :createsitemap='gobackSelPath' :back='gobackLastPath' />
     </div>
     <div class="body">
         <div class="sel">
             <div>
                 <pcombobox-normal id="'workOrderStateSel'" sel="" bind="true">
-                    <header prefix="工单状态 : " placeholder="工单状态 : 所有"></header>
+                    <header prefix="工单状态:" placeholder="'全部'"></header>
                     <item datasource="allOrderState" text="name" id="id"></item>
                 </pcombobox-normal>
             </div>

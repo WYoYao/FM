@@ -106,22 +106,31 @@ v.pushComponent({
         },
         // 查看已经废弃的计划
         lookDiscardGroupPlan : function(){
-            v.initPage('dumpedPlan',{orderType:$("#planTypeCombo").psel().id});
+            this.cache = {
+                orderType : $("#planTypeCombo").psel().id,
+                name:"已作废计划列表",
+            }
+            v.initPage('dumpedPlan');
+            // v.initPage('dumpedPlan',{orderType:$("#planTypeCombo").psel().id});
         },
         // 跳转到集团计划首页
         openGroupModule : function(){
+            this.cache = {name:"集团计划"};
             v.initPage('groupPlan');
         },
         // 查看计划详情
         openPlanDetail : function(item){
-            v.initPage("planInformation",{planId:item.plan_id,planType:'order'});
+            this.cache = {name:"计划详情",planId:item.plan_id,planType:'order'};
+            v.initPage("planInformation");
         },
         // 查看工单详情
         openOrderDetail : function(model){
-            v.initPage("workOrderDetail",{workOrderId:model.id});
+            this.cache = {name:"工单详情",workOrderId:model.id};
+            v.initPage("workOrderDetail");
         },
         // 创建计划
         createTermPlan : function(){
+            this.cache = {name:"创建计划"};
             v.initPage("createPlan");
         },
         // 重新渲染表格
@@ -171,7 +180,7 @@ v.pushComponent({
                 {name:"groupPlanUse"}
             ]);
             Promise.all(list).then(function(data){
-                this.allOrderState = JSON.parse(JSON.stringify(data[0].Content));
+                this.allOrderState = this.allOrderState.concat(JSON.parse(JSON.stringify(data[0].Content)));
                 this.allPlanType = JSON.parse(JSON.stringify(data[1].Content));
                 this.groupPlanUse = {
                     total:data.Item.plan_total,

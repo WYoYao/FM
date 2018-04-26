@@ -205,14 +205,19 @@ var organizationMethods = {
             // }
 
             // $("#identificationCode").precover();
-            $("#personName").pval((list.name ? list.name : ""));
+            $("#personName").precover();
+            $("#personName").pval((list.name ? list.name : ""));    
+            $("#personSex").precover();
             $("#personSex").psel((list.gender === "female" ? "女" : "男"));
+            $("#phoneNumber").precover();
             $("#phoneNumber").pval((list.phone_num ? list.phone_num : ""));
+            $("#birthDate").precover();
             $("#birthDate").psel({y:2007,M:1,d:1});
             if(list.birthday){
                 var birthday = list.birthday.split("-");
                 $("#birthDate").psel({y:birthday[0],M:birthday[1],d:birthday[2]});
             }
+            $("#email").precover();
             $("#email").pval((list.person_mail ? list.person_mail : ""));
             organizationModel.accountId = (list.person_user_id ? list.person_user_id : "");
 
@@ -546,9 +551,7 @@ var organizationMethods = {
 挂载完成 
 */
 var organizationMounted = function () {
-    // $(document).on('focus', 'input[readonly]', function () {
-    //     this.blur();    
-    // })
+
     //初始化中心部门岗位
     organizationController.queryPositionByDeptId({"dept_id":"BMBMb4bad6394438481c8488366b9d49aee1"}).then(function(result){
         organizationModel.postArr = result;
@@ -673,6 +676,9 @@ var organizationWatch = {
     curPage: function(val, oldVal){
         if(val === "centerDepartMent"){
             organizationModel.treeBackup = JSON.stringify(organizationModel.listByCenterDepartment);
+            $($("#centerDepart input")[0]).attr("readonly","").keydown(function(e) {
+                e.preventDefault();
+            });
         }
         if(oldVal === "centerDepartMent" && val === "list"){
             organizationModel.listByCenterDepartment = JSON.parse(organizationModel.treeBackup);
@@ -699,6 +705,10 @@ var organizationLogger = {
                 windowEvent.jurisdictionInit();
                 // windowEvent.positionInit();
                 windowEvent.projectInit();
+                //更新完成后设置readonly
+                $("#centerDepart_ input,#projectCommon_ input").attr("readonly","readonly").keydown(function(e) {
+                    e.preventDefault();
+                });
             },
             watch: organizationWatch
         });

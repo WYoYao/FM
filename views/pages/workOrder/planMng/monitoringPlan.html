@@ -4,7 +4,7 @@
             <div class="header">
                 <!-- 面包屑导航Start -->
 
-                <!-- <sitemap :maps='maps' :createsitemap='createsitemap' :back='back' /> -->
+                <!-- <sitemap :maps='paths.path' :createsitemap='createsitemap' :back='back' /> -->
 
                 <!-- 面包屑导航End -->
             </div>
@@ -22,7 +22,7 @@
                     <span class="font">项目是否更新集团计划：</span>
                     <div class="cbx">
                         <pcombobox-normal sel="createGroupOrderGrid" bind="true" id="'isUpdateGroupPlan'">
-                            <header placeholder="全部"></header>
+                            <header placeholder="'全部'"></header>
                             <item datasource="isUpdateGPWO" text="name" id="id"></item>
                         </pcombobox-normal>
                     </div>
@@ -44,7 +44,10 @@
                     集团维保计划
 
                     <span class="total_count">
-                        目前有15个项目未引用该计划
+                        目前有{{notCitePlanList.length}}个项目未引用该计划
+                        <div class="hoverList">
+                            <div v-for="item in notCitePlanList" v-text="item.project_name" :title="item.project_name"></div>
+                        </div>
                     </span>
 
                     <!-- icon Start -->
@@ -84,7 +87,7 @@
                     <div class="month_title">
                         <div class="row" v-text="timeData.month" id="monitoringWidth">八月</div>
                         <ul class="row">
-                            <li v-for="item in timeData.day" v-text="item"></li>
+                            <li class="item" v-for="item in timeData.day" v-text="item"></li>
                         </ul>
                     </div>
                 </div>
@@ -98,12 +101,12 @@
 
                         <div class="line">
 
-                            <div class="body_name" v-text="item.project_name" v-text="item.project_name"></div>
-                            <div class="body_name" v-text="item.is_update_group_plan == 1 ? '已更新' : '未更新'" v-text="item.is_update_group_plan == 1 ? '已更新' : '未更新'"></div>
-                            <div class="body_name" v-text="item.create_wo_total" v-text="item.create_wo_total"></div>
-                            <div class="body_name" v-text="item.uncreate_wo_total" v-text="item.uncreate_wo_total"></div>
-                            <div class="body_name" v-text="item.executing_wo_total" v-text="item.executing_wo_total"></div>
-                            <div class="body_name" v-text="item.finished_wo_total" v-text="item.finished_wo_total"></div>
+                            <div class="body_name" v-text="item.project_name" :title="item.project_name"></div>
+                            <div class="body_name" v-text="item.is_update_group_plan == 1 ? '已更新' : '未更新'" :title="item.is_update_group_plan == 1 ? '已更新' : '未更新'"></div>
+                            <div class="body_name" v-text="item.create_wo_total" :title="item.create_wo_total"></div>
+                            <div class="body_name" v-text="item.uncreate_wo_total" :title="item.uncreate_wo_total"></div>
+                            <div class="body_name" v-text="item.executing_wo_total" :title="item.executing_wo_total"></div>
+                            <div class="body_name" v-text="item.finished_wo_total" :title="item.finished_wo_total"></div>
 
                             <ul class="row" v-for="row in item.grid">
                                 <li v-for="grid in row">

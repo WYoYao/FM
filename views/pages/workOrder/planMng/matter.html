@@ -61,14 +61,11 @@
                 <!-- 对象 和标准流程  End   -->
 
                 <div class="checkbox-del-div">
-                    <div class="checkbox-div">
-                        <!-- <div class="pcheckbox" v-for="(controlRequire, controlRequireIndex) in frameModel.controlRequireList" @click="publicMethod.setMattersControlRequire(controlRequire, $event, index0, controlRequireIndex)"
-                                    :class="publicMethod.isDisableControlRequire(controlRequire, index0, controlRequireIndex) ? 'eleDisable' : ''"> -->
-                        <div class="pcheckbox eleDisable">
-                            <!--:class="controlRequire.code == 'obj_first_photo' && (!$root.allMatters[index0].desc_objs || !$root.allMatters[index0].desc_objs.length) || controlRequire.code == 'obj_first_sign' && (!$root.allMatters[index0].desc_objs || !$root.allMatters[index0].desc_objs.length || $root.allMatters[index0].onlyCustomizedObjs) ? 'eleDisable' : ''">-->
-
-                            <span class="pcheckbox_input pcheckbox-checked"></span>
-                            <span class="pswitch_label"></span>
+                    <div class="checkbox-div" v-for="(item,index) in GeneralDictByKey" @click="item.selected=!item.selected">
+                        <!-- <div class="pcheckbox eleDisable"> -->
+                        <div class="pcheckbox" :class="item.disabled?'eleDisable':''">
+                            <span class="pcheckbox_input" :class="item.selected ? 'pcheckbox-checked' : ''"></span>
+                            <span class="pswitch_label" :title="item.name" v-text="item.name"></span>
                         </div>
                     </div>
                     <!--<div class="del-div" @click="publicMethod.deleteMatter(index0,$event)">-->

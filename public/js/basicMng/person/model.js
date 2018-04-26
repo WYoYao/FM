@@ -269,8 +269,7 @@ var personMethods = {
         }
         return arr;
     },
-    searchAccountByName: function() {
-        //通过账号模糊查询列表
+    searchAccountByName: function() {//通过账号模糊查询列表
         $("#searchAccountInfo > div").show();
         var functionShow = $("#permissionPackageList").is(":hidden");
         if(!functionShow){
@@ -301,8 +300,7 @@ var personMethods = {
 
         console.log(arr);
     },
-    clickAccountAddPermission: function(item) {
-        //选择账号添加权限
+    clickAccountAddPermission: function(item) {//选择账号添加权限
         $("#searchAccountInfo > div").hide();
         if (item.person_user_name != "暂无结果") {
             personModel.functionPermissionObj = {
@@ -406,23 +404,36 @@ var personMethods = {
     },
 
     //人员列表相关
-    tabChange: function(model, event) {
-        //人员管理列表tab切换
+    tabChange: function(model, event) { //人员管理列表tab切换
         var _this = this;
         var vueModel = window.model;
         var _index = event.pEventAttr.index || 0;
         if (_index === 0) {
             $("#personState").precover("全部");
             $("#personInfoListGrid").precover(true);//表格初始化
-            $("#personInfoListGrid").psetHeaderSort({index:0,sortType:'desc'});
+            // $("#personInfoListGrid").psetHeaderSort({index:0,sortType:'desc'});
             $("#personState").pslideUp();
             $("#personManageList").show();
             $("#loginInfoList").hide();
             personModel.deptPositionId = '';
             personMethods.showPersonList();
+            var organizationTree = JSON.parse(JSON.stringify(personModel.organizationList));
+            var newOrganizationTree = repeat(organizationTree);
+            personModel.organizationList = JSON.parse(JSON.stringify(newOrganizationTree));
+            function repeat(arr){
+                for(var i=0;i<arr.length;i++){
+                    var jsonArr = arr[i];
+                    jsonArr["checked"] = false;
+                    if(jsonArr.child_objs && jsonArr.child_objs.length>0){
+                        repeat(jsonArr.child_objs);
+                    }
+                }
+                return arr;
+            }
         } else if (_index === 1) {
             //获取登录信息列表
             $("#personNameSearch").precover();
+            $("#loginInfoGrid").precover(true);//表格初始化
             $("#createPersonFloatWindow").phide();
             var _data = {
                 user_id: personModel.userId,
@@ -818,6 +829,7 @@ var personMethods = {
         var employeePosition = $("#employeePositionName").attr("objId") ? true : false;
         if (!employeeIdFlag) {
             $("#employeeId").pshowTextTip();
+            return;
         }
         if(!employeeIdTypeFlag){//判断员工识别码是否为正整数或0
             $("#employeeIdTip").show();
@@ -996,7 +1008,7 @@ var personMethods = {
             if(result && result[0].status == '2'){
                 $("#globalnotice").pshow({ text: "上传成功", state: "success" });
                 setTimeout(function() {
-                    personMethods.goBackPersonManageList();
+                    personMethods.showPersonList();
                 }, 0);
             }else if(result && result[0].status == '1'){
                 $("#globalnotice").pshow({ text: result[0].msgs, state: "failure" });

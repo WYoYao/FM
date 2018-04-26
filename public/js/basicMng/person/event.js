@@ -30,6 +30,9 @@ $(function(){
         if(!$(tg).hasClass('per-combobox-basic') && !$(tg).parents().hasClass('per-combobox-basic')){
             $("#employeeSex").pslideUp();
         }
+        if(!$(tg).hasClass('per-time-chart') && !$(tg).parents().hasClass('per-time-chart')){
+            $("#startTime").pslideUp();
+        }
         if(!$(tg).hasClass('employeeMajorTitle') && !$(tg).parents().hasClass('employeeMajorTitle') && !$(tg).hasClass('employeeMajorListUl')&& !$(tg).parents().hasClass('employeeMajorListUl')){
             $(".employeeMajorList").hide();
         }

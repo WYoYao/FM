@@ -10,13 +10,13 @@
 
         <div class="plantype">
             <pcombobox-normal id="'planTypeCombo'" sel="refreshRenderGrid(false)" bind="true">
-                <header placeholder="全部"></header>
+                <header placeholder="'全部'"></header>
                 <item datasource="allPlanType" text="tab_name" id="order_type"></item>
             </pcombobox-normal>
         </div>
         <div class="planSource">
             <pcombobox-normal id="'planSourceCombo'" sel="refreshRenderGrid(false)" bind="true">
-                <header placeholder="全部"></header>
+                <header placeholder="'全部'"></header>
                 <item datasource="allPlanSource" text="name" id="id"></item>
             </pcombobox-normal>
         </div>
@@ -53,7 +53,7 @@
                 </div>
                 <div class="icon clear">
                     <div v-for="item in allOrderState">
-                        <img :src="'../../../../images/orderState/' + box.type + '.png'" alt="">
+                        <img :src="'../../../../images/orderState/' + item.type + '.png'" alt="">
                         <span v-text="item.name"></span>
                     </div>
                 </div>

@@ -17,7 +17,7 @@ Vue.component('addcontent', {
     data: function () {
 
         return {
-            leo: false,
+            showAddObjAndPoint: false,
             uRangesType: [
                 {
                     name: "大于",
@@ -68,152 +68,15 @@ Vue.component('addcontent', {
             },
             content_str: "",
             desc_work: {
-                "work_name": "1",
+                "work_name": "",
                 "pre_conform": "",
-                "content": "@上格云-001-2号楼 @上格云-001-1号楼 ",
-                "content_objs": [
-                    {
-                        "obj_id": "Bd1301020001002",
-                        "obj_name": "上格云-001-2号楼",
-                        "selected": true
-                    },
-                    {
-                        "obj_id": "Bd1301020001001",
-                        "obj_name": "上格云-001-1号楼",
-                        "selected": true
-                    }
-                ],
+                "content": "",
+                "content_objs": [],
                 "notice": "",
-                "confirm_result": [
-                    {
-                        "info_points": [
-                            {
-                                "code": "BuildLocalName",
-                                "id": "build_0_BuildLocalName",
-                                "name": "建筑本地名称",
-                                "selected": true
-                            },
-                            {
-                                "code": "BuildLocalID2",
-                                "id": "build_0_BuildLocalID2",
-                                "name": "建筑本地编码2",
-                                "selected": true
-                            },
-                            {
-                                "code": "BuildLocalName2",
-                                "id": "build_0_BuildLocalName2",
-                                "name": "建筑本地名称2",
-                                "selected": true
-                            }
-                        ],
-                        "parents": [],
-                        "customs": [
-                            {
-                                "name": "多选",
-                                "type": "3",
-                                "items": [
-                                    "1",
-                                    "2",
-                                    "3"
-                                ],
-                                "wrongs": [
-                                    "1",
-                                    "2",
-                                    "3"
-                                ]
-                            },
-                            {
-                                "name": "区间",
-                                "type": "5",
-                                "wrong_ranges": [
-                                    {
-                                        "type": "range",
-                                        "values": [
-                                            "1",
-                                            "10"
-                                        ]
-                                    },
-                                    {
-                                        "type": "gte",
-                                        "values": "2"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "非区间",
-                                "type": "4",
-                                "wrong_ranges": [
-                                    {
-                                        "type": "gte",
-                                        "values": "10"
-                                    }
-                                ]
-                            }
-                        ],
-                        "obj_id": "Bd1301020001002",
-                        "obj_name": "上格云-001-2号楼",
-                        "selected": true
-                    },
-                    {
-                        "info_points": [],
-                        "parents": [],
-                        "customs": [],
-                        "obj_id": "Bd1301020001001",
-                        "obj_name": "上格云-001-1号楼",
-                        "selected": true
-                    }
-                ],
+                "confirm_result": [],
                 "domain": "",
                 "domain_name": ""
             }
-            // desc_work: {
-            //     "work_name": "",      //工作内容名称
-            //     "pre_conform": "",    //强制确认
-            //     "content": "",        //操作内容
-            //     //操作内容中涉及的对象
-            //     "content_objs": [
-            //         {
-            //             "obj_id": "",	        //对象id
-            //             "obj_name": "",	    //对象名称
-            //             "obj_type": ""      //对象类型,子项见后边
-            //         }
-            //     ],
-            //     "notice": "",        //注意事项
-            //     "confirm_result": [	//需确认的操作结果
-            //         {
-            //             "obj_id": " ",
-            //             "obj_name": " ",
-            //             "obj_type": "",
-            //             "parents": [
-            //                 { "parent_ids": ["", "", ""], "parent_names": ["建筑1", "楼层1", "空间"] },
-            //                 { "parent_ids": ["", ""], "parent_names": ["专业1", "系统1"] },
-            //                 { "parent_ids": ["", "", ""], "parent_names": ["专业1", "系统大类", "设备大类"] }
-            //             ],
-            //             "info_points": [
-            //                 {
-            //                     "id": "", "code": "", "name": "", "unit": "", "cmpt": "Numberentry02",
-            //                     "wrong_ranges": [{ "type": "gt", "values": "12" }, { "type": "lt", "values": "6" }]
-            //                 },
-            //                 {
-            //                     "id": "", "code": "", "name": "", "unit": "", "cmpt": "Multiselect01",
-            //                     "cmpt_data": [{ "code": "", "name": "" }], "wrongs": ["选项1", "选项2"]
-            //                 }
-            //             ],
-            //             "customs": [//自定义项，type：1-文本，2-单选，3-多选,4、无单位的数字,5、有单位的数字
-            //                 { "name": "确认信息2", "type": "1" },
-            //                 { "name": "确认信息2", "type": "2", "items": ["选项1", "选项2", "选项3"], "wrongs": ["选项1", "选项2"] },
-            //                 { "name": "确认信息3", "type": "3", "items": ["选项1", "选项2", "选项3"], "wrongs": ["选项1", "选项2"] },
-            //                 //非区间异常的type项有：gt-大于,gte-大于等于，lt-小于,lte-小于等于,区间的type项为range,满足一个子项就认为出现异常
-            //                 { "name": "确认信息4", "type": "4", "wrong_ranges": [{ "type": "gt", "values": "12" }, { "type": "lt", "values": "6" }] },
-            //                 {
-            //                     "name": "确认信息5", "type": "5", "unit": "", "wrong_ranges": [{ "type": "range", "values": ["12", "20"] }]
-            //                 }
-            //             ]
-            //         },
-            //     ],
-            //     "domain": "",                //专业code
-            //     "domain_name": ""            //专业名称
-            // }
         }
     },
     props: ["cb"],
@@ -221,8 +84,6 @@ Vue.component('addcontent', {
         // 获取对象
         get_content_Obj: function (arr) {
             var _that = this;
-
-            _that.content_str = "";
 
             _that.desc_work.content_objs = _that.desc_work.content_objs.concat(arr);
 
@@ -238,25 +99,24 @@ Vue.component('addcontent', {
                 return "@" + obj.obj_name + " ";
             }).join('');
 
+            // 如果 confirm_result 没有，则添加到 confirm_result 中
             var arr_name = _that.desc_work.confirm_result.map(function (item) {
                 return item.obj_name;
             });
 
-            _that.desc_work.confirm_result = _that.desc_work.content_objs.map(function (obj) {
-                var index = arr_name.indexOf(obj.obj_name);
-                if (index != -1) {
-                    return _that.desc_work.confirm_result.slice(index, 1);
-                } else {
-                    return Object.assign({}, {
-                        info_points: [],
-                        parents: [],
-                        customs: [],
-                    }, obj)
-                }
+            JSON.parse(JSON.stringify(arr)).filter(function (item) {
+
+                return arr_name.indexOf(item.obj_name) == -1;
+            }).forEach(function (info) {
+
+                _that.desc_work.confirm_result.push(Object.assign({}, {
+                    info_points: [],
+                    parents: [],
+                    customs: [],
+                }, info));
             })
 
-
-
+            _that.content_str = "";
         },
         // 获取单个对象的信息点
         get_point: function (obj) {
@@ -329,10 +189,45 @@ Vue.component('addcontent', {
 
             return str.length ? ("异常范围：" + str) : '';
         },
+        //  编辑信息点
         idecallback: function (item) {
             var _that = this;
             Object.assign(_that.onPoint, item);
             _that.onPoint = void 0;
+        },
+        // 添加对象和信息点
+        addObjAndPoint: function (arr) {
+            var _that = this;
+            _that.desc_work.confirm_result = _that.desc_work.confirm_result.concat(arr);
+            _that.showAddObjAndPoint = false;
+        },
+        // 提交返回内容
+        commit: function () {
+            var _that = this;
+            // 当前的内容
+            var dw = _that.desc_work;
+            // 常规验证
+
+            // 验证作业简称不能为空
+            if (!dw.work_name.length) {
+                $('#globalnotice').pshow({ text: '作业简称不能为空', state: false, });
+                return;
+            }
+
+            // 作业简称不能为空
+            if (!dw.content.length) {
+                $('#globalnotice').pshow({ text: '标准操作要求不能为空', state: false, });
+                return;
+            }
+
+            // 作业简称不能为空
+            if (!dw.content.length) {
+                $('#globalnotice').pshow({ text: '标准操作要求不能为空', state: false, });
+                return;
+            }
+
+            // 返回上级
+            if (_.isFunction(_that.cb)) _that.cb(dw);
         }
     },
     computed: {
@@ -412,8 +307,7 @@ Vue.component('addcontent', {
         };
 
         // 专业限定下拉选择事件
-        window.domainSel = function () {
-            var item = $("#add-major").psel();
+        window.domainSel = function (item) {
             _that.desc_work.domain = item.code;
             _that.desc_work.domain_name = item.name;
         }

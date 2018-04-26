@@ -19,9 +19,4 @@ v.pushComponent({
 
         
     },
-    watch:{
-        onPage:function(N,O){
-            this.lastPage = O;
-        }
-    }
 });

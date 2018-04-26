@@ -9,42 +9,42 @@
     <div class="head">
 
         <div class="path">
-            <sitemap :maps='planInformationPaths' :createsitemap='gobackSelPath' :back='gobackLastPath' />
+            <sitemap :maps='paths.path' :createsitemap='gobackSelPath' :back='gobackLastPath' />
         </div>
 
-        <div class="name MT" v-text="planInfo.plan_name" :title="planInfo.plan_name" v-if="planType === 'group' || planType === 'groupD'"></div>
+        <div class="name MT" v-text="planInfo.plan_name" :title="planInfo.plan_name" v-if="cache.planType === 'group' || cache.planType === 'groupD'"></div>
 
         <div class="operate">
 
-            <div class="delete" v-if="planType === 'group' || planType === 'order'">
+            <div class="delete" v-if="cache.planType === 'group' || cache.planType === 'order'">
                 <pbutton-borderred text="'作废计划'" icon="'a'" bind="true" isborder="false" @click="deletePlan"></pbutton-borderred>
             </div>
 
-            <div class="historyOrder" v-if="planType === 'orderD'">
+            <div class="historyOrder" v-if="cache.planType === 'orderD'">
                 <pbutton-blue text="'过去发出的工单记录'" icon="'E'" bind="true" isborder="false" @click="lookHistoryOrderInfo"></pbutton-blue>
             </div>
 
-            <div class="change" v-if="planType === 'group' || planType === 'order'">
+            <div class="change" v-if="cache.planType === 'group' || cache.planType === 'order'">
                 <pbutton-blue text="'修改计划'" icon="'`'" bind="true" isborder="false" @click="changePlan"></pbutton-blue>
             </div>
 
-            <div class="copy" v-if="planType === 'group'">
+            <div class="copy" v-if="cache.planType === 'group'">
                 <pbutton-blue text="'复制计划'" icon="'G'" bind="true" isborder="false" @click="copyPlan"></pbutton-blue>
             </div>
 
-            <div class="monitoring" v-if="planType === 'group'">
+            <div class="monitoring" v-if="cache.planType === 'group'">
                 <pbutton-blue text="'项目计划监控'" icon="'A'" bind="true" isborder="false" @click="GoProPlan"></pbutton-blue>
             </div>
 
-            <div class="remark" v-if="planType === 'order' || planType === 'dumpD'">
+            <div class="remark" v-if="cache.planType === 'order' || cache.planType === 'dumpD'">
                 <pbutton-blue text="'版本记录'" icon="'`'" bind="true" isborder="false" @click.stop="lookVersionRemark"></pbutton-blue>
             </div>
 
-            <div class="order" v-if="planType === 'project'">
+            <div class="order" v-if="cache.planType === 'project'">
                 <pbutton-blue text="'查看项目计划中的工单'" icon="'S'" bind="true" isborder="false" @click="lookAllOrder"></pbutton-blue>
             </div>
 
-            <div class="plan" v-if="planType === 'project'">
+            <div class="plan" v-if="cache.planType === 'project'">
                 <pbutton-blue text="'查看项目所有计划'" icon="':'" bind="true" isborder="false" @click.stop="lookAllPlan"></pbutton-blue>
             </div>
 
@@ -52,13 +52,13 @@
 
     </div>
 
-    <div class="warn" v-if="(planType === 'order' || planType === 'project') && planInfo.plan_from == 1" v-show="planInfo.plan_update_status == 0">
+    <div class="warn" v-if="(cache.planType === 'order' || cache.planType === 'project') && planInfo.plan_from == 1" v-show="planInfo.plan_update_status == 0">
         提示:集团对<span v-text="planInfo.plan_name"></span>中的<span v-text="planInfo.plan_update_type == 1 ? '计划频率' : planInfo.plan_update_type == 2 ? '工作事项' : '计划频率和工作事项'"></span>进行了修改
     </div>
 
     <div class="body">
 
-        <div class="state" v-if="planType === 'order' || planType === 'project'">
+        <div class="state" v-if="cache.planType === 'order' || cache.planType === 'project'">
             <i class="icon" :class="planInfo.remind_type == 3 ? 'red' : 'orange2'">¨</i>
             <span class="orange2" v-show="planInfo.remind_type == 0">最新修改内容尚未生效；生效时间<span v-text="timeFormat(planInfo.plan_start_time,'1')"></span></span>
             <span class="orange2" v-show="planInfo.remind_type == 1">生效时间<span v-text="timeFormat(planInfo.plan_start_time,'1')"></span></span>
@@ -66,14 +66,14 @@
             <span class="red" v-show="planInfo.remind_type == 3">此计划已经到达失效时间；如需继续使用计划，请修改生效时间</span>
         </div>
         
-        <div class="state" v-if="planType === 'group'">
+        <div class="state" v-if="cache.planType === 'group'">
             <span class="orange2" v-show="planInfo.valid">
                 生效时间
                 <span v-text="timeFormat(planInfo.create_time,'1')"></span>
             </span>
         </div>
 
-        <div class="state" v-if="planType === 'groupD' || planType === 'orderD'">
+        <div class="state" v-if="cache.planType === 'groupD' || cache.planType === 'orderD'">
             <span class="red">
                 该计划已在<span v-text="timeFormat(planInfo.destroy_time,'1')"></span>被作废
             </span>
@@ -84,12 +84,12 @@
 
             <div class="title">基本信息</div>
 
-            <div class="row" v-if="planType == 'order' || planType === 'orderD' || planType === 'project'">
+            <div class="row" v-if="cache.planType == 'order' || cache.planType === 'orderD' || cache.planType === 'project'">
                 项目计划名称:
                 <span v-text="planInfo.plan_name"></span>
             </div>
 
-            <div class="row" v-if="planType == 'group' || planType === 'groupD'">
+            <div class="row" v-if="cache.planType == 'group' || cache.planType === 'groupD'">
                 集团计划名称:
                 <span v-text="planInfo.plan_name"></span>
             </div>

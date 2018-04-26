@@ -120,7 +120,7 @@
                         <ul>
                             <li v-for="item in info.persons" @click="personMethods.viewPersonDetail(item)">
                                 <div class="pic">
-                                    <img v-bind:src="!item.head_portrait?'../images/person.png':item.head_portrait" />
+                                    <img :key="item.head_portrait" v-bind:src="!item.head_portrait?'../images/person.png':item.head_portrait" />
                                 </div>
                                 <div class="pername" v-bind:title="item.name" v-text="item.name">
                                  

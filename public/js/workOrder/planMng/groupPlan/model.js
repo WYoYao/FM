@@ -1,10 +1,12 @@
+// 本页面需要传入cache
+// 
 // 计划管理通用
 v.pushComponent({
     name: "groupPlan",
     data: {
-        groupPlanPaths:[
-            {name:"首页",path:"planManage"},{name:"集团计划"}
-        ],
+        // groupPlanPaths:[
+        //     {name:"首页",path:"planManage"},{name:"集团计划"}
+        // ],
         groupPlanList:[],
         planSiteType:[{name:"全部",id:2},{name:"是",id:1},{name:"否",id:0}]
     },

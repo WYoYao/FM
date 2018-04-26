@@ -42,6 +42,8 @@ Vue.component('addinfo', {
             Part: [],
             // 工具列表
             Tool: [],
+            // 信息点列表
+            InfoPoint: [],
             // 自定义对象
             auto: "",
             // 查询的对象
@@ -104,75 +106,38 @@ Vue.component('addinfo', {
         submit: function () {
             var _that = this;
 
-            //  自定义对象
-            if (_that.onBlock == "auto") {
-                // 非空验证
-                if (!_.filter(_that.typeList, { selected: true }).length) {
-                    _that.autoView.error = "所属类别不能为空";
-                    return;
-                }
+            var obj;
+            // 查询出来获取的参数
+            if (_that.onBlock == "search") {
 
-                // 重名验证
-                aite_controller.Exist({
-                    obj_name: _that.auto,
-                    obj_type: _.find(_that.typeList, { selected: true }).code,
-                }).then(function (res) {
-                    if (res.exist) {
-                        // 已经存在
-                        _that.autoView.autoTypeNull = true;
-                    } else {
-                        // 不存在正常提交
-                        aite_controller.Add({
-                            obj_name: _that.auto,
-                            obj_type: _.find(_that.typeList, { selected: true }).code,
-                        }).then(function (res) {
+                obj = _.filter(_that.searchRes, { selected: true }).map(function (item) {
+                    // 去除多余的页面渲染需要的数据
+                    delete item.info_point.name_arr;
 
-                            _that.callback(res.map(function (item) {
-                                item.obj_name = _that.auto;
-                                return item;
-                            }))
-                        })
-                    }
-                })
-            } else if (_that.onBlock == "Floor" || _that.onBlock == "System") {
-                _that.callback(_that.getValueDeep(_that[_that.onBlock]));
+                    item.info_point = [item.info_point]
+                    return item;
+                });
             } else {
-                var type = _that.onBlock;
-                if (type == 'Room') type = 'Space';
-                if (type == 'Equip') type = 'EquipList';
-                if (type == 'Search') type = 'searchObject';
 
-                _that.callback(_that.getValue(_that[type]));
-            }
-        },
-        // 搜索按钮点击返回有没有选中值的之后直接把 输入的文字当成自定义对象保存
-        createAuto: function () {
-            var _that = this;
-
-            aite_controller.Exist({
-                obj_name: _that.searchStr,
-                obj_type: 1,
-            }).then(function (res) {
-                if (res.exist) {
-                    // 已经存在
-
+                // 现获取对象
+                if (_that.onBlock == "Floor" || _that.onBlock == "System") {
+                    obj = _that.getValueDeep(_that[_that.onBlock]);
                 } else {
-                    // 不存在正常提交
-                    aite_controller.Add({
-                        obj_name: _that.searchStr,
-                        obj_type: 1,
-                    }).then(function (res) {
-                        // 保存在控件中
-                        _that.searchRes = _that.searchRes.concat(res.map(function (item) {
-                            item.obj_name = _that.searchStr;
-                            return item;
-                        }));
-
-                        _that.searchObject = [];
-                        _that.searchStr = "";
-                    })
+                    var type = _that.onBlock;
+                    if (type == 'Room') type = 'Space';
+                    if (type == 'Equip') type = 'EquipList';
+                    obj = _that.getValue(_that[type]);
                 }
-            })
+
+                obj = obj.map(function (item) {
+
+                    item.info_points = _.filter(_that.InfoPoint, { selected: true });
+                    return item;
+                })
+            }
+
+            console.log(obj);
+            if (_.isFunction(_that.cb)) _that.cb(obj);
         },
         // 返回的首页
         back: function () {
@@ -200,6 +165,8 @@ Vue.component('addinfo', {
             _that.GeneralDict = [];
             // 设备等于空
             _that.EquipList = [];
+            // 信息点清空
+            _that.InfoPoint = [];
         },
         // 获取选中的值
         querySelectedItem: function (list, index) {
@@ -246,14 +213,14 @@ Vue.component('addinfo', {
             _that.isLoading = true;
             //  除了设备都只需要查询一个接口
             if (key != 'Equip') {
-                aite_controller[key](item || {}).then(function (res) {
+                addinfo_controller[key](item || {}).then(function (res) {
                     _that[key] = res;
                 }).finally(function () { _that.isLoading = false; })
 
             } else {
                 // 设备需要查询控件树和设备实例
-                var a = aite_controller.BuildFloorSpaceTree();
-                var b = aite_controller.GeneralDict();
+                var a = addinfo_controller.BuildFloorSpaceTree();
+                var b = addinfo_controller.GeneralDict();
 
                 a.then(function (res) {
                     _that.BuildFloorSpaceTree = res;
@@ -263,7 +230,8 @@ Vue.component('addinfo', {
 
                     }).finally(function () { _that.isLoading = false; })
                 })
-            }
+            };
+            _that.InfoPoint = [];
         },
         // 查询设备
         queryQuip: function () {
@@ -309,7 +277,76 @@ Vue.component('addinfo', {
             if (_that.str.length) {
                 _that.callback([]);
             }
-        }
+        },
+        // 查询对应的信息点
+        queryInfoPoints: function (argu) {
+            var _that = this;
+            _that.isLoading = true;
+            addinfo_controller.queryInfoPointForObject(argu)
+                .then(function (res) {
+                    _that.InfoPoint = res;
+                }).catch(function () {
+                    _that.InfoPoint = [];
+                }).finally(function () {
+                    _that.isLoading = false;
+                })
+        },
+        //  查询其对应信息点
+        clickInfoPointsByItem: function (item, type) {
+            var _that = this;
+            if (item.selected == true) {
+                _that.queryInfoPoints({
+                    keyword: "",
+                    obj_id: item.obj_id,
+                    obj_type: type,
+                })
+            }
+        },
+        //根据关键字查询 信息点
+        searchInfoPoint: function (str) {
+            var _that = this;
+            _that.isLoading = true;
+            addinfo_controller.searchInfoPoint({
+                keyword: str
+            }).then(function (res) {
+
+                _that.searchRes = res.map(function (item) {
+
+                    item.info_point = [item.info_point].map(function (item) {
+                        var arr = [],
+                            reg = new RegExp(str, 'g'),
+                            res = reg.exec(item.name);
+
+                        while (res) {
+                            arr = arr.concat(_.range(+res.index, res.index + str.length))
+                            res = reg.exec(item.name);
+                        }
+
+                        item.name_arr = item.name.split("").map(function (char, index) {
+
+                            return {
+                                mark: arr.indexOf(index) != -1,
+                                char: char,
+                            }
+                        })
+
+                        return item;
+                    })[0];
+                    return item;
+                })
+
+            }).finally(function () { _that.isLoading = false; })
+        },
+        //转换成父级链字符串形式
+        getParentsLinks: function (parents) {
+            if (!parents || !parents.length) return '';
+            var str = '(';
+            for (var i = 0; i < parents.length; i++) {
+                str += parents[i].parent_names.join('-');
+                if (i != parents.length - 1) str += '/';
+            }
+            return str + ')';
+        },
     },
     computed: {
         // 根据@后面的字符判断时候是搜索选项
@@ -342,14 +379,6 @@ Vue.component('addinfo', {
                 clearTimeout(_that.timer);
                 _that.timer = null;
             }
-
-            _that.timer = setTimeout(function () {
-
-                // 查询事件
-                _that.queryClass('searchObject', {
-                    keyword: _that.searchStr,
-                });
-            }, 300)
 
         },
         auto: function () {

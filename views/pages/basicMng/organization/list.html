@@ -60,8 +60,8 @@
                     <div class="conItem">
                         <ptext-text placeholder="'请输入20位以内数字'" :id="'identificationCode'" bind="true" @input="organizationMethods.queryById">
                             <verify errtip="员工识别码不能为空！"  verifytype="space"></verify>
-                            <verify errtip="请输入数字"  verifytype="pisNumber"></verify>
-                            <verify errtip="最多输入20个字符！"  verifytype="length" length="20"></verify>
+                            <!-- <verify errtip="请输入数字"  verifytype="pisNumber"></verify> -->
+                            <!-- <verify errtip="最多输入20个字符！"  verifytype="length" length="20"></verify> -->
                         </ptext-text>
                     </div>
                 </li>
@@ -78,9 +78,9 @@
                     <span>性别：</span>
                     <div class="conItem">
                         <pcombobox-normal align="left" orientation="down" bind="true" id="'personSex'">
-                            <header  placeholder="男"></header>
+                            <header  placeholder="'男'"></header>
                             <item datasource="organizationModel.buttonArr" text="name" ></item>
-                        </pcombobox-normal>    
+                        </pcombobox-normal>
                     </div>
                 </li>
                 <li class="itemFastAdd">
@@ -90,7 +90,7 @@
                             <panel timetype="yMd" startyear="1900" endyear="2018"></panel>
                         </ptime-form>
                     </div>
-                </li>    
+                </li>
                 <li class="itemFastAdd">
                     <span>手机号：</span>
                     <div class="conItem">
@@ -131,7 +131,7 @@
                     <span>员工编号：</span>
                     <div class="conItem" id="employeeNumber">
                         <ptext-text placeholder="请输入编号">
-                            <verify errtip="员工编号不可超过50个字！"  verifytype="length" length="20"></verify>
+                            <verify errtip="员工编号不可超过20个字！"  verifytype="length" length="20"></verify>
                         </ptext-text>
                     </div>
                 </li>
@@ -147,7 +147,7 @@
                     <span><a class="starSymbol">*</a>岗位：</span>
                     <div class="conItem">
                         <pcombobox-normal id="'selectedPosition'" align="left" orientation="down" bind="true">
-                            <header  placeholder="请选择岗位"></header>
+                            <header  placeholder="'请选择岗位'"></header>
                             <item datasource="organizationModel.postArr" text="position_name" id="position_id"></item>
                         </pcombobox-normal>
                         <div class="promptForm" v-if="organizationModel.verifi4">

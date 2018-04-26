@@ -1,4 +1,4 @@
-.aite-list, .aite-bubble.aite .aite-body .index .aite-list, .aite-bubble.aite .aite-body .build .aite-list, .aite-bubble.aite .aite-body .system .level-box .aite-list, .aite-bubble.aite .aite-body .floor .level-box .aite-list, .aite-bubble.aite .aite-body .room .last-level-box .aite-list, .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .aite-list {
+.aite-list, .aite-bubble.idepoint .aite-body .index .aite-list, .aite-bubble.idepoint .aite-body .build .aite-list, .aite-bubble.idepoint .aite-body .system .level-box .aite-list, .aite-bubble.idepoint .aite-body .floor .level-box .aite-list, .aite-bubble.idepoint .aite-body .room .last-level-box .aite-list, .aite-bubble.idepoint .aite-body .equip .tree-body .last-level-box .aite-list {
   width: 100%;
   height: 44px;
   line-height: 44px;
@@ -13,7 +13,7 @@
   text-overflow: ellipsis;
   white-space: nowrap; }
 
-.aite-bubble.aite {
+.aite-bubble.idepoint {
   position: absolute;
   top: 20px;
   left: 0;
@@ -28,7 +28,7 @@
   -webkit-box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3); }
-  .aite-bubble.aite .aite-title {
+  .aite-bubble.idepoint .aite-title {
     width: 100%;
     height: 45px;
     -webkit-box-sizing: border-box;
@@ -38,7 +38,7 @@
     background-color: #f2f2f2;
     line-height: 45px;
     border-bottom: 1px solid #eee; }
-    .aite-bubble.aite .aite-title img {
+    .aite-bubble.idepoint .aite-title img {
       /*float: left;*/
       margin-top: 8px;
       /*margin-left: 15px;*/
@@ -51,9 +51,9 @@
       -moz-box-sizing: border-box;
       box-sizing: border-box;
       /*padding: 8px 6px 8px 15px;*/ }
-    .aite-bubble.aite .aite-title span {
+    .aite-bubble.idepoint .aite-title span {
       clear: both; }
-    .aite-bubble.aite .aite-title span.returnImg {
+    .aite-bubble.idepoint .aite-title span.returnImg {
       display: inline-block;
       width: 30px;
       height: 30px;
@@ -66,16 +66,16 @@
       /*float: left;*/
       /*margin-top: 8px;*/
       cursor: pointer; }
-  .aite-bubble.aite .aite-body {
+  .aite-bubble.idepoint .aite-body {
     width: 100%;
     height: calc(100% - 105px);
     overflow-y: auto;
     background-color: white;
     position: relative; }
-    .aite-bubble.aite .aite-body > div {
+    .aite-bubble.idepoint .aite-body > div {
       width: 100%;
       height: 100%; }
-    .aite-bubble.aite .aite-body .build .aite-list .name, .aite-bubble.aite .aite-body .build .equip .tree-body .last-level-box .aite-list .name, .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .build .aite-list .name {
+    .aite-bubble.idepoint .aite-body .build .aite-list .name, .aite-bubble.idepoint .aite-body .build .equip .tree-body .last-level-box .aite-list .name, .aite-bubble.idepoint .aite-body .equip .tree-body .last-level-box .build .aite-list .name {
       display: inline-block;
       max-width: 230px;
       height: 100%;
@@ -86,21 +86,21 @@
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap; }
-    .aite-bubble.aite .aite-body .build .aite-list .ck, .aite-bubble.aite .aite-body .build .equip .tree-body .last-level-box .aite-list .ck, .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .build .aite-list .ck {
+    .aite-bubble.idepoint .aite-body .build .aite-list .ck, .aite-bubble.idepoint .aite-body .build .equip .tree-body .last-level-box .aite-list .ck, .aite-bubble.idepoint .aite-body .equip .tree-body .last-level-box .build .aite-list .ck {
       float: right;
       height: 100%; }
-      .aite-bubble.aite .aite-body .build .aite-list .ck .pcheckbox {
+      .aite-bubble.idepoint .aite-body .build .aite-list .ck .pcheckbox {
         overflow: hidden;
         color: #637e99;
         line-height: 16px;
         cursor: pointer;
         display: inline-block;
         margin-top: 14px; }
-        .aite-bubble.aite .aite-body .build .aite-list .ck .pcheckbox .pswitch_label {
+        .aite-bubble.idepoint .aite-body .build .aite-list .ck .pcheckbox .pswitch_label {
           float: left; }
-        .aite-bubble.aite .aite-body .build .aite-list .ck .pcheckbox .pcheckbox-checked {
+        .aite-bubble.idepoint .aite-body .build .aite-list .ck .pcheckbox .pcheckbox-checked {
           background: #7a94ad; }
-    .aite-bubble.aite .aite-body .system .level-box, .aite-bubble.aite .aite-body .floor .level-box {
+    .aite-bubble.idepoint .aite-body .system .level-box, .aite-bubble.idepoint .aite-body .floor .level-box {
       width: 50%;
       height: 100%;
       float: left;
@@ -110,7 +110,7 @@
       vertical-align: top;
       overflow-y: auto;
       border-right: 1px solid #cacaca; }
-      .aite-bubble.aite .aite-body .system .level-box .aite-list .name, .aite-bubble.aite .aite-body .floor .level-box .aite-list .name {
+      .aite-bubble.idepoint .aite-body .system .level-box .aite-list .name, .aite-bubble.idepoint .aite-body .floor .level-box .aite-list .name {
         display: inline-block;
         max-width: 100px;
         height: 100%;
@@ -121,31 +121,31 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap; }
-      .aite-bubble.aite .aite-body .system .level-box .aite-list .ck, .aite-bubble.aite .aite-body .floor .level-box .aite-list .ck {
+      .aite-bubble.idepoint .aite-body .system .level-box .aite-list .ck, .aite-bubble.idepoint .aite-body .floor .level-box .aite-list .ck {
         float: right;
         height: 100%; }
-        .aite-bubble.aite .aite-body .system .level-box .aite-list .ck .pcheckbox, .aite-bubble.aite .aite-body .floor .level-box .aite-list .ck .pcheckbox {
+        .aite-bubble.idepoint .aite-body .system .level-box .aite-list .ck .pcheckbox, .aite-bubble.idepoint .aite-body .floor .level-box .aite-list .ck .pcheckbox {
           overflow: hidden;
           color: #637e99;
           line-height: 16px;
           cursor: pointer;
           display: inline-block;
           margin-top: 14px; }
-          .aite-bubble.aite .aite-body .system .level-box .aite-list .ck .pcheckbox .pswitch_label, .aite-bubble.aite .aite-body .floor .level-box .aite-list .ck .pcheckbox .pswitch_label {
+          .aite-bubble.idepoint .aite-body .system .level-box .aite-list .ck .pcheckbox .pswitch_label, .aite-bubble.idepoint .aite-body .floor .level-box .aite-list .ck .pcheckbox .pswitch_label {
             float: left; }
-          .aite-bubble.aite .aite-body .system .level-box .aite-list .ck .pcheckbox .pcheckbox-checked, .aite-bubble.aite .aite-body .floor .level-box .aite-list .ck .pcheckbox .pcheckbox-checked {
+          .aite-bubble.idepoint .aite-body .system .level-box .aite-list .ck .pcheckbox .pcheckbox-checked, .aite-bubble.idepoint .aite-body .floor .level-box .aite-list .ck .pcheckbox .pcheckbox-checked {
             background: #7a94ad; }
-      .aite-bubble.aite .aite-body .system .level-box .aite_on, .aite-bubble.aite .aite-body .system .level-box .aite-list:hover, .aite-bubble.aite .aite-body .floor .level-box .aite_on, .aite-bubble.aite .aite-body .floor .level-box .aite-list:hover {
+      .aite-bubble.idepoint .aite-body .system .level-box .aite_on, .aite-bubble.idepoint .aite-body .system .level-box .aite-list:hover, .aite-bubble.idepoint .aite-body .floor .level-box .aite_on, .aite-bubble.idepoint .aite-body .floor .level-box .aite-list:hover {
         background: #02a9d1 !important;
         color: #fff !important; }
-    .aite-bubble.aite .aite-body .room .tree-box {
+    .aite-bubble.idepoint .aite-body .room .tree-box {
       width: 50%;
       height: 100%;
       float: left;
       box-sizing: border-box;
       border-right: 1px solid #cacaca;
       vertical-align: top; }
-    .aite-bubble.aite .aite-body .room .last-level-box {
+    .aite-bubble.idepoint .aite-body .room .last-level-box {
       width: 50%;
       height: 100%;
       float: left;
@@ -154,7 +154,7 @@
       box-sizing: border-box;
       vertical-align: top;
       overflow-y: auto; }
-      .aite-bubble.aite .aite-body .room .last-level-box .aite-list .name {
+      .aite-bubble.idepoint .aite-body .room .last-level-box .aite-list .name {
         display: inline-block;
         max-width: 100px;
         height: 100%;
@@ -165,21 +165,21 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap; }
-      .aite-bubble.aite .aite-body .room .last-level-box .aite-list .ck {
+      .aite-bubble.idepoint .aite-body .room .last-level-box .aite-list .ck {
         float: right;
         height: 100%; }
-        .aite-bubble.aite .aite-body .room .last-level-box .aite-list .ck .pcheckbox {
+        .aite-bubble.idepoint .aite-body .room .last-level-box .aite-list .ck .pcheckbox {
           overflow: hidden;
           color: #637e99;
           line-height: 16px;
           cursor: pointer;
           display: inline-block;
           margin-top: 14px; }
-          .aite-bubble.aite .aite-body .room .last-level-box .aite-list .ck .pcheckbox .pswitch_label {
+          .aite-bubble.idepoint .aite-body .room .last-level-box .aite-list .ck .pcheckbox .pswitch_label {
             float: left; }
-          .aite-bubble.aite .aite-body .room .last-level-box .aite-list .ck .pcheckbox .pcheckbox-checked {
+          .aite-bubble.idepoint .aite-body .room .last-level-box .aite-list .ck .pcheckbox .pcheckbox-checked {
             background: #7a94ad; }
-    .aite-bubble.aite .aite-body .equip .system-major {
+    .aite-bubble.idepoint .aite-body .equip .system-major {
       width: 100%;
       height: 35px;
       line-height: 35px;
@@ -187,30 +187,30 @@
       font-size: 12px;
       padding: 0 8px 0 14px;
       border-bottom: 1px solid #d9d9d9; }
-      .aite-bubble.aite .aite-body .equip .system-major .title {
+      .aite-bubble.idepoint .aite-body .equip .system-major .title {
         line-height: 35px;
         color: #888;
         max-width: 78px; }
-      .aite-bubble.aite .aite-body .equip .system-major > div {
+      .aite-bubble.idepoint .aite-body .equip .system-major > div {
         display: inline-block;
         box-sizing: border-box;
         line-height: normal;
         width: auto !important;
         max-width: 125px;
         vertical-align: text-bottom; }
-      .aite-bubble.aite .aite-body .equip .system-major .major-need {
+      .aite-bubble.idepoint .aite-body .equip .system-major .major-need {
         vertical-align: initial; }
-    .aite-bubble.aite .aite-body .equip .tree-body {
+    .aite-bubble.idepoint .aite-body .equip .tree-body {
       width: 100%;
       height: calc(100% - 35px); }
-      .aite-bubble.aite .aite-body .equip .tree-body .tree-box {
+      .aite-bubble.idepoint .aite-body .equip .tree-body .tree-box {
         width: 50%;
         height: 100%;
         float: left;
         box-sizing: border-box;
         border-right: 1px solid #cacaca;
         vertical-align: top; }
-      .aite-bubble.aite .aite-body .equip .tree-body .last-level-box {
+      .aite-bubble.idepoint .aite-body .equip .tree-body .last-level-box {
         width: 50%;
         height: 100%;
         float: left;
@@ -219,7 +219,7 @@
         box-sizing: border-box;
         vertical-align: top;
         overflow-y: auto; }
-        .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .aite-list .name {
+        .aite-bubble.idepoint .aite-body .equip .tree-body .last-level-box .aite-list .name {
           display: inline-block;
           max-width: 100px;
           height: 100%;
@@ -230,21 +230,21 @@
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap; }
-        .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .aite-list .ck {
+        .aite-bubble.idepoint .aite-body .equip .tree-body .last-level-box .aite-list .ck {
           float: right;
           height: 100%; }
-          .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .aite-list .ck .pcheckbox {
+          .aite-bubble.idepoint .aite-body .equip .tree-body .last-level-box .aite-list .ck .pcheckbox {
             overflow: hidden;
             color: #637e99;
             line-height: 16px;
             cursor: pointer;
             display: inline-block;
             margin-top: 14px; }
-            .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .aite-list .ck .pcheckbox .pswitch_label {
+            .aite-bubble.idepoint .aite-body .equip .tree-body .last-level-box .aite-list .ck .pcheckbox .pswitch_label {
               float: left; }
-            .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .aite-list .ck .pcheckbox .pcheckbox-checked {
+            .aite-bubble.idepoint .aite-body .equip .tree-body .last-level-box .aite-list .ck .pcheckbox .pcheckbox-checked {
               background: #7a94ad; }
-  .aite-bubble.aite .aite-footer {
+  .aite-bubble.idepoint .aite-footer {
     width: 100%;
     height: 60px;
     text-align: center;
@@ -258,13 +258,13 @@
     justify-content: center;
     align-items: center;
     line-height: normal; }
-    .aite-bubble.aite .aite-footer > div {
+    .aite-bubble.idepoint .aite-footer > div {
       display: inline;
       /*vertical-align: top;*/ }
-    .aite-bubble.aite .aite-footer > div:first-of-type {
+    .aite-bubble.idepoint .aite-footer > div:first-of-type {
       margin-right: 15px; }
-    .aite-bubble.aite .aite-footer .sureBtnDivs {
+    .aite-bubble.idepoint .aite-footer .sureBtnDivs {
       display: inline-block;
       vertical-align: top; }
 
-/*# sourceMappingURL=aite.css.map */
+/*# sourceMappingURL=idepoint.css.map */

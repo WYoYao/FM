@@ -38,12 +38,12 @@
     }
 }
 
-.aite-bubble.aite {
+.aite-bubble.addinfo {
     position: absolute;
     top: 20px;
     left: 0;
     z-index: 15;
-    width: 360px;
+    width: 540px;
     height: 450px;
     background-color: white;
     -webkit-box-sizing: border-box;
@@ -120,28 +120,6 @@
 
 
         .build{
-            
-            .aite-list{
-                @extend .aite-list;
-
-                .name{
-                    display: inline-block;
-                    max-width: 230px;
-                    height: 100%;
-                    -webkit-box-sizing: border-box;
-                    -moz-box-sizing: border-box;
-                    box-sizing: border-box;
-                    vertical-align: top;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    white-space: nowrap;
-                }
-
-                @include ck;
-            }
-        }
-
-        .system,.floor{
 
             .level-box{
                 width: 50%;
@@ -180,9 +158,48 @@
             }
         }
 
-        .room{
+        .system,.floor{
+
+            .level-box{
+                width: 33%;
+                height: 100%;
+                float: left;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                vertical-align: top;
+                overflow-y: auto;
+                border-right: 1px solid #cacaca;
+
+                .aite-list{
+                    @extend .aite-list;
+
+                    .name{
+                        display: inline-block;
+                        max-width: 100px;
+                        height: 100%;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                        vertical-align: top;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                    }
+
+                    @include ck;
+                }
+                .aite_on,.aite-list:hover{
+                    background: #02a9d1 !important;
+                    color: #fff !important;
+                }
+
+            }
+        }
+
+        .room,.equip{
             .tree-box{
-                width: 50%;
+                width: 33%;
                 height: 100%;
                 float: left;
                 box-sizing: border-box;
@@ -190,7 +207,7 @@
                 vertical-align: top;
             }
             .last-level-box{
-                width: 50%;
+                width: 33%;
                 height: 100%;
                 float: left;
                 -webkit-box-sizing: border-box;
@@ -217,6 +234,46 @@
 
                     @include ck;
                 }
+                .aite_on,.aite-list:hover{
+                    background: #02a9d1 !important;
+                    color: #fff !important;
+                }
+            }
+
+            .level-box{
+                width: 33%;
+                height: 100%;
+                float: left;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                vertical-align: top;
+                overflow-y: auto;
+                border-right: 1px solid #cacaca;
+
+                .aite-list{
+                    @extend .aite-list;
+
+                    .name{
+                        display: inline-block;
+                        max-width: 100px;
+                        height: 100%;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                        vertical-align: top;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                    }
+
+                    @include ck;
+                }
+                .aite_on,.aite-list:hover{
+                    background: #02a9d1 !important;
+                    color: #fff !important;
+                }
+
             }
         }
 
@@ -255,7 +312,7 @@
                 height: calc(100% - 35px);
 
                 .tree-box{
-                    width: 50%;
+                    width: 33%;
                     height: 100%;
                     float: left;
                     box-sizing: border-box;
@@ -263,7 +320,7 @@
                     vertical-align: top;
                 }
                 .last-level-box{
-                    width: 50%;
+                    width: 33%;
                     height: 100%;
                     float: left;
                     -webkit-box-sizing: border-box;
@@ -290,11 +347,83 @@
 
                         @include ck;
                     }
+                    .aite_on,.aite-list:hover{
+                        background: #02a9d1 !important;
+                        color: #fff !important;
+                    }
                 }
             }
 
 
 
+        }
+
+        .search{
+            .aite-list{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    min-height: 44px;
+                    height: auto;
+                    width: 100%;
+                    line-height: 44px;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    border-bottom: 1px solid #e4e4e4;
+                    padding-left: 14px;
+                    padding-right: 14px;
+                    cursor: pointer;
+
+                    .prev{
+                            display: inline-block;
+                            max-width: 230px;
+                            height: 100%;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            box-sizing: border-box;
+                            vertical-align: top;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+
+                            .title{
+                                line-height: normal;
+                                width: 100%;
+                                text-overflow: ellipsis;
+                                overflow: hidden;
+                                white-space: nowrap;
+
+                                .redMark{
+                                    color: red;
+                                }
+                            }
+
+                            .descript{
+                                font-size: 12px;
+                                color: #888;
+                                max-width: 400px;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                line-height: normal;
+                                width: 100%;
+                            }
+                    }
+
+                    .next{
+                        margin-top: 15px;
+                        float: right;
+
+                        .pcheckbox{
+                            overflow: hidden;
+                            color: #637e99;
+                            line-height: 16px;
+                            cursor: pointer;
+                            display: inline-block;
+                        }
+                    }
+            }
         }
 
     }
@@ -328,31 +457,4 @@
             vertical-align: top;
         }
     }
-
-    // .aite-list{
-    //     width: 100%;
-    //     height: 44px;
-    //     line-height: 44px;
-    //     -webkit-box-sizing: border-box;
-    //     -moz-box-sizing: border-box;
-    //     box-sizing: border-box;
-    //     border-bottom: 1px solid #e4e4e4;
-    //     padding-left: 14px;
-    //     padding-right: 14px;
-    //     cursor: pointer;
-
-    //     & > div:first-of-type {
-    //         display: inline-block;
-    //         max-width: 230px;
-    //         height: 100%;
-    //         -webkit-box-sizing: border-box;
-    //         -moz-box-sizing: border-box;
-    //         box-sizing: border-box;
-    //         vertical-align: top;
-    //         text-overflow: ellipsis;
-    //         overflow: hidden;
-    //         white-space: nowrap;
-
-    //     }
-    // }
 }

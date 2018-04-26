@@ -76,6 +76,23 @@
                     padding: 0 5px;
                     color: $blue-font-color;
                     font-size: 12px;
+                    position: relative;
+                    .hoverList{
+                        display: none;
+                        width: 100%;
+                        height: 300px;
+                        position: absolute;
+                        overflow-x: hidden;
+                        overflow-y: scroll;
+                    }
+                    &:hover{
+                        .hoverList{
+                            display: block;
+                            left: 0;
+                            top: 10px;
+                            background: black;
+                        }
+                    }
                 }
 
                 .icon_list{

@@ -170,9 +170,10 @@
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-    margin-top: 20px;
+    /* margin-top: 20px; */
     cursor: pointer;
     position: relative;
+    top:8px;
     font-size: 14px;
     font-weight: normal;
 }

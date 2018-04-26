@@ -1,7 +1,8 @@
 <script type="text/html" id="addcontent">
 <div class="alert-all" @click="cb()">
     <div class="alert-shade">
-        <div class="alert-box" @click.stop="onItem='',onPoint=''">
+        <!-- 冒泡点消失弹窗 -->
+        <div class="alert-box" @click.stop="onItem='',onPoint='',get_content_Obj([])">
             <div class="alert-content">
                 <div class="alert-container">
                     <div class="alert-header">
@@ -93,7 +94,7 @@
 
                                             <!--<div class="obj-fragment-div" onclick="yn_method.contentAiteShow(this,event)">-->
                                             <div class="obj-fragment-div">
-                                                <span class="aite-btn" @click="content_str='@'" :class="content_str ? 'eleDisable' : ''">@对象/部件/工具</span>
+                                                <span class="aite-btn" @click.stop="content_str='@'" :class="content_str ? 'eleDisable' : ''">@对象/部件/工具</span>
                                                 <span class="counter" :class="{'errorNumber':false}">
                                                     <b v-text="desc_work.content.length">0</b>/200</span>
                                             </div>
@@ -218,12 +219,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
                                         </div>
                                         <div class="obj-info-btn">
-                                            <span class="aite-btn" @click="leo=true">+ 添加对象和信息点</span>
-                                            <addinfo v-if="leo"></addinfo>
+                                            <span class="aite-btn" @click="showAddObjAndPoint=true">+ 添加对象和信息点</span>
+                                            <addinfo v-if="showAddObjAndPoint" :cb="addObjAndPoint" ref="addinfo"></addinfo>
                                         </div>
                                     </div>
                                 </div>
@@ -274,7 +273,7 @@
                             <!-- 专业限定 End -->
                         </div>
                     </div>
-                    <div class="alert-footer">
+                    <div class="alert-footer" @click.capture="commit">
                         <!--<pbutton-blue text="确定" click="yn_method.addWorkContent"></pbutton-blue>-->
                         <pbutton-blue text="确定"></pbutton-blue>
                     </div>

@@ -72,7 +72,7 @@ function addSelected(arr) {
 }
 
 
-var aite_controller = createController([
+var addinfo_controller = createController([
     {
         // 查询建筑
         name: "Build",
@@ -161,6 +161,20 @@ var aite_controller = createController([
         //  根据关键字查詢
         name: "searchObject",
         url: "restObjectService/searchObject",
+        argu: {},
+        convert: addSelected
+    },
+    {
+        //  根据关键字查詢
+        name: "queryInfoPointForObject",
+        url: "restObjectService/queryInfoPointForObject",
+        argu: {},
+        convert: addSelected
+    },
+    {
+        //  根据关键字查詢
+        name: "searchInfoPoint",
+        url: "restObjectService/searchInfoPoint",
         argu: {},
         convert: addSelected
     },

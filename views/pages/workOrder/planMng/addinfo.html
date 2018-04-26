@@ -1,25 +1,60 @@
 <script type="text/html" id="addinfo">
-<div class="aite-bubble aite" @click.stop="void 0" v-if="isShow" :class="{'click-aite':true}">
-    <!-- 全局弹窗 Start -->
-    <!-- <div class="layer" @click.self="console.log(123),callback([])">
+<div class="aite-bubble addinfo">
+    <!-- 头部返回 Strat -->
+    <div class="aite-title">
+        <span class="returnImg" @click="back()" v-show="onBlock!='index'">
+            <img src="../images/return_left.png" alt="返回图片"/>
+        </span>
 
-    </div> -->
-    <!-- 全局弹窗 End -->
+        <span>
+            <em v-show="true">选择</em>
+            <em v-text="titles[onBlock]">分类</em>
+        </span>
+    </div>
+    <!-- 头部返回 End -->
 
-        <!-- 头部返回 Strat -->
-        <div class="aite-title">
-            <span class="returnImg" @click="back()" v-show="onBlock!='index'">
-                <img src="../images/return_left.png" alt="返回图片"/>
-            </span>
-            <!--<span>请选择</span>-->
-            <span>
-                <em v-show="true">选择</em>
-                <em v-text="titles[onBlock]">分类</em>
-            </span>
+    <!-- 头部搜索 Start  -->
+    <div class="list-search" v-show="true">
+        <div class="info-search-box">
+            <input type="text" class="keyinput" v-model="searchStr">
+            <div class="icon-div">
+                <i @click="searchStr=''">x</i>
+                <i @click="searchInfoPoint(searchStr),onBlock='search'">f</i>
+            </div>
         </div>
-        <!-- 头部返回 End -->
+        <!--<div class="search-result" v-show="commonData.publicModel.curObjType2!='init' && commonData.publicModel.curObjType2!='custom' && commonData.publicModel.searchResultLength">&lt;!&ndash; v-show="commonData.publicModel.searchResultLength"&ndash;&gt;-->
+        <div class="search-result" v-show="onBlock=='search'">
+            <div class="key-result">
+                <span>共搜索到
+                    <em class="search-num" v-text="searchRes.length"></em>个相关结果</span>
+            </div>
+        </div>
+    </div>
+    <!-- 头部搜索 End  -->
 
-        <div class="aite-body free-aite-pops">
+    <!-- 身体部分 Start -->
+    <div class="aite-body" :class="{'result-aite-body-nosearch': true,'custom-no-searchAll':true}">
+        <div class="list-body">
+
+            <!-- 搜索 Start -->
+            <div class="search" v-if="onBlock=='search'">
+                <div class="aite-list" v-for="(item,index) in searchRes" @click="item.selected=!item.selected">
+                    <div class="prev">
+                        <p class="title" title="item.info_point.name">
+                            <span v-for="(info,index2) in item.info_point.name_arr" v-text="info.char" :class="info.mark?'redMark':''"></span>
+                        </p>
+                        <p class="descript" title="getParentsLinks(item.parents)" v-text="getParentsLinks(item.parents)"></p>
+                    </div>
+                    <div class="next">
+                        <div class="pcheckbox">
+                            <span class="pcheckbox_input" :class="item.selected?'pcheckbox-checked':''"></span>
+                            <span class="pswitch_label"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 搜索 End -->
+
             <!--选择大类 Start-->
             <div class="index" v-show="onBlock=='index'">
                 <div class="aite-list" @click="handler_class('Build')">
@@ -47,45 +82,28 @@
                         <span>设备</span>
                     </div>
                 </div>
-                <div class="aite-list" v-if="true" @click="handler_class('Part')">
-                    <div>
-                        <span>部件</span>
-                    </div>
-                </div>
-                <div class="aite-list" v-if="true" @click="handler_class('Tool')">
-                    <div>
-                        <span>工具</span>
-                    </div>
-                </div>
             </div>
             <!--选择大类 End-->
 
-            <!-- 搜索 Start -->
-            <div class="build" v-if="onBlock=='Search'">
-                <div class="aite-list" v-for="(model, index) in searchObject" @click="model.selected=!model.selected">
-                    <div class="name" :title="model.obj_name">
-                        <span v-text="model.obj_name"></span>
-                    </div>
-                    <div class="ck">
-                        <div class="pcheckbox">
-                            <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
-                            <span class="pswitch_label"></span>
+            <!-- 建筑体 Start -->
+            <div class="build" v-if="onBlock=='Build' ">
+                <div class="level-box">
+                    <div class="aite-list" v-for="(item,index) in Build" :class="item.selected?'aite_on':''" @click="listClick(Build,item),clickInfoPointsByItem(item,'build')">
+                        <div class="left" :title="item.obj_name">
+                            <span v-text="item.obj_name"></span>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- 搜索 End -->
-
-            <!-- 建筑体 Start -->
-            <div class="build" v-if="onBlock=='Build' ">
-                <div class="aite-list" v-for="(model, index) in Build" @click="model.selected=!model.selected">
-                    <div class="name" :title="model.obj_name">
-                        <span v-text="model.obj_name"></span>
-                    </div>
-                    <div class="ck">
-                        <div class="pcheckbox">
-                            <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
-                            <span class="pswitch_label"></span>
+                <div class="level-box">
+                    <div class="aite-list" v-for="(model, index) in InfoPoint" @click="model.selected=!model.selected">
+                        <div class="name" :title="model.name">
+                            <span v-text="model.name"></span>
+                        </div>
+                        <div class="ck">
+                            <div class="pcheckbox">
+                                <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
+                                <span class="pswitch_label"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -95,20 +113,27 @@
             <!-- 楼层 Start -->
             <div class="floor" v-if="onBlock=='Floor' ">
                 <div class="level-box">
-                    <div class="aite-list" v-for="(item,index) in Floor" :class="item.selected?'aite_on':''" @click="listClick(Floor,item)">
+                    <div class="aite-list" v-for="(item,index) in Floor" :class="item.selected?'aite_on':''" @click="listClick(Floor,item)" >
                         <div class="left" :title="item.obj_name">
                             <span v-text="item.obj_name"></span>
                         </div>
                     </div>
                 </div>
                 <div class="level-box">
-                    <div class="aite-list" v-for="(item,index) in querySelectedContent(Floor)" @click="item.selected=!item.selected">
-                        <div class="name" :title="item.obj_name">
+                    <div class="aite-list" v-for="(item,index) in querySelectedContent(Floor)" :class="item.selected?'aite_on':''" @click="listClick(querySelectedContent(Floor),item),clickInfoPointsByItem(item,'floor')">
+                        <div class="left" :title="item.obj_name">
                             <span v-text="item.obj_name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-box">
+                    <div class="aite-list" v-for="(model, index) in InfoPoint" @click="model.selected=!model.selected">
+                        <div class="name" :title="model.name">
+                            <span v-text="model.name"></span>
                         </div>
                         <div class="ck">
                             <div class="pcheckbox">
-                                <span class="pcheckbox_input" :class="item.selected ? 'pcheckbox-checked' : ''"></span>
+                                <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
                                 <span class="pswitch_label"></span>
                             </div>
                         </div>
@@ -126,13 +151,20 @@
                 </div>
                 <div class="last-level-box">
                     <!-- <div class="aite-list" v-for="(obj,index1) in commonData.publicModel.curLevelList" > -->
-                    <div class="aite-list" v-for="(item,index) in Space" @click="item.selected=!item.selected">
-                        <div :title="item.obj_name" class="name">
-                            <span v-text="item.obj_name">建筑体</span>
+                    <div class="aite-list" v-for="(item,index) in Space" :class="item.selected?'aite_on':''" @click="listClick(Space,item),clickInfoPointsByItem(item,'space')">
+                        <div class="left" :title="item.obj_name">
+                            <span v-text="item.obj_name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-box">
+                    <div class="aite-list" v-for="(model, index) in InfoPoint" @click="model.selected=!model.selected">
+                        <div class="name" :title="model.name">
+                            <span v-text="model.name"></span>
                         </div>
                         <div class="ck">
-                            <div :id="'noLeftLevelCheckbox'" class="pcheckbox">
-                                <span class="pcheckbox_input" :class="item.selected ? 'pcheckbox-checked' : ''"></span>
+                            <div class="pcheckbox">
+                                <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
                                 <span class="pswitch_label"></span>
                             </div>
                         </div>
@@ -151,13 +183,20 @@
                     </div>
                 </div>
                 <div class="level-box">
-                    <div class="aite-list" v-for="(item,index) in querySelectedContent(System)" @click="item.selected=!item.selected">
-                        <div class="name" :title="item.obj_name">
+                    <div class="aite-list" v-for="(item,index) in querySelectedContent(System)" :class="item.selected?'aite_on':''" @click="listClick(querySelectedContent(System),item),clickInfoPointsByItem(item,'system')">
+                        <div class="left" :title="item.obj_name">
                             <span v-text="item.obj_name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-box">
+                    <div class="aite-list" v-for="(model, index) in InfoPoint" @click="model.selected=!model.selected">
+                        <div class="name" :title="model.name">
+                            <span v-text="model.name"></span>
                         </div>
                         <div class="ck">
                             <div class="pcheckbox">
-                                <span class="pcheckbox_input" :class="item.selected ? 'pcheckbox-checked' : ''"></span>
+                                <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
                                 <span class="pswitch_label"></span>
                             </div>
                         </div>
@@ -168,7 +207,7 @@
 
             <!-- 设备 Start -->
             <div class="equip" v-if="onBlock=='Equip' ">
-                <div class="system-major">
+                <!-- <div class="system-major">
                     <div class="title">
                         <span>添加筛选条件:</span>
                     </div>
@@ -176,12 +215,11 @@
                         <header placeholder="专业"></header>
                         <item datasource="GeneralDict" text="name"></item>
                     </pcombobox-normal>
-                    <!--<div>+</div>-->
                     <pcombobox-normal isborder="false" id="'id_GeneralSystem'" bind="true" id="'system'" :class="'major-need'" sel="DictSystemSel">
                         <header placeholder="系统"></header>
                         <item datasource="GeneralSystem" text="system_name"></item>
                     </pcombobox-normal>
-                </div>
+                </div> -->
                 <div class="tree-body">
                     <div class="tree-box">
                         <ptree-normal id="'id_BuildFloorSpaceTree'" datasource="BuildFloorSpaceTree" sel="QuipTreeSel">
@@ -189,13 +227,20 @@
                         </ptree-normal>
                     </div>
                     <div class="last-level-box">
-                        <div class="aite-list" v-for="(item,index) in EquipList" @click="item.selected=!item.selected">
-                            <div class="name" :title="item.obj_name">
+                        <div class="aite-list" v-for="(item,index) in EquipList" :class="item.selected?'aite_on':''" @click="listClick(EquipList,item),clickInfoPointsByItem(item,'equip')">
+                            <div class="left" :title="item.obj_name">
                                 <span v-text="item.obj_name"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="level-box">
+                        <div class="aite-list" v-for="(model, index) in InfoPoint" @click="model.selected=!model.selected">
+                            <div class="name" :title="model.name">
+                                <span v-text="model.name"></span>
                             </div>
                             <div class="ck">
                                 <div class="pcheckbox">
-                                    <span class="pcheckbox_input" :class="item.selected ? 'pcheckbox-checked' : ''"></span>
+                                    <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
                                     <span class="pswitch_label"></span>
                                 </div>
                             </div>
@@ -204,102 +249,20 @@
                 </div>
             </div>
             <!-- 设备 End -->
-
-            <!-- 部件 Start -->
-            <div class="build" v-if="onBlock=='Part' ">
-                <div class="aite-list" v-for="(model, index) in Part" @click="model.selected=!model.selected">
-                    <div class="name" :title="model.obj_name">
-                        <span v-text="model.obj_name"></span>
-                    </div>
-                    <div class="ck">
-                        <div class="pcheckbox">
-                            <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
-                            <span class="pswitch_label"></span>
-                        </div>
-                    </div>
-                </div>
+            <!--搜索无结果-->
+            <div class="sop-nodata" v-show="onBlock=='search' && !searchRes.length">
+                <pnotice-nodata :style="'display:block'" text="暂无数据" subtitle="哎呀，什么都没有找到！" icon="../images/sassNodata.png"></pnotice-nodata>
             </div>
-            <!-- 部件 End -->
-
-            <!-- 工具 Start -->
-            <div class="build" v-if="onBlock=='Tool' ">
-                <div class="aite-list" v-for="(model, index) in Tool" @click="model.selected=!model.selected">
-                    <div class="name" :title="model.obj_name">
-                        <span v-text="model.obj_name"></span>
-                    </div>
-                    <div class="ck">
-                        <div class="pcheckbox">
-                            <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
-                            <span class="pswitch_label"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- 工具 End -->
-
-            <!--即时搜索，只有复选-->
-            <div class="timely-checkbox" v-show="!true">
-                <!-- <div class="aite-list" v-for="(model, index) in commonData.publicModel.curLevelList" > -->
-                <div class="aite-list">
-                    <div>
-                        <p :title="'title'">
-                            <!-- <span v-for="charObj in model.obj_name_arr"  :class="'redMark'">空</span> -->
-                            <span v-text="'空'" :class="'redMark'">空</span>
-                        </p>
-                        <p :title="'title'">
-                            <!-- <em v-for="charObj in parent.linked_names_arr" v-text="charObj.char" :class="charObj.mark ? 'redMark' : ''">建</em> -->
-                            <em v-text="'建'" :class="true ? 'redMark' : ''">建</em>
-                        </p>
-                    </div>
-                    <div>
-                        <div :id="'searchCheckbox'" class="pcheckbox">
-                            <span class="pcheckbox_input" :class="true ? 'pcheckbox-checked' : ''"></span>
-                            <span class="pswitch_label"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--自定义-->
-            <div class="customize" v-show="onBlock=='auto' ">
-                <div v-show="false" class="customize-tips">
-                    <span>未找到相关内容，您输入的内容将被添加为自定义</span>
-                </div>
-                <div v-show="autoView.error" class="customize-tips">
-                    <span class="redMark" :title="autoView.error" v-text="autoView.error"></span>
-                </div>
-                <div class="customText" v-show="true">
-                    <p>自定义</p>
-                    <ptext-text id="'selfText'" bind="true" value="auto" placeholder="'请输入自定义内容'">
-                        <verify errtip="请输入自定义内容" verifytype="space"></verify>
-                        <verify errtip="最多只能输入40个字符" length="40" verifytype="length"></verify>
-                    </ptext-text>
-                </div>
-                <div class="belong">
-                    <div class="belong-title">
-                        <h4>所属类别
-                            <span class="aite-cus-tips" v-text="(_.find(EquipList,{selected:true}) || {}).name"></span>
-                        </h4>
-                    </div>
-                    <div class="belong-category">
-                        <div class="category" v-for="(item,index) in typeList" :class="item.selected ? 'selectDiv' : ''" @click="listClick(typeList,item),autoView.error=''">
-                            <span v-text="item.name"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!--loading-->
-            <ploading-part v-if="isLoading" :style="'display:block'" data-loading="aitePopLoading" text="加载中..."></ploading-part>
+            <ploading-part v-if="isLoading" :style="'display:block'" data-loading="resultPopLoading" text="加载中..."></ploading-part>
         </div>
-        <div class="aite-footer">
-            <div @click.capture.stop="back(),onBlock='auto'" v-show="onBlock!='auto'">
-                <pbutton-white text="自定义"></pbutton-white>
-            </div>
+    </div>
+    <!-- 身体部分 End -->
+
+    <div class="aite-footer">
             <div class="sureBtnDivs" v-show="onBlock!='index'" @click.capture="submit">
                 <pbutton-blue text="确定" id="sureBtn"></pbutton-blue>
             </div>
-        </div>
-
+    </div>
 </div>
 </script>

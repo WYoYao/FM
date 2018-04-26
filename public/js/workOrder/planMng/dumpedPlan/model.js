@@ -1,10 +1,10 @@
 v.pushComponent({
     name: "dumpedPlan",
     data: {
-        dumpedPlanPaths: [
-            {name:"首页",path:"planManage"},{name:"已作废计划列表"}
-        ],
-        orderType:"",
+        // dumpedPlanPaths: [
+        //     {name:"首页",path:"planManage"},{name:"已作废计划列表"}
+        // ],
+        // orderType:"",
         dumpedPlanList:[]
       },
     methods: {

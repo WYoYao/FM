@@ -1,7 +1,7 @@
 <pwindow-float id="createPersonFloatWindow" isshade="false" title="新建" templateid="createPersonWindow" onclick="pub_method.returnPop(event)">
     <button>
         <div class="personRelatedOperat" v-if="personInformationObj.page == 'detail'">
-            <% if (user.indexOf('deletePerson   ') != '-1') { %>
+            <% if (user.indexOf('deletePerson') != '-1') { %>
             <section>
                 <pbutton-blue text="删除" icon="p" @click="personMethods.deletePersonShow(personModel.personDetalObj.person_id)" isborder="false" id="deletePersonBtn"></pbutton-blue>
             </section>

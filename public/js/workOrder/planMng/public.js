@@ -328,11 +328,20 @@ v.pushComponent({
         model: "plan",
         // userSelCache:{},
         // 默认的以及自定义的工单状态
-        allOrderState:[],
-        // 该数组内对象Id需要根据拿到的工单状态集合获取,默认的几种工单执行状态
-        workOrderState:[{name:"全部",id:"0"},{name:"未发出",id:"1"},{name:"执行中",id:"2"},{name:"已完成",id:"3"}],
+        allOrderState: [{ name: "全部", id: "" }],
+        // 默认的几种工单执行状态，该数组内对象Id需要根据拿到的工单状态集合获取
+        workOrderState: [{ name: "全部", id: "0" }, { name: "未发出", id: "1" }, { name: "执行中", id: "2" }, { name: "已完成", id: "3" }],
         // 工单时间状态
-        orderTimeType:[{name:"全部",id:0},{name:"临时性工单",id:1},{name:"计划性工单",id:1}],
+        orderTimeType: [{ name: "全部", id: 0 }, { name: "临时性工单", id: 1 }, { name: "计划性工单", id: 1 }],
+        // 页面间跳转时传递的参数
+        cache: {},
+        paths: {
+            base: {              //手动配置的根目录
+                'planManage': { name: "首页", path: "planManage", cache: "" },
+            },
+            path: [],            //自动生成的路径数据,{name,path,cache}分别为该路径的名字，该路径的对应的onPage值，和该路径缓存
+            isBase: true,          //当前页是否为根目录
+        },
     },
     methods: {
         transfYMWD: function (str) { //通过年月周天转换对应的中文
@@ -385,29 +394,72 @@ v.pushComponent({
         },
         // yyyymmddhhMMss => yyyy.mm.dd hh:MM  type === '0'
         // yyyymmddhhMMss => yyyy.mm.dd        type === '1'
-        timeFormat : function(str,type){
+        timeFormat: function (str, type) {
             str = str || "";
-            if((typeof str) != 'string'){str = str + "";}
-            switch(type){
+            if ((typeof str) != 'string') { str = str + ""; }
+            switch (type) {
                 case '0':
-                    return str.length > 0 ? str.substring(0, 4) + '.' + str.substring(4, 6) + '.' + str.substring(6, 8) + ' ' + str.substring(8, 10) + ':' + str.substring(10, 12) : this.noData    
-                break;
+                    return str.length > 0 ? str.substring(0, 4) + '.' + str.substring(4, 6) + '.' + str.substring(6, 8) + ' ' + str.substring(8, 10) + ':' + str.substring(10, 12) : this.noData
+                    break;
                 case '1':
                     return str.length > 0 ? str.substring(0, 4) + '.' + str.substring(4, 6) + '.' + str.substring(6, 8) : this.noData
-                break;
+                    break;
             }
         },
+
+
+        // 组装路径
+        createPath: function (N, O) {
+            var that = this;
+            // 如果跳入基础路径则清空路径缓存并修改isBase
+            // 否则记录该路径并存储name，path,以及页面间传递的参数cache
+            // 跳回时统一goback，使用该路径存储的cache替换根实例中的cache
+            this.paths.isBase = false;
+
+            var a = Object.keys(this.paths.base);
+            a.forEach(function (item) {
+                if (item == N) {
+                    that.paths.path = [that.paths.base[N]];
+                    that.paths.isBase = true;
+                }
+            })
+
+            if (!this.paths.isBase && this.cache.name) {
+                var a = 0;
+                // 此时根实例的cache内存储的一定为目标路径的cache信息
+                this.paths.path.forEach(function (model) {
+                    // 可能会跳入同一个路径的页面两次,但不可能跳入同一个名字的页面两次,因此使用cache.name进行判断
+                    if (model.name == that.cache.name) { a++ }
+                })
+                a === 0 ? this.paths.path.push({ name: this.cache.name, path: O, cache: JSON.parse(JSON.stringify(this.cache)) }) : void 0;
+            }
+
+        },
+        // 跳回用户选择的Path
         gobackSelPath: function (value) {
-            // here集团版项目计划详情跳转到集团计划详情时会重复引用同一页面导致页面不变
+            this.cache = value.cache;
+            this.paths.path.forEach(function (item, index) {
+                if (item.name == value.name) {
+                    v.instance.paths.path.splice(index, v.instance.paths.path.length - index - 1);
+                }
+            })
             v.goBack(value.path, true);
         },
+        //  跳回上一级Path
         gobackLastPath: function (maps) {
+            this.cache = maps.slice(-2, -1)[0].cache;
             v.goBack(maps.slice(-2, -1)[0].path, true);
+            this.paths.path.pop();
         },
     },
     filters: {
 
     },
+    watch: {
+        onPage: function (N, O) {
+            this.createPath(N, O);
+        }
+    }
 });
 $(function () {
     v.createVue();
@@ -419,6 +471,3 @@ $(function () {
     v.instance.model = v.name.hasOwnProperty('createPlan') ? 'group' : 'plan';
 
 });
-
-
-

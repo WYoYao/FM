@@ -1,10 +1,8 @@
+// 本页面需要传入cache
+// 工单计划Id    orderPlanId
 v.pushComponent({
     name: "planWorkOrder",
     data: {
-        orderPlanId:"",
-        planWorkOrderPaths:[
-          {name:"首页",path:"planManage"},{name:"已作废计划列表",path:"dumpedPlan"},{name:"已作废计划详情",path:"planInformation"},{name:"过去发出的工单记录"}
-        ],
         planWorkOrderData: [
               {
                 "order_id": "Wo13010200011508943600226",
@@ -259,7 +257,7 @@ v.pushComponent({
         
     },
     beforeMount:function(){
-        getData([{name:"planWorkOrder",data:{plan_id:this.orderPlanId,order_state:$("#workOrderStateSel").psel().id}}])[0].then(function(data){
+        getData([{name:"planWorkOrder",data:{plan_id:this.cache.orderPlanId,order_state:$("#workOrderStateSel").psel().id}}])[0].then(function(data){
             this.planWorkOrderData = JSON.parse(JSON.stringify(data.Content));
         }).catch(function(err){
             

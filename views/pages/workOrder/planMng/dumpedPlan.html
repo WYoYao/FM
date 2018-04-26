@@ -5,7 +5,7 @@
 
 <div id="dumpedPlan" v-show="onPage == 'dumpedPlan'">
     <div class="head">
-        <sitemap :maps='dumpedPlanPaths' :createsitemap='gobackSelPath' :back='gobackLastPath' />
+        <sitemap :maps='paths.path' :createsitemap='gobackSelPath' :back='gobackLastPath' />
     </div>
     <div class="body">
         <div class="title">
