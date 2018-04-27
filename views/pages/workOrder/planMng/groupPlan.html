@@ -13,14 +13,14 @@
         
         <div class="cite">
             <pcombobox-normal id="'isPlanSite'" sel="getGroupPlanList" bind="true">
-                <header prefix="是否引用："></header>
+                <header prefix="是否引用：" placeholder="'全部'"></header>
                 <item datasource="planSiteType" text="name" id="id"></item>
             </pcombobox-normal>
         </div>
 
         <div class="type">
             <pcombobox-normal id="'groupPlanTypeCombo'" sel="getGroupPlanList" bind="true">
-                <header prefix="计划类型："></header>
+                <header prefix="计划类型：" placeholder="'全部'"></header>
                 <item datasource="allPlanType" text="tab_name" id="order_type"></item>
             </pcombobox-normal>
         </div>

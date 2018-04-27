@@ -1043,7 +1043,7 @@ textarea::-webkit-input-placeholder {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 10;
+    z-index: 5;
 }
 
 .regular-obj-text .textarea-div > div .textareadiv {
@@ -1101,7 +1101,7 @@ textarea::-webkit-input-placeholder {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 10;
+    z-index: 5;
 }
 
 .regular-sop-text .textarea-div > div .textareadiv {

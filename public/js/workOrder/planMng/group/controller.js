@@ -40,16 +40,16 @@ function createController(arr, obj) {
             })
         }
         return con;
-    }, _.isPlainObject(controller) ? controller : {})
+    }, {})
 };
 
 
 var controller = createController([
     {//查询工单类型
         name: "queryWoTypeList",
-        url: "restGeneralDictService/queryWoTypeList",
+        url: "restGeneralDictService/queryGeneralDictByKey",
         argu: {
-            "wo_execute_type": "plan",
+            "dict_type": "work_order_type",
         }
     },
     {// 查询计划列表
@@ -64,37 +64,37 @@ var controller = createController([
     },
     // 查询非日类型集团计划项目版及其工单信息
     {
-        name:"queryWoPlanExecuteList",
-        url:"restGroupPlanService/queryWoPlanExecuteList",
-        argu:{
+        name: "queryWoPlanExecuteList",
+        url: "restGroupPlanService/queryWoPlanExecuteList",
+        argu: {
 
         }
     },
     // 查询日类型集团计划项目版及其工单信息
     {
-        name:"queryWoPlanDayExecuteList",
-        url:"restGroupPlanService/queryWoPlanDayExecuteList",
-        argu:{
-            
+        name: "queryWoPlanDayExecuteList",
+        url: "restGroupPlanService/queryWoPlanDayExecuteList",
+        argu: {
+
         }
     },
     //查询未引用此集团计划得项目列表
     {
-        name:"queryUnuseGroupPlanProjectList",
-        url:"restGroupPlanService/queryUnuseGroupPlanProjectList",
-        argu:{
+        name: "queryUnuseGroupPlanProjectList",
+        url: "restGroupPlanService/queryUnuseGroupPlanProjectList",
+        argu: {
 
         }
     }
 ], {
-        queryWoTypeList() {
-            return _.range(9).map(index => {
-                return {
-                    name: `name${index}`,
-                    code: index
-                }
-            })
-        },
+        // queryWoTypeList() {
+        //     return _.range(9).map(index => {
+        //         return {
+        //             name: `name${index}`,
+        //             code: index
+        //         }
+        //     })
+        // },
         queryGroupPlanList() {
             return _.range(40).map(index => {
                 return {

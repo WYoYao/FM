@@ -37,11 +37,17 @@
     top: -1px;
     display: none;
 }
-#selectedProject .per-combobox-con,#selectedMajor .per-combobox-con,#selectedJurisdiction .per-combobox-con{
+/* #selectedProject .per-combobox-con,#selectedMajor .per-combobox-con,#selectedJurisdiction .per-combobox-con{
     overflow-y: scroll;
-}
+} */
 input::-ms-clear{
     display:none;
+}
+input:disabled, textarea:diabled {
+    /* color: red; */
+    opacity: 1;
+    -webkit-opacity: 1;
+    -webkit-text-fill-color: #000;
 }
 .buttonBlue{
     background: #7a94ad;
@@ -128,6 +134,8 @@ input::-ms-clear{
     cursor: default;
     /* transform: translate(-1px,-2px); */
     height: 100%;
+    box-sizing: border-box;
+    background: #fff;
 }
 /* 项目通用部门 */
 
@@ -174,6 +182,7 @@ input::-ms-clear{
     cursor: default;
     /* transform: translate(-1px,-2px); */
     height: 96%;
+    background: #fff;
 }
 
 .organizationBox .otherDepartment{
@@ -297,14 +306,24 @@ input::-ms-clear{
 #projectList input{
     width: 100%;
     border: none;
-    border-bottom: 1px solid #ddd;
-    padding: 5px;
+    /* border-bottom: 1px solid #ddd; */
+    padding: 7px 0;
     color: #333;
     cursor: pointer;
     box-sizing: border-box;
 }
+#projectList span{
+    width: 100%;
+    border: none;
+    /* border-bottom: 1px solid #ddd; */
+    padding: 7px 0;
+    color: #333;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: block;
+}
 .selected{
-    background: #eee;
+    background: #f8f8f8;
 }
 .disabled{
     opacity: 0.3;
@@ -312,37 +331,69 @@ input::-ms-clear{
 #projectList1 input {
     width: 100%;
     border: none;
-    border-bottom: 1px solid #ddd;
-    padding: 5px;
+    /* border-bottom: 1px solid #ddd; */
+    padding: 7px 0;
     color: #333;
     cursor: pointer;
     box-sizing: border-box;
+}
+#projectList1 span{
+    width: 100%;
+    border: none;
+    /* border-bottom: 1px solid #ddd; */
+    padding: 7px 0;
+    color: #333;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: block;
 }
 #projectList2 input {
     width: 100%;
     border: none;
-    border-bottom: 1px solid #ddd;
-    padding: 5px;
+    /* border-bottom: 1px solid #ddd; */
+    padding: 7px 0;
     color: #333;
     cursor: pointer;
     box-sizing: border-box;
+}
+#projectList2 span{
+    width: 100%;
+    border: none;
+    /* border-bottom: 1px solid #ddd; */
+    padding: 7px 0;
+    color: #333;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: block;
 }
 #projectList3 input {
     width: 100%;
     border: none;
-    border-bottom: 1px solid #ddd;
-    padding: 5px;
+    /* border-bottom: 1px solid #ddd; */
+    padding: 7px 0;
     color: #333;
     cursor: pointer;
     box-sizing: border-box;
 }
+#projectList3 span{
+    width: 100%;
+    border: none;
+    /* border-bottom: 1px solid #ddd; */
+    padding: 7px 0;
+    color: #333;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: block;
+}
 #searchAccountInfo {
     width: 184px;
     display: inline-block;
+    vertical-align: middle;
 }
 #searchAccountInfo > input{
     font-size: 14px;
     padding: 7px;
+    line-height: 10px;
 }
 #searchAccountInfo .options{
     position: relative;
@@ -382,4 +433,70 @@ input::-ms-clear{
     position: absolute;
     bottom: -22px;
     /* display: none; */
+}
+.buttonArea{
+    padding: 12px 0;
+    background: #ffffff;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.yesBtu{
+    background: #7a94ad;
+    color: #fff;
+    border: 1px solid #7a94ad;
+    padding: 0 14px;
+    font-size: 14px;
+    border-radius: 2px;
+    text-align: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    height: 30px;
+    line-height: 30px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 80px;
+}
+.cancelBtu{
+    background: #fff;
+    border: 1px solid #cecece;
+    color: #637e99;
+    padding: 0 14px;
+    font-size: 14px;
+    border-radius: 2px;
+    text-align: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    height: 30px;
+    line-height: 30px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 80px;
+}
+.selArea{
+    height: 189px;
+    overflow-y: scroll;
+    position: relative;
+    top: 0px;
+}
+.centermodel{
+    vertical-align: middle;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    box-sizing: border-box;
+    background: #f8f8f8;
+    width: 100%;
+    text-indent: 24px;
+    border-top: 1px solid transparent;
+    border-left: 1px solid transparent;
+    z-index: 5;
 }

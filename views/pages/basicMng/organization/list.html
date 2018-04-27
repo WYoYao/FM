@@ -47,7 +47,7 @@
     </div>
     <!-- 快速添加人员 -->
    
-    <pwindow-float title="添加中心部门人员" id="fastAdd" templateid="temp_window">
+    <pwindow-float title="添加中心部门人员" id="fastAdd" beforehide="windowEvent.initStatus" templateid="temp_window">
         <animate maxpx="0" minpx="-455" orientation="right"></animate>
     </pwindow-float>
     
@@ -186,12 +186,12 @@
                     </div>
                 </li>
                 <li class="itemFastAdd" id="jurisdictionId" style="color:#cacaca">
-                    <span >功能权限：</span>
+                    <span>功能权限：</span>
                     <div class="conItem" id="jurisdictionList" >
                         --
                     </div>
                 </li>
-                <li class="itemFastAdd" id="jurisdictionId_" style="display: none;">
+                <li class="itemFastAdd" id="jurisdictionId_" >
                     <span>功能权限：</span>
                     <div class="conItem">
                         <pcombobox-custom templateid="temp_jurisdiction" id="selectedJurisdiction">
@@ -219,24 +219,42 @@
     </script>
     <!-- 项目模板 -->
     <script type="text/html" id="temp_project">
-        <div class="projectCommonUl" v-for="(item, index) in organizationModel.listByProject" id="projectList">
-            <organization :model="item"></organization>
-            <!-- <div>
-                <button class="buttonBlue">确定</button>
-                <button class="buttonWhite">取消</button>
-            </div> -->
+        <div class="selArea"> 
+            <div class="projectCommonUl" v-for="(item, index) in organizationModel.listByProject" id="projectList">
+                <organizationx :model="item"></organizationx>
+            </div>
+            <div style="height:54px">123</div>
+        </div>
+        <div class="buttonArea" >
+            <button class="yesBtu" @click="windowEvent.slideUp('selectedProject')">确定</button>
+            <button class="cancelBtu" @click="windowEvent.clearSel('selectedProject')">清空</button>    
         </div>
     </script>
     <!-- 专业模板 -->
     <script type="text/html" id="temp_major">
-        <div class="projectCommonUl" v-for="(item, index) in organizationModel.majorArr" id="projectList1">
-            <organization :model="item"></organization>
+        <div class="selArea">  
+            <div class="projectCommonUl" v-for="(item, index) in organizationModel.majorArr" id="projectList1">
+                <organizationx :model="item"></organizationx>
+            </div>
+            <div style="height:52px">123</div>
+        </div>     
+        <div class="buttonArea" >
+            <button class="yesBtu" @click="windowEvent.slideUp('selectedMajor')">确定</button>
+            <button class="cancelBtu" @click="windowEvent.clearSel('selectedMajor')">清空</button>    
         </div>
+ 
     </script>
     <!-- 权限模板 -->
     <script type="text/html" id="temp_jurisdiction">
-        <div class="projectCommonUl" v-for="(item, index) in organizationModel.jurisdiction" id="projectList2">
-            <organization :model="item"></organization>
+        <div class="selArea"> 
+            <div class="projectCommonUl" v-for="(item, index) in organizationModel.jurisdiction" id="projectList2">
+                <organizationx :model="item"></organizationx>       
+            </div>
+            <div style="height:52px">123</div>
+        </div>    
+        <div class="buttonArea" >
+            <button class="yesBtu" @click="windowEvent.slideUp('selectedJurisdiction')">确定</button>
+            <button class="cancelBtu" @click="windowEvent.clearSel('selectedJurisdiction')">清空</button>    
         </div>
     </script>
     <!-- 岗位模板 -->

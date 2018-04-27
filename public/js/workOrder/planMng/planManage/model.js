@@ -89,7 +89,7 @@ v.pushComponent({
             a = String(a).length == 1 ? "0" + a : a;
             b = String(b).length == 1 ? "0" + b : b;
             this.dateData.startTime += a + "000000";
-            this.dateData.endTime += b + "000000";
+            this.dateData.endTime += b + "235959";
         },
         // 首页时间插件被选择
         planTypeTimeSel : function(){
@@ -155,16 +155,18 @@ v.pushComponent({
         },
         // 统一获取向后台获取计划工单数据时的参数
         createPlanOrderParam : function(){
-            return {
+            var param = {
                 order_type : $("#planTypeCombo").psel().id,
                 plan_from : $("#planSourceCombo").psel().id,
                 plan_name : $("#planKeyword").pval().key,
-                freq_cycle : this.allFreq.forEach(function(item){
-                    if(item.sel) return item.id
-                }),
+                freq_cycle : "",
                 start_time:this.dateData.startTime,
                 end_time:this.dateData.endTime
             }
+            this.allFreq.forEach(function(item){
+                if(item.sel){param.freq_cycle = item.id}
+            })
+            return param;
         },
     },
     filters: {

@@ -581,7 +581,7 @@ var personMethods = {
         });
         setTimeout(function(){
             $("#navBar").psel(0, false); //选中当前选项，false掉默认事件加载
-            $("#upload").find("em").text("批量上传");
+            // $("#upload").find("em").text("批量上传");
         },0)
     },
     showPersonList: function() {//展示人员列表
@@ -829,12 +829,14 @@ var personMethods = {
         var employeePosition = $("#employeePositionName").attr("objId") ? true : false;
         if (!employeeIdFlag) {
             $("#employeeId").pshowTextTip();
-            return;
-        }
-        if(!employeeIdTypeFlag){//判断员工识别码是否为正整数或0
+            // return;
+        }else if(!employeeIdTypeFlag){//判断员工识别码是否为正整数或0
             $("#employeeIdTip").show();
-            return;
         }
+        // if(!employeeIdTypeFlag){
+        //     $("#employeeIdTip").show();
+        //     return;
+        // }
         if (!employeeNameFlag) {
             $("#employeeName").pshowTextTip();
         }
@@ -854,6 +856,7 @@ var personMethods = {
         }
         var checkResult =
             employeeIdFlag &&
+            employeeIdTypeFlag &&
             employeeNameFlag &&
             employeePhoneFlag &&
             employeeEmailFlag && 
@@ -981,16 +984,8 @@ var personMethods = {
     },
     batchUpload: function() {//批量上传人员
         
-        var val = $("#upload").pval()[0] || $("#upload1").pval()[0];
-        console.log(val);
-        if (/[(|)|\s]+/.test(val.name)) {
-            $("#uploadpnotice").pshow({
-                text: '上传文件名中不能有空格括号等字符',
-                state: "failure"
-            });
-            $("#upload").precover();
-            return;
-        }
+        var val = $("#upload").pval()[0];
+        
         var fileData = {
             user_id:personModel.userId,                  //账号id-当前登录人的账号id，必须
             project_id:personModel.projectId, 
@@ -1316,12 +1311,14 @@ var personMethods = {
         $("#createPersonFloatWindow").phide();
     },
     choiceMajorListShow: function() { //显示专业列表
+        $("#personState").pslideUp();
         var flag = $("#employeeMajor > .list").is(":hidden");
         if(flag){
             $("#employeeMajor > .list").show();
         }else{
             $("#employeeMajor > .list").hide();
-        }
+        };
+
         
     },
     confirmChoiceMajor: function(item) { //专业列表点击某项选中
@@ -2259,7 +2256,7 @@ var personMethods = {
 var personMounted = function() {
     $("#navBar").psel(0, false); //选中当前选项，false掉默认事件加载
     //人员管理列表初始化
-    $("#upload").find("em").text("批量上传");
+    // $("#upload").find("em").text("批量上传");
     personMethods.goBackPersonManageList();
     var data = {
         user_id: personModel.userId,

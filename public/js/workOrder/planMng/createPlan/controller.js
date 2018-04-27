@@ -53,7 +53,7 @@ function createController(arr, obj) {
             })
         }
         return con;
-    }, _.isPlainObject(controller) ? controller : {})
+    }, {})
 };
 
 //  给最节点添加 selected 属性
@@ -74,7 +74,7 @@ function addSelected(arr) {
 
 var createPlan_controller = createController([
     {
-        // 专业列表
+        // 验证 对象和SOP 之间的对应的关系
         name: "verifyObjectAndSop",
         url: "restSopService/verifyObjectAndSop",
         argu: {
@@ -82,14 +82,29 @@ var createPlan_controller = createController([
         },
         convert: addSelected
     }, {
-        // 专业列表
+        // 查询SOP列表
         name: "querySopListForSel",
         url: "restSopService/querySopListForSel",
         argu: {
             "need_return_criteria": false
         },
         convert: addSelected
-    },
+    }, {
+        //  获取预览页面
+        name: "getWoMattersPreview",
+        url: "restWoPlanService/getWoMattersPreview",
+        argu: {
+            "input_mode": "2",
+        },
+        convert: addSelected
+    }, {
+        //  获取预览页面
+        name: "queryObjectByClass",
+        url: "restObjectService/queryObjectByClass",
+        argu: {
+        },
+        convert: addSelected
+    }
 ], {}
 );
 

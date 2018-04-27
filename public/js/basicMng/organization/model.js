@@ -11,6 +11,8 @@ var organizationModel = {
         userId: "",  //人员id
         projectId: "",  //项目id
     },
+    //disabled状态
+    statusModel: true,
     //中心部门树
     listByCenterDepartment: [
         {
@@ -284,8 +286,11 @@ var organizationMethods = {
         });
     },
     searchAccountByName: function() {
-        //通过账号模糊查询列表
         $("#searchAccountInfo > div").show();
+        var functionShow = $("#permissionPackageList").is(":hidden");
+        if(!functionShow){
+            $("#permissionPackageList").hide();
+        }
         organizationModel.functionPermissionObj = [];
         var keyWord = organizationModel.accountName || "";
         var list = organizationModel.personAccountList;
@@ -296,16 +301,43 @@ var organizationMethods = {
             } else {
                 organizationModel.searchAccountList = [{
                     person_user_name: "暂无结果",
-                    disabled: true
                 }];
             }
-        } else {
+        } else if(keyWord == '') {
+            $("#searchAccountInfo > div").hide();
+            organizationModel.searchAccountList = [{
+                person_user_name: "",
+            }];
+        }else{
             organizationModel.searchAccountList = [{
                 person_user_name: "暂无结果",
-                disabled: true
             }];
         }
+
+        console.log(arr);
+        //通过账号模糊查询列表
+        // $("#searchAccountInfo > div").show();
+        // organizationModel.functionPermissionObj = [];
+        // var keyWord = organizationModel.accountName || "";
+        // var list = organizationModel.personAccountList;
+        // if (keyWord) {
+        //     var arr = organizationMethods.searchByRegExp(keyWord, list);
+        //     if (arr && arr.length > 0) {
+        //         organizationModel.searchAccountList = arr;
+        //     } else {
+        //         organizationModel.searchAccountList = [{
+        //             person_user_name: "暂无结果",
+        //             disabled: true
+        //         }];
+        //     }
+        // } else {
+        //     organizationModel.searchAccountList = [{
+        //         person_user_name: "暂无结果",
+        //         disabled: true
+        //     }];
+        // }
     },
+    
     //保存中心部门修改
     keepCenterDepart: function(){
         if($("#centerDepart").find(".inputPromptShow").length > 0){
@@ -320,11 +352,6 @@ var organizationMethods = {
             location.href=location.href;
         })
         
-    },
-    //屏蔽backspace按键
-    shieldingKey: function(id){
-        var k=window.event.keyCode;
-        if(k==id){window.event.keyCode=0;window.event.returnValue=false;return false;}
     },
     //保存项目通用管理修改
     keepProjectCommon: function(){
@@ -577,6 +604,7 @@ var organizationMounted = function () {
     organizationController.queryCurrentUserProjectLimits()
     .then(function(list) {
         organizationModel.listByProject = list;
+
         var newListByProject = [];
         (function find(arr,newArr) {
             var find = arguments.callee;
@@ -679,15 +707,19 @@ var organizationWatch = {
             $($("#centerDepart input")[0]).attr("readonly","").keydown(function(e) {
                 e.preventDefault();
             });
+            organizationModel.statusModel = false;
         }
         if(oldVal === "centerDepartMent" && val === "list"){
             organizationModel.listByCenterDepartment = JSON.parse(organizationModel.treeBackup);
+            organizationModel.statusModel = true;
         }
         if(val === "projectGenerral"){
             organizationModel.treeBackup = JSON.stringify(organizationModel.listByProjectCommon);
+            organizationModel.statusModel = false;
         }
         if(oldVal === "projectGenerral" && val === "list"){
             organizationModel.listByProjectCommon = JSON.parse(organizationModel.treeBackup);
+            organizationModel.statusModel = true;
         }
     }
 }
@@ -706,7 +738,7 @@ var organizationLogger = {
                 // windowEvent.positionInit();
                 windowEvent.projectInit();
                 //更新完成后设置readonly
-                $("#centerDepart_ input,#projectCommon_ input").attr("readonly","readonly").keydown(function(e) {
+                $("#centerDepart_ input,#projectCommon_ input,#selectedProject input,#selectedMajor input,#selectedJurisdiction input").attr("readonly","readonly").keydown(function(e) {
                     e.preventDefault();
                 });
             },

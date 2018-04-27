@@ -73,12 +73,13 @@ function groupDataControll(data){
             plan.row == 0 ? plan.row = 1 : void 0;
             plan.rowData == [] ? plan.rowData = [[]] : void 0;
             var days = v.instance.timeData.day.length;//页面显示天数总长度
-            var cell = window.document.getElementById('monitoringWidth').offsetWidth/v.instance.dateData.day.length;//单格宽度
+            // var cell = window.document.getElementById('monitoringWidth').offsetWidth/v.instance.dateData.day.length;//单格宽度
             plan.grid = [];
             for(var i=0;i<plan.row;i++){
                 plan.grid.push([]);
                 for(var a=0;a<days;a++){
-                    plan.grid[i].push({type:0,id:null,width:cell-1});
+                    // plan.grid[i].push({type:0,id:null,width:cell-1});
+                    plan.grid[i].push({type:0,id:null,width:1});
                 }
             }
             plan.rowData.forEach(function(row,index){
@@ -87,10 +88,12 @@ function groupDataControll(data){
                         var l = getDaysIndex(order.ask_start_time);
                         var r = getDaysIndex(order.ask_end_time);
                         if(l == r){
-                            plan.grid[index][l] = {type:order.order_state,id:order.order_id,width:cell-1};
+                            // plan.grid[index][l] = {type:order.order_state,id:order.order_id,width:cell-1};
+                            plan.grid[index][l] = {type:order.order_state,id:order.order_id,width:1};
                         }else{
                             plan.grid[index].splice(l,r-l);
-                            plan.grid[index][l] = {type:order.order_state,id:order.order_id,width:cell*(r-l+1)-1};
+                            // plan.grid[index][l] = {type:order.order_state,id:order.order_id,width:cell*(r-l+1)-1};
+                            plan.grid[index][l] = {type:order.order_state,id:order.order_id,width:r-l+1};
                         }
                     }   
                 })

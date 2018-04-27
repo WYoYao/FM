@@ -4,7 +4,7 @@
             <div class="header">
                 <!-- 面包屑导航Start -->
 
-                <sitemap :maps='paths.path' :createsitemap='createsitemap' :back='back' />
+                <sitemap :maps='paths.path' :createsitemap='gobackSelPath' :back='gobackLastPath' />
 
                 <!-- 面包屑导航End -->
             </div>
@@ -13,7 +13,7 @@
                 <div class="search">
 
                     <pcombobox-normal sel="selWorkOrderState" bind="true" id="'workOrderListState'">
-                        <header placeholder="'全部'" prefix="'工单状态：'"></header>
+                        <header placeholder="'全部'" prefix="工单状态："></header>
                         <item datasource="workOrderState" text="name" id="id"></item>
                     </pcombobox-normal>
 

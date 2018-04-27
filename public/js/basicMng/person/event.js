@@ -21,7 +21,6 @@ $(function(){
         var tg=event.target;
         if(!$(tg).hasClass('operatAreaBtnList') && !$(tg).parents().hasClass('operatAreaBtnList') && !$(tg).hasClass('templateTreeBox') && !$(tg).parents().hasClass('templateTreeBox')&& !$(tg).hasClass('per-modal-control')&& !$(tg).parents().hasClass('per-modal-control')){
             personMethods.resetOperatBtn();
-            // console.log(1);
         }
     });
     $("#createPersonFloatWindow").click(function (event) {

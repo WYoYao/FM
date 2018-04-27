@@ -1,10 +1,6 @@
 v.pushComponent({
     name: "monitoringPlan",
     data: {
-        // 上个页面带入数据
-        monitoringPlanCache:{
-            groupPlanId:""
-        },
         // 时间数据
         timeData:{
             time:null,
@@ -80,7 +76,7 @@ v.pushComponent({
         // 生成表格数据
         createGroupOrderGrid : function(){
             var param = {
-                group_plan_id:this.monitoringPlanCache.groupPlanId,
+                group_plan_id:this.cache.groupPlanId,
                 is_update_group_plan:$("#isUpdateGroupPlan").psel().id,
                 freq_cycle:this.fiveFreq.forEach(function(item){
                     if(item.sel){return item.id}
@@ -92,7 +88,7 @@ v.pushComponent({
             var p = param.freq_cycle === 'd' ? controller.queryWoPlanDayExecuteList : controller.queryWoPlanExecuteList;
 
             p().then(function(data){
-                this.monitoringPlanGrid = groupDataControll(JSON.parse(JSON.stringify(data.Content)));
+                this.monitoringGrid = groupDataControll(JSON.parse(JSON.stringify(data.Content)));
             }).catch(function(err){
 
             })
@@ -118,5 +114,79 @@ v.pushComponent({
         }).catch(function(err){
 
         })
+
+
+
+        
+        this.monitoringGrid = groupDataControll(JSON.parse(JSON.stringify(hhh.Content)));
     }
 })
+
+
+
+
+
+
+
+
+
+window.hhh = {
+    "Result": "success",
+    "Content": [
+      {
+        "plan_id":"***",                //计划id
+        "project_id":"***",             //项目id
+        "project_name":"***",           //项目名称
+        "is_update_group_plan":"***" ,   //是否更新集团计划，1-已更新、0-未更新
+        "create_wo_total":"8"       ,    //发单总数
+        "uncreate_wo_total":"2"   ,      //未发出数
+        "executing_wo_total":"2"  ,      //执行中数
+        "finished_wo_total":"2" ,        //已完成数
+        "row_count":3,                  //行数
+        "work_orders":[                 //时间段内生成工单数组
+            {
+                "order_id": "Wo13010200015dc32a0ca3b746e5bff69575a5769577",
+                "ask_start_time": "20180501000000",
+                "ask_end_time": "20180501000000",
+                "order_state": "4",
+                "is_next_order": false
+            },
+            {
+                "order_id": "Wo1301020001f253969a926444c48834a3764b5039b8",
+                "ask_start_time": "20180501000000",
+                "ask_end_time": "20180501000000",
+                "order_state": "4",
+                "is_next_order": false
+            }
+        ]            
+      },
+     {
+        "plan_id":"***",                //计划id
+        "project_id":"***",             //项目id
+        "project_name":"***",           //项目名称
+        "is_update_group_plan":"***" ,   //是否更新集团计划，1-已更新、0-未更新
+        "create_wo_total":"8"     ,      //发单总数
+        "uncreate_wo_total":"2"    ,     //未发出数
+        "executing_wo_total":"2"  ,      //执行中数
+        "finished_wo_total":"2"   ,      //已完成数
+        "row_count":3,                  //行数
+        "work_orders":[                 //时间段内生成工单数组
+            {
+                "order_id": "Wo13010200015dc32a0ca3b746e5bff69575a5769577",
+                "ask_start_time": "20180501000000",
+                "ask_end_time": "20180509000000",
+                "order_state": "4",
+                "is_next_order": false
+            },
+            {
+                "order_id": "Wo1301020001f253969a926444c48834a3764b5039b8",
+                "ask_start_time": "20180501000000",
+                "ask_end_time": "20180501000000",
+                "order_state": "4",
+                "is_next_order": false
+            }
+        ]            
+      }
+    ],
+    "Count": 2,
+  }

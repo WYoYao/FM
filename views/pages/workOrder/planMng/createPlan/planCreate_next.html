@@ -1,9 +1,9 @@
-<div id="see_planDetail_bg" v-show="onPage=='createPlanLook'">
+<div id="see_planDetail_bg" v-if="onPage=='createPlan' && PreView">
     <div class="see_planDetail_box">
         <div class="see_planDetail_page">
             <div class="see_planDetail_page_top">
                 <div class="see_planDetail_page_back">
-                    <pbutton-white bind='true' text="'返回'" @click="onPage='createPlan'"></pbutton-white>
+                    <pbutton-white bind='true' text="'返回'" @click="PreView=false"></pbutton-white>
                 </div>
                 <!-- <div class=" see_planDetail_object_tishi " v-if="true ">！标准操作中有几处需记录操作结果的对象，请在下面表格的相应位置为其选择具体的系统设备</div> -->
 
@@ -11,16 +11,16 @@
                     <span v-text=" 'commonData.publicModel.positionPersonStr' " :title="
                         'commonData.publicModel.personStr' ">xx岗、xx人...</span>
                 </div> -->
-                <div class="modify_position_person_btn" @click="onPage='createPlan'">上一步</div>
+                <div class="modify_position_person_btn" @click="onPage=false">上一步</div>
 
                 <div class=" see_planDetail_page_save ">
                     <div>
-                        <pbutton-blue bind='true' text=" '发布' " @click="void 0 "></pbutton-blue>
+                        <pbutton-blue bind='true' text="'发布'" @click="void 0"></pbutton-blue>
                     </div>
                 </div>
             </div>
             <!-- <div class="see_planDetail_object_tishi " v-if="true ">！标准操作中有几处需记录操作结果的对象，请在下面表格的相应位置为其选择具体的系统设备</div> -->
-            <div class="see_planDetail_page_grid ">
+            <div class="see_planDetail_page_grid " @click="ObjectByClassId =void 0">
                 <!-- 顶部列表 -->
                 <div class="see_planDetail_grid_top ">
                     <div class="see_planDetail_grid_top_title ">
@@ -29,11 +29,11 @@
                     <div class="see_planDetail_grid_top_tit_con see_planDetail_grid_top_tit_con1 ">
                         <div>
                             <span>工单类型：</span>
-                            <i v-text=" 'methods.removePlanFn(model.orderTypeName)' "></i>
+                            <i v-text="(_.find(base.WorkOrderType,{code:base.addWoPlan.order_type}) || {}).name"></i>
                         </div>
                         <div>
                             <span>工单紧急程度：</span>
-                            <i v-text=" 'model.newPlanObj.urgency' "></i>
+                            <i v-text="(_.find(base.urgencyType,{code:base.addWoPlan.urgency}) || {}).name"></i>
                         </div>
                     </div>
                     <div class="see_planDetail_grid_top_tit_con see_planDetail_grid_top_tit_con2 ">
@@ -42,30 +42,28 @@
                                 工单提前发送时间：
                             </span>
                             <i>提前
-                                <em v-text=" 'model.newPlanObj.ahead_create_time' "></em>小时</i>
+                                <em v-text="base.addWoPlan.ahead_create_time"></em>小时</i>
                         </div>
                         <div>
                             <span>计划生效时间：</span>
-                            <i v-text=" '发布成功后立即' ">
-
+                            <i v-text="(_.find(base.plan_start_type,{code:base.addWoPlan.plan_start_type}) || {}).name">
                             </i>&nbsp;——&nbsp;
-                            <i v-text=" '一直有效' "></i>
+                            <i v-text="(_.find(base.plan_end_time_type,{code:base.addWoPlan.plan_end_type}) || {}).name"></i>
                         </div>
                     </div>
                     <div class="see_planDetail_grid_top_tit_con see_planDetail_grid_top_tit_con3 ">
                         <h4>计划频率：</h4>
                         <span>每
-                            <i v-text=" 'transfYMWD(model.newPlanObj.freq_cycle)' "></i>
-                            <em v-text=" 'model.newPlanObj.freq_num' "></em>次</span>
+                            <i v-text="(_.find(base.freq_cycleType,{code:base.addWoPlan.freq_cycle}) || {}).name"></i>
+                            <em v-text="base.addWoPlan.freq_num"></em>次</span>
                         <div>
 
                             (
-                            <!-- <span v-for="(item,index) in model.newPlan_frequencyArr "> -->
-                            <span>
-                                <i v-text=" '第几次' "></i>
-                                <i v-text=" 'item.st' "></i>
+                            <span v-for="(item,index) in base.addWoPlan.freq_times">
+                                <i v-text="'第'+ index+1 +'次'"></i>
+                                <i v-text="fill(item.start_time.time_month,2) + '.'+ fill(item.start_time.time_day,2) + ' '+ fill(item.start_time.time_hour,2)+ ':'+ fill(item.start_time.time_minute,2)"></i>
                                 <em>至</em>
-                                <i v-text=" 'item.et' "></i>
+                                <i v-text="fill(item.end_time.time_month,2) + '.'+ fill(item.end_time.time_day,2) + ' '+ fill(item.end_time.time_hour,2)+ ':'+ fill(item.end_time.time_minute,2)"></i>
                             </span>)
                         </div>
                     </div>
@@ -76,94 +74,101 @@
                     </div>
                 </div>
                 <!-- 内容区域 -->
-                <!-- <div class="see_planDetail_grid_tab_ul " v-for="(matters,index1) in planCreateDetail "> -->
-                <div class="see_planDetail_grid_tab_ul ">
-                    <div class="see_planDetail_grid_tab_tit ">
-                        <div class="see_planDetail_grid_name " v-text=" 'matters.matter_name' ">
+                <div class="see_planDetail_grid_tab_ul" v-for="(matters,index1) in WoMattersPreview.published_matters">
+                    <div class="see_planDetail_grid_tab_tit">
+                        <div class="see_planDetail_grid_name" v-text="matters.matter_name">
                         </div>
                     </div>
-                    <!-- <div class="see_planDetail_grid_tab " v-for="(matter_steps,index2) in matters.matter_steps "> -->
-                    <div class="see_planDetail_grid_tab ">
+                    <div class="see_planDetail_grid_tab" v-for="(matter_steps,index2) in matters.matter_steps">
                         <!-- {{有id或者有描述}} -->
-                        <div class="see_planDetail_grid_tab_div ">
+                        <div class="see_planDetail_grid_tab_div">
                             <!-- 左侧列表 -->
-                            <div class="see_planDetail_grid_tab_left ">
-                                <div class="see_planDetail_grid_matter_info " v-if="true ">
+                            <div class="see_planDetail_grid_tab_left">
+                                <div class="see_planDetail_grid_matter_info" v-if="matter_steps.obj_id || matter_steps.description">
                                     <h4>事件概述：</h4>
-                                    <p v-text=" 'matter_steps.description' "></p>
+                                    <p v-text="matter_steps.description"></p>
                                 </div>
-                                <!-- <div class="see_planDetail_grid_list " v-for="(steps,index3) in matter_steps.steps
-                    " v-if="true "> -->
-                                <div class="see_planDetail_grid_list " v-if="true ">
+                                <div class="see_planDetail_grid_list" v-for="(steps,index3) in matter_steps.steps" v-if="matter_steps.obj_id || matter_steps.description">
                                     <ul>
                                         <!-- 判断如果内容是常规内容并且数量大于0 -->
-                                        <li class="see_planDetail_grid_list_operat2 ">
-                                            <h4 v-text=" 'steps.step_sequence' "></h4>
+                                        <li class="see_planDetail_grid_list_operat2">
+                                            <h4 v-text="steps.step_sequence"></h4>
                                             <div>
-                                                <span v-text=" 'steps.content' " v-if="true ">
+                                                <span v-text="steps.content" v-if="steps.step_type == '3'||steps.step_type == '4'">
                                                     到达指定位置拍照
                                                 </span>
-                                                <span v-text=" '12313' " v-if="true ">
+                                                <span v-text="" v-if="steps.step_type == '1'">
 
                                                 </span>
-                                                <ul v-if="true ">
-                                                    <li v-if="true ">
+                                                <ul v-if="steps.step_type != '3'&& steps.step_type != '4'&& steps.step_type != '6'&& steps.step_type !='1'">
+                                                    <li v-if="steps.pre_conform && steps.pre_conform != '--'">
                                                         <h5>强制确认操作前提：</h5>
-                                                        <p v-text=" 'steps.pre_conform' "></p>
+                                                        <p v-text="steps.pre_conform"></p>
                                                     </li>
-                                                    <li v-if="true ">
+                                                    <li v-if="steps.content && steps.content != '--'">
                                                         <h5>标准作业操作内容：</h5>
-                                                        <p v-text=" 'steps.content' "></p>
+                                                        <p v-text="steps.content"></p>
                                                     </li>
-                                                    <li v-if="true ">
+                                                    <li v-if="steps.notice && steps.notice != '--'">
                                                         <h5>注意事项：</h5>
-                                                        <p v-text=" 'steps.notice' "></p>
+                                                        <p v-text="steps.notice"></p>
                                                     </li>
                                                     <li>
                                                         <h5>确认操作结果：</h5>
-                                                        <!-- <div v-for="(confirm_result,index4) in steps.confirm_result "> -->
-                                                        <div>
+                                                        <div v-for="(confirm_result,index4) in steps.confirm_result">
                                                             <!-- {{steps.confirm_result}} -->
-                                                            <div class="confirm_result_div1 ">
-                                                                <div class="confirm_result_div2 ">
-                                                                    <em v-text=" 'confirm_result.obj_name' "></em>
-                                                                    <!-- <span v-for="(parents,pIndex) in confirm_result.parents "> -->
-                                                                    <span>
+                                                            <div class="confirm_result_div1">
+                                                                <div class="confirm_result_div2">
+                                                                    <em v-text="confirm_result.obj_name"></em>
+                                                                    <span v-for="(parents,pIndex) in confirm_result.parents">
                                                                         (
-                                                                        <!-- <i v-for="(names,naIndex) in parents.parent_names
-                    " v-text=" 'parents.parent_names.length == naIndex + 1?names : names + '- '' "></i>) -->
-                                                                        <i v-text=" 'parents.parent_names.length' "></i>)
+                                                                        <i v-for="(names,naIndex) in parents.parent_names" v-text="parents.parent_names.length == naIndex + 1?names : names + '-'"></i>)
                                                                     </span>
                                                                 </div>
-                                                                <div class="choiceObjectBtn ">
-                                                                    <div>
-                                                                        <!-- <section v-show="confirm_result.obj_type=='system_class'
-                    || confirm_result.obj_type=='equip_class' "> -->
-                                                                        <section v-show="true ">
-                                                                            <pbutton-blue bind="true " text="
-                    '选择具体系统设备' " @click="void 0 "></pbutton-blue>
+                                                                <div class="choiceObjectBtn">
+                                                                    <div :type="confirm_result.obj_type">
+                                                                        <section style="position: relative;" v-show="confirm_result.obj_type == 'system_class' || confirm_result.obj_type == 'equip_class'">
+                                                                            <pbutton-blue bind="true" text="'选择具体系统设备'" @click.stop="ObjectByClassId=confirm_result;queryObjectByClass(confirm_result.obj_id,confirm_result.obj_type)"></pbutton-blue>
+
+                                                                            <div class="choiceObjExampleModal" v-if="ObjectByClassId == confirm_result" @click.stop="">
+                                                                                <h4 :title="confirm_result.obj_name + '-' + getparent_names(confirm_result.parents)">
+                                                                                    <span v-text="confirm_result.obj_name"></span>
+                                                                                    <i v-text="'('+ getparent_names(confirm_result.parents) + ')'"></i>
+                                                                                </h4>
+                                                                                <ul id="choiceObjExample_tree">
+                                                                                    <li :title="item.obj_name" v-for="item in ObjectByClass" v-text="item.obj_name" @click="handder_clicl(confirm_result,item)"></li>
+                                                                                </ul>
+                                                                                <ploading-part id="object_loading" text="加载中..."></ploading-part>
+                                                                                <section class="planNextNodata" v-show="!ObjectByClass.length">
+                                                                                    <div>
+                                                                                        <img src="../../../../images/sassNodata.png" alt="">
+                                                                                    </div>
+                                                                                    <span>当前尚无设备/当前尚无系统</span>
+                                                                                </section>
+                                                                                <div class="choiceObjExampleModal_bottom">
+                                                                                </div>
+                                                                            </div>
                                                                         </section>
                                                                     </div>
                                                                 </div>
                                                             </div>
 
-                                                            <div class="plan_next_infoPoint ">
+                                                            <div class="plan_next_infoPoint">
                                                                 <ul>
-                                                                    <!-- <li v-for="info_points in confirm_result.info_points
-                    " v-text=" 'info_points.name' "></li> -->
-                                                                    <li v-text=" 'info_points.name' "></li>
+                                                                    <li v-for="info_points in confirm_result.info_points" v-text="info_points.name"></li>
                                                                 </ul>
                                                                 <ul>
-                                                                    <!-- <li v-for="customs_info in confirm_result.customs
-                    " v-text=" 'customs_info.name' "></li> -->
-                                                                    <li v-text=" 'customs_info.name' "></li>
+                                                                    <li v-for="customs_info in confirm_result.customs" v-text="customs_info.name"></li>
                                                                 </ul>
-
+                                                                <!--
+                                                                <i v-for="info_points in confirm_result.info_points" v-text="info_points.name"></i>
+                                                                <i v-for="customs in confirm_result.customs" v-text="customs.name"></i>
+-->
                                                             </div>
                                                         </div>
                                                     </li>
                                                 </ul>
-
+                                                <!-- <p v-if="steps.step_type == '6'" v-text="steps.content"></p> -->
                                             </div>
                                         </li>
                                     </ul>
@@ -171,38 +176,15 @@
                             </div>
                         </div>
                         <!-- 没有id且没有描述 -->
-                        <div v-if="true " class="see_planDetail_grid_tab_div_sign ">
-                            <div class="see_planDetail_grid_tab_div_sign_left ">
+                        <div v-if="!matter_steps.obj_id && !matter_steps.description" class="see_planDetail_grid_tab_div_sign">
+                            <div class="see_planDetail_grid_tab_div_sign_left">
                                 签字：
                             </div>
-                            <div class="see_planDetail_grid_tab_div_sign_rig ">
+                            <div class="see_planDetail_grid_tab_div_sign_rig">
                                 <span>操作人:</span>
-                                <i v-text=" 'orderDetail_pub.arrToString(matter_steps.executors)' "></i>
+                                <!-- leo -->
+                                <i v-text="_.isArray(matter_steps.executors)?matter_steps.executors.join('、'):''"></i>
                             </div>
-                        </div>
-                    </div>
-                    <div class="choiceObjExampleModal " :id=" 'choiceObjExample' ">
-                        <h4 :title=" 'model._save_major + model._save_system' ">
-                            <span v-text=" 'model._save_major' ">设备类</span>
-                            <i v-text=" '(model._save_system)' ">专业修改-系统</i>
-                        </h4>
-                        <ul id="choiceObjExample_tree ">
-                            <!-- <li :title=" 'item.obj_name' " v-for="item in model.planObjExampleArr " v-text="
-                    'item.obj_name' " @click="void 0 "></li> -->
-                            <li :title=" 'item.obj_name' " v-text=" 'item.obj_name' " @click="void 0 "></li>
-                        </ul>
-                        <!-- <ptree-normal :id=" 'choiceObjExample_tree' " bind="true " datasource="model.planObjExampleArr ">
-                                            <item itemid="obj_id " text="obj_name " child="content " issearch="false "></item>
-                                        </ptree-normal> -->
-                        <ploading-part id="object_loading " text="加载中... "></ploading-part>
-                        <section class="planNextNodata ">
-                            <!-- v-show="planObjExampleArr.length=='0' "-->
-                            <div>
-                                <img src="../../../../images/sassNodata.png " alt=" ">
-                            </div>
-                            <span>当前尚无设备/当前尚无系统</span>
-                        </section>
-                        <div class="choiceObjExampleModal_bottom ">
                         </div>
                     </div>
                 </div>

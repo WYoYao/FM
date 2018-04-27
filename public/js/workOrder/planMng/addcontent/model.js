@@ -210,19 +210,19 @@ Vue.component('addcontent', {
 
             // 验证作业简称不能为空
             if (!dw.work_name.length) {
-                $('#globalnotice').pshow({ text: '作业简称不能为空', state: false, });
+                $('#globalnotice').pshow({ text: '作业简称不能为空', state: "failure", });
                 return;
             }
 
             // 作业简称不能为空
             if (!dw.content.length) {
-                $('#globalnotice').pshow({ text: '标准操作要求不能为空', state: false, });
+                $('#globalnotice').pshow({ text: '标准操作要求不能为空', state: "failure", });
                 return;
             }
 
             // 作业简称不能为空
             if (!dw.content.length) {
-                $('#globalnotice').pshow({ text: '标准操作要求不能为空', state: false, });
+                $('#globalnotice').pshow({ text: '标准操作要求不能为空', state: "failure", });
                 return;
             }
 

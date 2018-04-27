@@ -438,11 +438,9 @@
     height:415px;
     position:absolute;
     top:0;
-    left:0;
-    display:none;
+    left:160px;
+    display:block !important;
     border: 1px solid #dcdce4;
-
-
 }
 .choiceObjExampleModal >h4{
     height: 40px;

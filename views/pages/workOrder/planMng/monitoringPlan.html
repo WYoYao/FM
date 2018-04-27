@@ -4,7 +4,7 @@
             <div class="header">
                 <!-- 面包屑导航Start -->
 
-                <!-- <sitemap :maps='paths.path' :createsitemap='createsitemap' :back='back' /> -->
+                <sitemap :maps='paths.path' :createsitemap='gobackSelPath' :back='gobackLastPath' />
 
                 <!-- 面包屑导航End -->
             </div>
@@ -46,7 +46,10 @@
                     <span class="total_count">
                         目前有{{notCitePlanList.length}}个项目未引用该计划
                         <div class="hoverList">
-                            <div v-for="item in notCitePlanList" v-text="item.project_name" :title="item.project_name"></div>
+                            <div>未引用集团计划项目</div>
+                            <ul>
+                                <pscroll-small templateid="monitoringPlanTem"></pscroll-small>
+                            </ul>
                         </div>
                     </span>
 
@@ -109,8 +112,8 @@
                             <div class="body_name" v-text="item.finished_wo_total" :title="item.finished_wo_total"></div>
 
                             <ul class="row" v-for="row in item.grid">
-                                <li v-for="grid in row">
-
+                                <li class="item" v-for="(grid,ind) in row" :style="{'flex':grid.width}">
+                                    {{ind}}
                                 </li>
                             </ul>
 
@@ -125,3 +128,9 @@
         </div>
     </div>
 </div>
+
+
+
+<script type="text/html" id="monitoringPlanTem">
+    <li v-for="item in notCitePlanList" v-text="item.project_name" :title="item.project_name"></li>
+</script>

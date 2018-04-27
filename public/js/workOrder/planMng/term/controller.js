@@ -31,7 +31,6 @@ var AllLink = {
     "groupPlanList":"restGroupPlanService/queryGroupPlanListForProject",
     // 作废集团计划
     "deleteGroupPlan":"restGroupPlanService/destroyGroupPlanById",
-
 }
 
 function getData(arr) {

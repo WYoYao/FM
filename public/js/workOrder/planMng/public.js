@@ -406,14 +406,12 @@ v.pushComponent({
                     break;
             }
         },
-
-
         // 组装路径
         createPath: function (N, O) {
-            var that = this;
             // 如果跳入基础路径则清空路径缓存并修改isBase
             // 否则记录该路径并存储name，path,以及页面间传递的参数cache
             // 跳回时统一goback，使用该路径存储的cache替换根实例中的cache
+            var that = this;
             this.paths.isBase = false;
 
             var a = Object.keys(this.paths.base);
@@ -431,7 +429,7 @@ v.pushComponent({
                     // 可能会跳入同一个路径的页面两次,但不可能跳入同一个名字的页面两次,因此使用cache.name进行判断
                     if (model.name == that.cache.name) { a++ }
                 })
-                a === 0 ? this.paths.path.push({ name: this.cache.name, path: O, cache: JSON.parse(JSON.stringify(this.cache)) }) : void 0;
+                a === 0 ? this.paths.path.push({ name: this.cache.name, path: N, cache: JSON.parse(JSON.stringify(this.cache)) }) : void 0;
             }
 
         },
@@ -440,7 +438,7 @@ v.pushComponent({
             this.cache = value.cache;
             this.paths.path.forEach(function (item, index) {
                 if (item.name == value.name) {
-                    v.instance.paths.path.splice(index, v.instance.paths.path.length - index - 1);
+                    v.instance.paths.path.splice(index + 1, v.instance.paths.path.length - index - 1);
                 }
             })
             v.goBack(value.path, true);

@@ -10,29 +10,29 @@ function changeComboxbyKey(key, index, bool) {
  * 使用不同的属性数组搞事情
  * @param {*} fn 使用每个不同属性搞事情的方法
  */
-function createCheck(fn) {
+// function createCheck(fn) {
 
-    return function Comparison(newValue, oldValue, keys) {
-        if (!(_.isPlainObject(newValue) && _.isPlainObject(oldValue) && _.isArray(keys))) throw TypeError('Arguments Error');
-        // 返回新的有的变动的值
-        keys.map(function (key) {
+//     return function Comparison(newValue, oldValue, keys) {
+//         if (!(_.isPlainObject(newValue) && _.isPlainObject(oldValue) && _.isArray(keys))) throw TypeError('Arguments Error');
+//         // 返回新的有的变动的值
+//         keys.map(function (key) {
 
-            var value = newValue[key];
+//             var value = newValue[key];
 
-            return {
-                issame: value == oldValue[key],
-                key: key,
-                value: value
-            };
-        }).filter(function (item) {
+//             return {
+//                 issame: value == oldValue[key],
+//                 key: key,
+//                 value: value
+//             };
+//         }).filter(function (item) {
 
-            return !item.issame;
-        }).forEach(function (item) {
+//             return !item.issame;
+//         }).forEach(function (item) {
 
-            fn(item);
-        })
-    }
-}
+//             fn(item);
+//         })
+//     }
+// }
 
 /**
  * 创建所选时间的下拉时间
@@ -197,8 +197,9 @@ Vue.component('baseinfomation', {
     data: function () {
 
         return {
+            compare: [],
             //是否是编辑计划
-            isEdit: false,
+            isedit: false,
             // 工单类型枚举
             WorkOrderType: [],
             // 紧急程度枚举
@@ -231,7 +232,7 @@ Vue.component('baseinfomation', {
     //isTerm: false,
     //  是否是编辑计划
     //isEdit: false,
-    props: ['addwoplan', 'isquote', 'isterm'],
+    props: ['addwoplan', 'isquote', 'isterm', 'isedit'],
     methods: {
         // 绑定计划频率数组
         addfreq_times: function (type, count, bool) {
@@ -273,8 +274,9 @@ Vue.component('baseinfomation', {
 
             return new Promise(function (resolve) {
                 _that.$nextTick(function () {
-                    var startTimes = $(".StartTime"),
-                        endTimes = $(".EndTime"),
+
+                    var startTimes = $(".indexl .StartTime"),
+                        endTimes = $(".indexl .EndTime"),
                         StartSeason = $(".StartSeason"),
                         EndSeason = $(".EndSeason"),
                         StartWeek = $(".StartWeek"),
@@ -301,34 +303,111 @@ Vue.component('baseinfomation', {
                 })
             })
         },
-        // 检查绑定最外层的属性
-        bind_combox: function (newValue, oldValue) {
+        com: function (item) {
 
-            var _that = this;
-
-            /**
-             *  找到单个实例对应数据集的索引,然后选中该索引对应的下拉菜单
-             * @param {脏值检查中检查到不同的实例} item 
-             */
-            function destory(item) {
-
-                var selector = {};
-
-                selector.code = item.value;
-
-                index = _.findIndex(cbx[item.key], selector);
-
-                changeComboxbyKey(item.key, index, false);
+            function zero(str) {
+                return ('00' + str.toString()).slice(-2);
             }
 
-            createCheck(destory)(newValue, oldValue, Object.keys(cbx));
+            var start, end, type = item.start_time.cycle;
+            start = zero(item.start_time.time_hour) + zero(item.start_time.time_minute);
+            end = zero(item.end_time.time_hour) + zero(item.end_time.time_minute);
+
+            switch (type) {
+
+                case 'w':
+                    start = zero(item.start_time.time_week) + start;
+                    end = zero(item.end_time.time_week) + end;
+                    break;
+                case 'm':
+                    start = zero(item.start_time.time_day) + start;
+                    end = zero(item.end_time.time_day) + end;
+                    break;
+                case 'q':
+                    start = zero(item.start_time.time_season) + zero(item.start_time.time_day) + start;
+                    end = zero(item.end_time.time_season) + zero(item.end_time.time_day) + end;
+                    break;
+                case 'y':
+                    start = zero(item.start_time.time_month) + zero(item.start_time.time_day) + start;
+                    end = zero(item.end_time.time_month) + zero(item.end_time.time_day) + end;
+                    break;
+                default:
+                    break;
+            }
+
+            return +start > +end;
         },
+        // 检查绑定最外层的属性
+        // bind_combox: function (newValue, oldValue) {
+
+        //     var _that = this;
+
+        //     /**
+        //      *  找到单个实例对应数据集的索引,然后选中该索引对应的下拉菜单
+        //      * @param {脏值检查中检查到不同的实例} item 
+        //      */
+        //     function destory(item) {
+
+        //         var selector = {};
+
+        //         selector.code = item.value;
+
+        //         index = _.findIndex(cbx[item.key], selector);
+
+        //         changeComboxbyKey(item.key, index, false);
+        //     }
+
+        //     createCheck(destory)(newValue, oldValue, Object.keys(cbx));
+        // },
         // 数据验证
         canUse: function () {
+            var _that = this;
+            //  验证文本框
+            if (!$("#plan_name_text").pverifi()) return false;
+            if (!$("#aheadCreateTime").pverifi()) return false;
+            if (!$("#peoplenumber").pverifi()) return false;
+            if (!$("#planRateRig").pverifi()) return false;
+
+            // 验证 工单类型
+            if (!_that.addWoPlan.order_type.length) {
+                $("#globalnotice").pshow({
+                    text: '工单类型不能为空',
+                    state: "failure"
+                });
+                return false;
+            }
+            // 验证 下滑栏菜单
+            if (!_that.addWoPlan.urgency.length) {
+                $("#globalnotice").pshow({
+                    text: '工单紧急程度不能为空',
+                    state: "failure"
+                });
+                return false;
+            }
+            // 计划频率不能为空
+            if (!_that.addWoPlan.plan_freq_type.length) {
+                $("#globalnotice").pshow({
+                    text: '计划频率不能为空',
+                    state: "failure"
+                });
+                return false;
+            }
+
+            // 验证精确设置
+
+
+
+
 
         }
     },
     computed: {
+        // compare: function () {
+        //     var _that = this;
+        //     return _that.addWoPlan.freq_times.map(function (item) {
+        //         return _that.com(item);
+        //     })
+        // },
         cycleTypes: function () {
             var index = _.findIndex(this.freq_cycleType, { code: this.addWoPlan.freq_cycle })
             return this.freq_cycleType.slice(0, index);
@@ -390,21 +469,29 @@ Vue.component('baseinfomation', {
         "addWoPlan.freq_cycle": function (value, old) {
             if (value == old) return;
             var _that = this;
-            _that.bind_combox({ freq_cycle: value }, { freq_cycle: old });
+            // _that.bind_combox({ freq_cycle: value }, { freq_cycle: old });
             this.addfreq_times(value, this.addWoPlan.freq_num, this.addWoPlan.sendTypes);
+        },
+        "addWoPlan.freq_times": {
+            handler: function (item) {
+                var _that = this;
+                _that.compare = _that.addWoPlan.freq_times.map(function (item) {
+                    return _that.com(item);
+                })
+            },
+            deep: true
         },
         addWoPlan: function (newValue, oldValue) {
 
             var _that = this;
 
-            _that.bind_combox(newValue, oldValue);
+            // _that.bind_combox(newValue, oldValue);
         }
     },
     beforeMount: function () {
 
         var _that = this;
         //  判断是否是编辑计划
-        _that.isEdit = _.isPlainObject(_that.addwoplan);
         //  如果是编辑计划赋值
         // if (_that.isEdit) _that.addWoPlan = _that.addwoplan;
         // 是否引用
@@ -431,7 +518,7 @@ Vue.component('baseinfomation', {
         WorkOrderTypePromise.then(function () {
 
             // 编辑情况
-            if (_that.isEdit) {
+            if (_that.isedit) {
 
                 // var addwoplan = function () {
                 //     return JSON.parse(JSON.stringify(_that.addwoplan))
@@ -446,16 +533,7 @@ Vue.component('baseinfomation', {
                     //  绑定基础信息
                     _that.addWoPlan = Object.assign(new AddWoPlan(), addwoplan())
                     _that.$nextTick(resolve);
-                    // }).then(function () {
-                    //     _that.addWoPlan.sendTypes = addwoplan().sendTypes;
-                    //     return new Promise(function (resolve) {
-                    //         _that.$nextTick(resolve)
-                    //     })
-                    // }).then(function () {
-                    //     _that.addWoPlan.freq_cycle = addwoplan().freq_cycle;
-                    //     return new Promise(function (resolve) {
-                    //         _that.$nextTick(resolve)
-                    //     })
+
                 }).then(function () {
 
                     _that.addWoPlan.freq_num = addwoplan().freq_num;
@@ -528,7 +606,7 @@ Vue.component('baseinfomation', {
 
                     var date = new Date(str.join(""));
 
-                    _that.addWoPlan.freq_times[index][type].time_day = date.format("MM");
+                    _that.addWoPlan.freq_times[index][type].time_month = date.format("MM");
                     _that.addWoPlan.freq_times[index][type].time_day = date.format("dd");
                     _that.addWoPlan.freq_times[index][type].time_hour = date.format("hh");
                     _that.addWoPlan.freq_times[index][type].time_minute = date.format("mm");

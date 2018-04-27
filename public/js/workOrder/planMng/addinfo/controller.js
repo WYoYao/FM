@@ -53,7 +53,7 @@ function createController(arr, obj) {
             })
         }
         return con;
-    }, _.isPlainObject(controller) ? controller : {})
+    }, {})
 };
 
 //  给最节点添加 selected 属性

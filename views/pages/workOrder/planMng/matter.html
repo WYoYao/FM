@@ -77,64 +77,52 @@
                 </div>
             </div>
             <div class="matter-error">
-                <div class="error error-test">
+                <div class="error error-test" v-show="views.isSpace">
                     <div>
                         <em>!</em>
                         <span>事项名称不可为空</span>
                     </div>
                 </div>
-                <div class="error error-test">
+                <div class="error error-test"  v-show="views.isRepeat">
                     <div>
                         <em>!</em>
                         <span>同一张工单内的事项名称不可重复</span>
                     </div>
                 </div>
-                <div class="error error-test">
+                <div class="error error-test" v-show="views.isDescForepartSpace">
                     <div>
                         <em>!</em>
                         <span>事项内容不可为空</span>
                     </div>
                 </div>
                 <!-- <template v-for="(item, errIndex) in model.unMatchedSopList"> -->
-                <template>
-                    <div class="error error-match">
+                <template v-for="(v,index) in views.verify">
+                    <div class="error error-match" v-show="!v.selected">
                         <div>
                             <em>!</em>
-                            <span v-text="'消防水泵控制箱A'">消防水泵控制箱A-1</span>与
-                            <span v-text="'季度检修'">季度检修</span>的适用对象不匹配，请检查
+                            <span v-text="v.obj_name"></span>与
+                            <span v-text="v.sop_name"></span>的适用对象不匹配，请检查
                         </div>
                         <!-- <div class="ignore" > -->
-                        <div class="ignore">
+                        <div class="ignore" @click=v.selected=true>
                             <span>忽略</span>
                         </div>
                     </div>
                 </template>
                 <!-- <template v-for="(item, errIndex) in model.invalidObjList"> -->
-                <template>
-                    <div class="error error-invalid">
+                <template v-for="(item, errIndex) in views.sopeds" v-show="!item.selected">
+                    <div class="error error-invalid" v-show="!item.selected">
                         <div>
                             <em>!</em>添加的
-                            <span>季度检修</span>已被作废，请前往编辑
+                            <span v-text="item.sop_name"></span>
                         </div>
                         <!-- <div class="ignore" > -->
-                        <div class="ignore">
+                        <div class="ignore" @click="item.selected=true">
                             <span>忽略</span>
                         </div>
                     </div>
                 </template>
-                <!-- <template v-for="(item, errIndex) in model.invalidSopList"> -->
-                <template>
-                    <div class="error error-invalid">
-                        <div>
-                            <em>!</em>
-                            <span>季度检修</span>无效，请重新选择
-                        </div>
-                        <!-- <div class="ignore" > -->
-                        <div class="ignore">
-                            <span>忽略</span>
-                        </div>
-                    </div>
-                </template>
+
             </div>
         </div>
     </div>

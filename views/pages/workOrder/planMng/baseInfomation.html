@@ -21,11 +21,12 @@
         <h4>
             <span>*</span>
             <i>工单类型：</i>
-            <em v-if="isquote">工单类型</em>
+            <em v-if="isquote" v-text='(_.find(WorkOrderType,{code:addWoPlan.order_type}) || {}).name'></em>
         </h4>
         <div v-if="!isquote">
             <pcombobox-normal bind="true" id="'cbx_id_order_type'" sel="cbx_sel_order_type">
-                <header placeholder=""></header>
+                <!-- <header placeholder="(_.find(WorkOrderType,{code:3}) || {}).name"></header> -->
+                <header placeholder="(_.find(WorkOrderType,{code:addWoPlan.order_type}) || {}).name"></header>
                 <item datasource="WorkOrderType" text="name"></item>
                 <verify errtip="工单类型不能为空" verifytype="space"></verify>
             </pcombobox-normal>
@@ -39,7 +40,7 @@
         </h4>
         <div id="orderUrgency" v-if="!isquote">
             <pcombobox-normal bind="true" id="'cbx_id_urgency'" sel="cbx_sel_urgency">
-                <header placeholder="低"></header>
+                 <header placeholder="addWoPlan.urgency"></header>
                 <item datasource="urgencyType" text="name"></item>
                 <verify errtip="工单紧急程度不能为空" verifytype="space"></verify>
             </pcombobox-normal>
@@ -82,7 +83,7 @@
         </h4>
         <div id="orderUrgency" v-if="!isquote">
             <pcombobox-normal bind="true" id="'cbx_id_sendTypes'" sel="cbx_sel_sendTypes">
-                <header placeholder="请选择"></header>
+                <header placeholder="(_.find(sendTypes,{code:addWoPlan.plan_freq_type}) || {}).name"></header>
                 <item datasource="sendTypes" text="name"></item>
                 <verify errtip="计划频率不能为空" verifytype="space"></verify>
             </pcombobox-normal>
@@ -92,9 +93,9 @@
 
         <div v-if="!isquote">
             <span>每</span>
-            <span v-if="isEdit" v-text="(_.find(freq_cycleType,{code:addWoPlan.freq_cycle}) || {}).name"></span>
-            <pcombobox-normal v-if="!isEdit" id="'cbx_id_freq_cycle'" bind="true" sel="cbx_sel_freq_cycle">
-                <header placeholder="请选择"></header>
+            <span v-if="isedit" v-text="(_.find(freq_cycleType,{code:addWoPlan.freq_cycle}) || {}).name"></span>
+            <pcombobox-normal v-if="!isedit" id="'cbx_id_freq_cycle'" bind="true" sel="cbx_sel_freq_cycle">
+                <header placeholder="(_.find(freq_cycleType,{code:addWoPlan.freq_cycle}) || {}).name"></header>
                 <item datasource="freq_cycleType" text="name"></item>
             </pcombobox-normal>
 
@@ -103,7 +104,7 @@
                 <verify errtip="只能为正整数" verifytype="pisPositiveInt"></verify>
             </ptext-text>
             <!-- <pcombobox-normal :id="'planRateRig'" bind="true">
-                                <header placeholder="请选择"></header>
+                                <header placeholder="'请选择'"></header>
                                 <item datasource="[]" text="name"></item>
                             </pcombobox-normal> -->
             <p>次</p>
@@ -118,7 +119,7 @@
 
         <div v-if="!!+addWoPlan.sendTypes">
             <!-- 年 -->
-            <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_year" v-if="addWoPlan.freq_cycle=='y'">
+            <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_year" :class="addWoPlan.freq_cycle=='y'?'indexl':''" v-show="addWoPlan.freq_cycle=='y'">
                 <li v-for="(item,index) in addWoPlan.freq_times">
                     <span>第
                         <i v-text="index+1"></i>次要求开始时间和结束时间</span>
@@ -133,10 +134,11 @@
                             <panel startyear="2013" endyear="2022" timeType="Mdhm"></panel>
                         </ptime-form>
                     </section>
+                    <span v-show="compare[index]">开始时间小于结束时间</span>
                 </li>
             </ul>
             <!-- 季 -->
-            <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_week" v-if="addWoPlan.freq_cycle=='q'">
+            <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_week" :class="addWoPlan.freq_cycle=='q'?'indexl':''" v-show="addWoPlan.freq_cycle=='q'">
                 <li v-for="(item,index) in addWoPlan.freq_times">
                     <span>第
                         <i v-text="index+1"></i>次要求开始时间和结束时间</span>
@@ -145,7 +147,7 @@
                     <section v-if="!isquote">
                         <span>
                             <pcombobox-normal :index="index" :class="'StartSeason'" sel="StartSeasonSel" bind="true">
-                                <header placeholder="第一个月"></header>
+                                <header placeholder="'第一个月'"></header>
                                 <item datasource="seasonType" text="name"></item>
                             </pcombobox-normal>
                             <ptime-form bind='true' :index="index" :class="'StartTime'" sel="TimeStartSel">
@@ -155,19 +157,19 @@
                         <i>至</i>
                         <span>
                             <pcombobox-normal :index="index" :class="'EndSeason'" sel="EndSeasonSel" bind="true">
-                                <header placeholder="第一个月"></header>
+                                <header placeholder="'第一个月'"></header>
                                 <item datasource="seasonType" text="name"></item>
                             </pcombobox-normal>
                             <ptime-form bind='true' :index="index" :class="'EndTime'" sel="TimeEndSel">
                                 <panel startyear="2013" endyear="2022" timeType="dhm"></panel>
                             </ptime-form>
-
                         </span>
                     </section>
+                    <span v-show="compare[index]">开始时间小于结束时间</span>
                 </li>
             </ul>
             <!-- 月 -->
-            <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_month" v-if="addWoPlan.freq_cycle=='m'">
+            <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_month" :class="addWoPlan.freq_cycle=='m'?'indexl':''" v-show="addWoPlan.freq_cycle=='m'">
                 <li v-for="(item,index) in addWoPlan.freq_times">
                     <span>第
                         <i v-text="index+1"></i>次要求开始时间和结束时间</span>
@@ -176,16 +178,17 @@
                     <section v-if="!isquote">
                         <ptime-form bind='true' :index="index" :class="'StartTime'" sel="TimeStartSel">
                             <panel startyear="2013" endyear="2022" timeType="dhm"></panel>
-                        </ptime-form>
+                        </ptime-form>     
                         <i>至</i>
                         <ptime-form bind='true' :index="index" :class="'EndTime'" sel="TimeEndSel">
                             <panel startyear="2013" endyear="2022" timeType="dhm"></panel>
                         </ptime-form>
                     </section>
+                    <span v-show="compare[index]">开始时间小于结束时间</span>
                 </li>
             </ul>
             <!-- 周 -->
-            <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_week" v-if="addWoPlan.freq_cycle=='w'">
+            <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_week" :class="addWoPlan.freq_cycle=='w'?'indexl':''" v-show="addWoPlan.freq_cycle=='w'">
                 <li v-for="(item,index) in addWoPlan.freq_times">
                     <span>第
                         <i v-text="index+1"></i>次要求开始时间和结束时间</span>
@@ -194,7 +197,7 @@
                     <section v-if="!isquote">
                         <span>
                             <pcombobox-normal :index="index" :class="'StartWeek'" sel="StartWeekSel" bind="true">
-                                <header placeholder="周一"></header>
+                                <header placeholder="'周一'"></header>
                                 <item datasource="weekType" text="name"></item>
                             </pcombobox-normal>
                             <ptime-form bind='true' :index="index" :class="'StartTime'" sel="TimeStartSel">
@@ -205,7 +208,7 @@
                         <i>至</i>
                         <span>
                             <pcombobox-normal sel="EndWeekSel" :index="index" :class="'EndWeek'" bind="true">
-                                <header placeholder="周一"></header>
+                                <header placeholder="'周一'"></header>
                                 <item datasource="weekType" text="name"></item>
                             </pcombobox-normal>
                             <ptime-form bind='true' :index="index" :class="'EndTime'" sel="TimeEndSel">
@@ -214,10 +217,11 @@
 
                         </span>
                     </section>
+                    <span v-show="compare[index]">开始时间小于结束时间</span>
                 </li>
             </ul>
             <!-- 日 -->
-            <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_day" v-if="addWoPlan.freq_cycle=='d'">
+            <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_day" :class="addWoPlan.freq_cycle=='d'?'indexl':''" v-show="addWoPlan.freq_cycle=='d'">
                 <li v-for="(item,index) in addWoPlan.freq_times">
                     <span>第
                         <i v-text="index+1"></i>次要求开始时间和结束时间</span>
@@ -232,6 +236,7 @@
                             <panel startyear="2013" endyear="2022" timeType="hm"></panel>
                         </ptime-form>
                     </section>
+                    <span v-show="compare[index]">开始时间小于结束时间</span>
                 </li>
             </ul>
         </div>

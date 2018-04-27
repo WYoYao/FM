@@ -1,18 +1,21 @@
+var ViewError = function () {
+    return {
+        isRepeat: false,
+        isSpace: false,
+        isDescForepartSpace: false,
+        verify: [],
+        sopeds: [],
+    };
+}
+
 v.pushComponent({
     name: "createPlan",
     data: {
-        mattersViews: [
-            {
-                isRepeat: false,
-                isSpace: false,
-                isDescForepartSpace: false,
-                verify: [],
-                sopeds: [],
-            }
-        ],
-        addWoPlan: {
-
-        },
+        // 工单状态类型
+        WorkOrderType: [],
+        //  基础信息
+        addWoPlan: {},
+        //  事项集合
         matters: [{
             // 事项名称
             matter_name: "",
@@ -21,15 +24,26 @@ v.pushComponent({
             desc_works: [],  // 新建工作内容
             // 对象描述
             desc_forepart: "",  //  @ 输入框文本
-            desc_aftpart: "",   //  # 输入框文本
+            desc_aftpart: "",   //  # 输入框文本  
             required_control: [],
         }],
-        //addWoPlan: { "execute": "13", "plan_name": "111", "order_type": 1, "urgency": "高", "ahead_create_time": "12", "freq_cycle": "q", "freq_num": "2", "freq_times": [{ "start_time": { "cycle": "q", "time_day": "101", "time_hour": "01", "time_minute": "00" }, "end_time": { "cycle": "q", "time_day": "202", "time_hour": "02", "time_minute": "00" } }, { "start_time": { "cycle": "q", "time_day": "203", "time_hour": "03", "time_minute": "00" }, "end_time": { "cycle": "q", "time_day": "304", "time_hour": "04", "time_minute": "00" } }], "freq_limit": {}, "sendTypes": "1", "plan_start_type": "1", "plan_start_time": "", "plan_end_type": "1", "plan_end_time": "", "next_route": [], "draft_matters": [], "published_matters": [] },
-        //addWoPlan: { "execute": "13", "plan_name": "计划名称更", "order_type": 3, "urgency": "高", "ahead_create_time": "12", "freq_cycle": "s", "freq_num": "2", "freq_times": [{ "start_time": { "cycle": "s", "time_week": "1", "time_season": 1, "time_month": "1", "time_day": "01", "time_hour": "01", "time_minute": "00" }, "end_time": { "cycle": "s", "time_week": "1", "time_season": 2, "time_month": "1", "time_day": "02", "time_hour": "02", "time_minute": "00" } }, { "start_time": { "cycle": "s", "time_week": "1", "time_season": 3, "time_month": "1", "time_day": "03", "time_hour": "03", "time_minute": "00" }, "end_time": { "cycle": "s", "time_week": "1", "time_season": 1, "time_month": "1", "time_day": "04", "time_hour": "04", "time_minute": "00" } }], "freq_limit": {}, "sendTypes": "1", "plan_start_type": "1", "plan_start_time": "", "plan_end_type": "1", "plan_end_time": "", "next_route": [], "draft_matters": [], "published_matters": [] },
-        //addWoPlan: { "execute": "123", "plan_name": "计划名称", "order_type": 1, "urgency": "高", "ahead_create_time": "12", "freq_cycle": "m", "freq_num": 1, "freq_times": [{ "start_time": { "cycle": "m", "time_day": "1", "time_hour": "0", "time_minute": "0" }, "end_time": { "cycle": "m", "time_day": "1", "time_hour": "0", "time_minute": "0" } }], "freq_limit": { "num": "2", "unit": "w" }, "sendTypes": "0", "plan_start_type": "1", "plan_start_time": "", "plan_end_type": "1", "plan_end_time": "", "next_route": [], "draft_matters": [], "published_matters": [] },
-        //addWoPlan: { "execute": "321", "plan_name": "新计划名称", "order_type": 2, "urgency": "中", "ahead_create_time": "11", "freq_cycle": "s", "freq_num": "2", "freq_times": [{ "start_time": { "cycle": "s", "time_week": 1, "time_season": "1", "time_month": "1", "time_day": "NaN", "time_hour": "NaN", "time_minute": "NaN" }, "end_time": { "cycle": "s", "time_week": 2, "time_season": "1", "time_month": "1", "time_day": "NaN", "time_hour": "NaN", "time_minute": "NaN" } }, { "start_time": { "cycle": "s", "time_week": 3, "time_season": "1", "time_month": "1", "time_day": "NaN", "time_hour": "NaN", "time_minute": "NaN" }, "end_time": { "cycle": "s", "time_week": 1, "time_season": "1", "time_month": "1", "time_day": "NaN", "time_hour": "NaN", "time_minute": "NaN" } }], "freq_limit": { "num": 1, "unit": "d" }, "sendTypes": "1", "plan_start_type": "1", "plan_start_time": "", "plan_end_type": "1", "plan_end_time": "", "next_route": [], "draft_matters": [], "published_matters": [] },
+        //  事项的错误信息
+        mattersViews: [
+            new ViewError(),
+        ],
+        // 预览事项
+        WoMattersPreview: {},
+        // 是否被引用
         isquote: false,
+        // 是否编辑
+        isedit: false,
+        // 是否是项目版
         isterm: false,
+        // 是否是预览页面
+        PreView: false,
+        // 根据大类查询出来的结果
+        ObjectByClassId: {},
+        ObjectByClass: [],
         str: "",
     },
     methods: {
@@ -38,17 +52,13 @@ v.pushComponent({
             console.log(arr);
             this.str = "";
         },
+        //  提交信息
         commit: function () {
             var _that = this;
             console.log(_that.$refs.baseinfomation.addWoPlan);
             console.log(_that.matters);
 
             // matters 验证
-            // 重名的验证
-            _that.mattersViews = _that.mattersViews.map(function (item) {
-                item.isRepeat = !(_.uniq(_.map(_that.matters, 'matter_name')).length != _that.matters.length);
-                return item;
-            });
 
             if (_.filter(_that.mattersViews, { isRepeat: true }).length) return;
             // 验证名称非空
@@ -59,6 +69,12 @@ v.pushComponent({
             // 验证内容为空
             if (_.filter(_that.mattersViews, { isSpace: true }).length) return;
             if (_.filter(_that.mattersViews, { isDescForepartSpace: true }).length) return;
+
+            // 重名的验证
+            _that.mattersViews = _that.mattersViews.map(function (item) {
+                item.isRepeat = (_.uniq(_.map(_that.matters, 'matter_name')).length != _that.matters.length);
+                return item;
+            });
 
             //  验证多个关系是否不匹配
             // 并行发送请求多个事项同时验证
@@ -81,9 +97,9 @@ v.pushComponent({
                 })
             ).then(function (res) {
                 // 把原来的错误的状态替换的新的错误信息中
-                Array.prototype.slice.call(arguments).map(function (item, index) {
+                res.forEach(function (item, index) {
 
-                    item.map(function (info) {
+                    item = item.map(function (info) {
                         // 有之前的返回之前的，没有之前的返回新的
                         var find = _.find(_that.mattersViews[index].verify, { obj_name: info.obj_name, sop_name: info.sop_name });
                         return find ? find : info;
@@ -93,8 +109,8 @@ v.pushComponent({
                 });
                 // 验证替换后的错误信息是否全部被忽略
                 if (
-                    !_that.mattersViews[index].map(function (item) {
-                        return _.filter(item.verify, { ignore: false }).length
+                    !_that.mattersViews.map(function (item) {
+                        return _.filter(item.verify, { selected: false }).length
                     }).reduce(function (con, num) {
                         return con + num;
                     }, 0)
@@ -129,23 +145,85 @@ v.pushComponent({
                         }, true);
 
                         if (bool) {
-                            console.log("可以执行保存了");
-                        }
 
+
+                            createPlan_controller.getWoMattersPreview({
+                                order_type: _that.$refs.baseinfomation.addWoPlan.order_type,
+                                draft_matters: _that.matters,
+                            }).then(function (res) {
+                                console.log("可以执行保存了");
+                                // 保存预览时候数据
+                                _that.WoMattersPreview = res[0];
+
+                                _that.PreView = true;
+                            })
+                        }
                     })
                 }
             })
 
+        },
+        //  查询大类下的对象实例
+        queryObjectByClass: function (obj_id, obj_type) {
+
+            var _that = this;
+
+            createPlan_controller.queryObjectByClass({
+                obj_id: obj_id,
+                obj_type: obj_type,
+            }).then(function (res) {
+                _that.ObjectByClass = res;
+            })
+        },
+        // 获取父级的路径
+        getparent_names: function (arr) {
+            return arr.map(function (parent) {
+
+                return parent.parent_names.join('-');
+            }).join('');
+        },
+        // 选择实例的点击事件
+        handder_clicl: function (confirm_result, item) {
+            this.ObjectByClassId = void 0;
+            confirm_result.obj_id = item.obj_id;
+            confirm_result.obj_name = item.obj_name;
+            confirm_result.obj_type = item.obj_type;
         }
     },
     computed: {
+        base: function () {
+            return this.$refs.baseinfomation;
+        }
     },
     watch: {
+        matters: function (newVlaue) {
+            var _that = this;
+            if (newVlaue.length > _that.mattersViews.length) {
 
+                _that.mattersViews = _that.mattersViews.concat(_.range(newVlaue.length - _that.mattersViews.length).map(function () {
+                    return new ViewError();
+                }))
+            } else if (newVlaue.length < _that.mattersViews.length) {
+
+                _that.mattersViews.splice(newVlaue.length);
+            }
+        }
     },
     beforeMount: function () {
 
         var _that = this;
+        //  查询工单状态类
+        var WorkOrderTypePromise = controller.queryWoTypeList().then(function (res) {
+            //  返回对应Object 集合
+            _that.WorkOrderType = res.reduce(function (con, item) {
+                con[item.code] = item.name;
+                return con;
+            }, {});
+
+        }).catch(function () {
+
+            _that.WorkOrderType = {};
+        })
 
 
 

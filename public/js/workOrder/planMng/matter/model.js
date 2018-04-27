@@ -39,7 +39,7 @@ Vue.component('matter', {
             str: "",
         }
     },
-    props: ["matter"],
+    props: ["matter", "views"],
     methods: {
         //事项名称输入事件
         input_matter_name: function () {
@@ -203,11 +203,11 @@ Vue.component('matter', {
                 }).indexOf(item.obj_name || item.sop_name || item.matter_name) != -1;
             });
             // 更新删除对象
-            _that.matter.desc_objs = _that.matter.desc_objs.filter(function (item, index) {
-                return arr.map(function (params) {
-                    return params.name;
-                }).indexOf(item.obj_name || item.sop_name || item.matter_name) != -1;
-            });
+            // _that.matter.desc_objs = _that.matter.desc_objs.filter(function (item, index) {
+            //     return arr.map(function (params) {
+            //         return params.name;
+            //     }).indexOf(item.obj_name || item.sop_name || item.matter_name) != -1;
+            // });
 
             var search = /(@|#)(\S*?)\s{1}/.exec(str);
 
@@ -237,6 +237,11 @@ Vue.component('matter', {
     },
     beforeMount: function () {
         var _that = this;
+
+
+        console.log(_that.views)
+
+
         matter_controller.queryGeneralDictByKey().then(function (res) {
             _that.GeneralDictByKey = res.map(function (item) {
 
