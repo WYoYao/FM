@@ -26,6 +26,7 @@
         
             
         <!-- 人员管理 -->
+        <% if (user.indexOf('personalManagement') != '-1') { %>
         <div id="personManageList" class="personManageList">
             <!-- 组织结构树 -->
             <div class="personListLeft">
@@ -137,21 +138,11 @@
                 </div>
             </div>
         </div>
+        <% } %>
         <!-- 登录信息 -->
+        <% if (user.indexOf('loginInformation') != '-1' && user.indexOf('personalManagement') != '-1') { %>
         <div id="loginInfoList" class="loginInfoList">
             <div class="top">
-                <!-- <div class="department">
-                    <pcombobox-normal sel="personMethods.choiceDepartment" >
-                        <header placeholder="部门：请选择" prefix="部门："></header>
-                        <item datasource="personModel.loginInfoDepartment" text="name"></item>
-                    </pcombobox-normal>
-                </div> -->
-                <!-- <div class="position">
-                    <pcombobox-normal sel="personMethods.choicePosition" >
-                        <header placeholder="岗位：请选择" prefix="岗位："></header>
-                        <item datasource="personModel.loginInfoPosition" text="name"></item>
-                    </pcombobox-normal>
-                </div> -->
                 <div class="search" id="personNameSearch">
                     <psearch-delay bind="true" placeholder="'输入人员姓名查找'" change="personMethods.searchPersonByName()"></psearch-delay>
                 </div>
@@ -166,15 +157,37 @@
                         <column name="登录设备" source="login_device" width="20%"></column>
                         <column name="登录距离项目距离" source="distance+'km'" width="20%" sort="true" defaultsort="desc"></column>
                     </header>
-                    
-                   
-
                 </pgrid-multifunction>
                 <div v-show="personModel.loginInfoGrid.length == 0">
                     <pnotice-nodata text="暂无数据"></pnotice-nodata>
                 </div>
             </div>
         </div>
-        
+        <% } %>
+
+        <% if (user.indexOf('loginInformation') != '-1' && user.indexOf('personalManagement') == '-1') { %>
+            <div id="loginInfoList" class="loginInfoList" style="display:block">
+                <div class="top">
+                    <div class="search" id="personNameSearch">
+                        <psearch-delay bind="true" placeholder="'输入人员姓名查找'" change="personMethods.searchPersonByName()"></psearch-delay>
+                    </div>
+                </div>
+                <div class="infoList" style="height:100%">
+                    <pgrid-multifunction id="'loginInfoGrid'" bind="true">
+                        <panel bind="true" datasource="personModel.loginInfoGrid" sortevent="personMethods.loginInfoSort"></panel>
+                        <header>
+                            <column name="姓名" source="name" width="20%"></column>
+                            <column name="登录时间" source="login_time" width="20%" sort="true" defaultsort="desc"></column>
+                            <column :title="account" name="账号" source="person_user_name" width="20%"></column>
+                            <column name="登录设备" source="login_device" width="20%"></column>
+                            <column name="登录距离项目距离" source="distance+'km'" width="20%" sort="true" defaultsort="desc"></column>
+                        </header>
+                    </pgrid-multifunction>
+                    <div v-show="personModel.loginInfoGrid.length == 0">
+                        <pnotice-nodata text="暂无数据"></pnotice-nodata>
+                    </div>
+                </div>
+            </div>
+        <% } %>
     </div>
 </script>

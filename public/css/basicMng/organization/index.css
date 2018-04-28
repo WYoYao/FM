@@ -100,7 +100,7 @@ input:disabled, textarea:diabled {
     flex-flow: row nowrap;
     align-items: center;
     justify-content: space-between;
-    height: 50px;
+    margin-bottom: 10px;
 }
 .organizationBox .centerDepartment >.top >.title{
     color:#333;
@@ -143,7 +143,7 @@ input:disabled, textarea:diabled {
     min-height:120px;
     width:100%;
     background: #fff;
-    padding: 0 20px 20px 20px;
+    padding: 20px 20px 20px 20px;
     box-sizing: border-box;
     margin-top:20px;
     border-radius: 4px;
@@ -154,7 +154,7 @@ input:disabled, textarea:diabled {
     flex-flow: row nowrap;
     align-items: center;
     justify-content: space-between;
-    height: 50px;
+    margin-bottom: 10px;
 }
 .organizationBox .projectCommon >.top >.title{
     color:#333;
@@ -303,16 +303,10 @@ input:disabled, textarea:diabled {
     align-items: center;
     justify-content: center;
 }
-#projectList input{
-    width: 100%;
-    border: none;
-    /* border-bottom: 1px solid #ddd; */
-    padding: 7px 0;
-    color: #333;
-    cursor: pointer;
-    box-sizing: border-box;
+.projectList span:hover, .projectList1 span:hover,.projectList2 span:hover,.projectList3 span:hover{
+    background: #f8f8f8;
 }
-#projectList span{
+.projectList span{
     width: 100%;
     border: none;
     /* border-bottom: 1px solid #ddd; */
@@ -323,12 +317,12 @@ input:disabled, textarea:diabled {
     display: block;
 }
 .selected{
-    background: #f8f8f8;
+    /* background: #f8f8f8; */
 }
 .disabled{
     opacity: 0.3;
 }
-#projectList1 input {
+.projectList1 span{
     width: 100%;
     border: none;
     /* border-bottom: 1px solid #ddd; */
@@ -336,8 +330,13 @@ input:disabled, textarea:diabled {
     color: #333;
     cursor: pointer;
     box-sizing: border-box;
+    display: block;
+    padding-right: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
-#projectList1 span{
+.projectList2 span{
     width: 100%;
     border: none;
     /* border-bottom: 1px solid #ddd; */
@@ -347,35 +346,7 @@ input:disabled, textarea:diabled {
     box-sizing: border-box;
     display: block;
 }
-#projectList2 input {
-    width: 100%;
-    border: none;
-    /* border-bottom: 1px solid #ddd; */
-    padding: 7px 0;
-    color: #333;
-    cursor: pointer;
-    box-sizing: border-box;
-}
-#projectList2 span{
-    width: 100%;
-    border: none;
-    /* border-bottom: 1px solid #ddd; */
-    padding: 7px 0;
-    color: #333;
-    cursor: pointer;
-    box-sizing: border-box;
-    display: block;
-}
-#projectList3 input {
-    width: 100%;
-    border: none;
-    /* border-bottom: 1px solid #ddd; */
-    padding: 7px 0;
-    color: #333;
-    cursor: pointer;
-    box-sizing: border-box;
-}
-#projectList3 span{
+.projectList3 span{
     width: 100%;
     border: none;
     /* border-bottom: 1px solid #ddd; */
@@ -401,7 +372,6 @@ input:disabled, textarea:diabled {
 }
 #searchAccountInfo .options ul{
     border: 1px solid #ddd;
-    border-bottom: 0px;
     width: 100%;
     position: absolute;
     max-height: 212px;
@@ -499,4 +469,16 @@ input:disabled, textarea:diabled {
     border-top: 1px solid transparent;
     border-left: 1px solid transparent;
     z-index: 5;
+}
+.selectedMul{
+    display: block;
+    width: 20px;
+    background: url(../../../images/permissionChecked.png) no-repeat center;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    left: 157px;
+}
+.organizationTreeBoxName{
+    position: relative;
 }

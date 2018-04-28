@@ -6,7 +6,7 @@
         <!-- 中心部门 -->
         <div class="centerDepartment" id="centerDepart_">
             <div class="top">
-                <div class="title">
+                <div class="title" style="transform: translateY(-7px);">
                     中心部门
                 </div>
                 <div class="operat">
@@ -17,7 +17,7 @@
                     <% } %>
                     <% if (user.indexOf('addEditPerson') != '-1') { %>
                     <div class="addPerson">
-                        <pbutton-white bind="true" icon="'J'" text="'快速添加人员'" click="windowEvent.showPwindow5"></pbutton-white>
+                        <pbutton-white bind="true" icon="'J'" text="'快速添加人员'" click="windowEvent.showPwindow5(false)"></pbutton-white>
                     </div>
                     <% } %>
                 </div>
@@ -29,7 +29,7 @@
         <!-- 项目通用 -->
         <div class="projectCommon" id="projectCommon_">
             <div class="top">
-                <div class="title">
+                <div class="title" style="transform: translateY(-7px);">
                     项目通用部门
                 </div>
                 <div class="operat">
@@ -118,7 +118,7 @@
                         <pcombobox-custom templateid="temp_project" id="selectedProject">
                             <header  placeholder="请选择项目" ></header>
                         </pcombobox-custom>
-                        <div class="promptForm" v-if="organizationModel.verifi3">
+                        <div class="promptForm">
                             请选择项目
                         </div>
                     </div>
@@ -135,22 +135,14 @@
                         </ptext-text>
                     </div>
                 </li>
-                <!-- <li class="itemFastAdd">
-                    <span><a class="starSymbol">*</a>岗位：</span>
-                    <div class="conItem">
-                        <pcombobox-custom templateid="temp_position" id="selectedPosition">
-                            <header  placeholder="请选择岗位" ></header>
-                        </pcombobox-custom>
-                    </div>
-                </li> -->
                 <li class="itemFastAdd">
                     <span><a class="starSymbol">*</a>岗位：</span>
                     <div class="conItem">
-                        <pcombobox-normal id="'selectedPosition'" align="left" orientation="down" bind="true">
+                        <pcombobox-normal id="'selectedPosition'" align="left" orientation="down" sel="windowEvent.cleanTip" bind="true">
                             <header  placeholder="'请选择岗位'"></header>
                             <item datasource="organizationModel.postArr" text="position_name" id="position_id"></item>
                         </pcombobox-normal>
-                        <div class="promptForm" v-if="organizationModel.verifi4">
+                        <div class="promptForm">
                             请选择岗位
                         </div>
                     </div>
@@ -220,10 +212,10 @@
     <!-- 项目模板 -->
     <script type="text/html" id="temp_project">
         <div class="selArea"> 
-            <div class="projectCommonUl" v-for="(item, index) in organizationModel.listByProject" id="projectList">
+            <div class="projectCommonUl projectList" v-for="(item, index) in organizationModel.listByProject" >
                 <organizationx :model="item"></organizationx>
             </div>
-            <div style="height:54px">123</div>
+            <div style="height:54px;    color: transparent;">123</div>
         </div>
         <div class="buttonArea" >
             <button class="yesBtu" @click="windowEvent.slideUp('selectedProject')">确定</button>
@@ -233,10 +225,10 @@
     <!-- 专业模板 -->
     <script type="text/html" id="temp_major">
         <div class="selArea">  
-            <div class="projectCommonUl" v-for="(item, index) in organizationModel.majorArr" id="projectList1">
+            <div class="projectCommonUl projectList1" v-for="(item, index) in organizationModel.majorArr" >
                 <organizationx :model="item"></organizationx>
             </div>
-            <div style="height:52px">123</div>
+            <div style="height:52px;    color: transparent;">123</div>
         </div>     
         <div class="buttonArea" >
             <button class="yesBtu" @click="windowEvent.slideUp('selectedMajor')">确定</button>
@@ -246,11 +238,11 @@
     </script>
     <!-- 权限模板 -->
     <script type="text/html" id="temp_jurisdiction">
-        <div class="selArea"> 
-            <div class="projectCommonUl" v-for="(item, index) in organizationModel.jurisdiction" id="projectList2">
+        <div class="selArea">  
+            <div class="projectCommonUl projectList2" v-for="(item, index) in organizationModel.jurisdiction" >
                 <organizationx :model="item"></organizationx>       
             </div>
-            <div style="height:52px">123</div>
+            <div style="height:52px; color: transparent;">123</div>
         </div>    
         <div class="buttonArea" >
             <button class="yesBtu" @click="windowEvent.slideUp('selectedJurisdiction')">确定</button>
@@ -259,7 +251,7 @@
     </script>
     <!-- 岗位模板 -->
     <script type="text/html" id="temp_position">
-        <div class="projectCommonUl" v-for="(item, index) in organizationModel.postArr" id="projectList3">
+        <div class="projectCommonUl projectList3" v-for="(item, index) in organizationModel.postArr">
             <organization :model="item"></organization>
         </div>
     </script>

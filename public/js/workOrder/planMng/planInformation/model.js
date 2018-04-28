@@ -12,11 +12,14 @@ v.pushComponent({
   methods: {
     // 废弃计划
     deletePlan : function(){
-      getData([this.cache.planType == 'group' ? {name:"deleteGroupPlan",data:{group_plan_id:this.cache.planId}} : {name:"deleteOrderPlan",data:{plan_id:this.cache.planId}}])[0].then(function(data){
+      
+      var param = this.cache.planType == 'group' ? {group_plan_id:this.cache.planId} : {plan_id:this.cache.planId};
+      ajx(this.cache.planType == 'group' ? "deleteGroupPlan" : "deleteOrderPlan",param,function(data){
 
-      }).catch(function(err){
+      },function(err){
 
-      })
+      },function(){})
+
     },
     // 查看计划历史工单信息
     lookHistoryOrderInfo : function(){
@@ -28,15 +31,59 @@ v.pushComponent({
     },
     // 修改计划
     changePlan : function(){
-
+      if(this.cache.planType == 'order'){
+        this.cache = {
+          argu: {
+            isquote: false,
+            isedit: true,
+            isterm: true,
+            addWoPlan: this.planInfo,
+            cb: function () {
+              var x = v.instance.cache.argu.addWoPlan;
+              v.instance.cache = {name:"计划详情",planType:"order",planId:x.plan_id};
+              v.initPage('planInfomation');
+            }
+          },
+        }
+      }else{
+        this.cache = {
+          argu: {
+            isquote: false,
+            isedit: true,
+            isterm: false,
+            addWoPlan: this.planInfo,
+            cb: function () {
+              var x = v.instance.cache.argu.addWoPlan;
+              v.instance.cache = {name:"计划详情",planType:"project",planId:x.plan_id};
+              v.initPage('planInfomation');
+            }
+          },
+        }
+      };
+      v.initPage("createPlan");
     },
     // 复制计划
     copyPlan : function(){
-
+      this.cache = {
+        argu: {
+          isquote: false,
+          isedit: true,
+          isterm: false,
+          addWoPlan: this.planInfo,
+          cb: function () {
+            var x = v.instance.cache.argu.addWoPlan;
+            v.instance.cache = {name:"计划详情",planType:"group",planId:x.plan_id};
+            v.initPage('planInfomation');
+          }
+        },
+      }
+      v.initPage("createPlan");
     },
     // 跳转到项目计划监控
     GoProPlan : function(){
-
+      var a = this.cache.PlanId;
+      this.cache = {groupPlanId:a,name:"项目计划监控"};
+      v.initPage('monitoringPlan');
     },
     // 查看计划版本记录
     lookVersionRemark : function(){
@@ -44,11 +91,17 @@ v.pushComponent({
     },
     // 查看项目计划中的工单
     lookAllOrder : function(){
-
+      var a = this.cache.planId;
+      this.cache = {planId:a,name:"工单列表"};
+      v.initPage('workOrderList');
     },
     // 查看项目所有计划
     lookAllPlan : function(){
-
+      // here
+      // var a = $("iframe")[0];
+      // var a = this.cache.planId;
+      // this.cache = {planId:a,name:"工单列表"}
+      
     },
     //与当前时间做比较，判断计划生效时间
     comparePlanEffect: function (str) { 
@@ -69,23 +122,26 @@ v.pushComponent({
       
   },
   beforeMount : function(){
-    
+
+    var that = this;
+
+    $("#planInformationLoad").pshow();
+
     // 获取计划信息
-    var arr = [{name:(this.cache.planType === 'order' || this.cache.planType === 'orderD' || this.cache.planType === 'project') ? "orderPlanInfo" : "groupPlanInfo",data:{planId:this.cache.planId}}];
-    getData(arr)[0].then(function(data){
-      this.planInfo = JSON.parse(JSON.stringify(data.Content));
-    }).catch(function(err){
-        
+    var name = (this.cache.planType === 'order' || this.cache.planType === 'orderD' || this.cache.planType === 'project') ? "orderPlanInfo" : "groupPlanInfo";
+    ajx("name",{plan_id:this.cache.planId},function(data){
+      that.planInfo = JSON.parse(JSON.stringify(data.Content));
+    },function(){},function(){
+      $("#planInformationLoad").phide();
     })
 
     // 如果当前计划为工单计划或已作废工单计划，则获取计划历史信息，点不点随意，先准备总是没错的
     if(this.cache.planType === 'order' || this.cache.planType === 'orderD'){
-      var arr = [{name:"planChangeHistory",data:{plan_id:this.cache.planId}}];
-      getData(arr)[0].then(function(data){
-        this.historyRecordList = JSON.parse(JSON.stringify(data.Content.splice(0,2)));
-      }).catch(function(err){
 
-      })
+      ajx("planChangeHistory",{plan_id:this.cache.planId},function(data){
+        that.historyRecordList = JSON.parse(JSON.stringify(data.Content.splice(0,2)));
+      },function(){},function(){})
+
     }
 
   }

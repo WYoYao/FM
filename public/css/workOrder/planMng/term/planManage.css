@@ -15,9 +15,12 @@
 #planManage > .body > .head .top .tab { width: 300px; height: 30px; line-height: 30px; position: absolute; top: 50%; left: 110px; margin-top: -15px; background: #eef0f1; }
 #planManage > .body > .head .top .tab:hover { cursor: pointer; }
 #planManage > .body > .head .top .tab div { float: left; height: 100%; color: #6d6d6d; width: 60px; text-align: center; }
+#planManage > .body > .head .top .tab div:hover { border: 1px solid #02a9d1; color: #02a9d1; width: 58px; height: 28px; line-height: 28px; }
 #planManage > .body > .head .top .tab .sel { border: 1px solid #02a9d1; color: #02a9d1; width: 58px; height: 28px; line-height: 28px; }
-#planManage > .body > .head .top .icon { float: right; width: calc(100% - 430px); height: auto; }
-#planManage > .body > .head .top .icon div { float: left; height: 25px; line-height: 25px; font-size: 14px; margin-right: 20px; }
+#planManage > .body > .head .top .icon { float: right; width: calc(100% - 430px); height: auto; min-height: 50px; display: flex; align-items: center; flex-wrap: wrap; }
+#planManage > .body > .head .top .icon > div { height: 25px; line-height: 25px; font-size: 14px; margin-right: 20px; }
+#planManage > .body > .head .top .icon > div img { width: 12px; height: 12px; margin-right: 10px; margin-top: 6px; }
+#planManage > .body > .head .top .icon > div:nth-of-type(1) div { float: left; width: 12px; height: 12px; margin-top: 5px; background: #f8f8f8; border: 1px solid #7a94ae; margin-right: 10px; }
 #planManage > .body > .head .bottom { width: calc(100% - 2px); height: 59px; border: 1px solid #d9e2e8; border-bottom: none; border-right: none; }
 #planManage > .body > .head .bottom > div { float: left; height: 59px; }
 #planManage > .body > .head .bottom .name { width: calc(12.5% - 21px); padding-left: 20px; border-right: 1px solid #d9e2e8; background: #f7f9fb; line-height: 59px; }

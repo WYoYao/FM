@@ -7,13 +7,14 @@ v.pushComponent({
     },
     methods: {
         lookWorkOrderDetail : function(item){
-            v.initPage('workOrderDetail',{workOrderId:item.order_id});
+            this.cache = {name:"工单详情",workOrderId:item.order_id};
+            v.initPage('workOrderDetail');
         },
         selWorkOrderState : function(){
             controller.queryWoListByPlanId({plan_id:this.cache.planId,order_state:$("#workOrderListState").psel().id}).then(function(data){
                 this.workOrderListData = JSON.parse(JSON.stringify(data.Content));
             }).catch(function(err){
-    
+                console.log(err);
             })
         }
     },
@@ -25,11 +26,7 @@ v.pushComponent({
     },
     beforeMount: function () {
 
-        controller.queryWoListByPlanId().then(function(data){
-            this.workOrderListData = JSON.parse(JSON.stringify(data.Content));
-        }).catch(function(err){
-
-        })
+        this.selWorkOrderState();
 
     }
 })

@@ -1,13 +1,13 @@
 <div class="monitoring_plan" v-show="onPage=='monitoringPlan'">
     <div class="main">
         <div class="content">
+
             <div class="header">
                 <!-- 面包屑导航Start -->
-
                 <sitemap :maps='paths.path' :createsitemap='gobackSelPath' :back='gobackLastPath' />
-
                 <!-- 面包屑导航End -->
             </div>
+            
             <div class="contenter">
 
                 <!-- 搜索面板Start  -->
@@ -104,16 +104,21 @@
 
                         <div class="line">
 
-                            <div class="body_name" v-text="item.project_name" :title="item.project_name"></div>
+                            <div class="body_name" v-text="item.project_name" :title="item.project_name" @click="openPlanDetail(item)"></div>
                             <div class="body_name" v-text="item.is_update_group_plan == 1 ? '已更新' : '未更新'" :title="item.is_update_group_plan == 1 ? '已更新' : '未更新'"></div>
                             <div class="body_name" v-text="item.create_wo_total" :title="item.create_wo_total"></div>
                             <div class="body_name" v-text="item.uncreate_wo_total" :title="item.uncreate_wo_total"></div>
                             <div class="body_name" v-text="item.executing_wo_total" :title="item.executing_wo_total"></div>
                             <div class="body_name" v-text="item.finished_wo_total" :title="item.finished_wo_total"></div>
 
-                            <ul class="row" v-for="row in item.grid">
-                                <li class="item" v-for="(grid,ind) in row" :style="{'flex':grid.width}">
-                                    {{ind}}
+                            <ul class="row">
+                                <li v-for="row in item.grid" class="item">
+                                    <div v-for="(grid,ind) in row" :style="{'flex':grid.width}">
+                                        <div v-if="grid.type != 'none'" @click="openWorkOrderDetail(grid)">
+                                            <div v-show="grid.type == ''"></div>
+                                            <img v-show="grid.type != ''" :src=" '../../../../images/orderState/' + grid.type + '.png'" alt="">
+                                        </div>
+                                    </div>
                                 </li>
                             </ul>
 

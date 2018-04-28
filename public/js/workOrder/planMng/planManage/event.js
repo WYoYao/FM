@@ -43,7 +43,7 @@ function dataControll(data){
 // 这块重构比改起来块
     // 日工单数据转行数据
     function dayOrderDataToRow(plan){
-        var len = plan.freq_num;
+        var len = plan.max_freq_num;
         var arr = [];
         for(var i=0;i<len;i++){arr.push([])};
         plan.work_order_date.forEach(function(day){
@@ -118,7 +118,7 @@ function dataControll(data){
             for(var i=0;i<plan.row;i++){
                 plan.grid.push([]);
                 for(var a=0;a<days;a++){
-                    plan.grid[i].push({type:0,id:null,width:cell-1});
+                    plan.grid[i].push({type:'none',id:null,width:cell-1});
                 }
             }
             plan.rowData.forEach(function(row,index){

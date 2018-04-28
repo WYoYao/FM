@@ -25,6 +25,11 @@ v.pushComponent({
         centerMonth:null,
         // planManage页面下方表格高度
         residueHeight:0,
+        // 集团计划引用数量
+        groupPlanUse:{
+            total:0,
+            unUse:0
+        },
         
     },
     methods: {
@@ -111,7 +116,6 @@ v.pushComponent({
                 name:"已作废计划列表",
             }
             v.initPage('dumpedPlan');
-            // v.initPage('dumpedPlan',{orderType:$("#planTypeCombo").psel().id});
         },
         // 跳转到集团计划首页
         openGroupModule : function(){
@@ -130,27 +134,42 @@ v.pushComponent({
         },
         // 创建计划
         createTermPlan : function(){
-            this.cache = {name:"创建计划"};
-            v.initPage("createPlan");
+            v.instance.cache = {
+                argu: {
+                    isquote: false,
+                    isedit: false,
+                    isterm: true,
+                    iscopy:false,
+                    addWoPlan: {},
+                    cb: function () {
+                        v.goBack('planManage',true);
+                    }
+                },
+            };
+            v.initPage("createPlan")
         },
         // 重新渲染表格
         // type为true时同时刷新时间部分和计划部分,否则只刷新计划部分
         refreshRenderGrid : function(type){
+            var that = this;
+
             $("#planManagePartLoad").pshow();
+
             if(type){this.createTimeData()}
+
             // 构建参数
             var param = this.createPlanOrderParam();
-            var arr = param.freq_cycle == 'd' ? [{name:"dayOrder",data:param}] : [{name:"planOrder",data:param}];
-            // 获取promise数组
-            var list = getData(arr);
-            list[0].then(function(data){
-                data = JSON.parse(JSON.stringify(data.Content));
-                v.instance.planData = dataControll(data);
-                $("#planManagePartLoad").phide();
-            }).catch(function(err){
-                // console.log(err);
-                $("#planManagePartLoad").phide();
-            })
+
+            // ajx(param.freq_cycle == 'd' ? "dayOrder" : "planOrder",param,function(data){
+            //     data = JSON.parse(JSON.stringify(data.Content));
+            //     that.planData = dataControll(data);
+            // },function(){
+            //     that.planData = [];
+            // },function(){
+            //     $("#planManagePartLoad").phide();
+            // })
+
+            // faker
             v.instance.planData = dataControll(prc.data);
         },
         // 统一获取向后台获取计划工单数据时的参数
@@ -173,23 +192,41 @@ v.pushComponent({
 
     },
     beforeMount : function(){
-        if(this.centerMonth === null ){ this.centerMonth = new Date().getTime(); }   
-        // 如果工单状态为空说明为第一次加载，则获取常量数据
+
+        var that = this;
+
+        if(this.centerMonth === null ){ this.centerMonth = new Date().getTime(); } 
+
+        // 如果工单状态为空说明为第一次加载，则获取常量数据所有工单状态和所有工作状态
         if(this.allOrderState == []){
-            var list = getData([
+            var list = cteatePromise([
                 {name:"orderState",data:{"dict_type": "work_order_state"}},
                 {name:"workType",data:{"dict_type": "work_type"}},
-                {name:"groupPlanUse"}
+                
             ]);
             Promise.all(list).then(function(data){
-                this.allOrderState = this.allOrderState.concat(JSON.parse(JSON.stringify(data[0].Content)));
-                this.allPlanType = JSON.parse(JSON.stringify(data[1].Content));
-                this.groupPlanUse = {
-                    total:data.Item.plan_total,
-                    unUse:data.Item.plan_unused_num
-                }
+                that.allOrderState = that.allOrderState.concat(JSON.parse(JSON.stringify(data[0].Content)));
+                that.allPlanType = JSON.parse(JSON.stringify(data[1].Content));
+                // 修改默认的三种工单状态Id
+                that.workOrderState.forEach(function(item){
+                    v.instance.allOrderState.forEach(function(model){
+                        item.name == model.name ? item.id = model.code : void 0;
+                    })
+                })
+                // 生成带全部的工单状态数组
+                that.workOrderStateAndAll = [{name:"全部",code:""}].concat(that.allOrderState);
+            }).catch(function(err){
+
             })
         }
+
+        ajx("groupPlanUse",{},function(data){
+            that.groupPlanUse = {
+                total:data.Item.plan_total,
+                unUse:data.Item.plan_unused_num
+            }
+        },function(){},function(){})
+
         this.$nextTick(function(){
             this.refreshRenderGrid(true);
         })
@@ -204,6 +241,7 @@ window.prc = {
         "plan_end_time": "--",
         "freq_cycle": "d",
         "freq_num": 6,
+        "max_freq_num": 6,
         "plan_from":1,
         "plan_update_status":0,
         "remind_type" : 1,

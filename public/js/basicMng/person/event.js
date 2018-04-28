@@ -19,7 +19,13 @@ $(function(){
     $(document).click(function (event) {
         event.stopPropagation();
         var tg=event.target;
-        if(!$(tg).hasClass('operatAreaBtnList') && !$(tg).parents().hasClass('operatAreaBtnList') && !$(tg).hasClass('templateTreeBox') && !$(tg).parents().hasClass('templateTreeBox')&& !$(tg).hasClass('per-modal-control')&& !$(tg).parents().hasClass('per-modal-control')){
+        if(!$(tg).hasClass('addSiblingDepart') && !$(tg).parents().hasClass('addSiblingDepart') &&
+        !$(tg).hasClass('addSonDepart') && !$(tg).parents().hasClass('addSonDepart') &&
+        !$(tg).hasClass('addSiblingPosition') && !$(tg).parents().hasClass('addSiblingPosition') &&
+        !$(tg).hasClass('addSonPosition') && !$(tg).parents().hasClass('addSonPosition') &&
+        !$(tg).hasClass('deletePartition') && !$(tg).parents().hasClass('deletePartition') &&
+        !$(tg).hasClass('templateTreeBox') && !$(tg).parents().hasClass('templateTreeBox')&&
+        !$(tg).hasClass('per-modal-control')&& !$(tg).parents().hasClass('per-modal-control')){
             personMethods.resetOperatBtn();
         }
     });

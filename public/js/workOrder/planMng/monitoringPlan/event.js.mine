@@ -83,7 +83,6 @@ function groupDataControll(data) {
                 }
             }
             plan.rowData.forEach(function (row, index) {
-
                 row.forEach(function (order) {
                     if (order) {
                         var l = getDaysIndex(order.ask_start_time);
@@ -92,20 +91,10 @@ function groupDataControll(data) {
                             // plan.grid[index][l] = {type:order.order_state,id:order.order_id,width:cell-1};
                             plan.grid[index][l] = { type: (order.order_state || ""), id: (order.order_id || null), width: 1 };
                         } else {
-                            // plan.grid[index].splice(l, r - l);
+                            plan.grid[index].splice(l, r - l);
                             // plan.grid[index][l] = {type:order.order_state,id:order.order_id,width:cell*(r-l+1)-1};
-                            // + " 0 " + (r - l + "px")
-                            plan.grid[index][l] = { type: (order.order_state || ""), id: (order.order_id || null), width: (r - l + 1) };
+                            plan.grid[index][l] = { type: (order.order_state || ""), id: (order.order_id || null), width: (r - l + 1) + " 0 " + (r - l + "px") };
                         }
-                    }
-                })
-
-            })
-            plan.grid.forEach(function (row, index) {
-                row.forEach(function (item, index2) {
-                    if (item.width > 1) {
-                        row.splice(index2, item.width - 1);
-                        item.width = item.width + " 0 " + (item.width - 1 + "px");
                     }
                 })
             })

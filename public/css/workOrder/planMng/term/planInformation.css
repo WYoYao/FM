@@ -8,7 +8,7 @@
 #planInformation > .head .operate > div:nth-last-of-type(1) { border-left: none; }
 #planInformation > .head .operate div { float: right; }
 #planInformation > .warn { background: #fff0f0; width: 100%; height: 30px; line-height: 30px; color: #ff7b7b; font-size: 14px; text-align: center; top: 51px; position: absolute; }
-#planInformation > .body { width: 700px; height: calc(100% - 101px); padding-top: 50px; padding-bottom: 20px; margin: 0 auto 0; overflow-y: scroll; overflow-x: hidden; }
+#planInformation > .body { width: 700px; position: relative; height: calc(100% - 101px); padding-top: 50px; padding-bottom: 20px; margin: 0 auto 0; overflow-y: scroll; overflow-x: hidden; }
 #planInformation > .body .state { height: 14px; width: 100%; line-height: 14px; font-size: 14px; }
 #planInformation > .body > div div { font-size: 14px; height: 14px; line-height: 14px; }
 #planInformation > .body .message { border-bottom: 1px dashed #d9e2e8; padding-bottom: 20px; }

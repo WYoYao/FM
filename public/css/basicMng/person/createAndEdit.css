@@ -78,6 +78,9 @@
     font-size: 20px;
     margin-right: 6px;
 }
+.createBlock > .content > .left >em{
+    color:#6d6d6d;
+}
 .createBlock > .content >.right{
     display: flex;
     justify-content: center;;
@@ -85,6 +88,7 @@
     margin-right: 10px;
     flex-flow: nowrap column;
     position:relative;
+    width:184px;
 }
 .createBlock > .content >.right >span{
     display: block;
@@ -99,15 +103,18 @@
 }
 #employeePosition >span{
     display: block;
-    width: 98px;
-    height: 28px;
-    line-height: 28px;
+    width: 114px;
+    height: 30px;
+    line-height: 30px;
     margin-right: 8px;
-    border: 1px solid #cacaca;
-    text-align: center;
+    padding-left: 10px;
+    /* border: 1px solid #cacaca; */
+    /* text-align: center; */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    background: #eee;
+    box-sizing: border-box;
 }
 #employeePositionTip{
     color: #f97c7c;
@@ -116,14 +123,24 @@
     top: 40px;
 }
 #employeeSex >div{
-    width:188px;
+    width:184px;
 }
 
 #startTime{
     width:188px;
 }
 #employeePosition >div{
-    width:60px;
+    width: 64px;
+    border: 1px solid #cacaca;
+    color: #7a94ad;
+    text-align: center;
+    line-height: 30px;
+    height: 30px;
+    box-sizing: border-box;
+    cursor:pointer;
+}
+#employeePosition >div:hover{
+    background:#f8f8f8;
 }
 #employeeMajor >div{
     width:188px;
@@ -157,13 +174,13 @@
     flex-flow: row nowrap;
 }
 .personRelatedOperat >section{
-    margin-right:10px;
+    margin-right:16px;
 }
 #employeeMajor{
     position:relative;
 }
 #employeeMajor > .title{
-    width: 188px;
+    width: 184px;
     border: 1px solid #cacaca;
     box-sizing: border-box;
     height: 30px;

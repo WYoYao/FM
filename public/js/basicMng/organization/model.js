@@ -173,15 +173,33 @@ var organizationMethods = {
         }
         return arr;
     },
+    //权限 点击enter
     enterAccountAddPermission: function(){
         organizationModel.accountId = "";
-        $("#searchAccountInfo > div").hide();
-        $("#jurisdictionId").hide();
-        $("#jurisdictionId_").show();
-        $('#jurisdictionList').html("--").css("color","#cacaca").parent().css("color","#cacaca");
+        var list = organizationModel.personAccountList;
+        var str = '';
+        for(var i = 0;i < list.length;i++){
+            if(list[i].person_user_name === $("#searchAccountInfo>input").val()){
+                str = list[i].func_pack_names;
+                organizationModel.accountId = list[i].person_user_id;
+                break;
+            }
+        }
+        if(str === ''){
+            $("#searchAccountInfo > div").hide();
+            $("#jurisdictionId").hide();
+            $("#jurisdictionId_").show();
+            $('#jurisdictionList').html("--").css("color","#cacaca").parent().css("color","#cacaca");
+        }else{
+            $("#searchAccountInfo > div").hide();
+            $("#jurisdictionId").show();
+            $("#jurisdictionId_").hide();
+            $('#jurisdictionList').html(str).css("color","rgb(51, 51, 51)");
+        }
+
     },
+    //选择账号添加权限
     clickAccountAddPermission: function(item) {
-        //选择账号添加权限
         $("#searchAccountInfo > div").hide();
         if (item.person_user_name != "暂无结果") {
             organizationModel.accountName = item.person_user_name;
@@ -193,19 +211,22 @@ var organizationMethods = {
             }
         }else{
             organizationModel.accountId = "";
-           
         }
     },
     //查询识别码
     queryById:  function(event){
         if(tools.trim(event.target.value) == ""){
+            windowEvent.showPwindow5(true);
             return false;
         }
         organizationController.queryPersonDetailByidNumber({"id_number":event.target.value}).then(function(list) {
             // if(JSON.stringify(list).length == 2){
             //     return false;
             // }
-
+            var date = new Date();
+            var _year = date.getFullYear();
+            var _month = date.getMonth() + 1;
+            var _date = date.getDate();
             // $("#identificationCode").precover();
             $("#personName").precover();
             $("#personName").pval((list.name ? list.name : ""));    
@@ -214,7 +235,7 @@ var organizationMethods = {
             $("#phoneNumber").precover();
             $("#phoneNumber").pval((list.phone_num ? list.phone_num : ""));
             $("#birthDate").precover();
-            $("#birthDate").psel({y:2007,M:1,d:1});
+            $("#birthDate").psel({y:_year,M:_month,d:_date});
             if(list.birthday){
                 var birthday = list.birthday.split("-");
                 $("#birthDate").psel({y:birthday[0],M:birthday[1],d:birthday[2]});
@@ -222,35 +243,11 @@ var organizationMethods = {
             $("#email").precover();
             $("#email").pval((list.person_mail ? list.person_mail : ""));
             organizationModel.accountId = (list.person_user_id ? list.person_user_id : "");
-
-            // $("#employeeNumber").precover();
-            // $("#email").precover();
             $("#searchAccountInfo>input").val((list.person_user_name ? list.person_user_name : ""));
             $("#jurisdictionId").show();
             $("#jurisdictionId_").hide(); 
             $("#jurisdictionList").html((list.func_pack_names ? list.func_pack_names : "--"));
-            // $("#selectedProject .per-combobox_name").html("请选择项目");
-            // $("#selectedPosition").precover();
-            // $("#selectedPosition .per-combobox_name").html("请选择岗位");
-            // $("#selectedJurisdiction .per-combobox_name").html("请选择权限");
-            // $("#selectedMajor .per-combobox_name").html("请选择专业");
 
-            // //初始化专业
-            // arr = organizationModel.majorArr;
-            // (function find_(arr){
-            //     var find = arguments.callee;
-            //     for(var i=0;i<arr.length;i++){     
-            //         if(arr[i].selected){
-            //             arr[i].selected = false;  
-            //         } 
-            //         if(arr[i].disabled){
-            //             arr[i].disabled = false;
-            //         }    
-            //         if (arr[i].child_objs && arr[i].child_objs.length) {
-            //             find(arr[i].child_objs);
-            //         }
-            //     }
-            // })(arr);
             //初始化权限
             arr = organizationModel.jurisdiction;
             (function find_(arr){
@@ -267,22 +264,6 @@ var organizationMethods = {
                     }
                 }
             })(arr);
-            // //初始化项目
-            // arr = organizationModel.listByProject;
-            // (function find_(arr){
-            //     var find = arguments.callee;
-            //     for(var i=0;i<arr.length;i++){     
-            //         if(arr[i].selected){
-            //             arr[i].selected = false;  
-            //         } 
-            //         if(arr[i].disabled){
-            //             arr[i].disabled = false;
-            //         }    
-            //         if (arr[i].child_objs && arr[i].child_objs.length) {
-            //             find(arr[i].child_objs);
-            //         }
-            //     }
-            // })(arr);
         });
     },
     searchAccountByName: function() {
@@ -315,27 +296,7 @@ var organizationMethods = {
         }
 
         console.log(arr);
-        //通过账号模糊查询列表
-        // $("#searchAccountInfo > div").show();
-        // organizationModel.functionPermissionObj = [];
-        // var keyWord = organizationModel.accountName || "";
-        // var list = organizationModel.personAccountList;
-        // if (keyWord) {
-        //     var arr = organizationMethods.searchByRegExp(keyWord, list);
-        //     if (arr && arr.length > 0) {
-        //         organizationModel.searchAccountList = arr;
-        //     } else {
-        //         organizationModel.searchAccountList = [{
-        //             person_user_name: "暂无结果",
-        //             disabled: true
-        //         }];
-        //     }
-        // } else {
-        //     organizationModel.searchAccountList = [{
-        //         person_user_name: "暂无结果",
-        //         disabled: true
-        //     }];
-        // }
+
     },
     
     //保存中心部门修改
@@ -452,24 +413,14 @@ var organizationMethods = {
         var position_ = organizationMethods.operations(obj, activeObj_);
         var point = obj;
         if (opId === 4) {  //删除
-            
+
             if((point[0].obj_name !== "中心部门") && point.length === 1 && (activeObj_.id === point[0].id)){
                 $("#message").pshow({ text: "项目通用部门不可为空！", state: "failure" })
             }else if(position_.length === 1){
-                if(type === 1){
-                    $("#centerDepart").find("#"+activeObj_.id).parent().find(".inputPrompt").removeClass("inputPromptShow").css("display","none");
-                }else{
-                    $("#projectCommon").find("#"+activeObj_.id).parent().find(".inputPrompt").removeClass("inputPromptShow").css("display","none");
-                }
                 $("#").find("#"+activeObj_.id).parent().find(".inputPrompt").remove();
                 point.splice(position_[0], 1);
             }else{
-                if(type === 1){
-                    $("#centerDepart").find("#"+activeObj_.id).parent().find(".inputPrompt").removeClass("inputPromptShow").css("display","none");
-                    console.log($("#centerDepart").find("#"+activeObj_.id).parent().find(".inputPrompt"))
-                }else{
-                    $("#projectCommon").find("#"+activeObj_.id).parent().find(".inputPrompt").removeClass("inputPromptShow").css("display","none");
-                }
+
                 for (var i = 0; i < position_.length; i++) {
                     if (i == (position_.length - 2)) {
                         point[position_[i]].child_objs.splice(position_[i + 1], 1);
@@ -582,23 +533,6 @@ var organizationMounted = function () {
     //初始化中心部门岗位
     organizationController.queryPositionByDeptId({"dept_id":"BMBMb4bad6394438481c8488366b9d49aee1"}).then(function(result){
         organizationModel.postArr = result;
-        // var newListByMajor = [];
-        // (function find(arr,newArr) {
-        //     var find = arguments.callee;
-        //     for (var i = 0; i < arr.length; i++) {
-        //         newArr[i] = {};
-        //         newArr[i].obj_id = arr[i].position_id;
-        //         newArr[i].obj_name = arr[i].position_name;
-        //         newArr[i].obj_type = '';
-        //         if (arr[i].child_objs && arr[i].child_objs.length) {
-        //             newArr[i].child_objs = [];
-        //             find(arr[i].child_objs,newArr[i].child_objs);
-        //         }
-        //     }
-        // })(organizationModel.postArr,newListByMajor);
-        // organizationModel.postArr = newListByMajor;
-        // var orgTreeProject = organizationMethods.organizationTreeInit(organizationModel.postArr, '', '', 1, false, false);
-        // organizationModel.postArr = JSON.parse(JSON.stringify(orgTreeProject));
     })
     //初始化快速添加-项目
     organizationController.queryCurrentUserProjectLimits()
@@ -721,6 +655,47 @@ var organizationWatch = {
             organizationModel.listByProjectCommon = JSON.parse(organizationModel.treeBackup);
             organizationModel.statusModel = true;
         }
+    },
+    listByCenterDepartment: {
+        handler: function(val,oldVal){
+            setTimeout(function(){
+                (function find_(arr) {
+                    var find = arguments.callee;
+    
+                    for (var i = 0; i < arr.length; i++) {
+                        if (tools.trim(arr[i].obj_name) == "") {
+                            $("#centerDepart").find("#"+arr[i].id).parent().find(".inputPrompt").addClass("inputPromptShow").css("display","block");  
+                        }else{
+                            $("#centerDepart").find("#"+arr[i].id).parent().find(".inputPrompt").removeClass("inputPromptShow").css("display","none");  
+                        }
+                        if (arr[i].child_objs && arr[i].child_objs.length) {
+                            find(arr[i].child_objs);
+                        }
+                    }
+                })(val)
+            },100)
+        },
+        deep: true
+    },
+    listByProjectCommon: {
+        handler: function(val,oldVal){
+            setTimeout(function(){
+                (function find_(arr) {
+                    var find = arguments.callee;
+                    for (var i = 0; i < arr.length; i++) {
+                        if (tools.trim(arr[i].obj_name) == "") {
+                            $("#projectCommon").find("#"+arr[i].id).parent().find(".inputPrompt").addClass("inputPromptShow").css("display","block");  
+                        }else{
+                            $("#projectCommon").find("#"+arr[i].id).parent().find(".inputPrompt").removeClass("inputPromptShow").css("display","none");  
+                        }
+                        if (arr[i].child_objs && arr[i].child_objs.length) {
+                            find(arr[i].child_objs);
+                        }
+                    }
+                })(val)
+            },100)
+        },
+        deep: true 
     }
 }
 

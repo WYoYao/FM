@@ -53,19 +53,27 @@
     </div>
 
     <div class="warn" v-if="(cache.planType === 'order' || cache.planType === 'project') && planInfo.plan_from == 1" v-show="planInfo.plan_update_status == 0">
-        提示:集团对<span v-text="planInfo.plan_name"></span>中的<span v-text="planInfo.plan_update_type == 1 ? '计划频率' : planInfo.plan_update_type == 2 ? '工作事项' : '计划频率和工作事项'"></span>进行了修改
+        提示:集团对
+        <span v-text="planInfo.plan_name"></span>中的
+        <span v-text="planInfo.plan_update_type == 1 ? '计划频率' : planInfo.plan_update_type == 2 ? '工作事项' : '计划频率和工作事项'"></span>进行了修改
     </div>
 
     <div class="body">
 
+        <ploading-part id="planInformationLoad"></ploading-part>
+
         <div class="state" v-if="cache.planType === 'order' || cache.planType === 'project'">
             <i class="icon" :class="planInfo.remind_type == 3 ? 'red' : 'orange2'">¨</i>
-            <span class="orange2" v-show="planInfo.remind_type == 0">最新修改内容尚未生效；生效时间<span v-text="timeFormat(planInfo.plan_start_time,'1')"></span></span>
-            <span class="orange2" v-show="planInfo.remind_type == 1">生效时间<span v-text="timeFormat(planInfo.plan_start_time,'1')"></span></span>
+            <span class="orange2" v-show="planInfo.remind_type == 0">最新修改内容尚未生效；生效时间
+                <span v-text="timeFormat(planInfo.plan_start_time,'1')"></span>
+            </span>
+            <span class="orange2" v-show="planInfo.remind_type == 1">生效时间
+                <span v-text="timeFormat(planInfo.plan_start_time,'1')"></span>
+            </span>
             <span class="orange2" v-show="planInfo.remind_type == 2">此计划即将到达失效时间；如需继续使用计划，请延长生效时间</span>
             <span class="red" v-show="planInfo.remind_type == 3">此计划已经到达失效时间；如需继续使用计划，请修改生效时间</span>
         </div>
-        
+
         <div class="state" v-if="cache.planType === 'group'">
             <span class="orange2" v-show="planInfo.valid">
                 生效时间
@@ -75,7 +83,8 @@
 
         <div class="state" v-if="cache.planType === 'groupD' || cache.planType === 'orderD'">
             <span class="red">
-                该计划已在<span v-text="timeFormat(planInfo.destroy_time,'1')"></span>被作废
+                该计划已在
+                <span v-text="timeFormat(planInfo.destroy_time,'1')"></span>被作废
             </span>
         </div>
 
@@ -141,7 +150,8 @@
                 <ul v-if="planInfo.freq_cycle == 'm'">
                     <li v-for="(times,index) in planInfo.freq_times" class="clear">
                         <div>
-                            第<span>{{index +1}}</span>次&nbsp;:&nbsp;</div>
+                            第
+                            <span>{{index +1}}</span>次&nbsp;:&nbsp;</div>
                         <div>
                             <i v-text="times.start_time.time_day.substr(0,2)+'日'"></i>
                             <i v-text="times.start_time.time_hour"></i>:

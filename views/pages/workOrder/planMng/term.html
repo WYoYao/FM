@@ -15,7 +15,8 @@
 
     <!-- 计划管理公用样式 -->
     <link rel="stylesheet" href="../css/workOrder/planMng/term/public.css">
-    
+    <link rel="stylesheet" href="../css/workOrder/planMng/term/term.css">
+
     <!-- 面包屑导航样式 -->
     <link rel="stylesheet" href="../css/workOrder/planMng/group/sitemap.css">
 
@@ -33,7 +34,55 @@
 
     <!-- 面包屑导航组件 -->
     <%include ./sitemap.html %>
-    
+
+    <!-- 创建计划左侧组件 -->
+    <%include ./baseInfomation.html %>
+    <script src="/js/workOrder/planMng/baseInfomation/model.js"></script>
+
+    <!--  创建的计划每个事项 Start -->
+    <!-- 创建计划标准操作弹窗 -->
+    <%include ./hashtag.html %>
+    <!-- <link rel="stylesheet" href="/css/workOrder/planMng/group/hashtag.css"> -->
+    <script src="/js/workOrder/planMng/hashtag/controller.js"></script>
+    <script src="/js/workOrder/planMng/hashtag/model.js"></script>
+
+    <!-- 创建计划@弹窗 -->
+    <%include ./aite.html %>
+    <link rel="stylesheet" href="/css/workOrder/planMng/group/aite.css">
+    <script src="/js/workOrder/planMng/aite/controller.js"></script>
+    <script src="/js/workOrder/planMng/aite/model.js"></script>
+
+    <!-- 添加信息点弹窗 -->
+    <%include ./point.html %>
+    <link rel="stylesheet" href="/css/workOrder/planMng/group/point.css">
+    <script src="/js/workOrder/planMng/point/model.js"></script>
+
+    <!--  添加对象和信息点  -->
+    <%include ./addinfo.html %>
+    <link rel="stylesheet" href="/css/workOrder/planMng/group/addinfo.css">
+    <script src="/js/workOrder/planMng/addinfo/controller.js"></script>
+    <script src="/js/workOrder/planMng/addinfo/model.js"></script>
+
+    <!-- 编辑信息点弹窗 -->
+    <%include ./idepoint.html %>
+    <link rel="stylesheet" href="/css/workOrder/planMng/group/idepoint.css">
+    <script src="/js/workOrder/planMng/idepoint/model.js"></script>
+
+    <!-- 添加工作内容弹窗 -->
+    <%include ./addcontent.html %>
+    <script src="/js/workOrder/planMng/addcontent/controller.js"></script>
+    <script src="/js/workOrder/planMng/addcontent/model.js"></script>
+
+    <!-- 创建计划@弹窗 -->
+    <%include ./matter.html %>
+    <!-- <link rel="stylesheet" href="/css/workOrder/planMng/group/matter.css"> -->
+    <script src="/js/workOrder/planMng/matter/controller.js"></script>
+    <script src="/js/workOrder/planMng/matter/model.js"></script>
+    <!--  创建的计划每个事项 End -->
+
+    <ploading-part id='globalloading' text="加载中..."></ploading-part>
+    <pnotice-message id='globalnotice'></pnotice-message>
+
     <div id="app">
 
         <!-- 计划管理首页 -->
@@ -42,7 +91,7 @@
         <!-- 工单详情 -->
         <% include ./workOrderDetail.html %>
 
-        <!-- 查看计划 -->
+        <!-- 计划详情 -->
         <% include ./planInformation.html %>
 
         <!-- 查看已作废的计划 -->
@@ -53,13 +102,13 @@
 
         <!-- 集团计划 -->
         <% include ./groupPlan.html %>
-        
+
         <!-- 创建计划  -->
-        <%include ./createPlan/planCreate.html %>
+        <%include ./planCreate.html %>
 
         <!-- 预览计划 -->
-        <%include ./createPlan/planCreate_next.html %>
+        <%include ./planCreate_next.html %>
 
     </div>
 
-    <% include ../../../template/pageFoot.html %>
+<% include ../../../template/pageFoot.html %>

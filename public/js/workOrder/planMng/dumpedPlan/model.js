@@ -6,7 +6,7 @@ v.pushComponent({
     methods: {
         // 打开被废弃计划详情
         openDumpedPlan:function(model){
-            this.cache = {name:"已作废计划详情",planType:'orderD',planId:this.model.plan_id};
+            this.cache = {name:"已作废计划详情",planType:'orderD',planId:model.plan_id};
             v.initPage('planInformation');
         }
     },
@@ -14,14 +14,18 @@ v.pushComponent({
         
     },
     beforeMount:function(){
+        var that = this;
+
         $("#dumpedPlanPartLoad").pshow();
-        getData([{name:"dumpedPlan",data:{order_type:this.cache.orderType}}])[0].then(function(data){
-            // this.dumpedPlanList = JSON.parse(JSON.stringify(data.Content));
-            this.dumpedPlanList = xp;
-            $("#dumpedPlanPartLoad").phide();
-        }).catch(function(err){
+        // 获取作废计划列表
+        ajx("dumpedPlan",{order_type:this.cache.orderType},function(data){
+            that.dumpedPlanList = JSON.parse(JSON.stringify(data.Content));
+        },function(err){
+            that.dumpedPlanList = [];
+        },function(){
             $("#dumpedPlanPartLoad").phide();
         })
+
     }
 });
 

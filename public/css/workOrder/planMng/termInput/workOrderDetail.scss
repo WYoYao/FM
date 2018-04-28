@@ -8,9 +8,11 @@
     }
     &>.grid{
         width: 100%;
-        height: calc(100% - 50px);
+        padding-bottom: 20px;
+        height: calc(100% - 70px);
         overflow-y: scroll;
         overflow-x: hidden;
+        position: relative;
         &>.holder{
             height: 20px;
             width: calc(100% - 2px);
@@ -106,7 +108,7 @@
                             flex-flow: row nowrap;
                             border-bottom: 1px solid #d9e2e8;
                             &:nth-last-of-type(1){
-                                border-bottom: none;
+                                // border-bottom: none;
                             }
                             .index{
                                 width: 100px;
@@ -276,7 +278,7 @@
             }
             .operat_person_list{
                 border-bottom: #d9e2e8;
-                margin-bottom: 20px;
+                // margin-bottom: 20px;
             }
             .operat_person_list >ul{
                 width: 100%;
@@ -291,6 +293,7 @@
             }
             .operat_person_list >ul:last-child{
                 border-bottom: 1px solid #d9e2e8;
+                margin: 10px 0 10px 0 !important;
             }
             .operat_person_list >ul >li{
                 height: 40px;

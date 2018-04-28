@@ -12,13 +12,18 @@ v.pushComponent({
     },
     methods: {
         getGroupPlanList : function(){
+            var that = this;
+            
             $("#groupPlanPartLoad").pshow(); 
-            getData([{name:"groupPlanList",data:{order_type:$("#groupPlanTypeCombo").psel.id,is_use_group_plan:$("#isPlanSite").psel().id}}])[0].then(function(data){
-                this.groupPlanList = JSON.parse(JSON.stringify(data[0].Content));
-                $("#groupPlanPartLoad").phide();  
-            }).catch(function(err){
-                $("#groupPlanPartLoad").phide();  
+
+            ajx("groupPlanList",{order_type:$("#groupPlanTypeCombo").psel.id,is_use_group_plan:$("#isPlanSite").psel().id},function(data){
+                that.groupPlanList = JSON.parse(JSON.stringify(data[0].Content));
+            },function(){
+                that.groupPlanList = [];
+            },function(){
+                $("#groupPlanPartLoad").phide(); 
             })
+
         },
         // type   'site'引用该计划   'copy'复制该计划
         getThisPlan : function(model,type){
@@ -34,7 +39,7 @@ v.pushComponent({
             {name:"groupPlanUse",data:{}}
         ]
         $("#groupPlanPartLoad").pshow();
-        Promise.all(getData(arr)).then(function(data){
+        Promise.all(cteatePromise(arr)).then(function(data){
             this.groupPlanList = JSON.parse(JSON.stringify(data[0].Content));
             this.groupPlanUse = {
                 total:data[1].Item.plan_total,
@@ -44,6 +49,7 @@ v.pushComponent({
         }).catch(function(err){
             $("#groupPlanPartLoad").phide();
         })
+
     this.groupPlanList = [
         {
             "group_plan_id":"***",            //集团计划id
@@ -96,6 +102,9 @@ v.pushComponent({
             "use_status":"1"                  //引用状态，1-已引用，2-未引用
         },
     ]
+
+
+
     },
     watch:{
 

@@ -84,9 +84,6 @@
               text-align: center;
               border-radius: 2px;
               border: 1px solid #f8f8f8; }
-              #app .monitoring_plan .main .content .contenter .search_view .timetype .item:hover, #app .monitoring_plan .main .content .contenter .search_view .timetype .item .on {
-                color: #02a9d1;
-                border: 1px solid #02a9d1; }
             #app .monitoring_plan .main .content .contenter .search_view .timetype .on {
               color: #02a9d1;
               border: 1px solid #02a9d1; }
@@ -116,7 +113,7 @@
               border: 1px solid #d9e2e8;
               position: absolute; }
               #app .monitoring_plan .main .content .contenter .status_view .total_count .hoverList > div {
-                background: #c7c9ca;
+                background: #999999;
                 width: 100%;
                 height: 30px;
                 line-height: 30px;
@@ -127,6 +124,7 @@
                 width: 100%;
                 height: 270px;
                 overflow-x: hidden;
+                background: white;
                 overflow-y: auto; }
                 #app .monitoring_plan .main .content .contenter .status_view .total_count .hoverList ul li {
                   height: 20px;
@@ -240,7 +238,9 @@
               border-right: 1px solid #d9e2e8;
               box-sizing: border-box;
               color: #637e99;
-              text-align: center; }
+              text-align: center;
+              justify-content: center;
+              align-items: stretch; }
               #app .monitoring_plan .main .content .contenter .t_bodyer .line .body_name:nth-child(1), #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .body_name:nth-child(1) {
                 text-align: left;
                 padding-left: 20px;
@@ -255,16 +255,28 @@
                 width: 62px; }
             #app .monitoring_plan .main .content .contenter .t_bodyer .line .row, #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .row {
               flex: 1;
-              line-height: 30px;
-              height: 30px;
               text-align: center;
               display: flex;
               flex-flow: row nowrap;
               justify-content: center;
-              align-items: stretch; }
+              align-items: stretch;
+              flex-direction: column; }
               #app .monitoring_plan .main .content .contenter .t_bodyer .line .row .item, #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .row .item {
                 text-align: center;
+                display: flex;
                 line-height: 30px;
-                border-right: 1px solid #d9e2e8; }
+                height: 30px; }
+                #app .monitoring_plan .main .content .contenter .t_bodyer .line .row .item > div, #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .row .item > div {
+                  line-height: 30px;
+                  height: 30px;
+                  border-right: 1px solid #d9e2e8;
+                  border-bottom: 1px solid #d9e2e8; }
+                  #app .monitoring_plan .main .content .contenter .t_bodyer .line .row .item > div div, #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .row .item > div div {
+                    width: 100%;
+                    height: 100%; }
+                    #app .monitoring_plan .main .content .contenter .t_bodyer .line .row .item > div div:hover, #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .row .item > div div:hover {
+                      cursor: pointer; }
+                    #app .monitoring_plan .main .content .contenter .t_bodyer .line .row .item > div div div, #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .row .item > div div div {
+                      background: #d9e2e8; }
 
 /*# sourceMappingURL=monitoringPlan.css.map */

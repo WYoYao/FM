@@ -45,6 +45,7 @@ v.pushComponent({
         ObjectByClassId: {},
         ObjectByClass: [],
         str: "",
+        req: {}
     },
     methods: {
         // 获取对象
@@ -57,6 +58,15 @@ v.pushComponent({
             var _that = this;
             console.log(_that.$refs.baseinfomation.addWoPlan);
             console.log(_that.matters);
+
+            _that.req = {};
+
+            // 获取基本信息输入框验证
+            if (!_that.$refs.baseinfomation.canUse()) {
+                return;
+            }
+
+            _that.req = Object.assign({}, _that.req, _that.$refs.baseinfomation.argu())
 
             // matters 验证
 
@@ -127,19 +137,29 @@ v.pushComponent({
                             //  循环每个matter 的 desc_sop 判断是否存在当前SOP列表中
                             return item.desc_sops.reduce(function (con, info) {
 
-                                if (!con) return false;
+                                var bak = con;
+
                                 var bol = !!_.filter(res, { sop_id: info.sop_id }).length;
+
                                 // 再从忽略列表中查找
                                 if (!bol) {
-                                    var bol = !!_.filter(_that.mattersViews[index].sopeds, { sop_id: info.sop_id, ignore: true }).length;
-                                }
 
-                                // 已经保存了添加到报废列表中
-                                if (!bol) {
-                                    info.ignore = false;
-                                    _that.mattersViews[index].sopeds.push(info)
-                                }
+                                    if (!!_.filter(_that.mattersViews[index].sopeds, { sop_id: info.sop_id }).length) {
 
+                                        // 在原来的列表中
+                                        var bol = !!_.filter(_that.mattersViews[index].sopeds, { sop_id: info.sop_id, selected: true }).length;
+                                    } else {
+
+                                        // 不在原来的列表中
+                                        // 已经保存了添加到报废列表中
+                                        if (!bol) {
+                                            var bak = JSON.parse(JSON.stringify(info));
+                                            bak.selected = false;
+                                            _that.mattersViews[index].sopeds.push(bak);
+                                        }
+                                    }
+                                }
+                                if (!bak) return false;
                                 return bol;
                             }, con)
                         }, true);
@@ -156,6 +176,9 @@ v.pushComponent({
                                 _that.WoMattersPreview = res[0];
 
                                 _that.PreView = true;
+
+                                // 保存matters
+                                _that.req.draft_matters = JSON.parse(JSON.stringify(_that.matters));
                             })
                         }
                     })
@@ -183,7 +206,7 @@ v.pushComponent({
             }).join('');
         },
         // 选择实例的点击事件
-        handder_clicl: function (confirm_result, item) {
+        handder_click: function (confirm_result, item) {
             this.ObjectByClassId = void 0;
             confirm_result.obj_id = item.obj_id;
             confirm_result.obj_name = item.obj_name;
@@ -212,6 +235,25 @@ v.pushComponent({
     beforeMount: function () {
 
         var _that = this;
+        var argu = _that.cache.argu;
+
+        argu = argu || {
+            isquote: false,
+            isedit: false,
+            isterm: false,
+            iscopy: false,
+            addWoPlan: {},
+            cb: function () {
+                console.log('Hello World');
+            }
+        };
+
+        _that.addWoPlan = argu.addWoPlan;
+        _that.addWoPlan = argu.isquote;// 是否被引用
+        _that.addWoPlan = argu.isedit;// 是否编辑
+        _that.addWoPlan = argu.isterm; // 是否是项目版
+        window.createPlanCallback = argu.cb;
+
         //  查询工单状态类
         var WorkOrderTypePromise = controller.queryWoTypeList().then(function (res) {
             //  返回对应Object 集合

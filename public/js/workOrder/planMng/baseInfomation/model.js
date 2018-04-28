@@ -111,7 +111,7 @@ Cycle.prototype.c2t = function (item) {
     var item = JSON.parse(JSON.stringify(item)),
         obj = {
             "cycle": item.cycle,                //周期,y/q/m/w/d
-            "time_day": "",                    //y("0612"-6月12日)，q/m/w("1"-第一月，1号，周一)，d("")
+            "time_day": item.time_day,                    //y("0612"-6月12日)，q/m/w("1"-第一月，1号，周一)，d("")
             "time_hour": item.time_hour,                  //10时
             "time_minute": item.time_minute                 //15分
         }
@@ -385,7 +385,7 @@ Vue.component('baseinfomation', {
                 return false;
             }
             // 计划频率不能为空
-            if (!_that.addWoPlan.plan_freq_type.length) {
+            if (!_that.addWoPlan.plan_freq_type) {
                 $("#globalnotice").pshow({
                     text: '计划频率不能为空',
                     state: "failure"
@@ -394,11 +394,37 @@ Vue.component('baseinfomation', {
             }
 
             // 验证精确设置
+            if (_that.addWoPlan.plan_freq_type == 1) {
 
+                if (_that.compare.filter(function (bool) {
+                    return bool
+                }).length) {
+                    return;
+                }
+            } else {
+                if (!$("#num_id").pverifi()) {
+                    return;
+                }
+                if (!_that.addWoPlan.unit) {
+                    $("#globalnotice").pshow({
+                        text: '间隔次数不能为空',
+                        state: "failure"
+                    });
+                    return;
+                }
+            }
 
+            return true;
+        },
+        // 外界获取参数
+        argu: function () {
+            var addWoPlan = JSON.parse(JSON.stringify(this.addWoPlan));
 
+            addWoPlan.freq_times = addWoPlan.freq_times.map(function (item) {
+                return Cycle.prototype.Cycle2Item.call(item);
+            })
 
-
+            return addWoPlan;
         }
     },
     computed: {
@@ -411,16 +437,6 @@ Vue.component('baseinfomation', {
         cycleTypes: function () {
             var index = _.findIndex(this.freq_cycleType, { code: this.addWoPlan.freq_cycle })
             return this.freq_cycleType.slice(0, index);
-        },
-        // 外界获取参数
-        argu: function () {
-            var addWoPlan = JSON.parse(JSON.stringify(this.addWoPlan));
-
-            addWoPlan.freq_times = addWoPlan.freq_times.map(function (item) {
-                return Cycle.prototype.Cycle2Item.call(item);
-            })
-
-            return addWoPlan;
         }
     },
     watch: {
@@ -640,7 +656,7 @@ Vue.component('baseinfomation', {
                             urgency: _that.urgencyType, // 紧急程度
                             freq_cycle: _that.freq_cycleType,  //计划频率
                             plan_start_type: _that.plan_start_type, //计划开始类型 ,
-                            sendTypes: _that.sendTypes,
+                            plan_freq_type: _that.sendTypes,
 
                         };
 
@@ -661,8 +677,8 @@ Vue.component('baseinfomation', {
                                 plan_end_type: "code"
                             },
                             //频率精确设置 后期修改
-                            sendTypes: {
-                                sendTypes: "code"
+                            plan_freq_type: {
+                                plan_freq_type: "code"
                             }
                         };
 

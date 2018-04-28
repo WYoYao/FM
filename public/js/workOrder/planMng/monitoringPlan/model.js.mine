@@ -25,9 +25,9 @@ v.pushComponent({
             this.cache = { workOrderId: model.id, name: "工单详情" };
             v.initPage('workOrderDetail');
         },
-        // 打开项目计划详情
+        // 打开计划详情
         openPlanDetail: function (model) {
-            this.cache = { planType: 'project', planId: model.plan_id, name: "项目计划详情", projectId: model.project_id };
+            this.cache = { planType: 'order', planId: model.plan_id, name: "项目计划详情" };
             v.initPage('planInformation');
         },
         // 生成时间数据

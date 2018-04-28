@@ -1,14 +1,23 @@
 /*事件注册*/
 $(function () {
-    organizationLogger.init();
-    $("#birthDate").psel({ y: 2017, M: 1, d: 1 });
+    organizationLogger.init();    
+    var date = new Date();
+    var _year = date.getFullYear();
+    var _month = date.getMonth() + 1;
+    var _date = date.getDate();
+    $("#birthDate").psel({ y: _year, M: _month, d: _date });
     //矫正树的底部边框样式
     windowEvent.borderInit();
     //校验员工识别码
     $("#identificationCode>input").on("blur",function(){
         var regu = /^\d{1,20}$/;
         if(!regu.test($(this).val())){
-            $("#identificationCode").pshowTextTip("请输入非负整数")
+            if($(this).val().length == 0){
+                $("#identificationCode").pshowTextTip("员工识别码不能为空!");
+            }else{
+                $("#identificationCode").pshowTextTip("请输入正整数或0");
+            }
+
         }
     });
     //收起下拉框
@@ -88,6 +97,10 @@ var windowEvent = {
     initStatus: function(){
         organizationModel.statusModel = true;
         return true;
+    },
+    //清空岗位提示
+    cleanTip: function(){
+        $("#selectedPosition").parent().find(".promptForm").hide();
     },
     //清空多选
     clearSel: function(id){
@@ -220,7 +233,7 @@ var windowEvent = {
     },
     // 插件—多选树事件
     multiselectPluginEvent: function (targetElementId, model, headerId, placeHolder) {
-        $("#" + targetElementId + " span").on('click', function () {
+        $("." + targetElementId + " span").on('click', function () {
             //分三种状态：1.disabled 不可用；2.selected 已选中 3.初始化状态
             if ($(this).hasClass('disabled')) {
                 return false;
@@ -289,6 +302,9 @@ var windowEvent = {
                     }
                 }
             })(arr)
+            if(headerString !== ''){
+                $("#" + headerId).parent().find('.promptForm').hide();
+            }
             $("#" + headerId + " .per-combobox_name").html((headerString === '' ? placeHolder : headerString));
         });
     },
@@ -314,15 +330,22 @@ var windowEvent = {
         this.multiselectPluginEvent(targetElementId, model, headerId, "请选择权限");
     },
     // 显示快速添加中心部门人员
-    showPwindow5: function () {
-        $('#fastAdd').pshow();
-        organizationModel.statusModel = false;
+    showPwindow5: function (status) {
+        if(!status){
+             $('#fastAdd').pshow();
+             organizationModel.statusModel = false;
+        }
         function fastAddInit() {
             $("#identificationCode").precover();
             $("#personName").precover();
+            $("#fastAdd .promptForm").css("display","none");
             $("#personSex").psel("男");
             $("#phoneNumber").precover();
-            $("#birthDate").psel({ y: 2017, M: 1, d: 1 });
+            var date = new Date();
+            var _year = date.getFullYear();
+            var _month = date.getMonth() + 1;
+            var _date = date.getDate();
+            $("#birthDate").psel({ y: _year, M: _month, d: _date });
             $("#email").precover();
             $("#employeeNumber").precover();
             $("#email").precover();
@@ -334,6 +357,7 @@ var windowEvent = {
             $("#selectedPosition .per-combobox_name").html("请选择岗位");
             $("#selectedJurisdiction .per-combobox_name").html("请选择权限");
             $("#selectedMajor .per-combobox_name").html("请选择专业");
+            $("#fastAddImg").precover();
             organizationModel.accountId = "";
             //初始化专业
             arr = organizationModel.majorArr;
@@ -403,7 +427,13 @@ var windowEvent = {
         var verifi1 = $('#identificationCode').pverifi();
         var verifi2 = $('#personName').pverifi();
         organizationModel.verifi3 = ($("#selectedProject .per-combobox_name").html() == "请选择项目");
+        if(organizationModel.verifi3){
+            $("#selectedProject").parent().find(".promptForm").show();
+        }
         organizationModel.verifi4 = !$("#selectedPosition").psel();
+        if(organizationModel.verifi4){
+            $("#selectedPosition").parent().find(".promptForm").show();
+        }
         var verifi5 = $('#phoneNumber').pverifi();
         var verifi6 = $('#email').pverifi();
 

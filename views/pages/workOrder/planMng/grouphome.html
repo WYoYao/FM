@@ -1,4 +1,13 @@
 <div class="group_home" v-if="onPage=='grouphome'">
+
+    <pwindow-confirm id="confirmWindow">
+        <button>
+            <pbutton-backred text="确定" click="confirmInvalid();$('#confirmWindow').phide();"></pbutton-backred>
+            <pbutton-white text="取消" click="$('#confirmWindow').phide();"></pbutton-white>
+        </button>
+    </pwindow-confirm>
+
+
     <div class="main">
         <div class="content">
             <div class="header">
@@ -18,7 +27,7 @@
                 </div>
 
                 <dir class="right">
-                    <pbutton-blue text="新建计划" @click="v.initPage('createPlan')"></pbutton-blue>
+                    <pbutton-blue text="新建计划" @click="queryGroupPlan(false,false,false,false,false)"></pbutton-blue>
                 </dir>
 
                 <!-- 面包屑导航End -->
@@ -56,19 +65,19 @@
                             <div class="item" :title="item.use_project_num" v-text="item.use_project_num"></div>
                             <div class="item" :title="item.no_update_project_num" v-text="item.no_update_project_num"></div>
                             <div class="item">
-                                <span class="ide" @click="handler_to_monitoringPlan(item)">
+                                <span class="ide" @click="handler_to_monitoringPlan(item,item.freq_cycle)">
                                     <em class="icon">A</em>
                                     <span class="font">监控</span>
                                 </span>
-                                <span class="ide" @click="v.initPage('createPlan')">
+                                <span class="ide" @click="queryGroupPlan(item.group_plan_id,false,true,false,true)">
                                     <em class="icon">S</em>
                                     <span class="font">复制</span>
                                 </span>
-                                <span class="ide" @click="v.initPage('createPlan')">
+                                <span class="ide" @click="queryGroupPlan(item.group_plan_id,false,true,false,false)">
                                     <em class="icon">`</em>
                                     <span class="font">修改</span>
                                 </span>
-                                <span class="ide">
+                                <span class="ide" @click="$('#confirmWindow').pshow({ title: '确定要作废吗', subtitle: '作废后不可恢复' });confirmInvalid=item.group_plan_id">
                                     <em class="icon">p</em>
                                     <span class="font">作废</span>
                                 </span>

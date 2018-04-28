@@ -325,12 +325,13 @@ v.pushComponent({
     data: {
         onPage: "",
         noData: "--",
-        model: "plan",
+        // model: "plan",
         // userSelCache:{},
         // 默认的以及自定义的工单状态
-        allOrderState: [{ name: "全部", id: "" }],
+        allOrderState: [],
+        workOrderStateAndAll:[],
         // 默认的几种工单执行状态，该数组内对象Id需要根据拿到的工单状态集合获取
-        workOrderState: [{ name: "全部", id: "0" }, { name: "未发出", id: "1" }, { name: "执行中", id: "2" }, { name: "已完成", id: "3" }],
+        workOrderState: [{ name: "全部", id: "" }, { name: "未发出", id: "1" }, { name: "执行中", id: "2" }, { name: "已完成", id: "3" }],
         // 工单时间状态
         orderTimeType: [{ name: "全部", id: 0 }, { name: "临时性工单", id: 1 }, { name: "计划性工单", id: 1 }],
         // 页面间跳转时传递的参数
@@ -338,9 +339,10 @@ v.pushComponent({
         paths: {
             base: {              //手动配置的根目录
                 'planManage': { name: "首页", path: "planManage", cache: "" },
+                'grouphome': { name: "首页", path: "grouphome", cache: "" },
             },
             path: [],            //自动生成的路径数据,{name,path,cache}分别为该路径的名字，该路径的对应的onPage值，和该路径缓存
-            isBase: true,          //当前页是否为根目录
+            isBase: true,        //当前页是否为根目录
         },
     },
     methods: {
@@ -466,6 +468,6 @@ $(function () {
 
     if (v.name.hasOwnProperty('planManage')) v.initPage('planManage');
 
-    v.instance.model = v.name.hasOwnProperty('createPlan') ? 'group' : 'plan';
+    // v.instance.model = v.name.hasOwnProperty('createPlan') ? 'group' : 'plan';
 
 });

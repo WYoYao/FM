@@ -149,7 +149,7 @@ var personController = {
         });
     },
     queryDeptPositionTreeByType: function (_data) { //查询指定类型的部门岗位树
-        $('#globalloading').pshow();
+        // $('#globalloading').pshow();
         return new Promise(function (resolve, reject) {
             pajax.post({
                 url: 'restDeptService/queryDeptPositionTreeByType',

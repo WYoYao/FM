@@ -466,6 +466,7 @@ var personMethods = {
         if (_flag) {
             //人员列表显示
             console.log("列表");
+            
             personMethods.showPersonList();
         } else {
             //人员缩略图显示
@@ -585,7 +586,7 @@ var personMethods = {
         },0)
     },
     showPersonList: function() {//展示人员列表
-        
+        $("#personInfoListGrid").precover(true);//表格初始化
         var deptPositionId = personModel.deptPositionId || "";
         var state = $("#personState").psel() ?  ($("#personState").psel().id != '2' ? $("#personState").psel().id : '') : '' ;
         var _data = {
@@ -619,6 +620,7 @@ var personMethods = {
     },
     choicePersonState: function(model) {//切换员工状态获取数据
         $("#createPersonFloatWindow").phide();
+        $("#personInfoListGrid").precover(true);//表格初始化
         var state = model.pEventAttr.currItem.id != 2 ? model.pEventAttr.currItem.id : '';
         var deptPositionId = personModel.deptPositionId || "";
         var _data = {
@@ -655,7 +657,11 @@ var personMethods = {
         $("#employeeName").precover();
         $("#employeeIdTip").hide();
         $("#employeeSex").precover();
-        $("#startTime").precover();
+        var date = new Date();
+        var _year = date.getFullYear();
+        var _month = date.getMonth() + 1;
+        var _date = date.getDate();
+        $("#startTime").psel({ y: _year, M: _month, d: _date});
         $("#employeePhone").precover();
         $("#employeeEmail").precover();
         $("#employeeNo").precover();
@@ -743,7 +749,11 @@ var personMethods = {
                     $("#employeeName").precover();
                     $("#employeeIdTip").hide();
                     $("#employeeSex").precover();
-                    $("#startTime").precover();
+                    var date = new Date();
+                    var _year = date.getFullYear();
+                    var _month = date.getMonth() + 1;
+                    var _date = date.getDate();
+                    $("#startTime").psel({ y: _year, M: _month, d: _date});
                     $("#employeePhone").precover();
                     $("#employeeEmail").precover();
                     $("#employeeNo").precover();
@@ -787,11 +797,11 @@ var personMethods = {
     checkInitAndZero:function(val){//验证员工识别码类型
         var re = /^\d+$/;
         var val = val || '';
-        var res =  re.test(val) ? true : false;
+        var res =  re.test($.trim(val)) ? true : false;
         return res;
     },
     employeeIdBlur:function(){//验证员工识别码是否为正整数或0
-        if($("#employeeId").pval()){
+        if($.trim($("#employeeId").pval())){
             var flag = personMethods.checkInitAndZero($("#employeeId").pval());
             if(flag){
                 $("#employeeIdTip").hide();
@@ -1151,7 +1161,16 @@ var personMethods = {
                 setTimeout(function() {
                     $("#createPersonFloatWindow").phide();
                     $("#confirmDismissionPerson").phide();
-                    personMethods.goBackPersonManageList();
+                    var _flag = $(".personShow").hasClass("disabled") || false;
+                    if (_flag) {
+                        //人员列表显示
+                        console.log("列表");
+                        personMethods.showPersonList();
+                    } else {
+                        //人员缩略图显示
+                        console.log("缩略图");
+                        personMethods.showPersonPicList();
+                    };
                    
                 }, 0);
             })
@@ -1270,7 +1289,11 @@ var personMethods = {
         $("#employeeIdTip").hide();
         $("#employeeName").precover();
         $("#employeeSex").precover();
-        $("#startTime").precover();
+        var date = new Date();
+        var _year = date.getFullYear();
+        var _month = date.getMonth() + 1;
+        var _date = date.getDate();
+        $("#startTime").psel({ y: _year, M: _month, d: _date});
         $("#employeePhone").precover();
         $("#employeeEmail").precover();
         $("#employeeNo").precover();
@@ -1546,7 +1569,10 @@ var personMethods = {
         personModel.personGroup = [];
         personController.queryPersonWithGroup(_data)
             .then(function(list) {
-                personModel.personGroup = JSON.parse(JSON.stringify(list));
+                setTimeout(function(){
+                    personModel.personGroup = list;
+                },0)
+                
             })
             .catch(function() {
                 $("#globalnotice").pshow({
@@ -2094,6 +2120,7 @@ var personMethods = {
         //更新自定义部门保存
         //1复制当前树形结构
         var nullValueId = "";
+        var nullValueArr = [];
         var tree = JSON.parse(JSON.stringify(personModel.personCustomTree));
         //重置所有标记属性
         var tree = markReset(tree);
@@ -2121,7 +2148,8 @@ var personMethods = {
                 var json = data[i];
                 if (json.obj_name == name) {
                     nullValueId = json.id;
-                    break;
+                    nullValueArr.push(json.id);
+                    // break;
                 }
                 if (json.child_objs && json.child_objs.length) {
                     checkedNullValue(json.child_objs, name);
@@ -2129,16 +2157,20 @@ var personMethods = {
             }
         }
         //3.标记空值提示
-        if (nullValueId) {
+        if (nullValueArr && nullValueArr.length >0) {
             //根据存在空值的id标记当前节点
-            var treeData = addMarkById(tree, nullValueId); //标记后的数值
+            var treeData
+            for(var i=0;i<nullValueArr.length ;i++){
+                treeData = addMarkById(tree,nullValueArr[i]);
+            }
+            // var treeData = addMarkById(tree, nullValueArr); //标记后的数值
             function addMarkById(data, id) {
                 for (var i = 0; i < data.length; i++) {
                     var json = data[i];
                     if (json.id == id) {
                         json.markNull = true; //空值提示
                         // json.markRepeat = true;
-                        break;
+                        // break;
                     }
                     if (json.child_objs && json.child_objs.length) {
                         addMarkById(json.child_objs, id);
@@ -2151,7 +2183,7 @@ var personMethods = {
             console.log("名称不能为空");
             return;
         }
-        console.log(nullValueId);
+        // console.log(nullValueId);
         //4.没有空值，新建数组用于存放所有树形节点名称
         var allNodeName = [];
         saveAllName(tree);
@@ -2238,6 +2270,10 @@ var personMethods = {
         }; //不能成功提交需删除无效数据
         personController.saveDeptPosition(_publishData)
             .then(function() {
+                $("#globalnotice").pshow({
+                    text: "保存成功",
+                    state: "success"
+                });
                 setTimeout(function(){
                     $("#navBar").psel(0, false); //选中当前选项，false掉默认事件加载
                 },0)
@@ -2250,52 +2286,63 @@ var personMethods = {
                     state: "failure"
                 });
             });
-    }
+    },
+    tabBlockInitFn:function(){//人员管理tab初始化函数
+        $("#navBar").psel(0, false); //选中当前选项，false掉默认事件加载
+        //人员管理列表初始化
+        // $("#upload").find("em").text("批量上传");
+        personMethods.goBackPersonManageList();
+        var data = {
+            user_id: personModel.userId,
+            project_id: personModel.projectId,
+            dict_type: "domain_require"
+        };
+        //获取岗位列表
+        var positionData = {
+            user_id: personModel.userId, //账号id-当前登录人的账号id，必须
+            project_id: personModel.projectId
+        };
+        personController.queryDeptPositionTree(positionData).then(function(list) {
+            var initList = personMethods.organizationTreeInit(list,'','',1);
+            var tree = fn(initList);
+
+            function fn(arr) {
+                for (var i = 0; i < arr.length; i++) {
+                    var json = arr[i];
+                    if(json.obj_type == 'p1' || json.obj_type == 'p2' || json.obj_type == 'p3'){
+                        json["issel"] = true;
+                    }
+                    
+                    if (json.child_objs && json.child_objs.length > 0) {
+                        fn(json.child_objs);
+                    }
+                }
+                return arr;
+            }
+
+            personModel.employeePositionObj = JSON.parse(JSON.stringify(tree));
+        });
+
+        //获取专业列表
+        personController.queryGeneralDictByKey(data).then(function(list) {
+            list.forEach(function(item) {
+                item["isShow"] = false;
+            });
+            personModel.choiceMajorList = JSON.parse(JSON.stringify(list));
+        });
+    },
 };
 
 var personMounted = function() {
-    $("#navBar").psel(0, false); //选中当前选项，false掉默认事件加载
-    //人员管理列表初始化
-    // $("#upload").find("em").text("批量上传");
-    personMethods.goBackPersonManageList();
-    var data = {
-        user_id: personModel.userId,
-        project_id: personModel.projectId,
-        dict_type: "domain_require"
-    };
-    //获取岗位列表
-    var positionData = {
-        user_id: personModel.userId, //账号id-当前登录人的账号id，必须
-        project_id: personModel.projectId
-    };
-    personController.queryDeptPositionTree(positionData).then(function(list) {
-        var initList = personMethods.organizationTreeInit(list,'','',1);
-        var tree = fn(initList);
-
-        function fn(arr) {
-            for (var i = 0; i < arr.length; i++) {
-                var json = arr[i];
-                if(json.obj_type == 'p1' || json.obj_type == 'p2' || json.obj_type == 'p3'){
-                    json["issel"] = true;
-                }
-                
-                if (json.child_objs && json.child_objs.length > 0) {
-                    fn(json.child_objs);
-                }
-            }
-            return arr;
-        }
-
-        personModel.employeePositionObj = JSON.parse(JSON.stringify(tree));
-    });
-
-    //获取专业列表
-    personController.queryGeneralDictByKey(data).then(function(list) {
-        list.forEach(function(item) {
-            item["isShow"] = false;
-        });
-        personModel.choiceMajorList = JSON.parse(JSON.stringify(list));
-    });
+    var block = $("#navBar").find(".per-tab-navigation_title em");
+    if(block.length == '2'){
+        personMethods.tabBlockInitFn();
+    }else if(block.length == '1' && block.text() == '登录信息'){
+        personMethods.searchPersonByName();
+    }else if(block.length == '1' && block.text() == '人员管理'){
+        personMethods.tabBlockInitFn();
+    }
+    
 };
 
 var personManageLogger = {

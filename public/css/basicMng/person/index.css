@@ -21,7 +21,7 @@
 /* 登录信息 */
 .loginInfoList{
     display:none;
-    height:100%;
+    height: calc(100% - 10px);
     padding:20px 20px 0 20px;
     /* border:1px solid #d9e2e8; */
 }

@@ -10,8 +10,12 @@
         <sitemap :maps='paths.path' :createsitemap='gobackSelPath' :back='gobackLastPath' />
     </div>
 
+
     <!-- 页面下方表格 -->
     <div class="grid">
+
+        <ploading-part id="workOrderDetailLoad"></ploading-part>
+        
         <!-- 顶部列表 工单信息 -->
         <div class="top">
 
@@ -29,7 +33,7 @@
 
             <div>
                 <div class="key">所需工具</div>
-                <div class="valueLong" v-text="arrToString(orderDetailData.required_tools)">扳手、螺丝刀、电钻</div>
+                <div class="valueLong" v-text="arrToString(orderDetailData.required_tools)"></div>
             </div>
 
         </div>
@@ -45,6 +49,40 @@
                 <div class="name" v-text="matters.matter_name"></div>
                 <div class="result">反馈结果</div>
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             <!-- 事项步骤 -->
             <div class="step" v-for="(matter_steps,index2) in matters.matter_steps">
@@ -104,7 +142,10 @@
 
                                 </ul>
 
+                                
+
                             </div>
+
                         </div>
 
                     </div>
@@ -170,6 +211,53 @@
                 </div>
 
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         </div>
 

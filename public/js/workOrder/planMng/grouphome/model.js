@@ -11,6 +11,8 @@ v.pushComponent({
         validTypes: [{ name: "已发布", code: true, }, { name: '已作废', code: false, }],
         // 计划列表
         planList: [],
+        // 待作废的计划 id
+        confirmInvalid: ""
     },
     methods: {
         // 查询计划列表
@@ -32,7 +34,56 @@ v.pushComponent({
         },
         // 跳转计划监控
         handler_to_monitoringPlan: function (item) {
-            v.initPage('monitoringPlan', item)
+            this.cache = Object.assign({ name: "项目计划监控" }, item);
+            v.initPage('monitoringPlan');
+        },
+        /**
+         * isquote 是否是引用
+         * isedit 是否是编辑状态
+         * isterm 是否是项目版
+         * addWoPlan  对象
+         * cb 提交完成后返回的回调函数
+         */
+        handler_to_createplan: function (isquote, isedit, isterm, addWoPlan, cb) {
+            v.instance.cache = {
+                argu: {
+                    isquote: false,
+                    isedit: false,
+                    isterm: false,
+                    addWoPlan: {},
+                    cb: function () {
+                        v.initPage("grouphome");
+                    }
+                },
+            };
+            v.initPage("createPlan")
+        },
+        queryGroupPlan: function (id, isquote, isedit, isterm, iscopy) {
+            var _that = this;
+
+            if (id) {
+                controller.queryGroupPlanById({
+                    group_plan_id: id
+                }).then(function (res) {
+                    // res[0]
+                    _that.handler_to_createplan(isquote, isedit, isterm, res[0], function () {
+                        v.initPage("grouphome");
+                    })
+                })
+            } else {
+                _that.handler_to_createplan(isquote, isedit, isterm, {}, function () {
+                    v.initPage("grouphome");
+                })
+            }
+        },
+        // 
+        confirmInvalid: function () {
+            var _that = this;
+            _that.confirmInvalid;
+
+            controller.destroyWoPlanById({
+                group_plan_id: _that.confirmInvalid
+            });
         }
     },
     computed: {

@@ -42,7 +42,7 @@
     border:1px solid #d9e2e8;
     /* margin: 0 20px 10px 20px; */
     background: #f7f7f7;
-    border-radius:4px;
+    /* border-radius:4px; */
     overflow-y: auto;
     padding:20px 20px 0 20px;
     box-sizing: border-box;
@@ -148,7 +148,7 @@
     min-height:40px;
     width:100%;
     background: #fff;
-    padding: 0 20px 20px 20px;
+    padding: 10px 20px 10px 20px;
     box-sizing: border-box;
     margin-top:20px;
     box-shadow: 1px 5px 12px rgba(0, 0, 0, 0.04);
@@ -156,7 +156,7 @@
  .organizationBox .otherDepartment span{
      font-weight:bold;
      display:block;
-     padding-top:10px;
+     padding:10px 0;
  }
  .organizationBox .customDepartment{
     min-height:40px;
@@ -170,7 +170,7 @@
  .organizationBox .customDepartment > span{
      font-weight:bold;
      display:block;
-     padding-top:10px;
+     padding-top:20px;
  }
 
  #operatCenterBtn > div{
@@ -253,6 +253,7 @@
     box-sizing: border-box;
     border-left: 1px solid #d9e2e8;
     border-right: 1px solid #d9e2e8;
+    border-bottom: 1px solid #d9e2e8;
 }
 /* 编辑自定义组件树 */
 .templateTreeBox {
@@ -262,13 +263,14 @@
     border-bottom:1px solid #d9e2e8;
 }
 .templateTreeBox .managePartitionName{
-    width:100%;
-    height:50px;
-    line-height:50px;
-    /* box-sizing:border-box; */
-    border-bottom:1px solid #d9e2e8;
-    position:relative;
-    /* border-top:1px solid #d9e2e8; */
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    /* box-sizing: border-box; */
+    border-bottom: 1px dashed #d9e2e8;
+    transform: translate(0px,1px);
+    position: relative;
+    /* border-top: 1px solid #d9e2e8; */
 }
 .templateTreeBox .managePartitionName .tipNull{
     position:absolute;
@@ -284,12 +286,15 @@
 }
 .templateTreeBox .managePartitionName  >input{
     border:none;
+    cursor:default;
 }
 .templateTreeBox .managePartitionName  >input:disabled{
     background-color:#F5F5F5;
 }
 .templateTreeBox .managePartitionName  >input.borderBlue{
-    border:1px solid #0094c2;
+    /* border:1px solid #0094c2; */
+    background:#f8f8f8;
+    cursor:auto;
 }
 .templateTreeBox .managePartitionName  >input.warningRed{
     border:1px solid #ff6666;

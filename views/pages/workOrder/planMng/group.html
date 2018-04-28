@@ -10,6 +10,11 @@
     <script src="../js/workOrder/planMng/group/event.js"></script>
     <script src="../js/workOrder/planMng/group/model.js"></script>
 
+    <!-- 计划管理公用JS -->
+    <script src="../js/workOrder/planMng/term/controller.js"></script>
+    <!-- 计划管理公用样式 -->
+    <link rel="stylesheet" href="../css/workOrder/planMng/term/public.css">
+
     <!-- 创建/编辑计划  -->
     <link rel="stylesheet" href="../css/workOrder/planMng/group/createPlan/planCreate.css">
     <link rel="stylesheet" href="../css/workOrder/planMng/group/createPlan/see_orderDetail.css">
@@ -86,13 +91,6 @@
                                         <script src="/js/workOrder/planMng/matter/controller.js"></script>
                                         <script src="/js/workOrder/planMng/matter/model.js"></script>
 
-
-
-
-
-
-
-
                                         <!--  创建的计划每个事项 End -->
 
                                         <ploading-part id='globalloading' text="加载中..."></ploading-part>
@@ -107,9 +105,15 @@
                                                     <!-- 项目计划监控 -->
                                                     <%include ./monitoringPlan.html %>
                                                         <!-- 创建计划  -->
-                                                        <%include ./createPlan/planCreate.html %>
+                                                        <%include ./planCreate.html %>
                                                             <!-- 预览计划 -->
-                                                            <%include ./createPlan/planCreate_next.html %>
+                                                            <%include ./planCreate_next.html %>
+
+                                                                <!-- 工单详情 -->
+                                                                <% include ./workOrderDetail.html %>
+
+                                                                    <!-- 计划详情 -->
+                                                                    <% include ./planInformation.html %>
 
                                         </div>
 

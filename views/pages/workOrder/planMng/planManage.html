@@ -52,6 +52,10 @@
                     <div v-for="item in allFreq" @click="changePlanFreq(item)" :class="{'sel':item.sel}">{{item.name}}</div>
                 </div>
                 <div class="icon clear">
+                    <div>
+                        <div></div>
+                        <span>下次待发出工单</span>
+                    </div>
                     <div v-for="item in allOrderState">
                         <img :src="'../../../../images/orderState/' + item.type + '.png'" alt="">
                         <span v-text="item.name"></span>
@@ -111,9 +115,9 @@
         <div class="state">
             <div v-for="(model,times) in item.grid">
                 <div v-for="(box,boxIndex) in model" :style="{width:box.width+'px'}">
-                    <div v-if="box.type != 0" @click="openOrderDetail(box)">
-                        <div v-show="box.type == 1"></div>
-                        <img v-show="box.type != 1" :src=" '../../../../images/orderState/' + box.type + '.png'" alt="">
+                    <div v-if="box.type != 'none'" @click="openOrderDetail(box)">
+                        <div v-show="box.type == ''"></div>
+                        <img v-show="box.type != ''" :src=" '../../../../images/orderState/' + box.type + '.png'" alt="">
                     </div>
                 </div>
             </div>

@@ -33,7 +33,20 @@ function createController(arr, obj) {
                         url: item.url,
                         data: Object.assign({}, USER, item.argu, argu),
                         success: resovle,
-                        error: reject,
+                        error: function () {
+                            $("#globalnotice").pshow({
+                                text: "网络错误",
+                                state: "failure"
+                            });
+
+                            console.error(JSON.stringify({
+                                url: item.url,
+                                data: Object.assign({}, USER, item.argu, argu),
+                                time: new Date().format("yyyy-MM-dd hh:mm:ss"),
+                            }))
+
+                            reject();
+                        },
                         complete: function () { }
                     });
                 }
@@ -85,6 +98,17 @@ var controller = createController([
         argu: {
 
         }
+    },
+    //根据ID查询集团计划详细信息
+    {
+        name: "queryGroupPlanById",
+        url: "restGroupPlanService/queryGroupPlanById",
+        argu: {}
+    },
+    // 废弃工作计划
+    {
+        name: 'destroyWoPlanById',
+        url: 'restGroupPlanService/destroyWoPlanById',
     }
 ], {
         // queryWoTypeList() {
@@ -118,6 +142,40 @@ var controller = createController([
                     order_state_name: "工单状态名称",
                 }
             })
+        },
+        // 集团计划-项目计划监控:查询项目计划执行列表
+        queryWoPlanExecuteList: function () {
+
+
+            return _.range(_.random(1, 20)).map((index) => {
+                let count = _.random(5, 10);
+                let create_wo_total = _.random(1, 5);
+                let uncreate_wo_total = _.random(1, count - create_wo_total);
+
+                return {
+                    "plan_id": "计划id",                //计划id
+                    "project_id": "项目id",             //项目id
+                    "project_name": "项目名称",           //项目名称
+                    "is_update_group_plan": _.random(0, 1),    //是否更新集团计划，1-已更新、0-未更新
+                    "create_wo_total": create_wo_total,           //发单总数
+                    "uncreate_wo_total": uncreate_wo_total,         //未发出数
+                    "executing_wo_total": _.random(0, 5),        //执行中数
+                    "finished_wo_total": _.random(0, 5),         //已完成数
+                    "row_count": 3,                  //行数
+                    "work_orders": _.chunk(_.range(_.random(28, 31)).map(item => ++item), 3).map((item, index) => {
+
+                        var obj = {
+                            order_id: "1231",
+                            "ask_start_time": "201804" + ("00" + item.slice(0, 1)).slice(-2) + "000000",   //要求开始时间,yyyyMMddhhmmss
+                            "ask_end_time": "201804" + ("00" + item.slice(-1)).slice(-2) + "000000",     //要求结束时间,yyyyMMddhhmmss
+                            "order_state": "1"       //工单状态编码，优先返回自定义状态
+                        };
+
+                        return obj;
+                    })
+                }
+            })
+
         }
     }
 );

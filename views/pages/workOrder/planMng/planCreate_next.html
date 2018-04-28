@@ -3,7 +3,7 @@
         <div class="see_planDetail_page">
             <div class="see_planDetail_page_top">
                 <div class="see_planDetail_page_back">
-                    <pbutton-white bind='true' text="'返回'" @click="onPage='createPlan'"></pbutton-white>
+                    <pbutton-white bind='true' text="'返回'" @click="PreView=false"></pbutton-white>
                 </div>
                 <!-- <div class=" see_planDetail_object_tishi " v-if="true ">！标准操作中有几处需记录操作结果的对象，请在下面表格的相应位置为其选择具体的系统设备</div> -->
 
@@ -11,11 +11,11 @@
                     <span v-text=" 'commonData.publicModel.positionPersonStr' " :title="
                         'commonData.publicModel.personStr' ">xx岗、xx人...</span>
                 </div> -->
-                <div class="modify_position_person_btn" @click="onPage='createPlan'">上一步</div>
+                <div class="modify_position_person_btn" @click="onPage=false">上一步</div>
 
                 <div class=" see_planDetail_page_save ">
                     <div>
-                        <pbutton-blue bind='true' text=" '发布' " @click="void 0 "></pbutton-blue>
+                        <pbutton-blue bind='true' text="'发布'" @click="createPlanCallback"></pbutton-blue>
                     </div>
                 </div>
             </div>

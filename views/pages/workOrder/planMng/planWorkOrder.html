@@ -11,7 +11,7 @@
             <div>
                 <pcombobox-normal id="'workOrderStateSel'" sel="" bind="true">
                     <header prefix="工单状态:" placeholder="'全部'"></header>
-                    <item datasource="allOrderState" text="name" id="id"></item>
+                    <item datasource="workOrderStateAndAll" text="name" id="code"></item>
                 </pcombobox-normal>
             </div>
         </div>
@@ -23,6 +23,7 @@
         </div>
         <ul class="grid">
             <pscroll-small templateid="planWorkOrderList"></pscroll-small>
+            <ploading-part id="planWorkOrderLoad"></ploading-part>
         </ul>
     </div>
 </div>

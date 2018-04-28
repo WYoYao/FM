@@ -82,7 +82,7 @@
             <em v-if="isquote" v-text='addWoPlan.freq_num + "次/"+ (_.find(freq_cycleType,{code:addWoPlan.freq_cycle}) || {}).name'></em>
         </h4>
         <div id="orderUrgency" v-if="!isquote">
-            <pcombobox-normal bind="true" id="'cbx_id_sendTypes'" sel="cbx_sel_sendTypes">
+            <pcombobox-normal bind="true" id="'cbx_id_plan_freq_type'" sel="cbx_sel_plan_freq_type">
                 <header placeholder="(_.find(sendTypes,{code:addWoPlan.plan_freq_type}) || {}).name"></header>
                 <item datasource="sendTypes" text="name"></item>
                 <verify errtip="计划频率不能为空" verifytype="space"></verify>
@@ -243,7 +243,7 @@
         <div class="freq_limit" v-if="!+addWoPlan.sendTypes">
             <span class="freq_limit_s">任两次间隔大于</span>
             <div class="freq_limit_c">
-                <ptext-text bind="true" value="addWoPlan.freq_limit.num" align="right">
+                <ptext-text bind="true" id="'num_id'" value="addWoPlan.freq_limit.num" align="right">
                     <verify errtip="次数不能为空" verifytype="space"></verify>
                     <verify errtip="只能为整数" verifytype="Integer"></verify>
                 </ptext-text>
