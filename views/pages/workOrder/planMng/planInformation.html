@@ -17,10 +17,12 @@
         <div class="operate">
 
             <div class="delete" v-if="cache.planType === 'group' || cache.planType === 'order'">
-                <pbutton-borderred text="'作废计划'" icon="'a'" bind="true" isborder="false" @click="deletePlan"></pbutton-borderred>
+                <img src="../images/scrap_btn.png" alt="">
+                <pbutton-borderred text="'作废计划'" icon="'x'" bind="true" isborder="false" @click="deletePlan"></pbutton-borderred>
             </div>
 
             <div class="historyOrder" v-if="cache.planType === 'orderD'">
+                <img src="../images/order_record.png" alt="">
                 <pbutton-blue text="'过去发出的工单记录'" icon="'E'" bind="true" isborder="false" @click="lookHistoryOrderInfo"></pbutton-blue>
             </div>
 
@@ -29,14 +31,15 @@
             </div>
 
             <div class="copy" v-if="cache.planType === 'group'">
-                <pbutton-blue text="'复制计划'" icon="'G'" bind="true" isborder="false" @click="copyPlan"></pbutton-blue>
+                <pbutton-blue text="'复制计划'" icon="'S'" bind="true" isborder="false" @click="copyPlan"></pbutton-blue>
             </div>
 
             <div class="monitoring" v-if="cache.planType === 'group'">
                 <pbutton-blue text="'项目计划监控'" icon="'A'" bind="true" isborder="false" @click="GoProPlan"></pbutton-blue>
             </div>
 
-            <div class="remark" v-if="cache.planType === 'order' || cache.planType === 'dumpD'">
+            <div class="remark" v-if="cache.planType === 'order' || cache.planType === 'orderD'">
+                <img src="../images/history_icon.png" alt="">
                 <pbutton-blue text="'版本记录'" icon="'`'" bind="true" isborder="false" @click.stop="lookVersionRemark"></pbutton-blue>
             </div>
 

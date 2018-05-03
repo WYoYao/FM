@@ -1,3 +1,9 @@
+.pointer {
+  cursor: pointer; }
+
+body {
+  overflow: hidden; }
+
 ._font_over, #app .group_home .main .content .contenter .t_body .info .item, #app .group_home .main .content .contenter .t_body .info .item1 {
   overflow: hidden;
   text-overflow: ellipsis;

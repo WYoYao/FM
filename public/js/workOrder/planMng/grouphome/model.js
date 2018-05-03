@@ -76,7 +76,7 @@ v.pushComponent({
                 })
             }
         },
-        // 
+        // 作废工单计划
         confirmInvalid: function () {
             var _that = this;
             _that.confirmInvalid;
@@ -84,6 +84,16 @@ v.pushComponent({
             controller.destroyWoPlanById({
                 group_plan_id: _that.confirmInvalid
             });
+        },
+        // 跳转计划详情
+        queryGroupPlanById: function (group_plan_id, planType) {
+            this.cache = {
+                name: "计划详情",
+                planType: planType,
+                planId: group_plan_id,
+            };
+            // 跳转到的计划的详情页面
+            v.initPage("planInformation");
         }
     },
     computed: {
@@ -113,7 +123,6 @@ v.pushComponent({
             _that.orderTypes = [{ name: '全部', code: "" }].concat(res);
 
             return new Promise(function (resolve) {
-
                 _that.$nextTick(resolve);
             }).then(function () {
                 // 绑定下拉菜单
@@ -121,6 +130,5 @@ v.pushComponent({
                 $("#id_validTypes").psel(0, false);
             })
         });
-
     }
 })

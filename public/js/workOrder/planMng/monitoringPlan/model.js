@@ -17,11 +17,14 @@ v.pushComponent({
         isUpdateGPWO: [{ name: "全部", id: "" }, { name: "已更新", id: "1" }, { name: "未更新", id: "0" }],
         // 没有引用本集团计划的项目列表
         notCitePlanList: [],
+        // 工单状态集合
+        WorkOrderStateList: [],
     },
 
     methods: {
         // 打开工单详情
         openWorkOrderDetail: function (model) {
+            if (model.type == '') { return }
             this.cache = { workOrderId: model.id, name: "工单详情" };
             v.initPage('workOrderDetail');
         },
@@ -90,7 +93,7 @@ v.pushComponent({
             var param = {
                 group_plan_id: this.cache.groupPlanId,
                 is_update_group_plan: $("#isUpdateGroupPlan").psel().id,
-                freq_cycle: _.find(this.fiveFreq, { sel: true }),
+                freq_cycle: _.find(this.fiveFreq, { sel: true }).id,
                 start_time: (this.timeData.startTime || new Date().format("yyyyMMddhhmmss")),
                 end_time: (this.timeData.endTime || new Date().format("yyyyMMdd235959")),
             }
@@ -103,7 +106,16 @@ v.pushComponent({
 
             })
 
-        }
+        },
+        // 查询工单管理
+        queryOrderManage: function (planId, order_state) {
+            this.cache = {
+                order_state: order_state,
+                planId: planId,
+                name: "工单列表",
+            };
+            v.initPage("workOrderList");
+        },
     },
     computed: {
 
@@ -113,25 +125,41 @@ v.pushComponent({
     },
     beforeMount: function () {
         var _that = this,
-            req = JSON.parse(JSON.stringify(this.cache));
+            req = JSON.parse(JSON.stringify(_that.cache));
 
         // 默认频率
         (_.find(_that.fiveFreq, { id: req.freq_cycle }) || {}).sel = true;
 
         // 如果时间为空则重置时间并获取时间数据，否则直接拿数据就行
-        if (this.timeData.time === null) {
-            this.timeData.time = new Date().getTime();
-            this.creatTimeData();
+        if (_that.timeData.time === null) {
+            _that.timeData.time = new Date().getTime();
+            _that.creatTimeData();
         }
 
         // 获取创建表格数据
-        this.createGroupOrderGrid();
+        _that.createGroupOrderGrid();
+
         // 获取没有引用本计划的项目列表
         controller.queryUnuseGroupPlanProjectList({ group_plan_id: req.group_plan_id }).then(function (data) {
-            this.notCitePlanList = JSON.parse(JSON.stringify(data.Content));
+            _that.notCitePlanList = JSON.parse(JSON.stringify(data.Content));
         }).catch(function (err) {
 
         })
+
+        // 查询工单状态
+        controller.queryWorkOrderState().then(function (res) {
+            _that.allOrderState = res;
+            _that.workOrderStateAndAll = [{ name: "全部", code: "" }].concat(res);
+
+            _that.$nextTick(function () {
+                var arr = Array.prototype.slice.call($("#app .monitoring_plan .main .content .contenter .status_view .icon_list .item .icon img"));
+                arr.forEach(function (item, index) {
+                    item.onerror = function () {
+                        $(item).hide();
+                    }
+                })
+            })
+        });
 
 
         // controller.queryWoPlanExecuteList({

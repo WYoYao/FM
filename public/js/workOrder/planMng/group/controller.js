@@ -109,6 +109,12 @@ var controller = createController([
     {
         name: 'destroyWoPlanById',
         url: 'restGroupPlanService/destroyWoPlanById',
+    },
+    // 查询工单状态
+    {
+        name: 'queryWorkOrderState',
+        url: 'restGeneralDictService/queryWorkOrderState',
+        argu: { dict_type: "work_order_state" },
     }
 ], {
         // queryWoTypeList() {
@@ -147,7 +153,7 @@ var controller = createController([
         queryWoPlanExecuteList: function () {
 
 
-            return _.range(_.random(1, 20)).map((index) => {
+            return _.range(_.random(20, 50)).map((index) => {
                 let count = _.random(5, 10);
                 let create_wo_total = _.random(1, 5);
                 let uncreate_wo_total = _.random(1, count - create_wo_total);
@@ -162,13 +168,13 @@ var controller = createController([
                     "executing_wo_total": _.random(0, 5),        //执行中数
                     "finished_wo_total": _.random(0, 5),         //已完成数
                     "row_count": 3,                  //行数
-                    "work_orders": _.chunk(_.range(_.random(28, 31)).map(item => ++item), 3).map((item, index) => {
+                    "work_orders": _.chunk(_.range(_.random(28, 31)).map(item => ++item), 4).map((item, index) => {
 
                         var obj = {
                             order_id: "1231",
-                            "ask_start_time": "201804" + ("00" + item.slice(0, 1)).slice(-2) + "000000",   //要求开始时间,yyyyMMddhhmmss
-                            "ask_end_time": "201804" + ("00" + item.slice(-1)).slice(-2) + "000000",     //要求结束时间,yyyyMMddhhmmss
-                            "order_state": "1"       //工单状态编码，优先返回自定义状态
+                            "ask_start_time": "201805" + ("00" + item.slice(0, 1)).slice(-2) + "000000",   //要求开始时间,yyyyMMddhhmmss
+                            "ask_end_time": "201805" + ("00" + item.slice(-1)).slice(-2) + "000000",     //要求结束时间,yyyyMMddhhmmss
+                            "order_state": "5"       //工单状态编码，优先返回自定义状态
                         };
 
                         return obj;

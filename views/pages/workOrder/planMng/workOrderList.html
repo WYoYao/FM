@@ -13,8 +13,8 @@
                 <div class="search">
 
                     <pcombobox-normal sel="selWorkOrderState" bind="true" id="'workOrderListState'">
-                        <header placeholder="'全部'" prefix="工单状态："></header>
-                        <item datasource="workOrderState" text="name" id="id"></item>
+                        <header placeholder="( _.find(workOrderStateAndAll,{code:queryWoListArgu.order_state}) || {}).name" prefix="工单状态："></header>
+                        <item datasource="workOrderStateAndAll" text="name" id="code"></item>
                     </pcombobox-normal>
 
                     <!-- <pcombobox-normal sel="" bind="true">
@@ -34,8 +34,9 @@
                 </div>
                 <div class="t_body">
 
+                    <ploading-part id="workOrderListLoad"></ploading-part>
                     <pscroll-small templateid="workOrderListTem"></pscroll-small>
- 
+
                 </div>
                 <!-- </div> -->
             </div>
@@ -45,7 +46,7 @@
 
 <script type="text/html" id="workOrderListTem">
     <div class="info" v-for="(item,index) in workOrderListData" @click="lookWorkOrderDetail(item)">
-        <div class="item" :title="planType" v-text="planType"></div>
+        <div class="item" :title="item.summary" v-text="item.summary"></div>
         <div class="item" :title="timeFormat(item.create_time,'0')" v-text="timeFormat(item.create_time,'0')"></div>
         <div class="item" :title="item.summary" v-text="item.summary"></div>
         <!-- <div class="item" :title="'时间类型'+index" v-text="'时间类型'+index"></div> -->

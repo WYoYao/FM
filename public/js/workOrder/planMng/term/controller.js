@@ -32,15 +32,15 @@ var AllLink = {
     // 作废集团计划
     "deleteGroupPlan":"restGroupPlanService/destroyGroupPlanById",
 }
+var customParam = {
+    "user_id": "RY1505218031651",
+    "customer_id": "",
+    "project_id": "Pj1301020001",
+}
 
 function cteatePromise(arr) {
-    var a = {
-        "user_id": "RY1505218031651",
-        "customer_id": "",
-        "project_id": "Pj1301020001",
-    }
     var c = arr.map(function(model){
-        return {url:AllLink[model.name],data:Object.assign({},model.data,a)}
+        return {url:AllLink[model.name],data:Object.assign({},model.data,customParam)}
     })
     return c.map(function(item){
         return new Promise(function (resovle, reject) {
@@ -58,7 +58,7 @@ function cteatePromise(arr) {
 function ajx(name,data,success,err,complete){
     pajax.post({
         url: AllLink[name],
-        data: data,
+        data: Object.assign({},data,customParam),
         success: success,
         error: err,
         complete: complete
@@ -93,23 +93,6 @@ window.xx = {
     "domain_list":["code1","code2"],        //工单中专业列表，code，接单列表过滤使用
     "limit_domain":true,                //专业限制
     "do_after_start_time":true,         //到达开始时间后才允许处理工单
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     "matters":[                         //工单事项  ,非空
        {	
           "$ID":"***",                  //引擎需要的id，同matter_id，后台使用
@@ -316,35 +299,6 @@ window.xx = {
   
        },
     ],    
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     "wo_exec_controls":[                //执行控制信息
         {
           "$ID":"****",                 //引擎需要的id，同exec_control_id，后台使用
@@ -361,39 +315,6 @@ window.xx = {
           "create_time":"***"           //操作时间, yyyyMMddHHmmss
         },
     ],    
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     "publish_time":"20170620093000",    //发布时间，yyyyMMddhhmmss
     "create_time":"20170620093000",     //创建时间，yyyyMMddhhmmss ,非空
     "close_time":"20170620093000",      //结束时间，yyyyMMddhhmmss

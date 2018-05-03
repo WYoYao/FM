@@ -1,5 +1,11 @@
 
+.pointer{
+    cursor: pointer;
+}
 
+body{
+    overflow: hidden;
+}
 
 $icon : "perficon";
 
@@ -59,3 +65,4 @@ $blacker-font-color:#333333;
     }
     zoom: 1;
 }
+

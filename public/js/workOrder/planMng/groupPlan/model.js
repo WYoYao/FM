@@ -1,5 +1,3 @@
-// 本页面需要传入cache
-// 
 // 计划管理通用
 v.pushComponent({
     name: "groupPlan",
@@ -8,7 +6,7 @@ v.pushComponent({
         //     {name:"首页",path:"planManage"},{name:"集团计划"}
         // ],
         groupPlanList:[],
-        planSiteType:[{name:"全部",id:2},{name:"是",id:1},{name:"否",id:0}]
+        planSiteType:[{name:"全部",id:""},{name:"是",id:1},{name:"否",id:0}]
     },
     methods: {
         getGroupPlanList : function(){
@@ -27,7 +25,22 @@ v.pushComponent({
         },
         // type   'site'引用该计划   'copy'复制该计划
         getThisPlan : function(model,type){
-
+            var that = this;
+            ajx("groupPlanInfo",{group_plan_id:model.group_plan_id},function(data){
+                that.cache = {
+                    argu: {
+                        isquote: type === 'site' ? true : false,
+                        isedit: true,
+                        isterm: true,
+                        iscopy: type === 'copy' ? true : false,
+                        addWoPlan: JSON.parse(JSON.stringify(data)),
+                        cb: function () {
+                            v.goBack('groupPlan',true);
+                        }
+                    },
+                };
+                v.initPage("createPlan");
+            },function(){},function(){})
         }
     },
     filters: {

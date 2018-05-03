@@ -7,7 +7,7 @@
             </section>
             <% }%>
             <% if (user.indexOf('editPerson') != '-1') { %>
-            <section>
+            <section v-if="personModel.personDetalObj.person_type !='1'">
                 <pbutton-blue text="编辑" icon="`" @click="personMethods.editPersonDetail" isborder="false" id="editPersonBtn"></pbutton-blue>
             </section>
             <% }%>

@@ -5,7 +5,7 @@ v.pushComponent({
         // 上一个页面
         lastPage:"",
         // 所有工单类型
-        allPlanType:[{tab_name:"全部",order_type:0},{tab_name:"维修",order_type:1},{tab_name:"计划",order_type:2},{tab_name:"巡检",order_type:3}],
+        allPlanType:[{name:"全部",code:""},{name:"维修",code:1},{name:"计划",code:2},{name:"巡检",code:3}],
     },
     methods: {
     },

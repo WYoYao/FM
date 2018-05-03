@@ -78,7 +78,6 @@ function groupDataControll(data) {
             for (var i = 0; i < plan.row; i++) {
                 plan.grid.push([]);
                 for (var a = 0; a < days; a++) {
-                    // plan.grid[i].push({type:0,id:null,width:cell-1});
                     plan.grid[i].push({ type: 'none', id: null, width: 1 });
                 }
             }
@@ -89,26 +88,25 @@ function groupDataControll(data) {
                         var l = getDaysIndex(order.ask_start_time);
                         var r = getDaysIndex(order.ask_end_time);
                         if (l == r) {
-                            // plan.grid[index][l] = {type:order.order_state,id:order.order_id,width:cell-1};
                             plan.grid[index][l] = { type: (order.order_state || ""), id: (order.order_id || null), width: 1 };
                         } else {
-                            // plan.grid[index].splice(l, r - l);
-                            // plan.grid[index][l] = {type:order.order_state,id:order.order_id,width:cell*(r-l+1)-1};
-                            // + " 0 " + (r - l + "px")
-                            plan.grid[index][l] = { type: (order.order_state || ""), id: (order.order_id || null), width: (r - l + 1) };
+                            plan.grid[index][l] = { type: (order.order_state || ""), id: (order.order_id || null), width: (r - l) };
                         }
                     }
                 })
 
             })
+
             plan.grid.forEach(function (row, index) {
                 row.forEach(function (item, index2) {
                     if (item.width > 1) {
-                        row.splice(index2, item.width - 1);
-                        item.width = item.width + " 0 " + (item.width - 1 + "px");
+                        row.splice(index2 + 1, item.width);
+                        // item.width = (item.width + 1) + " 0 " + (item.width + "px");
+                        item.width = (item.width + 1) + " 0 " + (item.width + "px");
                     }
                 })
             })
+
         })
         return data;
     }

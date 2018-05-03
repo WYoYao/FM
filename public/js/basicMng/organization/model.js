@@ -13,6 +13,7 @@ var organizationModel = {
     },
     //disabled状态
     statusModel: true,
+    projectStatus: false,
     //中心部门树
     listByCenterDepartment: [
         {
@@ -629,6 +630,12 @@ var organizationMounted = function () {
 vue的watch属性 
 */
 var organizationWatch = {
+    listByProject: {
+        handler: function (val, oldVal) {
+            // $("#projectMotai").find(".selectedMul").remove();
+        },
+        deep: true
+    },
     listByProjectCommon: {
         handler: function (val, oldVal) {
             windowEvent.borderInit();
@@ -716,6 +723,7 @@ var organizationLogger = {
                 $("#centerDepart_ input,#projectCommon_ input,#selectedProject input,#selectedMajor input,#selectedJurisdiction input").attr("readonly","readonly").keydown(function(e) {
                     e.preventDefault();
                 });
+                
             },
             watch: organizationWatch
         });

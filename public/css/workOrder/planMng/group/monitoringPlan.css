@@ -1,3 +1,9 @@
+.pointer {
+  cursor: pointer; }
+
+body {
+  overflow: hidden; }
+
 ._font_over {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -102,10 +108,11 @@
             height: 0;
             clear: both; }
           #app .monitoring_plan .main .content .contenter .status_view .total_count {
-            padding: 0 5px;
+            padding: 5px;
             color: #637e99;
             font-size: 12px;
-            position: relative; }
+            position: relative;
+            background: #E9EFF0; }
             #app .monitoring_plan .main .content .contenter .status_view .total_count .hoverList {
               display: none;
               width: 100%;
@@ -135,33 +142,33 @@
             #app .monitoring_plan .main .content .contenter .status_view .total_count:hover .hoverList {
               display: block;
               left: 0;
-              top: 10px; }
-          #app .monitoring_plan .main .content .contenter .status_view .icon_list {
+              top: 20px; }
+          #app .monitoring_plan .main .content .contenter .status_view .icon {
             float: right;
+            width: calc(100% - 430px);
+            height: auto;
+            min-height: 50px;
             display: flex;
-            flex-flow: row wrap;
             align-items: center;
-            align-content: flex-end;
-            justify-content: flex-end;
-            max-width: calc(100% - 320px);
-            max-height: 100px; }
-            #app .monitoring_plan .main .content .contenter .status_view .icon_list .item {
-              flex: 0 1;
-              height: 50px;
-              line-height: 50px;
-              margin: 0 10px;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              min-width: 80px; }
-              #app .monitoring_plan .main .content .contenter .status_view .icon_list .item .icon {
-                font-family: "perficon";
-                height: 16px;
-                width: 16px;
-                text-align: center;
-                line-height: 16px;
-                font-size: 14px;
-                vertical-align: middle; }
+            flex-wrap: wrap; }
+            #app .monitoring_plan .main .content .contenter .status_view .icon > div {
+              height: 25px;
+              line-height: 25px;
+              font-size: 14px;
+              margin-right: 20px; }
+              #app .monitoring_plan .main .content .contenter .status_view .icon > div img {
+                width: 12px;
+                height: 12px;
+                margin-right: 10px;
+                margin-top: 6px; }
+            #app .monitoring_plan .main .content .contenter .status_view .icon > div:nth-of-type(1) div {
+              float: left;
+              width: 12px;
+              height: 12px;
+              margin-top: 5px;
+              background: #f8f8f8;
+              border: 1px solid #7a94ae;
+              margin-right: 10px; }
         #app .monitoring_plan .main .content .contenter .t_header {
           display: flex;
           flex-flow: row nowrap;
@@ -249,7 +256,9 @@
                 width: 74px;
                 color: #333; }
               #app .monitoring_plan .main .content .contenter .t_bodyer .line .body_name:nth-child(3), #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .body_name:nth-child(3) {
-                width: 64px;
+                width: 64px; }
+              #app .monitoring_plan .main .content .contenter .t_bodyer .line .body_name:nth-child(4), #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .body_name:nth-child(4) {
+                width: 62px;
                 color: #333; }
               #app .monitoring_plan .main .content .contenter .t_bodyer .line .body_name:nth-child(4), #app .monitoring_plan .main .content .contenter .t_bodyer .line .body_name:nth-child(5), #app .monitoring_plan .main .content .contenter .t_bodyer .line .body_name:nth-child(6), #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .body_name:nth-child(4), #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .body_name:nth-child(5), #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .body_name:nth-child(6) {
                 width: 62px; }

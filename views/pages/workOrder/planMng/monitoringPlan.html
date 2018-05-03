@@ -7,7 +7,7 @@
                 <sitemap :maps='paths.path' :createsitemap='gobackSelPath' :back='gobackLastPath' />
                 <!-- 面包屑导航End -->
             </div>
-            
+
             <div class="contenter">
 
                 <!-- 搜索面板Start  -->
@@ -23,7 +23,7 @@
                     <div class="cbx">
                         <pcombobox-normal sel="createGroupOrderGrid" bind="true" id="'isUpdateGroupPlan'">
                             <header placeholder="'全部'"></header>
-                            <item datasource="isUpdateGPWO" text="name" id="id"></item>
+                            <item datasource="isUpdateGPWO" text="name" id="code"></item>
                         </pcombobox-normal>
                     </div>
                     <span class="font">发单时间：</span>
@@ -54,14 +54,16 @@
                     </span>
 
                     <!-- icon Start -->
-                    <ul class="icon_list">
-                        <li class="item">
-                            <span class="icon">
-                                l
-                            </span>
-                            Hello World1
-                        </li>
-                    </ul>
+                    <div class="icon clear">
+                        <div>
+                            <div></div>
+                            <span>下次待发出工单</span>
+                        </div>
+                        <div v-for="item in allOrderState">
+                            <img :src="'../../../../images/orderState/' + item.code + '.png'" alt="">
+                            <span v-text="item.name"></span>
+                        </div>
+                    </div>
                     <!-- icon End   -->
 
                 </div>
@@ -106,15 +108,15 @@
 
                             <div class="body_name" v-text="item.project_name" :title="item.project_name" @click="openPlanDetail(item)"></div>
                             <div class="body_name" v-text="item.is_update_group_plan == 1 ? '已更新' : '未更新'" :title="item.is_update_group_plan == 1 ? '已更新' : '未更新'"></div>
-                            <div class="body_name" v-text="item.create_wo_total" :title="item.create_wo_total"></div>
+                            <div class="body_name pointer" @click.stop="queryOrderManage(item.plan_id,'')" v-text="item.create_wo_total" :title="item.create_wo_total"></div>
                             <div class="body_name" v-text="item.uncreate_wo_total" :title="item.uncreate_wo_total"></div>
-                            <div class="body_name" v-text="item.executing_wo_total" :title="item.executing_wo_total"></div>
-                            <div class="body_name" v-text="item.finished_wo_total" :title="item.finished_wo_total"></div>
+                            <div class="body_name pointer" @click.stop="queryOrderManage(item.plan_id,'5')" v-text="item.executing_wo_total" :title="item.executing_wo_total"></div>
+                            <div class="body_name pointer" @click.stop="queryOrderManage(item.plan_id,'8')" v-text="item.finished_wo_total" :title="item.finished_wo_total"></div>
 
                             <ul class="row">
                                 <li v-for="row in item.grid" class="item">
-                                    <div v-for="(grid,ind) in row" :style="{'flex':grid.width}">
-                                        <div v-if="grid.type != 'none'" @click="openWorkOrderDetail(grid)">
+                                    <div v-for="(grid,ind) in row" :style="{'flex':grid.width}" :title="(_.find(allOrderState,{code:grid.type}) || {}).name">
+                                        <div v-if="grid.type != 'none'" class="pointer" @click="openWorkOrderDetail(grid)">
                                             <div v-show="grid.type == ''"></div>
                                             <img v-show="grid.type != ''" :src=" '../../../../images/orderState/' + grid.type + '.png'" alt="">
                                         </div>
@@ -137,5 +139,5 @@
 
 
 <script type="text/html" id="monitoringPlanTem">
-    <li v-for="item in notCitePlanList" v-text="item.project_name" :title="item.project_name"></li>
+    <li class="MT" v-for="item in notCitePlanList" v-text="item.project_name" :title="item.project_name"></li>
 </script>

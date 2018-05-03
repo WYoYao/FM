@@ -41,6 +41,7 @@ function dataControll(data){
 // 第三轮将分行的工单数据转换为基于单元格子的数据
 // 日计划类型因为工单长度为基础长度，所以不需要第一轮处理，但开始和结束日期必须处于页面显示日期之内，否则有BUG
 // 这块重构比改起来块
+
     // 日工单数据转行数据
     function dayOrderDataToRow(plan){
         var len = plan.max_freq_num;
@@ -57,6 +58,7 @@ function dataControll(data){
         plan.row = len;
         return plan;
     }
+
     // 非日计划类型工单筛选与日期预处理
     function orderDataFilter(plan){
         var that = v._instance;
@@ -70,6 +72,7 @@ function dataControll(data){
         plan.work_orders = orderGather;
         return plan;
     }
+
     // 非日计划类型工单数据转行数据
     function orderDataToRow(plan){
         var row = 0;
@@ -106,38 +109,56 @@ function dataControll(data){
         plan.rowData = rowData;
         return plan;
     }
+
     // 行数据转换
     function rowDataTransform(data){
+    
         data.forEach(function(plan){
+    
             // 无工单计划补足
             plan.row == 0 ? plan.row = 1 : void 0;
             plan.rowData == [] ? plan.rowData = [[]] : void 0;
             var days = v.instance.dateData.day.length;//页面显示天数总长度
             var cell = window.document.getElementById('getCellWidth').offsetWidth/v.instance.dateData.day.length;//单格宽度
             plan.grid = [];
+    
             for(var i=0;i<plan.row;i++){
                 plan.grid.push([]);
                 for(var a=0;a<days;a++){
-                    plan.grid[i].push({type:'none',id:null,width:cell-1});
+                    plan.grid[i].push({type:'none',id:null,width:1});
                 }
             }
+    
             plan.rowData.forEach(function(row,index){
                 row.forEach(function(order){ 
                     if(order){
                         var l = getDaysIndex(numToObj(order.ask_start_time));
                         var r = getDaysIndex(numToObj(order.ask_end_time));
                         if(l == r){
-                            plan.grid[index][l] = {type:order.order_state,id:order.order_id,width:cell-1};
+                            plan.grid[index][l] = {type:(order.order_state || ''),id:(order.order_id || null),width:1};
                         }else{
-                            plan.grid[index].splice(l,r-l);
-                            plan.grid[index][l] = {type:order.order_state,id:order.order_id,width:cell*(r-l+1)-1};
+                            plan.grid[index][l] = {type:(order.order_state || ''),id:(order.order_id || null),width:r-l};
                         }
                     }   
                 })
             })
+    
+            plan.grid.forEach(function(row){
+                row.forEach(function(grid,index){
+                    if(Number(grid.width) === 1){
+                        grid.width = cell - 1;
+                    }else{
+                        row.splice(index + 1,(grid.width));
+                        grid.width = (grid.width + 1)*cell - 1;
+                    }
+                })
+            })
+    
         })
+    
         return data;
     }
+
     function getDaysIndex(obj){
         var time = JSON.parse(JSON.stringify(v.instance.dateData));
         var min = numToObj(time.startTime);
@@ -153,6 +174,7 @@ function dataControll(data){
         }
         return a;
     }
+
     function numToObj(num){
         return {
             m: Number(num.substring(4,6)),
@@ -163,6 +185,7 @@ function dataControll(data){
     var arr = data.map(function(plan){
         return plan.freq_cycle == 'd' ? dayOrderDataToRow(plan) : orderDataToRow(orderDataFilter(plan));
     })
+
     return rowDataTransform(arr);
     
 }

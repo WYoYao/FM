@@ -100,7 +100,7 @@ input:disabled, textarea:diabled {
     flex-flow: row nowrap;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 3px;
 }
 .organizationBox .centerDepartment >.top >.title{
     color:#333;
@@ -154,7 +154,7 @@ input:disabled, textarea:diabled {
     flex-flow: row nowrap;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 3px;
 }
 .organizationBox .projectCommon >.top >.title{
     color:#333;
@@ -331,7 +331,7 @@ input:disabled, textarea:diabled {
     cursor: pointer;
     box-sizing: border-box;
     display: block;
-    padding-right: 20px;
+    padding-right: 35px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -379,9 +379,12 @@ input:disabled, textarea:diabled {
 }
 #searchAccountInfo .options li{
     padding:5px;
-    border-bottom: 1px solid #ddd;
+    /* border-bottom: 1px solid #ddd; */
     background:#fff;
     cursor: default;
+}
+#searchAccountInfo .options li:hover{
+    background:#f8f8f8;
 }
 #jurisdictionList{
     color:#cacaca; 
@@ -477,8 +480,94 @@ input:disabled, textarea:diabled {
     position: absolute;
     top: 0;
     height: 100%;
-    left: 157px;
+    left: 145px;
 }
 .organizationTreeBoxName{
     position: relative;
+}
+#projectMotai{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(79,79,79,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#projectMotai>div{
+    width: 400px;
+    height: 550px;
+    background: #fff;
+    position: relative;
+}
+#projectMotai .selArea{
+    height: 450px;
+    overflow-y: scroll;
+    position: relative;
+    top: 0px;
+}
+#projectMotai .projectTitle{
+    height: 50px;
+    width: 100%;
+    background: #6985a1;
+    text-align: center;
+    line-height: 50px;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 2px 2px 0 0;
+}
+#projectMotai .buttonArea {
+    padding: 10px 0;
+    background: #ffffff;
+    position: absolute;
+    bottom: 0;
+    border-top: 1px solid #d9e2e8;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+#projectMotai .projectList span{
+    text-indent: 72px;
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px dashed #d9e2e8;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+}
+
+#projectMotai .projectList span.selected{
+    color: #02a9d1;
+}
+#selectedStr{
+    display: inline-block;
+    width: 114px;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 5px;
+    padding-left: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: #eee;
+    box-sizing: border-box;
+    vertical-align: middle;
+}
+#addProject{
+    width: 64px;
+    display: inline-block;
+    border: 1px solid #cacaca;
+    color: #7a94ad;
+    text-align: center;
+    line-height: 30px;
+    height: 30px;
+    box-sizing: border-box;
+    cursor: pointer;
+    vertical-align: middle;
 }

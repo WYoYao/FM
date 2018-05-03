@@ -45,14 +45,16 @@
             </div>
         </div>
     </div>
+
     <!-- 快速添加人员 -->
    
     <pwindow-float title="添加中心部门人员" id="fastAdd" beforehide="windowEvent.initStatus" templateid="temp_window">
         <animate maxpx="0" minpx="-455" orientation="right"></animate>
     </pwindow-float>
-    
+
     <script type="text/html" id="temp_window">
         <div class="conFastAdd">
+            
             <h1 class="essentialInformation">基本信息</h1>
             <ul>
                 <li class="itemFastAdd">
@@ -115,13 +117,15 @@
                 <li class="itemFastAdd">
                     <span><a class="starSymbol">*</a>项目：</span>
                     <div class="conItem">
-                        <pcombobox-custom templateid="temp_project" id="selectedProject">
+                        <!-- <pcombobox-custom templateid="temp_project" id="selectedProject">
                             <header  placeholder="请选择项目" ></header>
-                        </pcombobox-custom>
+                        </pcombobox-custom> -->
+                        <div id="selectedStr"></div>
+                        <div id="addProject"  @click="windowEvent.showProjectList">添加</div>
                         <div class="promptForm">
                             请选择项目
                         </div>
-                    </div>
+                    </div> 
                     
                 </li>
             </ul>
@@ -208,7 +212,9 @@
                 <pbutton-blue bind="true"  text="'保存'" @click="windowEvent.keepFastAdd()"></pbutton-blue>
             </div>
         </div>
+
     </script>
+    
     <!-- 项目模板 -->
     <script type="text/html" id="temp_project">
         <div class="selArea"> 

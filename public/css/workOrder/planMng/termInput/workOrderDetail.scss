@@ -107,9 +107,6 @@
                             display: flex;
                             flex-flow: row nowrap;
                             border-bottom: 1px solid #d9e2e8;
-                            &:nth-last-of-type(1){
-                                // border-bottom: none;
-                            }
                             .index{
                                 width: 100px;
                                 border-right: 1px solid #d9e2e8;
@@ -150,11 +147,14 @@
                                 }
                             }
                         }
+                        &>.process:nth-last-of-type(1){
+                            // border-bottom: none;
+                            margin-bottom: -1px;
+                        }
                     }
                     &>.right{
                         width: 25%;
                         padding-bottom: 25px;
-                        // border-bottom: 1px solid #d9e2e8;
                     }
                 }
                 .sign{

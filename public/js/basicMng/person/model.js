@@ -1401,44 +1401,77 @@ var personMethods = {
         console.log(obj);
     },
     positionTreeWindowShow:function(){//显示岗位树
-        var treeData = JSON.parse(JSON.stringify(personModel.employeePositionObj));
-        treeData = repeat(treeData);
-        function repeat(arr){
-            for(var i=0;i<arr.length;i++){
-                var jsonArr = arr[i];
-                jsonArr["checked"] = false;
-                if(jsonArr.child_objs && jsonArr.child_objs.length>0){
-                    repeat(jsonArr.child_objs);
-                }
-            }
-            return arr;
-        }
-        personModel.employeePositionObj = JSON.parse(JSON.stringify(treeData));
-        var obj_id = $("#employeePositionName").attr("objId");
-        if(obj_id){
-            var _tree = JSON.parse(JSON.stringify(personModel.employeePositionObj));
-            var resTree = addSelect(_tree,obj_id);
-            personModel.employeePositionObj = JSON.parse(JSON.stringify(resTree));
-            function addSelect(arr,_id){
-                for(var i=0;i<arr.length;i++){
-                    var jsonArr = arr[i];
-                    if(jsonArr.obj_id == _id){
-                        jsonArr["checked"] = true;
-                        break;
-                    }else{
-                        if(jsonArr.child_objs && jsonArr.child_objs){
-                            addSelect(jsonArr.child_objs,_id);
-                        }
+        personController.queryDeptPositionTree({}).then(function(list) {
+            var initList = personMethods.organizationTreeInit(list,'','',1);
+            var tree = fn(initList);
+
+            function fn(arr) {
+                for (var i = 0; i < arr.length; i++) {
+                    var json = arr[i];
+                    if(json.obj_type == 'p1' || json.obj_type == 'p2' || json.obj_type == 'p3'){
+                        json["issel"] = true;
+                    }
+                    
+                    if (json.child_objs && json.child_objs.length > 0) {
+                        fn(json.child_objs);
                     }
                 }
                 return arr;
-            };
-            $("#confirmSelectOptionBtn").pdisable(false);//确定选中岗位按钮是否禁用
-        }else{
-            $("#confirmSelectOptionBtn").pdisable(true);
-        }
+            }
+
+            personModel.employeePositionObj = JSON.parse(JSON.stringify(tree));
+
+            var treeData = JSON.parse(JSON.stringify(personModel.employeePositionObj));
+            //删除中心部门的节点
+            var _newTreeData = [];
+            if(treeData && treeData.length >0){
+                for(var i=0;i<treeData.length;i++){
+                    var json = treeData[i];
+                    if(json.obj_type !='d1'){
+                        _newTreeData.push(json);
+                    }
+                }
+                _newTreeData = repeat(_newTreeData);
+            }
+            
+            function repeat(arr){
+                for(var i=0;i<arr.length;i++){
+                    var jsonArr = arr[i];
+                    jsonArr["checked"] = false;
+                    if(jsonArr.child_objs && jsonArr.child_objs.length>0){
+                        repeat(jsonArr.child_objs);
+                    }
+                }
+                return arr;
+            }
+            personModel.employeePositionObj = JSON.parse(JSON.stringify(_newTreeData));
+            var obj_id = $("#employeePositionName").attr("objId");
+            if(obj_id){
+                var _tree = JSON.parse(JSON.stringify(personModel.employeePositionObj));
+                var resTree = addSelect(_tree,obj_id);
+                personModel.employeePositionObj = JSON.parse(JSON.stringify(resTree));
+                function addSelect(arr,_id){
+                    for(var i=0;i<arr.length;i++){
+                        var jsonArr = arr[i];
+                        if(jsonArr.obj_id == _id){
+                            jsonArr["checked"] = true;
+                            break;
+                        }else{
+                            if(jsonArr.child_objs && jsonArr.child_objs){
+                                addSelect(jsonArr.child_objs,_id);
+                            }
+                        }
+                    }
+                    return arr;
+                };
+                $("#confirmSelectOptionBtn").pdisable(false);//确定选中岗位按钮是否禁用
+            }else{
+                $("#confirmSelectOptionBtn").pdisable(true);
+            }
+           
+            $("#positionWindow").pshow({ title: '选择岗位' });
+        });
        
-        $("#positionWindow").pshow({ title: '选择岗位' });
     },
     selectPositionTree:function(item){//新建人员选择岗位树
         console.log(item);
@@ -2334,6 +2367,7 @@ var personMethods = {
 };
 
 var personMounted = function() {
+    $("#navBar").psel(0,false);
     var block = $("#navBar").find(".per-tab-navigation_title em");
     if(block.length == '2'){
         personMethods.tabBlockInitFn();

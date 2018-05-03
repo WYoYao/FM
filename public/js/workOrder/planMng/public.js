@@ -329,11 +329,9 @@ v.pushComponent({
         // userSelCache:{},
         // 默认的以及自定义的工单状态
         allOrderState: [],
-        workOrderStateAndAll:[],
-        // 默认的几种工单执行状态，该数组内对象Id需要根据拿到的工单状态集合获取
-        workOrderState: [{ name: "全部", id: "" }, { name: "未发出", id: "1" }, { name: "执行中", id: "2" }, { name: "已完成", id: "3" }],
+        workOrderStateAndAll: [],
         // 工单时间状态
-        orderTimeType: [{ name: "全部", id: 0 }, { name: "临时性工单", id: 1 }, { name: "计划性工单", id: 1 }],
+        orderTimeType: [{ name: "全部", code: 0 }, { name: "临时性工单", code: 1 }, { name: "计划性工单", code: 1 }],
         // 页面间跳转时传递的参数
         cache: {},
         paths: {
@@ -414,6 +412,7 @@ v.pushComponent({
             // 否则记录该路径并存储name，path,以及页面间传递的参数cache
             // 跳回时统一goback，使用该路径存储的cache替换根实例中的cache
             var that = this;
+
             this.paths.isBase = false;
 
             var a = Object.keys(this.paths.base);

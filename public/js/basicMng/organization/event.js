@@ -1,4 +1,5 @@
 /*事件注册*/
+
 $(function () {
     organizationLogger.init();    
     var date = new Date();
@@ -35,9 +36,9 @@ $(function () {
         if(!contains($("#selectedMajor")[0], event.target)){
             $("#selectedMajor").pslideUp();
         }
-        if(!contains($("#selectedProject")[0], event.target)){
-            $("#selectedProject").pslideUp();
-        }
+        // if(!contains($("#selectedProject")[0], event.target)){
+        //     $("#selectedProject").pslideUp();
+        // }
         if(!contains($("#selectedJurisdiction")[0], event.target)){
             $("#selectedJurisdiction").pslideUp();
             // $("#selectedJurisdiction .per-combobox-wrap").css("display","none");
@@ -45,7 +46,9 @@ $(function () {
         $("#personSex").pslideUp();
         $("#selectedPosition").pslideUp();
     });
-
+    $("#projectMotai").appendTo($("#fastAdd"));
+    $("#searchAccountInfo > div").hide();
+    
 });
 //工具
 var tools = {
@@ -89,9 +92,50 @@ var windowEvent = {
         $("#pwindow2").phide();
         organizationMethods.operationStateInit();
     },
+    // 显示项目
+    showProjectList: function(){
+        organizationModel.activeObjProject = JSON.stringify(organizationModel.listByProject);
+        organizationModel.projectStatus = true;
+        $("#projectMotai").show();
+    },
+    // 取消项目操作
+    cancelProjectList: function(){
+        organizationModel.listByProject = JSON.parse(organizationModel.activeObjProject);
+        var headerString = '';
+        (function find_(arr) {
+            var find = arguments.callee;
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].selected) {
+                    headerString += (headerString.length === 0 ? '' : ',') + arr[i].obj_name;
+                }
+                if (arr[i].child_objs && arr[i].child_objs.length) {
+                    find(arr[i].child_objs);
+                }
+            }
+        })(organizationModel.listByProject);
+        $("#selectedStr").html((headerString === '' ? '' : headerString));
+        var verifi = ($("#selectedStr").html() != "");
+        if(verifi){
+            $("#selectedStr").parent().find(".promptForm").hide();
+        }
+        organizationModel.projectStatus = false;
+        $("#projectMotai").hide();
+    },
+    // 隐藏项目
+    hideProjectList: function(){
+        var verifi = ($("#selectedStr").html() != "");
+        if(verifi){
+            $("#selectedStr").parent().find(".promptForm").hide();
+        }
+        organizationModel.projectStatus = false;
+        $("#projectMotai").hide();
+    },  
     //下拉框收起
     slideUp: function(id){
         $("#"+id).pslideUp();
+    },
+    show: function(){
+
     },
     //修改状态
     initStatus: function(){
@@ -162,6 +206,8 @@ var windowEvent = {
                 }
             })(arr);
             $("#selectedProject .per-combobox_name").html("请选择项目");
+            $("#selectedStr").html("");
+            $("#projectMotai").hide();
         }    
         $("#"+id).pslideUp();
     },
@@ -305,7 +351,12 @@ var windowEvent = {
             if(headerString !== ''){
                 $("#" + headerId).parent().find('.promptForm').hide();
             }
+            if(headerId == "selectedProject"){
+                $("#selectedStr").html((headerString === '' ? '' : headerString));
+                // return false;
+            }
             $("#" + headerId + " .per-combobox_name").html((headerString === '' ? placeHolder : headerString));
+            
         });
     },
     //项目初始化
@@ -353,6 +404,7 @@ var windowEvent = {
             $("#jurisdictionId").show();
             $("#jurisdictionId_").hide();
             $("#selectedProject .per-combobox_name").html("请选择项目");
+            $("#selectedStr").html("");
             $("#selectedPosition").precover();
             $("#selectedPosition .per-combobox_name").html("请选择岗位");
             $("#selectedJurisdiction .per-combobox_name").html("请选择权限");
@@ -426,9 +478,9 @@ var windowEvent = {
         //验证必填项
         var verifi1 = $('#identificationCode').pverifi();
         var verifi2 = $('#personName').pverifi();
-        organizationModel.verifi3 = ($("#selectedProject .per-combobox_name").html() == "请选择项目");
+        organizationModel.verifi3 = ($("#selectedStr").html() == "");
         if(organizationModel.verifi3){
-            $("#selectedProject").parent().find(".promptForm").show();
+            $("#selectedStr").parent().find(".promptForm").show();
         }
         organizationModel.verifi4 = !$("#selectedPosition").psel();
         if(organizationModel.verifi4){

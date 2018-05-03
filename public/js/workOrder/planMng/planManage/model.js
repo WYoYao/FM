@@ -24,7 +24,7 @@ v.pushComponent({
         },
         centerMonth:null,
         // planManage页面下方表格高度
-        residueHeight:0,
+        residueHeight:600,
         // 集团计划引用数量
         groupPlanUse:{
             total:0,
@@ -112,7 +112,7 @@ v.pushComponent({
         // 查看已经废弃的计划
         lookDiscardGroupPlan : function(){
             this.cache = {
-                orderType : $("#planTypeCombo").psel().id,
+                orderType : $("#planTypeCombo").psel().code,
                 name:"已作废计划列表",
             }
             v.initPage('dumpedPlan');
@@ -129,6 +129,9 @@ v.pushComponent({
         },
         // 查看工单详情
         openOrderDetail : function(model){
+            if(model.type === ''){
+                return
+            }
             this.cache = {name:"工单详情",workOrderId:model.id};
             v.initPage("workOrderDetail");
         },
@@ -146,14 +149,14 @@ v.pushComponent({
                     }
                 },
             };
-            v.initPage("createPlan")
+            v.initPage("createPlan");
         },
         // 重新渲染表格
         // type为true时同时刷新时间部分和计划部分,否则只刷新计划部分
         refreshRenderGrid : function(type){
             var that = this;
 
-            $("#planManagePartLoad").pshow();
+            // $("#planManagePartLoad").pshow();
 
             if(type){this.createTimeData()}
 
@@ -170,12 +173,41 @@ v.pushComponent({
             // })
 
             // faker
-            v.instance.planData = dataControll(prc.data);
+            v.instance.planData = dataControll( _.range(_.random(20, 50)).map((index) => {
+                let count = _.random(5, 10);
+                let create_wo_total = _.random(1, 5);
+                let uncreate_wo_total = _.random(1, count - create_wo_total);
+            
+                return {
+                    "plan_id": "计划id",                //计划id
+                    "plan_name": "计划id",                //计划id
+                    "project_id": "项目id",             //项目id
+                    "project_name": "项目名称",           //项目名称
+                    "is_update_group_plan": _.random(0, 1),    //是否更新集团计划，1-已更新、0-未更新
+                    "create_wo_total": create_wo_total,           //发单总数
+                    "uncreate_wo_total": uncreate_wo_total,         //未发出数
+                    "executing_wo_total": _.random(0, 5),        //执行中数
+                    "finished_wo_total": _.random(0, 5),         //已完成数
+                    "row_count": 3,                  //行数
+                    "work_orders": _.chunk(_.range(_.random(28, 31)).map(item => ++item), 4).map((item, index) => {
+            
+                        var obj = {
+                            order_id: "1231",
+                            "ask_start_time": "2018" + ('00' + Math.floor(Math.random()*12)).slice(-2) + ("00" + item.slice(0, 1)).slice(-2) + "000000",   //要求开始时间,yyyyMMddhhmmss
+                            "ask_end_time": "2018"  + ('00' + Math.floor(Math.random()*12)).slice(-2) + ("00" + item.slice(-1)).slice(-2) + "000000",     //要求结束时间,yyyyMMddhhmmss
+                            "order_state": "1"       //工单状态编码，优先返回自定义状态
+                        };
+            
+                        return obj;
+                    })
+                }
+            }));
+
         },
         // 统一获取向后台获取计划工单数据时的参数
         createPlanOrderParam : function(){
             var param = {
-                order_type : $("#planTypeCombo").psel().id,
+                order_type : $("#planTypeCombo").psel().code,
                 plan_from : $("#planSourceCombo").psel().id,
                 plan_name : $("#planKeyword").pval().key,
                 freq_cycle : "",
@@ -205,8 +237,8 @@ v.pushComponent({
                 
             ]);
             Promise.all(list).then(function(data){
-                that.allOrderState = that.allOrderState.concat(JSON.parse(JSON.stringify(data[0].Content)));
-                that.allPlanType = JSON.parse(JSON.stringify(data[1].Content));
+                that.allOrderState = that.allOrderState.concat(JSON.parse(JSON.stringify(data[0])));
+                that.allPlanType = [{name:"全部",code:""}].concat(JSON.parse(JSON.stringify(data[1])));
                 // 修改默认的三种工单状态Id
                 that.workOrderState.forEach(function(item){
                     v.instance.allOrderState.forEach(function(model){
@@ -233,6 +265,7 @@ v.pushComponent({
     }
 });
 window.prc = {
+
     "data": [
       {
         "plan_id": "JH1510145828954",
@@ -328,6 +361,8 @@ window.prc = {
         "freq_num": 1,
         "freq_cycle_desc": "每周1次",
         "row_count": 1,
+        "plan_from":1,
+        "plan_update_status":0,
         "work_orders": [
         ]
       },
@@ -577,3 +612,34 @@ window.prc = {
     ],
     "count": 1
   }
+
+
+  window.prc = _.range(_.random(20, 50)).map((index) => {
+    let count = _.random(5, 10);
+    let create_wo_total = _.random(1, 5);
+    let uncreate_wo_total = _.random(1, count - create_wo_total);
+
+    return {
+        "plan_id": "计划id",                //计划id
+        "plan_name": "计划id",                //计划id
+        "project_id": "项目id",             //项目id
+        "project_name": "项目名称",           //项目名称
+        "is_update_group_plan": _.random(0, 1),    //是否更新集团计划，1-已更新、0-未更新
+        "create_wo_total": create_wo_total,           //发单总数
+        "uncreate_wo_total": uncreate_wo_total,         //未发出数
+        "executing_wo_total": _.random(0, 5),        //执行中数
+        "finished_wo_total": _.random(0, 5),         //已完成数
+        "row_count": 3,                  //行数
+        "work_orders": _.chunk(_.range(_.random(28, 31)).map(item => ++item), 4).map((item, index) => {
+
+            var obj = {
+                order_id: "1231",
+                "ask_start_time": "201805" + ("00" + item.slice(0, 1)).slice(-2) + "000000",   //要求开始时间,yyyyMMddhhmmss
+                "ask_end_time": "201805" + ("00" + item.slice(-1)).slice(-2) + "000000",     //要求结束时间,yyyyMMddhhmmss
+                "order_state": "1"       //工单状态编码，优先返回自定义状态
+            };
+
+            return obj;
+        })
+    }
+})

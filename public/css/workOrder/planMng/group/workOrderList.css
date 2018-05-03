@@ -1,3 +1,9 @@
+.pointer {
+  cursor: pointer; }
+
+body {
+  overflow: hidden; }
+
 ._font_over, #app .work_order_list .main .content .contenter .t_body .info .item {
   overflow: hidden;
   text-overflow: ellipsis;

@@ -9,7 +9,7 @@
             :style="{'text-indent':(model.lv *24 +'px')}" 
             :dis="JSON.stringify(model)" 
             v-model="model.obj_name" v-html = "model.obj_name"></span>
-            <a class="selectedMul" v-if="model.selected"></a>
+            <a class="selectedMul" v-if="(model.selected && !organizationModel.projectStatus)"></a>
         </div>
         <!-- <div style="border-bottom:1px solid #eee"></div> -->
         <div>
