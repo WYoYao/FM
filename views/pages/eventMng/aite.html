@@ -1,0 +1,848 @@
+<script type="text/html" id="aite">
+<div class="aite-bubble aite" @click.stop="void 0" v-if="isShow" :class="{'click-aite':true}">
+
+        <!-- 头部返回 Strat -->
+        <div class="aite-title">
+            <span class="returnImg" @click="back()" v-show="onBlock!='index'">
+                <img src="../images/return_left.png" alt="返回图片"/>
+            </span>
+            <!--<span>请选择</span>-->
+            <span>
+                <em v-show="true">选择</em>
+                <em v-text="titles[onBlock]">分类</em>
+            </span>
+        </div>
+        <!-- 头部返回 End -->
+
+        <div class="aite-body free-aite-pops">
+            <!--选择大类 Start-->
+            <div class="index" v-show="onBlock=='index'">
+            
+                <div class="aite-list" @click="handler_class('universalSystem')" v-if="listTipe!=0">
+                    <div>
+                        <span>通用系统类</span>
+                    </div>
+                </div>
+                <div class="aite-list" @click="handler_class('universalEquipment')" v-if="listTipe!=0">
+                    <div>
+                        <span>通用设备类</span>
+                    </div>
+                </div>
+                <div class="aite-list" @click="handler_class('universalSpace')" v-if="listTipe!=0">
+                    <div>
+                        <span>空间功能类型</span>
+                    </div>
+                </div>
+
+                <div class="aite-list" @click="handler_class('Build')" v-if="listTipe!=1">
+                    <div>
+                        <span>建筑体</span>
+                    </div>
+                </div>
+                <div class="aite-list" @click="handler_class('Floor')" v-if="listTipe!=1">
+                    <div>
+                        <span>楼层</span>
+                    </div>
+                </div>
+                <div class="aite-list" @click="handler_class('Room')" v-if="listTipe!=1">
+                    <div>
+                        <span>房间</span>
+                    </div>
+                </div>
+                <div class="aite-list" @click="handler_class('System')" v-if="listTipe!=1">
+                    <div>
+                        <span>系统</span>
+                    </div>
+                </div>
+                <div class="aite-list" @click="handler_class('Equip')" v-if="listTipe!=1">
+                    <div>
+                        <span>设备</span>
+                    </div>
+                </div>
+                <!-- <div class="aite-list" v-if="true" @click="handler_class('Part')">
+                    <div>
+                        <span>部件</span>
+                    </div>
+                </div>
+                <div class="aite-list" v-if="true" @click="handler_class('Tool')">
+                    <div>
+                        <span>工具</span>
+                    </div>
+                </div> -->
+            </div>
+            <!--选择大类 End-->
+
+            <!-- 搜索 Start -->
+            <div class="build" v-if="onBlock=='Search'">
+                <div class="aite-list" v-for="(model, index) in searchObject" @click="model.selected=!model.selected">
+                    <div class="name" :title="model.obj_name">
+                        <span v-text="model.obj_name"></span>
+                    </div>
+                    <div class="ck">
+                        <div class="pcheckbox">
+                            <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
+                            <span class="pswitch_label"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 搜索 End -->
+
+            <!-- 通用系统类 Start -->
+            <div class="floor" v-if="onBlock=='universalSystem' ">
+                <div class="level-box">
+                    <div class="aite-list" v-for="(item,index) in universalSystem" :class="item.selected?'aite_on':''" @click="listClick(universalSystem,item)">
+                        <div class="left" :title="item.obj_name">
+                            <span v-text="item.obj_name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-box">
+                    <div class="aite-list" v-for="(item,index) in querySelectedContent(universalSystem)" @click="item.selected=!item.selected">
+                        <div class="name" :title="item.obj_name">
+                            <span v-text="item.obj_name"></span>
+                        </div>
+                        <div class="ck">
+                            <div class="pcheckbox">
+                                <span class="pcheckbox_input" :class="item.selected ? 'pcheckbox-checked' : ''"></span>
+                                <span class="pswitch_label"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 通用系统类 End -->
+
+            <!-- 通用设备类 Start -->
+            <div class="room" v-if="onBlock=='universalEquipment' ">
+                <div class="tree-box">
+                    <ptree-normal datasource="universalEquipment" sel="universalEquipmentTree">
+                        <item text="obj_name" issearch="false" child="content"></item>
+                    </ptree-normal>
+                </div>
+                <div class="last-level-box">
+                    <!-- <div class="aite-list" v-for="(obj,index1) in commonData.publicModel.curLevelList" > -->
+                    <div class="aite-list" v-for="(item,index) in universalEquipmentList" @click="item.selected=!item.selected">
+                        <div :title="item.obj_name" class="name">
+                            <span v-text="item.obj_name">建筑体</span>
+                        </div>
+                        <div class="ck">
+                            <div :id="'noLeftLevelCheckbox'" class="pcheckbox">
+                                <span class="pcheckbox_input" :class="item.selected ? 'pcheckbox-checked' : ''"></span>
+                                <span class="pswitch_label"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 通用设备类 End   -->
+
+            <!-- 空间功能类型 Start -->
+            <div class="build" v-if="onBlock=='universalSpace' ">
+                    <ptree-normal datasource="universalSpace" sel="universalSpaceTree">
+                        <item text="obj_name" issearch="false" child="content"></item>
+                    </ptree-normal>
+            </div>
+            <!-- 空间功能类型 End -->
+
+
+            <!-- 建筑体 Start -->
+            <div class="build" v-if="onBlock=='Build' ">
+                <div class="aite-list" v-for="(model, index) in Build" @click="model.selected=!model.selected">
+                    <div class="name" :title="model.obj_name">
+                        <span v-text="model.obj_name"></span>
+                    </div>
+                    <div class="ck">
+                        <div class="pcheckbox">
+                            <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
+                            <span class="pswitch_label"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 建筑体 End -->
+
+            <!-- 楼层 Start -->
+            <div class="floor" v-if="onBlock=='Floor' ">
+                <div class="level-box">
+                    <div class="aite-list" v-for="(item,index) in Floor" :class="item.selected?'aite_on':''" @click="listClick(Floor,item)">
+                        <div class="left" :title="item.obj_name">
+                            <span v-text="item.obj_name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-box">
+                    <div class="aite-list" v-for="(item,index) in querySelectedContent(Floor)" @click="item.selected=!item.selected">
+                        <div class="name" :title="item.obj_name">
+                            <span v-text="item.obj_name"></span>
+                        </div>
+                        <div class="ck">
+                            <div class="pcheckbox">
+                                <span class="pcheckbox_input" :class="item.selected ? 'pcheckbox-checked' : ''"></span>
+                                <span class="pswitch_label"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 楼层 End -->
+
+            <!-- 房间 Start -->
+            <div class="room" v-if="onBlock=='Room' ">
+                <div class="tree-box">
+                    <ptree-normal datasource="Room" sel="roomTree">
+                        <item text="obj_name" issearch="false" child="content"></item>
+                    </ptree-normal>
+                </div>
+                <div class="last-level-box">
+                    <div class="aite-list" v-for="(item,index) in Space" @click="item.selected=!item.selected">
+                        <div :title="item.obj_name" class="name">
+                            <span v-text="item.obj_name">建筑体</span>
+                        </div>
+                        <div class="ck">
+                            <div :id="'noLeftLevelCheckbox'" class="pcheckbox">
+                                <span class="pcheckbox_input" :class="item.selected ? 'pcheckbox-checked' : ''"></span>
+                                <span class="pswitch_label"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 房间 End   -->
+
+            <!-- 系统 Start -->
+            <div class="system" v-if="onBlock=='System' ">
+                <div class="level-box">
+                    <div class="aite-list" v-for="(item,index) in System" :class="item.selected?'aite_on':''" @click="listClick(System,item)">
+                        <div class="left" :title="item.obj_name">
+                            <span v-text="item.obj_name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-box">
+                    <div class="aite-list" v-for="(item,index) in querySelectedContent(System)" @click="item.selected=!item.selected">
+                        <div class="name" :title="item.obj_name">
+                            <span v-text="item.obj_name"></span>
+                        </div>
+                        <div class="ck">
+                            <div class="pcheckbox">
+                                <span class="pcheckbox_input" :class="item.selected ? 'pcheckbox-checked' : ''"></span>
+                                <span class="pswitch_label"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 系统 End -->
+
+            <!-- 设备 Start -->
+            <div class="equip" v-if="onBlock=='Equip' ">
+                <div class="system-major">
+                    <div class="title">
+                        <span>添加筛选条件:</span>
+                    </div>
+                    <pcombobox-normal isborder="false" id="'id_GeneralDict'" bind="true" :class="'major-need'" sel="DictSel">
+                        <header placeholder="'专业'"></header>
+                        <item datasource="GeneralDict" text="name"></item>
+                    </pcombobox-normal>
+                    <!--<div>+</div>-->
+                    <pcombobox-normal isborder="false" id="'id_GeneralSystem'" bind="true" id="'system'" :class="'major-need'" sel="DictSystemSel">
+                        <header placeholder="'系统'"></header>
+                        <item datasource="GeneralSystem" text="system_name"></item>
+                    </pcombobox-normal>
+                </div>
+                <div class="tree-body">
+                    <div class="tree-box">
+                        <ptree-normal id="'id_BuildFloorSpaceTree'" datasource="BuildFloorSpaceTree" sel="QuipTreeSel">
+                            <item text="obj_name" issearch="false" child="content"></item>
+                        </ptree-normal>
+                    </div>
+                    <div class="last-level-box">
+                        <div class="aite-list" v-for="(item,index) in EquipList" @click="item.selected=!item.selected">
+                            <div class="name" :title="item.obj_name">
+                                <span v-text="item.obj_name"></span>
+                            </div>
+                            <div class="ck">
+                                <div class="pcheckbox">
+                                    <span class="pcheckbox_input" :class="item.selected ? 'pcheckbox-checked' : ''"></span>
+                                    <span class="pswitch_label"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 设备 End -->
+
+            <!-- 部件 Start -->
+            <div class="build" v-if="onBlock=='Part' ">
+                <div class="aite-list" v-for="(model, index) in Part" @click="model.selected=!model.selected">
+                    <div class="name" :title="model.obj_name">
+                        <span v-text="model.obj_name"></span>
+                    </div>
+                    <div class="ck">
+                        <div class="pcheckbox">
+                            <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
+                            <span class="pswitch_label"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 部件 End -->
+
+            <!-- 工具 Start -->
+            <div class="build" v-if="onBlock=='Tool' ">
+                <div class="aite-list" v-for="(model, index) in Tool" @click="model.selected=!model.selected">
+                    <div class="name" :title="model.obj_name">
+                        <span v-text="model.obj_name"></span>
+                    </div>
+                    <div class="ck">
+                        <div class="pcheckbox">
+                            <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
+                            <span class="pswitch_label"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 工具 End -->
+
+            <!--即时搜索，只有复选-->
+            <div class="timely-checkbox" v-show="!true">
+                <!-- <div class="aite-list" v-for="(model, index) in commonData.publicModel.curLevelList" > -->
+                <div class="aite-list">
+                    <div>
+                        <p :title="'title'">
+                            <!-- <span v-for="charObj in model.obj_name_arr"  :class="'redMark'">空</span> -->
+                            <span v-text="'空'" :class="'redMark'">空</span>
+                        </p>
+                        <p :title="'title'">
+                            <em v-text="'建'" :class="true ? 'redMark' : ''">建</em>
+                        </p>
+                    </div>
+                    <div>
+                        <div :id="'searchCheckbox'" class="pcheckbox">
+                            <span class="pcheckbox_input" :class="true ? 'pcheckbox-checked' : ''"></span>
+                            <span class="pswitch_label"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--自定义-->
+            <div class="customize" v-show="onBlock=='auto' ">
+                <div v-show="false" class="customize-tips">
+                    <span>未找到相关内容，您输入的内容将被添加为自定义</span>
+                </div>
+                <div v-show="autoView.error" class="customize-tips">
+                    <span class="redMark" :title="autoView.error" v-text="autoView.error"></span>
+                </div>
+                <div class="customText" v-show="true">
+                    <p>自定义</p>
+                    <ptext-text id="'selfText'" bind="true" value="auto" placeholder="'请输入自定义内容'">
+                        <verify errtip="请输入自定义内容" verifytype="space"></verify>
+                        <verify errtip="最多只能输入40个字符" length="40" verifytype="length"></verify>
+                    </ptext-text>
+                </div>
+                <div class="belong">
+                    <div class="belong-title">
+                        <h4>所属类别
+                            <span class="aite-cus-tips" v-text="(_.find(EquipList,{selected:true}) || {}).name"></span>
+                        </h4>
+                    </div>
+                    <div class="belong-category">
+                        <div class="category" v-for="(item,index) in typeList" :class="item.selected ? 'selectDiv' : ''" @click="listClick(typeList,item),autoView.error=''">
+                            <span v-text="item.name"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--loading-->
+            <ploading-part v-if="isLoading" :style="'display:block'" data-loading="aitePopLoading" text="加载中..."></ploading-part>
+        </div>
+        <div class="aite-footer">
+            <!-- <div @click.capture.stop="back(),onBlock='auto'" v-show="onBlock!='auto'">
+                <pbutton-white text="自定义"></pbutton-white>
+            </div> -->
+            <div class="sureBtnDivs" v-show="onBlock!='index'" @click.capture="submit">
+                <pbutton-blue text="确定" id="sureBtn"></pbutton-blue>
+            </div>
+        </div>
+
+</div>
+</script>
+<script>
+    Vue.component('aite', {
+        template: '#aite',
+        data: function () {
+
+            return {
+                // 查询字符创
+                searchStr: "",
+                // 定时查询的实例
+                timer: null,
+                // 显示哪块内容 index默认首页
+                onBlock: "index",
+                // 加载动画
+                isLoading: "false",
+                // 顶部标题
+                titles: {
+                    universalSystem: '通用系统类',
+                    universalEquipment: '通用设备类',
+                    universalSpace: '空间功能类型',
+                    Build: '建筑',
+                    Floor: '楼层',
+                    Room: '房间',
+                    System: '系统',
+                    Equip: '设备',
+                    Part: '部件',
+                    Tool: '工具',
+                },
+                // 建筑列表
+                Build: [],
+                // 楼层列表
+                Floor: [],
+                // 房间类表
+                Room: [],
+                // 空间列表
+                Space: [],
+                // 系统列表
+                System: [],
+                // 设备列表
+                // 空间树
+                BuildFloorSpaceTree: [],
+                // 设备专业集合
+                GeneralDict: [],
+                // 设备专业集合
+                GeneralSystem: [],
+                // 设备列表
+                EquipList: [],
+                // 部件列表
+                Part: [],
+                // 工具列表
+                Tool: [],
+                // 通用系统类
+                universalSystem: [],
+                // 通用设备类
+                universalEquipment: [],
+                // 通用设备类子级
+                universalEquipmentList: [],
+                // 空间功能类型
+                universalSpace: [],
+                currentUniversalSpace: {},
+                // 自定义对象
+                auto: "",
+                // 查询的对象
+                searchObject: [],
+                // 搜索时候返回保存的对象集合
+                searchRes: [],
+                // 自定义页面控制
+                autoView: {
+                    autoTypeNull: false,
+                    error: ""
+                },
+                // 类别集合
+                typeList: [
+                    { name: "对象", code: 1, selected: false },
+                    { name: "部件", code: 2, selected: false },
+                    { name: "工具", code: 3, selected: false },
+                    { name: "其他", code: 9, selected: false }
+                ],
+                // 控制列表显示的类型
+                listTipe: 0,
+            }
+        },
+        props: ['str', 'cb', 'isterm'],
+        methods: {
+            // 获取返回值单层
+            getValue: function (arr) {
+                var _that = this;
+                return _.filter(arr, { selected: true }).map(function (item) {
+                    // 如果本来有种类直接返回
+                    if (_.has(item, "obj_type")) return item;
+
+                    item.obj_type = {
+                        "Bd": "build",
+                        "Fl": "floor",
+                        "Sp": "space",
+                        "Sy": "system",
+                        "Eq": "equip",
+                    }[item.obj_id.slice(0, 2)];
+
+                    return item;
+                });
+                // return _.filter(arr, { selected: true }).map(function (item) {
+                //     return {
+                //         obj_id: item.obj_id,
+                //         obj_name: item.obj_name,
+                //     }
+                // })
+            },
+            querySelectedDeep: function (list, index) {
+
+                return (function (list, index) {
+
+                    if (index != 0) {
+                        var result = (_.find(list, { selected: true }) || {}).content || [];
+                        return arguments.callee(result, --index);
+                    } else {
+                        return _.filter(list, { selected: true })
+                    }
+
+                })(list, --index || 0);
+            },
+            // 获取返回值多层
+            getValueDeep: function (arr) {
+                var _that = this;
+
+                return _that.querySelectedDeep(arr, 2);
+
+                // return _that.querySelectedDeep(arr, 2).map(function (item) {
+                //     return {
+                //         obj_id: item.obj_id,
+                //         obj_name: item.obj_name,
+                //     }
+                // })
+            },
+            // 返回对应的值
+            submit: function () {
+                var _that = this;
+
+                //  自定义对象
+                if (_that.onBlock == "auto") {
+                    // 非空验证
+                    if (!_.filter(_that.typeList, { selected: true }).length) {
+                        _that.autoView.error = "所属类别不能为空";
+                        return;
+                    }
+
+                    // 重名验证
+                    controller.Exist({
+                        obj_name: _that.auto,
+                        obj_type: _.find(_that.typeList, { selected: true }).code,
+                    }).then(function (res) {
+                        if (res.exist) {
+                            // 已经存在
+                            _that.autoView.autoTypeNull = true;
+                        } else {
+                            // 不存在正常提交
+                            controller.Add({
+                                obj_name: _that.auto,
+                                obj_type: _.find(_that.typeList, { selected: true }).code,
+                            }).then(function (res) {
+
+                                _that.callback(res.map(function (item) {
+                                    item.obj_name = _that.auto;
+                                    return item;
+                                }))
+                            })
+                        }
+                    })
+                } else if (_that.onBlock == "Floor" || _that.onBlock == "System" || _that.onBlock == "universalSystem") {
+                    // 通用系统类和通用空间类型需要深度查找
+                    _that.callback(_that.getValueDeep(_that[_that.onBlock]));
+                } else {
+                    var type = _that.onBlock;
+                    if (type == 'Room') type = 'Space';
+                    if (type == 'Equip') type = 'EquipList';
+                    if (type == 'Search') type = 'searchObject';
+                    if (type == 'universalEquipment') type = 'universalEquipmentList';
+                    if (type == 'universalSpace') type = 'currentUniversalSpace';
+
+                    //  系统
+                    // if (type == 'universalSystem') {
+                    //     _that.callback(_that.getValue(_that.querySelectedContent(_that.universalSystem)));
+                    // }
+
+                    _that.callback(_that.getValue(_that[type]));
+                }
+            },
+            // 搜索按钮点击返回有没有选中值的之后直接把 输入的文字当成自定义对象保存
+            createAuto: function () {
+                var _that = this;
+
+                controller.Exist({
+                    obj_name: _that.searchStr,
+                    obj_type: 1,
+                }).then(function (res) {
+                    if (res.exist) {
+                        // 已经存在
+
+                    } else {
+                        // 不存在正常提交
+                        controller.Add({
+                            obj_name: _that.searchStr,
+                            obj_type: 1,
+                        }).then(function (res) {
+                            // 保存在控件中
+                            _that.searchRes = _that.searchRes.concat(res.map(function (item) {
+                                item.obj_name = _that.searchStr;
+                                return item;
+                            }));
+
+                            _that.searchObject = [];
+                            _that.searchStr = "";
+                        })
+                    }
+                })
+            },
+            // 返回的首页
+            back: function () {
+                var _that = this;
+                // 搜索的时候返回 需要保存现有的内容
+                // if (_that.onBlock == 'Search')
+                // 返回保存当前的对象
+                // _that.createAuto();
+                _that.onBlock = 'index';
+                // 清空数据
+                // 建筑列表
+                _that.Build = [];
+                // 楼层列表
+                _that.Floor = [];
+                // 房间类表
+                _that.Room = [];
+                // 空间列表
+                _that.Space = [];
+                // 系统列表
+                _that.System = [];
+                // 设备列表
+                // 空间树
+                _that.BuildFloorSpaceTree = [];
+                // 设备实例集合
+                _that.GeneralDict = [];
+                // 设备等于空
+                _that.EquipList = [];
+                // 部件列表
+                _that.Part = [];
+                // 工具列表
+                _that.Tool = [];
+
+            },
+            // 查询空间
+            querySpace: function (item) {
+                console.log(item);
+            },
+            // 获取选中的值
+            querySelectedItem: function (list, index) {
+
+                return (function (list, index) {
+
+                    if (index == 0) {
+                        return _.filter(list, { selected: true })
+                    }
+
+                    var res = (_.find(list, { selected: true }) || {}).content || [];
+
+                    return arguments.callee(res, --index)
+
+                })(list, --index || 0);
+            },
+            // 获取选中值的集合
+            querySelectedContent: function (list, index) {
+
+                return (_.find(list, { selected: true }) || {}).content || [];
+            },
+            // 集合中选中一个
+            listClick: function (list, item) {
+                list.forEach(function (info) {
+                    info.selected = info == item;
+                })
+            },
+            // 大类点击时间
+            handler_class: function (key) {
+                var _that = this;
+                // 页面转换
+                _that.onBlock = key;
+
+                _that.queryClass(key);
+
+                _that.$nextTick(function () {
+                    $("#id_GeneralSystem").pdisable(true)
+                })
+            },
+            // 插叙相关接口
+            queryClass: function (key, item) {
+                var _that = this;
+
+                _that.isLoading = true;
+                //  除了设备都只需要查询一个接口
+                if (key != 'Equip') {
+                    controller[key](item || {}).then(function (res) {
+                        _that[key] = res;
+                    }).finally(function () { _that.isLoading = false; })
+
+                } else {
+                    // 设备需要查询控件树和设备实例
+                    var a = controller.BuildFloorSpaceTree();
+                    var b = controller.GeneralDict();
+
+                    a.then(function (res) {
+                        _that.BuildFloorSpaceTree = res;
+
+                        b.then(function (res) {
+                            _that.GeneralDict = res;
+
+                        }).finally(function () { _that.isLoading = false; })
+                    })
+                }
+            },
+            // 查询设备
+            queryQuip: function () {
+                var _that = this,
+                    argu = {};
+
+                var arr = $("#id_BuildFloorSpaceTree").psel(),
+                    generalDict = $("#id_GeneralDict").psel(),
+                    generalSystem = $("#id_GeneralSystem").psel();
+
+                //  空间树选择之后才进行查询
+                if (_.isArray(arr) && arr.length) {
+
+                    var space = arr.slice(-1)[0];
+                    // 楼层不进行查询
+                    if (space.obj_type == "floor") return;
+
+                    argu[space.obj_type == "space" ? "space_id" : "build_id"] = space.obj_id;
+                }
+
+                if (generalDict) {
+                    argu.domain_code = _that.GeneralDict[generalDict.index].code;
+                }
+
+                if (generalSystem) {
+                    argu.system_id = _that.GeneralSystem[generalSystem.index].system_id;
+                }
+
+                _that.queryClass("EquipList", argu);
+            },
+            // 对调内容
+            callback: function (arr) {
+                //  如果传入回调调用回调
+                if (_.isFunction(this.cb)) this.cb(this.searchRes.concat(arr));
+                //  清空已经保存的信息
+                this.searchRes = [];
+                // 清空所有的类表
+                this.back();
+            },
+            // 桌面点击时间
+            documentClick: function () {
+                var _that = this;
+                if (_that.str.length) {
+                    _that.callback([]);
+                }
+            }
+        },
+        computed: {
+            // 根据@后面的字符判断时候是搜索选项
+            isSearch: function () {
+                return /^\@\S+/g.test(this.str);
+            },
+            // 根据传入的字符长度来判断长度来判断时候需要显示隐藏
+            isShow: function () {
+
+                return this.str.indexOf('@') != -1;
+            }
+        },
+        watch: {
+            str: function (newValue, oldValue) {
+
+                var _that = this;
+                // 跟上次相同不做任何处理
+                if (newValue == oldValue) return;
+                // 验证格式 格式不对不进行搜索
+                if (!/^\@\S+/g.test(newValue)) {
+                    _that.onBlock = 'index';
+                    return;
+                };
+                _that.onBlock = "Search"
+                _that.searchStr = newValue.replace(/@/g, "");
+
+                if (!_that.searchStr.length) return;
+
+                if (!_.isNull(_that.timer)) {
+                    clearTimeout(_that.timer);
+                    _that.timer = null;
+                }
+
+                _that.timer = setTimeout(function () {
+
+                    // 查询事件
+                    _that.queryClass('searchObject', {
+                        keyword: _that.searchStr,
+                    });
+                }, 300)
+
+            },
+            auto: function () {
+                this.autoView.error = "";
+            }
+        },
+        beforeMount: function () {
+            var _that = this;
+
+            // 加载完毕
+            _that.isLoading = false;
+
+            // 默认是项目版  0显示五个具体   1显示三个通用 2全部显示
+            _that.listTipe = _.isUndefined(_that.isterm) ? 0 :
+                _that.isterm == true ? 2 : 1;
+
+            // 绑定树形的点击事件
+            window.universalEquipmentTree = function (item) {
+                // 选择对应内容
+                _that.universalEquipmentList = item.child;
+            };
+
+            // 空间树点击事件
+            window.universalSpaceTree = function (item) {
+
+                item.selected = true;
+                _that.currentUniversalSpace = [item];
+            }
+
+            // 绑定树形的点击事件
+            window.roomTree = function (item) {
+
+                var argu = {
+                    "obj_id": item.obj_id,
+                    "obj_type": item.obj_id.slice(0, 1) == 'B' ? "build" : "floor",
+                }
+
+                _that.queryClass('Space', argu);
+            };
+
+            // 专业点击事件
+            window.DictSel = function (item) {
+                // 查询 专业对应的系统
+                _that.queryClass("GeneralSystem", { system_domain: item.code });
+
+                $("#id_GeneralSystem").pdisable(false)
+
+                // 查询设备
+                _that.queryQuip()
+            }
+            //  设备树形菜单事件
+            window.QuipTreeSel = function () {
+                // 查询设备
+                _that.queryQuip();
+            }
+            // 系统选择事件
+            window.DictSystemSel = function () {
+                // 查询设备
+                _that.queryQuip();
+            }
+
+            // 绑定点击桌面消失内容
+            document.addEventListener("click", _that.documentClick, false)
+        },
+        destroyed: function () {
+            // 释放桌面点击事件
+            document.removeEventListener("click", this.documentClick, false)
+            // 释放所有的全局方法
+            window.roomTree = undefined;
+            window.DictSel = undefined;
+            window.QuipTreeSel = undefined;
+            window.DictSystemSel = undefined;
+        }
+    })
+</script>

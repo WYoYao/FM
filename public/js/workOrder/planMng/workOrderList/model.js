@@ -14,10 +14,6 @@ v.pushComponent({
         // workOrderStateList: [],
     },
     methods: {
-        lookWorkOrderDetail: function (item) {
-            this.cache = { name: "工单详情", workOrderId: item.order_id };
-            v.initPage('workOrderDetail');
-        },
         selWorkOrderState: function (item) {
             var _that = this;
 

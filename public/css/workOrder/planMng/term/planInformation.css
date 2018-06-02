@@ -52,10 +52,8 @@
   #planInformation > .body {
     width: 700px;
     position: relative;
-    height: calc(100% - 101px);
-    padding-top: 50px;
-    padding-bottom: 20px;
-    margin: 0 auto 0;
+    height: calc(100% - 121px);
+    margin: 50px auto 0;
     overflow-y: scroll;
     overflow-x: hidden; }
     #planInformation > .body .state {
@@ -105,13 +103,15 @@
 #planChangeHistory {
   padding: 20px;
   width: auto;
-  height: calc(100% - 40px); }
+  height: calc(100% - 40px);
+  position: relative;
+  min-width: 430px; }
   #planChangeHistory > div {
     width: 430px;
     float: left;
     height: 100%; }
-    #planChangeHistory > div:nth-of-type(1) {
-      margin-right: 25px; }
+    #planChangeHistory > div:nth-of-type(2) {
+      margin-left: 25px; }
     #planChangeHistory > div > .title {
       line-height: 14px;
       height: 14px;
@@ -119,6 +119,10 @@
       font-size: 12px; }
       #planChangeHistory > div > .title div {
         float: left; }
+      #planChangeHistory > div > .title > div:nth-of-type(1) {
+        color: #a1a1a1; }
+      #planChangeHistory > div > .title > div:nth-of-type(2) {
+        color: #707070; }
     #planChangeHistory > div > .boxod {
       width: 388px;
       border: 1px solid #d9e2e8;

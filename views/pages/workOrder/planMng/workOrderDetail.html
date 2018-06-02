@@ -3,37 +3,70 @@
 <script src="../js/workOrder/planMng/workOrderDetail/event.js"></script>
 
 <link rel="stylesheet" href="../css/workOrder/planMng/term/workOrderDetail.css">
-<div id="workOrderDetail" v-show="onPage == 'workOrderDetail'">
 
-    <!-- here页面头部导航 -->
-    <div class="nav">
-        <sitemap :maps='paths.path' :createsitemap='gobackSelPath' :back='gobackLastPath' />
+
+<div id="workOrderDetail">
+    <div class="hold"></div>
+    <div class="box">
+        <ploading-part id="workOrderDetailLoad"></ploading-part>
+        <pscroll-small templateid="workOrderDetailTemplate"></pscroll-small>
     </div>
+    <div class="hold2 hold"></div>
+</div>
 
 
-    <!-- 页面下方表格 -->
+
+<script type="text/html" id="workOrderDetailTemplate">
+
+    <!-- 页面下方内容 -->
     <div class="grid">
 
-        <ploading-part id="workOrderDetailLoad"></ploading-part>
-        
+    
         <!-- 顶部列表 工单信息 -->
         <div class="top">
 
-            <div>
-                <div class="key">工单类型</div>
-                <div class="valueLong" v-text="orderDetailData.order_type_name">维保</div>
+            <div class="normal">
+                <div class="key1">工单类型</div>
+                <div class="value1 MT" v-text="orderDetailData.order_type_name"></div>
+                <div class="key1 key2">工单紧急程度</div>
+                <div class="value2 MT" v-text="orderDetailData.urgency"></div>
+                <div class="key1 key2">建议执行人数</div>
+                <div class="value2 MT" v-text="orderDetailData.order_type_name"></div>
             </div>
 
-            <div>
-                <div class="key">要求开始时间</div>
-                <div class="value" v-text="orderDetailData.ask_start_time? timeFormat(orderDetailData.ask_start_time,'0'):'' ">2017.5.1 08:00</div>
-                <div class="key keyLB">要求结束时间</div>
-                <div class="value" v-text="orderDetailData.ask_end_time?timeFormat(orderDetailData.ask_end_time,'0') : ''">2017.7.1 08:00</div>
+            <div class="place clear" v-if="orderDetailData.place && _.isArray(orderDetailData.place) && orderDetailData.place.length">
+                <div v-for="(item,index) in orderDetailData.place">
+                    <div v-text="'位置' + index"></div>
+                    <div class="MT" v-text="item.name"></div>
+                </div>
             </div>
 
-            <div>
-                <div class="key">所需工具</div>
-                <div class="valueLong" v-text="arrToString(orderDetailData.required_tools)"></div>
+
+
+            <div class="normal">
+                <div class="key1">要求开始时间</div>
+                <div class="value1 MT" v-text="orderDetailData.ask_start_time ? timeFormat(orderDetailData.ask_start_time,'0') : '' "></div>
+                <div class="key1 key2">要求固定时间内完成</div>
+                <div class="value2 MT" v-text="orderDetailData.ask_end_limit"></div>
+                <div class="key2 key1">要求结束时间</div>
+                <div class="value2 MT" v-text="orderDetailData.ask_end_time ? timeFormat(orderDetailData.ask_end_time,'0') : ''"></div>
+
+            </div>
+
+            <div class="normal">
+                <div class="key1">所需工具</div>
+                <div class="MT" v-text="workOrderArrToString(orderDetailData.required_tools)"></div>
+                <span class="tool" v-if="isShowAddTool" v-for="(item,index) in toolarr">
+                    <ptext-text placeholder="'请输入'" value="item.name" text="   " bind="true">
+                        <verify errtip=""  verifytype="space"></verify>
+                    </ptext-text>
+                    <em class="icon" @click="toolarr.splice(index,1)">
+                        x
+                    </em>
+                 </span>
+                 <span class="tool" v-if="isShowAddTool && toolarr.length<3" @click.capture="toolarr.push({name:''})">
+                     <pbutton-white text="+工具"></pbutton-white>
+                 </span>
             </div>
 
         </div>
@@ -50,44 +83,10 @@
                 <div class="result">反馈结果</div>
             </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <!-- 事项步骤 -->
             <div class="step" v-for="(matter_steps,index2) in matters.matter_steps">
 
-                <!-- {{有id或者有描述}} -->
+                <!-- 有id或者有描述 -->
                 <div v-if="matter_steps.obj_step_id || matter_steps.description" class="div">
 
                     <!-- 左侧列表 -->
@@ -98,50 +97,55 @@
                             <div class="MT" v-text="matter_steps.description"></div>
                         </div>
 
+                        <div class="stepobj" v-if="matter_steps.obj_name" v-text="matter_steps.obj_name"></div>
+
                         <div class="process" v-for="(steps,index3) in matter_steps.steps">
 
                             <div class="index" v-text="steps.step_sequence"></div>
 
                             <div class="item">
 
-                                <div v-text="steps.content" v-if="steps.step_type == '3'||steps.step_type == '4'">
-                                    到达指定位置拍照
-                                </div>
+                                <div v-text="steps.content" v-if="steps.step_type != 5"></div>
 
-                                <ul v-if="steps.step_type != '3'&& steps.step_type != '4'&& steps.step_type != '6'">
+                                <ul v-if="steps.step_type == 5">
 
-                                    <li>
+                                    <li v-if="steps.pre_conform">
                                         <div>强制确认操作前提：</div>
-                                        <div v-if="steps.pre_conform" v-text="steps.pre_conform"></div>
+                                        <div v-text="steps.pre_conform"></div>
                                     </li>
 
-                                    <li>
+                                    <li v-if="steps.content">
                                         <div>标准作业操作内容：</div>
-                                        <div v-if="steps.content" v-text="steps.content"></div>
+                                        <div v-text="steps.content"></div>
                                     </li>
 
-                                    <li>
+                                    <li v-if="steps.notice">
                                         <div>注意事项：</div>
-                                        <div v-if="steps.notice" v-text="steps.notice"></div>
+                                        <div v-text="steps.notice"></div>
                                     </li>
 
-                                    <li>
+                                    <li v-if="steps.confirm_result">
                                         <div>需确认的操作结果：</div>
-                                        <div v-for="confirm_result in steps.confirm_result">
+                                        <div v-for="confirm_result in steps.confirm_result" v-if="steps.confirm_result && steps.confirm_result.length">
                                             <em v-text="confirm_result.obj_name"></em>
-                                            <span v-for="parents in confirm_result.parents">
-                                                (
-                                                <i v-for="(names,naIndex) in parents.parent_names" v-text="parents.parent_names.length == naIndex + 1?names : names + '-'"></i>)
+                                            <span v-for="parents in confirm_result.parents" v-if="confirm_result.parents && confirm_result.parents.length">
+                                                <i v-if="parents.parent_names && parents.parent_names.length">(</i>
+                                                <i v-if="parents.parent_names && parents.parent_names.length" v-for="(names,naIndex) in parents.parent_names"
+                                                v-text="parents.parent_names.length == naIndex + 1 ? names : names + '-'"></i>
+                                                <i v-if="parents.parent_names && parents.parent_names.length">)</i>
                                             </span>
                                         </div>
                                         <div v-for="confirm_result in steps.confirm_result">
-                                            <i v-for="info_points in confirm_result.info_points" v-text="info_points.name"></i>
-                                            <i v-for="customs in confirm_result.customs" v-text="customs.name"></i>
+                                            <i v-for="info_points in confirm_result.info_points" v-text="info_points.name + (createInfoWrongWO(info_points.wrong_ranges,info_points.wrongs,info_points.unit) != '' ?
+                                            ' (异常范围：' + createInfoWrongWO(info_points.wrong_ranges,info_points.wrongs,info_points.unit) + ')' : '')"></i>
+                                            <!-- <i v-for="info_points in confirm_result.info_points" v-text="info_points.name + ' (异常范围：' + createInfoWrongWO(info_points.wrong_ranges,info_points.wrongs,info_points.unit) + ')'"></i>
+                                            <i v-for="customs in confirm_result.customs" v-text="createSureInfoWO(customs)"></i> -->
                                         </div>
                                     </li>
-
+                                    
                                 </ul>
 
+                                
                                 
 
                             </div>
@@ -199,74 +203,50 @@
                 </div>
 
                 <!-- 签名 -->
-                <div class="sign" v-if="!matter_steps.obj_step_id && !matter_steps.description">
+                <!-- <div class="sign" v-if="!matter_steps.obj_step_id && !matter_steps.description">
                     <div class="left">签字：</div>
                     <div class="img">
                         <img :src="matter_steps.feedback[0].photos[0]" alt="">
                     </div>
                     <div class="right">
                         <span>操作人:</span>
-                        <i v-text="arrToString(matter_steps.executors)"></i>
+                        <i v-text="workOrderArrToString(matter_steps.executors)"></i>
                     </div>
-                </div>
+                </div> -->
 
             </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
 
-        <!-- 占位用，无意义 -->
-        <div class="holder"></div>
-
         <!-- 审核相关 -->
-        <div class="see_check">
-            <ul v-for="wo_exec_controls in orderDetailData.wo_exec_controls">
+        <div class="check" v-show="orderDetailData.wo_exec_controls && orderDetailData.wo_exec_controls.length">
+
+            <div class="order" v-for="model in orderDetailData.wo_exec_controls">
+                <div class="head">
+                    <div class="name" v-text="model.control_name"></div>
+                    <div class="time" v-text=" (model.type === 'apply' ? '申请' : model.type === 'audit' ? '审核' : model.type === 'stop' ? '中止' : '审批') + '时间 : ' + model.operate_time"></div>
+                </div>
+                <div class="body">
+                    <div class="end" v-if="model.type.state === 'audit' || model.type.state === 'approval'"
+                    v-text="model.audit_result === 1 ? '通过' : '不通过'" :class="{'red' : model.audit_result == 0}"></div>
+                    <div class="info" v-if="model.type.type === 'ap'">
+                        <div class="peo" v-text="'人数:' + model.person_num + '人'"></div>
+                        <div class="job" v-text="'专业要求:' +workOrderArrToString(model.domain_names)"></div>
+                        <div class="dop" v-text="'执行人:' + workOrderArrToString(model.person_names)"></div>
+                    </div>
+                    <div class="info" v-if="model.type.type === 'rp'">
+                        <div class="job" v-text="'更换人员名称:' + model.replace_person_name"></div>
+                        <div class="dop" v-text="'操作时间:' + model.create_time"></div>
+                    </div>
+                    <div class="info" v-if="model.type.type === 'dl'">
+                        <div class="dop" v-text="'延期小时数:' + model.delay_hour"></div>
+                    </div>
+                    <div class="remark MT" v-text="model.opinion"></div>
+                    <div class="pe" v-text="'操作人:'+ model.operator_name"></div>
+                </div>
+            </div>
+
+            <!-- <ul v-for="wo_exec_controls in orderDetailData.wo_exec_controls">
                 <li>
                     <div class="see_check_header">
                         <div>
@@ -301,11 +281,12 @@
                         </div>
                     </div>
                 </li>
-            </ul>
+            </ul> -->
         </div>
 
         <!-- 操作人列表 -->
-        <div class="operat_person_list">
+        <!-- <div class="operat_person_list">
+
             <ul v-for="wo_exec_controls in orderDetailData.wo_exec_controls">
                 <li>
                     <i>操作人</i>
@@ -317,24 +298,11 @@
                 </li>
                 <li>
                     <i>指派给</i>
-                    <span v-text="arrToString(wo_exec_controls.next_route)"></span>
+                    <span v-text="workOrderArrToString(wo_exec_controls.next_route)"></span>
                 </li>
             </ul>
-            <ul v-for="operatList in orderOperatList">
-                <li>
-                    <i>操作人</i>
-                    <span v-text="operatList.operator_name">张三</span>
-                </li>
-                <li>
-                    <i>开始时间</i>
-                    <span v-text="timeFormat(operatList.start_time,'0')">20170921150500</span>
-                </li>
-                <li>
-                    <i>停留时长</i>
-                    <span v-text="operatList.use_times">李四</span>
-                </li>
-            </ul>
-        </div>
+
+        </div> -->
 
     </div>
-</div>
+</script>

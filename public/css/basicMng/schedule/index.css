@@ -4,7 +4,21 @@ html {
     height: 100%;
     background: #f0f3f6;
 }
-
+.frameWrap {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #d9e2e8;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 0px 20px 20px;
+    box-sizing: border-box;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 0px;
+    border-radius: 6px 6px 0 0;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
 .component {
     position: absolute;
     top: 16px;
@@ -12,4 +26,368 @@ html {
     left: 10px;
     right: 10px;
     min-width: 1280px;
+}
+
+/* 初始页面 */
+#scheduleCon{
+    height: calc(100% - 20px);
+    box-sizing: border-box;
+    border: 1px solid #d9e2e8;
+    margin-top: 20px;
+}
+#scheduleTime{
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #d9e2e8;
+}
+#scheduleView{
+    box-sizing: border-box;
+    width: 100%;
+    height: calc(100% - 50px);
+    overflow: hidden;
+}
+#viewMenu{
+    display: inline-block;
+    width: 300px;
+    text-align: center;
+    height: calc(100%);
+    overflow-y: scroll;
+    box-sizing: border-box;
+    float: left;
+    border-right: 1px solid #d9e2e8;
+}
+#viewMenu li{
+    border-bottom: 1px solid #d9e2e8;
+    padding: 10px;
+    padding-right: 30px;
+    text-align: left;
+    position: relative;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    cursor: pointer;
+}
+#viewFormCon{
+    display: inline-block;
+    width: calc(100% - 300px);
+    float: left;
+    height: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+.viewInit{
+    position: absolute;
+    display: inline-block;
+    z-index: 1;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+}
+.viewForm{
+    position: absolute;
+    height: calc(100% - 1px);
+    width: 100%;
+    background: #fff;
+    z-index: 1;
+    overflow: scroll;
+}
+.optionCon{
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+    height: 50px;
+    overflow: hidden;
+}
+.upload{
+    display: inline-block;
+    width: 127px;
+    margin-left: 5px;
+    position: relative;
+}
+.modifyForm{
+    display: inline-block;
+    position: absolute;
+    right: 32px;
+}
+.icon{
+    font-family: "perficon";
+    line-height: 22px;
+    font-size: 22px;
+    box-sizing: border-box;
+    margin: 9px auto;
+    border-radius: 50%;
+    color: #7a94ad;
+    font-weight: normal;
+    position: absolute;
+    right: 4px;
+    top: 0px;
+}
+.upload1{
+    cursor: pointer;
+    font-size: 18px;
+    color: #30eff1;
+}
+.uploadMask{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: pointer;
+}
+.uploadMask_{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: pointer;
+}
+/* 修改计划 */
+#editPlan{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background: #fff;
+}
+#editTop{
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.btnCon{
+    display: inline-block;
+    height: 30px;
+    overflow: hidden;
+}
+.btnLeft{
+    float: left;
+}
+.btnRight{
+    float: right;
+}
+#editTop .title{
+    text-align: center;
+    font-size: 18px;
+    overflow: hidden;
+    height: 30px;
+    line-height: 30px;
+}
+#editBody{
+    width: 100%;
+    height: calc(100% - 50px);
+    overflow-y: scroll;
+}
+.editShift{
+    width: 600px;
+    margin: 50px auto;
+}
+.editShift .title1{
+    margin-top: 30px;
+    font-size: 14px;
+    color: #333333;
+    height: 30px;
+    line-height: 30px;
+}
+.editShift .title2{
+    font-size: 12px;
+    color: #cecece;
+    height: 20px;
+    line-height: 20px;
+}
+.editShift .title3{
+    font-size: 12px;
+    color: #fd7b3d;
+    height: 30px;
+    line-height: 30px;
+}
+.editShift .delete{
+    float: left;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    font-family: perficon;
+    color: #ef6767;
+    font-size: 16px;
+    text-align: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    border: 1px solid #ffffff;
+    transition: border-color .3s;
+}
+.editShift .delete:hover{
+    border-color: #f00;
+}    
+.editShift .id{
+    margin: 0 5px;
+    float: left;
+    height: 30px;
+    width: 80px;
+    background: #f8f8f8;
+    line-height: 30px;
+}    
+.editShift .name{
+    float: left;
+    height: 30px;
+    width: 180px;
+    background: #ffffff;
+    line-height: 30px;
+} 
+.editShift .right{
+    float: left;
+    width: 50%;
+    padding-bottom: 10px;
+    position: relative;
+}
+.editShift .right .time {
+    width: 110%;
+    margin-left: 5px;
+}
+.editShift .right .time .date, .editShift .right .time .edate {
+    float: left;
+    line-height: 30px;
+    height: 30px;
+}
+.editShift .right .time .font {
+    float: left;
+    width: 34px;
+    height: 40px;
+    line-height: 30px;
+    text-align: center;
+    color: #333333;
+}
+.editShift .right .time .sum, .editShift .right .time .re {
+    margin: 5px 5px;
+    float: left;
+    width: 20px;
+    height: 20px;
+    font-family: perficon;
+    line-height: 20px;
+    text-align: center;
+    color: #7a94ad;
+    border-radius: 50%;
+    font-size: 14px;
+    /* background: #7a94ad; */
+    cursor: pointer;
+}
+.editShift .abc {
+    height: 30px;
+    margin: 0px 35px;
+    width: 526px;
+    border: 1px dashed #d9e2e8;
+    background: #F8F8F8;
+    line-height: 30px;
+    cursor: pointer;
+}
+.editShift .item {
+    display: block;
+    width: 100%;
+    line-height: 40px;
+    text-align: center;
+}
+.editShift .item .addbanc {
+    display: inline-block;
+    width: 20px;
+    height: 30px;
+    font-family: perficon;
+    line-height: 30px;
+    text-align: center;
+    color: #7a94ad;
+    border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+}
+.editShift .item .addbanctext {
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: #7a94ad;
+    border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+}
+.editShift .item .left {
+    float: left;
+    width: 50%;
+    height: 50px;
+}
+.clearfix:after {
+    content: "\0020";
+    display: block;
+    height: 0;
+    clear: both;
+}
+.shiftUl{
+    margin-top: 20px;
+}
+.wordicon {
+    font-family: 'perficon';
+    font-size: 170px;
+    text-align: center;
+    color: #e0e0e0;
+}
+.wordtip{
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+}
+.loadCon{
+    width: 200px;
+    margin-top: 10px;
+    position: relative;
+}
+.loadCon>a>div{
+    width: 100%;
+}
+.position_active{
+    background: #02a9d1;
+    color: #fff;
+}
+.position_active_span{
+    color: #fff;
+}
+.plan_ul>li>p:nth-child(2){
+    max-width:30px;
+}
+.plan_ul>li>p:nth-child(3){
+    max-width:30px;
+}
+.plan_ul>li>p:nth-child(4){
+    max-width:30px;
+}
+.plan_ul>li>p:nth-child(n+5){
+    width: 2.5%;
+}
+/* .plan_ul>li:nth-child(n+3)>p:nth-child(-n+15):nth-child(n+5) {
+    color: #ddd;
+} */
+.plan_ul>li:nth-child(1){
+    background: #f8f8f8;
+}
+.plan_ul>li:nth-child(2){
+    background: #f8f8f8;
+}
+.overlapErr{
+    position: absolute;
+    bottom: -10px;
+    left: 6px;
+    font-size: 12px;
+    color: #f97c7c;
+    display: none;
+}
+.reload{
+    display: inline-block;
+    /* margin-left: 5px; */
+    position: relative;
+}
+.release{
+    display: inline-block;
+    margin-left: 5px;
+    position: absolute;
+    right: 10px;
 }

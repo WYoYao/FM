@@ -1,0 +1,244 @@
+<script type="text/html" id="eventListGridTemplate">
+
+
+    <!-- 全部事件类型 -->
+    <ul class="all clear" v-if="eventTypeSel === 0">
+        <li v-for="model in proEvListData.data"  @click.stop="openProEvInfoW(model)"> 
+
+            <span class="s0" v-text="model.eventDescribe" :title="model.eventDescribe"></span>
+
+            <span class="s2" :title="model.associationObject" v-html="model.obj">
+                <!-- <div class="clear warp">
+                    <span v-for="item in evListStrToArr(model.associationObject)[0]" class="clear" :class="{'moreBlue':item.split('@').length != 1}">
+                        <span v-text="item"></span>
+                        <span>,</span>
+                    </span>
+                </div> -->
+            </span>
+
+            <div class="moreObj" v-show="model.isL" v-text="evListStrToArr(model.associationObject)[1]" :title="evListStrToArr(model.associationObject)[1]"></div>
+
+            <span :class="(!proEvListPower.closeEvent && eventRate === 0) || eventRate === 1 ? 's32' : 's31'"
+             v-text="model.problemType" :title="model.problemType"></span>
+
+            <span class="s1" v-text="model.deptName" :title="model.deptName"></span>
+
+            <span :class="(!proEvListPower.closeEvent && eventRate === 0) || eventRate === 1 ? 's42' : 's41'" 
+            v-text="eventRate === 2 ? model.handlePersons : model.creater" :title="eventRate === 2 ? model.handlePersons : model.creater"></span>
+            
+            <span :class="(!proEvListPower.closeEvent && eventRate === 0) || eventRate === 1 ? 's52' : 's51'" v-show="eventRate != 1"
+            v-text="eventRate === 0 ? model.createTime : allcleRon[model.closeType]" :title="eventRate === 0 ? model.createTime : allcleRon[model.closeType]"></span>
+            
+            <!-- 剔除掉未处理且无操作权限时的操作列 -->
+            <!-- 操作 -->
+            <span class="s6" v-show="proEvListPower.closeEvent && eventRate === 0">
+                <div class="btn" @click.stop="eventToWorkOrder(model.eventId)">
+                    <i class="icon">`</i>
+                    转工单
+                </div>
+                <div class="btn" @click.stop="proEvListFakerCombo(event,model.eventId)">
+                    <img src="../images/scrap_blue_btn.png" alt="">
+                    关闭
+                </div>
+            </span>
+
+            <span class="s6" v-show="eventRate === 2" v-text="model.closeTime" :title="model.closeTime"></span>
+
+            <span class="s56" v-show="eventRate === 1" v-text="model.workOrderState" :title="model.workOrderState"></span>
+
+        </li>
+    </ul>
+    
+    <!-- 客户报修事件类型 -->
+    <ul class="user" v-if="eventTypeSel === 1">
+        <li v-for="model in proEvListData.data"  @click.stop="openProEvInfoW(model)"> 
+            <span class="s0" v-text="model.eventDescribe" :title="model.eventDescribe"></span>
+            <span class="s1" v-text="model.repairPosition" :title="model.repairPosition"></span>
+            <span class="s2" v-text="model.problemType" :title="model.problemType"></span>
+            <span class="s3" v-text="eventRate === 2 ? model.handlePersons ? model.handlePersons : noDataWord : model.contacts"
+            :title="eventRate === 2 ? model.handlePersons ? model.handlePersons : noDataWord : model.contacts"></span>
+            <span v-show="eventRate != 0" class="s41" v-text="eventRate === 2 ? allcleRon[model.closeType] : model.workOrderState"></span>
+            <span v-show="eventRate === 0" :class="!proEvListPower.closeEvent ? 's43' : 's42'"
+            v-text="model.startTime" :title="model.startTime"></span>
+            <span v-show="eventRate === 0" :class="!proEvListPower.closeEvent ? 's53' : 's52'"
+            v-text="model.deptName" :title="model.deptName"></span>
+            <span v-show="eventRate != 0" class="s51" v-text="eventRate === 2 ? model.closeTime : model.deptName" :title="eventRate === 2 ? model.closeTime : model.deptName"></span>
+            <!-- 操作 -->
+            <span v-show="eventRate === 0 && proEvListPower.closeEvent" class="s62">
+                <div class="btn" @click.stop="eventToWorkOrder(model.eventId)">
+                    <i class="icon">`</i>
+                    转工单
+                </div>
+                <div class="btn" @click.stop="proEvListFakerCombo(event,model.eventId)">
+                    <img src="../images/scrap_blue_btn.png" alt="">
+                    关闭
+                </div>
+            </span>
+        </li>
+    </ul>
+
+    <!-- 工程报修事件类型 -->
+    <ul class="obj" v-if="eventTypeSel === 2">
+        <li v-for="model in proEvListData.data"  @click.stop="openProEvInfoW(model)"> 
+            <span class="s0" v-text="model.eventDescribe" :title="model.eventDescribe"></span>
+
+            <span :class="eventRate === 1 ? 's21' : 's22'" :title="model.associationObject" v-html="model.obj">
+                <!-- <div class="wrap clear">
+                    <span v-for="item in evListStrToArr(model.associationObject)[0]" class="" :class="{'moreBlue':item.split('@').length != 1}">
+                        <span v-text="item"></span>
+                        <span>,</span>
+                    </span>
+                </div> -->
+            </span>
+            <div class="moreObj" v-show="model.isL" :class="eventRate === 1 ? 'moreObj1' : 'moreObj2'" v-text="evListStrToArr(model.associationObject)[1]" :title="evListStrToArr(model.associationObject)[1]"></div>
+
+            <span :class="(eventRate === 1 || (eventRate === 0 && !proEvListPower.closeEvent)) ? 's31' : 's32'"
+            v-text="model.problemType" :title="model.problemType"></span>
+            <span class="s1" v-text="model.deptName" :title="model.deptName"></span>
+            <span :class="eventRate === 0 && !proEvListPower.closeEvent ? 's41' : 's42'" v-text="eventRate === 2 ? model.handlePersons.join(',') : model.contacts"
+            :title="eventRate === 2 ? model.handlePersons : model.contacts"></span>
+            <span :class="eventRate === 0 && !proEvListPower.closeEvent ? 's51' : 's52'" v-text="eventRate === 0 ? '报修时间' : allcleRon[model.closeType]"
+            :title="eventRate === 0 ? '报修时间' : allcleRon[model.closeType]" v-show="eventRate != 1"></span>
+            
+            <span class="s6" v-show="eventRate === 2" v-text="model.closeTime" :title="model.closeTime"></span>
+            <!-- 操作 -->
+            <span class="s6" v-show="eventRate === 0 && proEvListPower.closeEvent">
+                <div class="btn" @click.stop="eventToWorkOrder(model.eventId)">
+                    <i class="icon">`</i>
+                    转工单
+                </div>
+                <div class="btn" @click.stop="proEvListFakerCombo(event,model.eventId)">
+                    <img src="../images/scrap_blue_btn.png" alt="">
+                    关闭
+                </div>
+            </span>
+
+            <span class="s56" v-show="eventRate === 1" v-text="model.workOrderState" :title="model.workOrderState"></span>
+        </li>
+    </ul>
+
+    <!-- 总部指派事件类型 -->
+    <ul class="hq" v-if="eventTypeSel === 3">
+        <li v-for="model in proEvListData.data"  @click.stop="openProEvInfoW(model)"> 
+            <span class="s0" v-text="model.eventDescribe" :title="model.eventDescribe"></span>
+            <span class="s5" v-text="model.deptName" :title="model.deptName"></span>
+            <span :class="eventRate === 0 && proEvListPower.closeEvent ? 's11' : 's12'" :title="eventRate === 2 ? model.handlePersons : model.contacts"
+             v-text="eventRate === 2 ? model.handlePersons : model.contacts"></span>
+            <span :class="eventRate === 0 && proEvListPower.closeEvent ? 's21' : 's22'" :title="eventRate === 2 ? allcleRon[model.closeType] : eventRate === 1 ? model.workOrderState : '开始服务时间'"
+            v-text="eventRate === 2 ? allcleRon[model.closeType] : eventRate === 1 ? model.workOrderState : '开始服务时间'"></span>
+            <span :class="eventRate === 0 && proEvListPower.closeEvent ? 's31' : 's32'" v-text="eventRate === 2 ? model.closeTime : model.endTime"
+            :title="eventRate === 2 ? model.closeTime : model.endTime"></span>
+            <!-- 操作 -->
+            <span class="s4" v-show="eventRate === 0 && proEvListPower.closeEvent">
+                <div class="btn" @click.stop="eventToWorkOrder(model.eventId)">
+                    <i class="icon">`</i>
+                    转工单
+                </div>
+                <div class="btn" @click.stop="proEvListFakerCombo(event,model.eventId)">
+                    <img src="../images/scrap_blue_btn.png" alt="">
+                    关闭
+                </div>
+            </span>
+        </li>
+    </ul>
+
+    <!-- 数据异常事件类型 -->
+    <ul v-if="eventTypeSel === 4 && eventRate === 0" class="warn1">
+
+        <li v-for="model in proEvListData.data"  @click.stop="openProEvInfoW(model)">
+            <span class="s0" v-text="model.repairPosition" :title="model.repairPosition"></span>
+
+            <span class="s1" :title="model.associationObject" v-html="model.obj">
+                <!-- <div class="clear wrap">
+                    <span v-for="item in evListStrToArr(model.associationObject)[0]" class="clear" :class="{'moreBlue':item.split('@').length != 1}">
+                        <span v-text="item"></span>
+                        <span>,</span>
+                    </span>
+                </div> -->
+            </span>
+
+            <div class="moreObj moreObj3" v-show="model.isL" v-text="evListStrToArr(model.associationObject)[1]" :title="evListStrToArr(model.associationObject)[1]"></div>
+
+            <span class="s2" v-text="model.infoPoint" :title="model.infoPoint"></span>
+
+            <!-- <span class="s3" v-text="model.actualValue" :title="model.actualValue"></span> -->
+            <span class="s3" v-text="evListActual(model.actualValue,model.actualValues,model.unit)" :title="evListActual(model.actualValue,model.actualValues,model.unit)"></span>
+            
+            <span class="s4" v-text="evListWrong(model.wrongs,model.wrongRanges)"></span>
+
+            <span class="s5" v-text="model.deptName" :title="model.deptName"></span>
+            <span class="s6" v-text="model.contacts" :title="model.contacts"></span>
+            <span class="s7" v-text="model.createTime" :title="model.createTime"></span>
+            <span class="s8">
+                <div class="btn" @click.stop="eventToWorkOrder(model.eventId)">
+                    <i class="icon">`</i>
+                    转工单
+                </div>
+                <div class="btn" @click.stop="proEvListFakerCombo(event,model.eventId)">
+                    <img src="../images/scrap_blue_btn.png" alt="">
+                    关闭
+                </div>
+            </span>
+        </li>
+
+    </ul>
+
+    <ul v-if="eventTypeSel === 4 && eventRate === 1" class="warn1 warn2">
+        <li class="warn1 warn2" v-if="eventRate === 1" v-for="model in proEvListData.data"  @click.stop="openProEvInfoW(model)">
+            <span class="s0" v-text="model.repairPosition" :title="model.repairPosition"></span>
+    
+            <span class="s1" :title="model.associationObject" v-html="model.obj">
+                <!-- <div class="clear wrap">
+                    <span v-for="item in evListStrToArr(model.associationObject)[0]" class="clear" :class="{'moreBlue':item.split('@').length != 1}">
+                        <span v-text="item"></span>
+                        <span>,</span>
+                    </span>
+                </div> -->
+            </span>
+    
+            <div class="moreObj moreObj4" v-show="model.isL" v-text="evListStrToArr(model.associationObject)[1]" :title="evListStrToArr(model.associationObject)[1]"></div>
+    
+            <span class="s2" v-text="model.infoPoint" :title="model.infoPoint"></span>
+    
+            <!-- <span class="s3" v-text="model.actualValue" :title="model.actualValue"></span> -->
+            <span class="s3" v-text="evListActual(model.actualValue,model.actualValues,model.unit)" :title="evListActual(model.actualValue,model.actualValues,model.unit)"></span>
+    
+            <span class="s4" v-text="evListWrong(model.wrongs,model.wrongRanges)"></span>
+            <span class="s5" v-text="model.deptName" :title="model.deptName"></span>
+            <span class="s6" v-text="model.contacts" :title="model.contacts"></span>
+            <span class="s7" v-text="model.workOrderState" :title="model.workOrderState"></span>
+        </li>
+    </ul>
+
+    <ul v-if="eventTypeSel === 4 && eventRate === 2" class="warn1 warn3">
+        <li class="warn1 warn3" v-if="eventRate === 2" v-for="model in proEvListData.data"  @click.stop="openProEvInfoW(model)">
+            <span class="s0" v-text="model.repairPosition" :title="model.repairPosition"></span>
+
+            <span class="s1" :title="model.associationObject" v-html="model.obj">
+                <!-- <div class="clear wrap">
+                    <span v-for="item in evListStrToArr(model.associationObject)[0]" class="clear" :class="{'moreBlue':item.split('@').length != 1}">
+                        <span v-text="item"></span>
+                        <span>,</span>
+                    </span>
+                </div> -->
+            </span>
+
+            <div class="moreObj moreObj4" v-show="model.isL" v-text="evListStrToArr(model.associationObject)[1]" :title="evListStrToArr(model.associationObject)[1]"></div>
+
+            <span class="s2" v-text="model.infoPoint" :title="model.infoPoint"></span>
+
+            <!-- <span class="s3" v-text="model.actualValue" :title="model.actualValue"></span> -->
+            <span class="s3" v-text="evListActual(model.actualValue,model.actualValues,model.unit)" :title="evListActual(model.actualValue,model.actualValues,model.unit)"></span>
+
+            <span class="s5" v-text="model.deptName" :title="model.deptName"></span>
+            <span class="s5" v-text="model.handlePersons" :title="model.handlePersons"></span>
+            <span class="s6" v-text="allcleRon[model.closeType]" :title="allcleRon[model.closeType]"></span>
+            <span class="s7" v-text="model.closeTime" :title="model.closeTime"></span>
+        </li>
+    </ul>
+
+</script>
+<pbutton-menuminor sel="proEvListCloseSel" id="'closeProEventCombo'" bind="true">
+    <header></header>
+    <item datasource="eventCloseReason" text="name" id="code"></item>
+</pbutton-menuminor>

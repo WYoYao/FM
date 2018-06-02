@@ -1,8 +1,15 @@
 .pointer {
   cursor: pointer; }
 
+.inline-block {
+  display: inline-block;
+  cursor: pointer; }
+
 body {
   overflow: hidden; }
+
+.rc {
+  color: #f97c7c; }
 
 ._font_over {
   overflow: hidden;
@@ -37,12 +44,9 @@ body {
   position: relative;
   background: #f8f8f8; }
   #app .monitoring_plan .main {
-    position: absolute;
     background: #ffffff;
-    top: 12px;
-    left: 10px;
-    right: 10px;
-    bottom: 0; }
+    width: 100%;
+    height: 100%; }
     #app .monitoring_plan .main .content {
       margin: 0 20px;
       height: 100%; }
@@ -134,6 +138,8 @@ body {
                 background: white;
                 overflow-y: auto; }
                 #app .monitoring_plan .main .content .contenter .status_view .total_count .hoverList ul li {
+                  padding: 0 10px 0;
+                  width: calc(100% - 20px);
                   height: 20px;
                   line-height: 20px;
                   font-size: 12px; }
@@ -143,7 +149,7 @@ body {
               display: block;
               left: 0;
               top: 20px; }
-          #app .monitoring_plan .main .content .contenter .status_view .icon {
+          #app .monitoring_plan .main .content .contenter .status_view .icons {
             float: right;
             width: calc(100% - 430px);
             height: auto;
@@ -151,17 +157,17 @@ body {
             display: flex;
             align-items: center;
             flex-wrap: wrap; }
-            #app .monitoring_plan .main .content .contenter .status_view .icon > div {
+            #app .monitoring_plan .main .content .contenter .status_view .icons > div {
               height: 25px;
               line-height: 25px;
               font-size: 14px;
               margin-right: 20px; }
-              #app .monitoring_plan .main .content .contenter .status_view .icon > div img {
+              #app .monitoring_plan .main .content .contenter .status_view .icons > div img {
                 width: 12px;
                 height: 12px;
                 margin-right: 10px;
                 margin-top: 6px; }
-            #app .monitoring_plan .main .content .contenter .status_view .icon > div:nth-of-type(1) div {
+            #app .monitoring_plan .main .content .contenter .status_view .icons > div:nth-of-type(1) div {
               float: left;
               width: 12px;
               height: 12px;

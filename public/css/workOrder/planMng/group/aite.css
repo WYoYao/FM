@@ -75,7 +75,7 @@
     .aite-bubble.aite .aite-body > div {
       width: 100%;
       height: 100%; }
-    .aite-bubble.aite .aite-body .build .aite-list .name, .aite-bubble.aite .aite-body .build .equip .tree-body .last-level-box .aite-list .name, .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .build .aite-list .name {
+    .aite-bubble.aite .aite-body .build .index .aite-list > .name, .aite-bubble.aite .aite-body .build .aite-list > .name, .aite-bubble.aite .aite-body .build .system .level-box .aite-list > .name, .aite-bubble.aite .aite-body .build .floor .level-box .aite-list > .name, .aite-bubble.aite .aite-body .build .room .last-level-box .aite-list > .name, .aite-bubble.aite .aite-body .build .equip .tree-body .last-level-box .aite-list > .name, .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .build .aite-list > .name {
       display: inline-block;
       max-width: 230px;
       height: 100%;
@@ -96,10 +96,34 @@
         cursor: pointer;
         display: inline-block;
         margin-top: 14px; }
+        .aite-bubble.aite .aite-body .build .aite-list .ck .pcheckbox > .pcheckbox_input {
+          float: left;
+          width: 16px;
+          height: 16px;
+          border: 1px solid #7a94ad;
+          border-radius: 2px;
+          box-sizing: border-box;
+          position: relative;
+          cursor: pointer;
+          background: #fff; }
         .aite-bubble.aite .aite-body .build .aite-list .ck .pcheckbox .pswitch_label {
           float: left; }
         .aite-bubble.aite .aite-body .build .aite-list .ck .pcheckbox .pcheckbox-checked {
           background: #7a94ad; }
+        .aite-bubble.aite .aite-body .build .aite-list .ck .pcheckbox .pcheckbox-checked.pcheckbox_input:before {
+          box-sizing: content-box;
+          content: "";
+          border: 2px solid #fff;
+          border-left: 0;
+          border-top: 0;
+          height: 7px;
+          left: 4px;
+          top: 1px;
+          transform: rotate(45deg);
+          width: 4px;
+          transition: transform 0.15s cubic-bezier(0.71, -0.46, 0.88, 0.6) 0.05s;
+          transform-origin: center;
+          position: absolute; }
     .aite-bubble.aite .aite-body .system .level-box, .aite-bubble.aite .aite-body .floor .level-box {
       width: 50%;
       height: 100%;
@@ -110,7 +134,7 @@
       vertical-align: top;
       overflow-y: auto;
       border-right: 1px solid #cacaca; }
-      .aite-bubble.aite .aite-body .system .level-box .aite-list .name, .aite-bubble.aite .aite-body .floor .level-box .aite-list .name {
+      .aite-bubble.aite .aite-body .system .level-box .index .aite-list > .name, .aite-bubble.aite .aite-body .system .level-box .build .aite-list > .name, .aite-bubble.aite .aite-body .system .level-box .aite-list > .name, .aite-bubble.aite .aite-body .system .level-box .room .last-level-box .aite-list > .name, .aite-bubble.aite .aite-body .system .level-box .equip .tree-body .last-level-box .aite-list > .name, .aite-bubble.aite .aite-body .floor .level-box .index .aite-list > .name, .aite-bubble.aite .aite-body .floor .level-box .build .aite-list > .name, .aite-bubble.aite .aite-body .floor .level-box .aite-list > .name, .aite-bubble.aite .aite-body .floor .level-box .room .last-level-box .aite-list > .name, .aite-bubble.aite .aite-body .floor .level-box .equip .tree-body .last-level-box .aite-list > .name {
         display: inline-block;
         max-width: 100px;
         height: 100%;
@@ -131,10 +155,34 @@
           cursor: pointer;
           display: inline-block;
           margin-top: 14px; }
+          .aite-bubble.aite .aite-body .system .level-box .aite-list .ck .pcheckbox > .pcheckbox_input, .aite-bubble.aite .aite-body .floor .level-box .aite-list .ck .pcheckbox > .pcheckbox_input {
+            float: left;
+            width: 16px;
+            height: 16px;
+            border: 1px solid #7a94ad;
+            border-radius: 2px;
+            box-sizing: border-box;
+            position: relative;
+            cursor: pointer;
+            background: #fff; }
           .aite-bubble.aite .aite-body .system .level-box .aite-list .ck .pcheckbox .pswitch_label, .aite-bubble.aite .aite-body .floor .level-box .aite-list .ck .pcheckbox .pswitch_label {
             float: left; }
           .aite-bubble.aite .aite-body .system .level-box .aite-list .ck .pcheckbox .pcheckbox-checked, .aite-bubble.aite .aite-body .floor .level-box .aite-list .ck .pcheckbox .pcheckbox-checked {
             background: #7a94ad; }
+          .aite-bubble.aite .aite-body .system .level-box .aite-list .ck .pcheckbox .pcheckbox-checked.pcheckbox_input:before, .aite-bubble.aite .aite-body .floor .level-box .aite-list .ck .pcheckbox .pcheckbox-checked.pcheckbox_input:before {
+            box-sizing: content-box;
+            content: "";
+            border: 2px solid #fff;
+            border-left: 0;
+            border-top: 0;
+            height: 7px;
+            left: 4px;
+            top: 1px;
+            transform: rotate(45deg);
+            width: 4px;
+            transition: transform 0.15s cubic-bezier(0.71, -0.46, 0.88, 0.6) 0.05s;
+            transform-origin: center;
+            position: absolute; }
       .aite-bubble.aite .aite-body .system .level-box .aite_on, .aite-bubble.aite .aite-body .system .level-box .aite-list:hover, .aite-bubble.aite .aite-body .floor .level-box .aite_on, .aite-bubble.aite .aite-body .floor .level-box .aite-list:hover {
         background: #02a9d1 !important;
         color: #fff !important; }
@@ -154,7 +202,7 @@
       box-sizing: border-box;
       vertical-align: top;
       overflow-y: auto; }
-      .aite-bubble.aite .aite-body .room .last-level-box .aite-list .name {
+      .aite-bubble.aite .aite-body .room .last-level-box .index .aite-list > .name, .aite-bubble.aite .aite-body .room .last-level-box .build .aite-list > .name, .aite-bubble.aite .aite-body .room .last-level-box .system .level-box .aite-list > .name, .aite-bubble.aite .aite-body .room .last-level-box .floor .level-box .aite-list > .name, .aite-bubble.aite .aite-body .room .last-level-box .aite-list > .name {
         display: inline-block;
         max-width: 100px;
         height: 100%;
@@ -175,10 +223,34 @@
           cursor: pointer;
           display: inline-block;
           margin-top: 14px; }
+          .aite-bubble.aite .aite-body .room .last-level-box .aite-list .ck .pcheckbox > .pcheckbox_input {
+            float: left;
+            width: 16px;
+            height: 16px;
+            border: 1px solid #7a94ad;
+            border-radius: 2px;
+            box-sizing: border-box;
+            position: relative;
+            cursor: pointer;
+            background: #fff; }
           .aite-bubble.aite .aite-body .room .last-level-box .aite-list .ck .pcheckbox .pswitch_label {
             float: left; }
           .aite-bubble.aite .aite-body .room .last-level-box .aite-list .ck .pcheckbox .pcheckbox-checked {
             background: #7a94ad; }
+          .aite-bubble.aite .aite-body .room .last-level-box .aite-list .ck .pcheckbox .pcheckbox-checked.pcheckbox_input:before {
+            box-sizing: content-box;
+            content: "";
+            border: 2px solid #fff;
+            border-left: 0;
+            border-top: 0;
+            height: 7px;
+            left: 4px;
+            top: 1px;
+            transform: rotate(45deg);
+            width: 4px;
+            transition: transform 0.15s cubic-bezier(0.71, -0.46, 0.88, 0.6) 0.05s;
+            transform-origin: center;
+            position: absolute; }
     .aite-bubble.aite .aite-body .equip .system-major {
       width: 100%;
       height: 35px;
@@ -187,7 +259,7 @@
       font-size: 12px;
       padding: 0 8px 0 14px;
       border-bottom: 1px solid #d9d9d9; }
-      .aite-bubble.aite .aite-body .equip .system-major .title {
+      .aite-bubble.aite .aite-body .equip .system-major > .title {
         line-height: 35px;
         color: #888;
         max-width: 78px; }
@@ -219,7 +291,7 @@
         box-sizing: border-box;
         vertical-align: top;
         overflow-y: auto; }
-        .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .aite-list .name {
+        .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .index .aite-list > .name, .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .build .aite-list > .name, .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .system .level-box .aite-list > .name, .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .floor .level-box .aite-list > .name, .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .aite-list > .name {
           display: inline-block;
           max-width: 100px;
           height: 100%;
@@ -240,10 +312,34 @@
             cursor: pointer;
             display: inline-block;
             margin-top: 14px; }
+            .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .aite-list .ck .pcheckbox > .pcheckbox_input {
+              float: left;
+              width: 16px;
+              height: 16px;
+              border: 1px solid #7a94ad;
+              border-radius: 2px;
+              box-sizing: border-box;
+              position: relative;
+              cursor: pointer;
+              background: #fff; }
             .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .aite-list .ck .pcheckbox .pswitch_label {
               float: left; }
             .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .aite-list .ck .pcheckbox .pcheckbox-checked {
               background: #7a94ad; }
+            .aite-bubble.aite .aite-body .equip .tree-body .last-level-box .aite-list .ck .pcheckbox .pcheckbox-checked.pcheckbox_input:before {
+              box-sizing: content-box;
+              content: "";
+              border: 2px solid #fff;
+              border-left: 0;
+              border-top: 0;
+              height: 7px;
+              left: 4px;
+              top: 1px;
+              transform: rotate(45deg);
+              width: 4px;
+              transition: transform 0.15s cubic-bezier(0.71, -0.46, 0.88, 0.6) 0.05s;
+              transform-origin: center;
+              position: absolute; }
   .aite-bubble.aite .aite-footer {
     width: 100%;
     height: 60px;

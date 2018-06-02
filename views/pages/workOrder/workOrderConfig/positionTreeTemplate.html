@@ -1,0 +1,81 @@
+
+<script type="text/html" id="item-tree-template">
+    <div class="organizationTreeBox">
+        <div class="organizationTreeBoxName" @click="choice(model,$event)">    
+            <span
+            class="partitionName"
+            :class="{'checked':model.checked ,'disabled':model.disabled}"
+            :style="{'text-indent':(model.lv *24 +'px')}" 
+            v-text = "model.obj_name">
+            </span>
+        </div>
+        <!-- <div style="border-bottom:1px solid #eee"></div> -->
+        <div>
+            
+            <organizationtree class="item"  v-for="model in model.child_objs" :model="model" :choice="choice" :style="{'box-sizing':'border-box'}">
+            </organizationtree>
+        </div>
+        
+    </div>
+</script>
+<script>
+    Vue.component('organizationtree', {
+        template: '#item-tree-template',
+        props: ["model", "choice"],
+
+    })
+</script>
+
+<!-- 下拉单选 -->
+<script type="text/html" id="item-sinselect-template">
+    <section id="singleSelect">
+        <div class="title singleSelectTitle" @click="open">
+            <span>请选择</span>
+            <i>v</i>
+        </div>
+        <div class="list singleSelectList" :aaa = "JSON.stringify(model)">
+            <ul class="singleSelectListUl">
+                <li v-for="item in model" @click="checked(item)">
+                    <i v-text="item.next_name"></i>
+                    <span v-if="item.isShow"></span>
+                </li>
+            </ul>
+        </div>
+            
+    </section>
+</script>
+<script>
+    Vue.component('sinselect', {
+        template: '#item-sinselect-template',
+        props: ["model", "open" ,"checked"],
+
+    })
+</script>
+
+
+<!-- 下拉多选 -->
+<script type="text/html" id="item-mutiselect-template">
+    <section class="mutiSelect">
+        <div class="title mutiSelectTitle" @click="open">
+            <span v-text="model[0].name || ''">请选择</span>
+            <i>v</i>
+        </div>
+        <div class="list mutiSelectList" :aaa = "JSON.stringify(model)">
+            <ul class="mutiSelectListUl">
+                <li v-for="item in model" @click="checked(item)">
+                    <i v-text="item.name"></i>
+                    <span v-if="item.isShow"></span>
+                </li>
+            </ul>
+        </div>
+            
+    </section>
+</script>
+
+<script>
+    Vue.component('mutiselect', {
+        template: '#item-mutiselect-template',
+        props: ["model", "open" ,"checked"],
+
+    })
+</script>

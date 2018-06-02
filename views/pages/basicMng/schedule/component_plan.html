@@ -1,0 +1,57 @@
+<script type="text/html" id="plan">
+    <ul class="plan_ul">
+        <li v-for = "row in plan_arr">
+            <p v-for="model in row.columns" v-html="model" class="viewItem" :title="model"></p>
+        </li>
+    </ul>
+</script>
+
+<script>
+    Vue.component('plan', {
+        props: [
+            "plan_arr",
+        ],
+        data: function () {
+            return {
+       
+            }
+        },
+        template: '#plan'
+    })
+</script>
+
+<style>
+    .viewItem {
+        display: table-cell;
+        box-sizing: border-box;
+        border-right: 1px solid #ddd;
+        border-top: 1px solid #fff;
+        border-left: 1px solid #fff;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+        height: 30px;
+        line-height: 30px;
+        vertical-align: middle;
+        white-space:nowrap; 
+        text-overflow:ellipsis;
+        overflow:hidden;
+    }
+
+    .plan_ul {
+        border-top: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+        margin: 0 10px;
+        display: inline-table;
+        min-width: 1280px;
+        width: calc(100% - 20px);
+        box-sizing: border-box;
+    }
+
+    .plan_ul>li{
+        display: table-row;
+    }
+
+    .plan_ul>li p:nth-child(1) {
+        display: none;
+    }
+</style>

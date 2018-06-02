@@ -10,20 +10,18 @@
             float: left;
         }
         .cite{
-            width: 150px;
             height: 30px;
             float: right;
             margin-top: 10px;
         }
         .type{
-            width: 150px;
             height: 30px;
             float: right;
             margin-top: 10px;
             margin-right: 10px;
         }
         .text{
-            width: 300px;
+            min-width: 300px;
             height: 100%;
             line-height: 50px;
             font-size: 14px;
@@ -53,6 +51,9 @@
                 height: 38px;
                 list-style-type: none;
                 line-height: 38px;
+                div{
+                    height: 38px;
+                }
                 &:nth-of-type(odd){
                     background: #f5f7fa;
                 }

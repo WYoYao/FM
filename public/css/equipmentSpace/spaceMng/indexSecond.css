@@ -2,7 +2,6 @@
 .contentWrap {
     height: 100%;
     background: #E6E9EC;
-    padding: 16px 12px 0px;
     box-sizing: border-box;
     position: relative;
     display: none;
@@ -26,7 +25,6 @@
         padding: 20px 20px 10px 465px;
         box-sizing: border-box;
         box-shadow: 0 -1px 5px 0 rgba(0, 0, 0, 0.05);
-        border-radius: 6px 6px 0 0;
         position: relative;
     }
 
@@ -51,6 +49,9 @@
                 .contentWrap .spaceContent .leftContent .leftHead .buildCombobox {
                     float: left;
                     width: 170px;
+                    height: 30px;
+                    line-height: 30px;
+                    color: #637e99;
                 }
 
                 .contentWrap .spaceContent .leftContent .leftHead .checkAll {
@@ -285,6 +286,9 @@
                 border-bottom: 1px solid #d9e2e8;
                 padding: 10px 20px;
                 box-sizing: border-box;
+                z-index: 1;
+                position: relative;
+                line-height: 31px;
             }
 
                 .contentWrap .spaceContent .rightContent .spaceHead .title {
@@ -631,6 +635,7 @@
         padding: 50px 20px 10px;
         box-sizing: border-box;
         display: none;
+        z-index: 2;
     }
 
     .contentWrap .spaceContent .addSpaceDiv {
@@ -683,11 +688,12 @@
     display: none;
 }
 #floorCheckFloat {
-    z-index: 1;
+    z-index: 2;
 }
 
 #spaceCheckFloat {
-    z-index: 1;
+    /* z-index: 2; */
+    z-index: 3;
 }
 
 .contentWrap .detailFloat {

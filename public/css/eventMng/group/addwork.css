@@ -1,0 +1,354 @@
+* {
+  margin: 0;
+  padding: 0;
+  user-select: none; }
+
+body {
+  background: #f8f8f8;
+  padding: 12px 10px 0;
+  width: calc(100% - 20px);
+  height: calc(100% - 12px);
+  overflow: hidden; }
+
+#app {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  background: white; }
+
+.pointer {
+  cursor: pointer; }
+
+.icon {
+  font-family: "perficon"; }
+
+._font_over {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+.flex-column {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: stretch; }
+
+.flex-row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: stretch; }
+
+.complete, #app, #app .towork {
+  height: 100%;
+  width: 100%; }
+
+.border-radius, #app .towork {
+  border-radius: 6px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0; }
+
+.box-shadow, #app, #app .towork {
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.12); }
+
+.margin0 {
+  margin: 0 !important; }
+
+.layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1; }
+
+#app .towork {
+  position: relative;
+  background: #ffffff; }
+  #app .towork > .header {
+    margin: 0 20px;
+    height: 50px; }
+    #app .towork > .header > div {
+      float: right;
+      margin-left: 20px;
+      margin-top: 10px;
+      width: 90px;
+      line-height: 30px;
+      height: 30px; }
+    #app .towork > .header > div > div {
+      width: 100%; }
+    #app .towork > .header .cancel {
+      float: left;
+      margin-left: 0; }
+    #app .towork > .header .ff {
+      position: relative;
+      width: auto; }
+      #app .towork > .header .ff u {
+        cursor: pointer; }
+      #app .towork > .header .ff .block {
+        position: absolute;
+        width: 376px;
+        height: 416px;
+        top: 30px;
+        right: 0;
+        z-index: 2; }
+  #app .towork > .content {
+    margin: 0 20px 10px;
+    border: 1px solid #d9e2e8;
+    height: calc( 100% - 60px);
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    margin: 0 !important;
+    border: none !important; }
+    #app .towork > .content > .left {
+      height: 100%;
+      width: 300px;
+      padding: 0 20px;
+      border-right: 1px solid #d9e2e8;
+      overflow-y: auto;
+      overflow-y: overlay; }
+      #app .towork > .content > .left > .title {
+        height: 60px;
+        line-height: 60px;
+        font-size: 16px;
+        color: #333333;
+        box-sizing: border-box;
+        border-bottom: 1px solid #cacaca;
+        margin-bottom: -6px; }
+      #app .towork > .content > .left > .item {
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: flex-end; }
+        #app .towork > .content > .left > .item > .text {
+          flex: 1;
+          padding-top: 12px;
+          line-height: 38px;
+          font-size: 14px; }
+        #app .towork > .content > .left > .item > .must {
+          position: relative; }
+          #app .towork > .content > .left > .item > .must::after {
+            position: absolute;
+            width: 10px;
+            content: "*";
+            line-height: 10px;
+            top: 31px;
+            left: -10px;
+            font-size: 20px;
+            color: #68C5B3; }
+        #app .towork > .content > .left > .item > .block {
+          height: 30px; }
+      #app .towork > .content > .left > .dashed {
+        height: 0;
+        margin: 40px 0;
+        border-top: 1px dashed #cacaca; }
+      #app .towork > .content > .left > .checkbox {
+        font-size: 14px;
+        height: 18px;
+        line-height: 18px;
+        margin-bottom: 20px; }
+    #app .towork > .content > .right {
+      height: 100%;
+      flex: 1;
+      margin: 0 20px; }
+      #app .towork > .content > .right > .title {
+        height: 60px;
+        line-height: 60px;
+        font-size: 16px;
+        color: #333333; }
+      #app .towork > .content > .right > .view {
+        height: calc( 100% - 60px);
+        overflow-y: auto;
+        overflow: overlay;
+        margin-right: -20px; }
+        #app .towork > .content > .right > .view > .btn {
+          line-height: 30px;
+          cursor: pointer;
+          color: #637e99; }
+        #app .towork > .content > .right > .view > .section {
+          padding: 0 20px;
+          margin-bottom: 20px;
+          margin-right: 20px;
+          border: 1px solid #d9e2e8; }
+          #app .towork > .content > .right > .view > .section > .name {
+            font-size: 14px;
+            color: #333333;
+            box-sizing: border-box;
+            border-bottom: 1px solid #cacaca; }
+            #app .towork > .content > .right > .view > .section > .name > .input {
+              height: 50px;
+              border: none;
+              width: calc( 100% - 40px); }
+            #app .towork > .content > .right > .view > .section > .name > .percent {
+              float: right;
+              line-height: 50px;
+              font-size: 12px;
+              color: #637e99;
+              text-align: right; }
+          #app .towork > .content > .right > .view > .section > .obj {
+            font-size: 14px;
+            color: #333333;
+            box-sizing: border-box;
+            border-bottom: 1px solid #cacaca;
+            position: relative; }
+            #app .towork > .content > .right > .view > .section > .obj > .textarea {
+              padding: 16px 0;
+              font-size: 14px;
+              height: 84px;
+              border: none; }
+            #app .towork > .content > .right > .view > .section > .obj > .bottom {
+              height: 30px;
+              line-height: 30px; }
+              #app .towork > .content > .right > .view > .section > .obj > .bottom > .btn {
+                float: left;
+                color: #637e99; }
+              #app .towork > .content > .right > .view > .section > .obj > .bottom > .percent {
+                float: right;
+                line-height: 30px;
+                font-size: 12px;
+                color: #637e99;
+                text-align: right; }
+          #app .towork > .content > .right > .view > .section > .picture {
+            margin: 20px 0; }
+          #app .towork > .content > .right > .view > .section > .sop {
+            font-size: 14px;
+            color: #333333;
+            box-sizing: border-box;
+            border-bottom: 1px solid #cacaca;
+            position: relative; }
+            #app .towork > .content > .right > .view > .section > .sop > .textarea {
+              padding: 16px 0;
+              font-size: 14px;
+              padding: inherit !important;
+              height: 32px;
+              border: none; }
+            #app .towork > .content > .right > .view > .section > .sop > .bottom {
+              height: 30px;
+              line-height: 30px; }
+              #app .towork > .content > .right > .view > .section > .sop > .bottom > .btn {
+                float: left;
+                color: #637e99; }
+              #app .towork > .content > .right > .view > .section > .sop > .bottom > .percent {
+                float: right;
+                line-height: 30px;
+                font-size: 12px;
+                color: #637e99;
+                text-align: right; }
+          #app .towork > .content > .right > .view > .section > .work {
+            font-size: 14px;
+            color: #333333;
+            box-sizing: border-box;
+            border-bottom: 1px solid #cacaca;
+            position: relative; }
+            #app .towork > .content > .right > .view > .section > .work > .textarea {
+              padding: 16px 0;
+              font-size: 14px;
+              height: 66px;
+              border: none; }
+            #app .towork > .content > .right > .view > .section > .work > .bottom {
+              height: 30px;
+              line-height: 30px; }
+              #app .towork > .content > .right > .view > .section > .work > .bottom > .btn {
+                float: left;
+                color: #637e99; }
+              #app .towork > .content > .right > .view > .section > .work > .bottom > .percent {
+                float: right;
+                line-height: 30px;
+                font-size: 12px;
+                color: #637e99;
+                text-align: right; }
+          #app .towork > .content > .right > .view > .section > .group {
+            height: 30px;
+            line-height: 30px;
+            padding: 10px 0; }
+            #app .towork > .content > .right > .view > .section > .group > .checkbox {
+              margin-top: 7px;
+              float: left; }
+            #app .towork > .content > .right > .view > .section > .group .pcheckbox {
+              margin-top: 7px !important; }
+            #app .towork > .content > .right > .view > .section > .group .pcheckbox {
+              margin-top: 7px;
+              overflow: hidden;
+              color: #637e99;
+              line-height: 16px;
+              cursor: pointer;
+              display: inline-block;
+              margin-top: 14px; }
+              #app .towork > .content > .right > .view > .section > .group .pcheckbox > .pcheckbox_input {
+                float: left;
+                width: 16px;
+                height: 16px;
+                border: 1px solid #7a94ad;
+                border-radius: 2px;
+                box-sizing: border-box;
+                position: relative;
+                cursor: pointer;
+                background: #fff; }
+              #app .towork > .content > .right > .view > .section > .group .pcheckbox .pswitch_label {
+                float: left; }
+              #app .towork > .content > .right > .view > .section > .group .pcheckbox .pcheckbox-checked {
+                background: #7a94ad; }
+              #app .towork > .content > .right > .view > .section > .group .pcheckbox .pcheckbox-checked.pcheckbox_input:before {
+                box-sizing: content-box;
+                content: "";
+                border: 2px solid #fff;
+                border-left: 0;
+                border-top: 0;
+                height: 7px;
+                left: 4px;
+                top: 1px;
+                transform: rotate(45deg);
+                width: 4px;
+                transition: transform 0.15s cubic-bezier(0.71, -0.46, 0.88, 0.6) 0.05s;
+                transform-origin: center;
+                position: absolute; }
+            #app .towork > .content > .right > .view > .section > .group > .delete {
+              float: right;
+              color: #FF7B7B; }
+          #app .towork > .content > .right > .view > .section > .matter-error {
+            background: #f8f8f8;
+            clear: both; }
+            #app .towork > .content > .right > .view > .section > .matter-error .error {
+              position: relative;
+              border-top: 1px solid #d9e2e8;
+              width: 100%;
+              height: 40px;
+              line-height: 40px;
+              font-size: 12px;
+              -webkit-box-sizing: border-box;
+              -moz-box-sizing: border-box;
+              box-sizing: border-box;
+              padding: 0 15px; }
+              #app .towork > .content > .right > .view > .section > .matter-error .error em {
+                display: inline-block;
+                width: 12px;
+                height: 12px;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                -webkit-border-radius: 3px;
+                -moz-border-radius: 3px;
+                border-radius: 3px;
+                background-color: #ef6767;
+                color: white;
+                text-align: center;
+                line-height: 12px;
+                font-size: 10px;
+                vertical-align: initial; }
+              #app .towork > .content > .right > .view > .section > .matter-error .error span {
+                color: #ef6767;
+                display: inline-block;
+                vertical-align: text-bottom;
+                line-height: normal; }
+              #app .towork > .content > .right > .view > .section > .matter-error .error .ignore {
+                position: absolute;
+                top: 0;
+                right: 16px;
+                color: #7a94ad;
+                cursor: pointer; }
+                #app .towork > .content > .right > .view > .section > .matter-error .error .ignore > span {
+                  display: inline-block;
+                  vertical-align: text-bottom;
+                  line-height: normal; }
+
+/*# sourceMappingURL=addwork.css.map */

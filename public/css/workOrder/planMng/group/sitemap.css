@@ -1,8 +1,15 @@
 .pointer {
   cursor: pointer; }
 
+.inline-block {
+  display: inline-block;
+  cursor: pointer; }
+
 body {
   overflow: hidden; }
+
+.rc {
+  color: #f97c7c; }
 
 ._font_over {
   overflow: hidden;

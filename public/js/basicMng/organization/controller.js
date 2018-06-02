@@ -6,7 +6,7 @@ var organizationController = {
                 url: 'restDeptService/queryDeptPositionTreeByType',
                 data: _data,
                 success: function (res) {
-                    var data = res ? res : [];
+                    var data = res.data ? res.data : [];
                     resolve(data);
                 },
                 error: function (err) {
@@ -42,7 +42,7 @@ var organizationController = {
                 url: 'restGeneralDictService/queryGeneralDictByKey',
                 data: _data,
                 success: function (res) {
-                    var data = res ? res : [];
+                    var data = res.data ? res.data : [];
                     resolve(data);
                 },
                 error: function (err) {
@@ -59,7 +59,7 @@ var organizationController = {
             pajax.post({
                 url: 'restPersonService/queryCurrentUserProjectLimits',
                 success: function (res) {
-                    var data = res ? res : [];
+                    var data = res.data ? res.data : [];
                     resolve(data);
                 },
                 error: function (err) {
@@ -78,7 +78,6 @@ var organizationController = {
                 url: 'restPersonService/addPersonMultipleProject',
                 data: _data,
                 success: function (res) {
-                    console.log(res)
                     var data = res ? res : [];
                     resolve(data);
                 },
@@ -99,7 +98,6 @@ var organizationController = {
                 url: 'restPersonService/addPersonMultipleProject',
                 data: _data,
                 success: function (res) {
-
                     var data = res ? res : [];
                     resolve(data);
                 },
@@ -119,7 +117,7 @@ var organizationController = {
                 url: 'restPersonService/queryNoBindingUserList',
                 data: _data,
                 success: function (res) {
-                    var data = res ? res : [];
+                    var data = res.data ? res.data : [];
                     resolve(data);
                 },
                 error: function (err) {
@@ -136,9 +134,8 @@ var organizationController = {
             pajax.post({
                 url: 'restPersonService/queryFuncPackList',
                 data: _data,
-                success: function (res) {
-      
-                    var data = res ? res : [];
+                success: function (res) { 
+                    var data = res.data ? res.data : [];
                     resolve(data);
                 },
                 error: function (err) {
@@ -156,7 +153,7 @@ var organizationController = {
                 url: 'restDeptService/queryPositionByDeptId',
                 data: _data,
                 success: function (res) {
-                    var data = res ? res : [];
+                    var data = res.data ? res.data : [];
                     resolve(data);
                 },
                 error: function (err) {
@@ -175,6 +172,7 @@ var organizationController = {
                 data: _data,
                 success: function (res) {
                     var data = res ? res : [];
+                    console.log(data);
                     resolve(data);
                 },
                 error: function (err) {
@@ -185,5 +183,80 @@ var organizationController = {
                 }
             });
         });
-    }
+    },
+    queryCoreDeptPersonDetailById: function (_data) {      //查询人员详情
+        return new Promise(function (resolve, reject) {
+            pajax.post({
+                url: 'restPersonService/queryCoreDeptPersonDetailById',
+                data: _data,
+                success: function (res) {
+                    var data = res ? res : [];
+                    resolve(data);
+                },
+                error: function (err) {
+                    reject(err);
+                },
+                complete: function () {
+                    $('#globalloading').phide();
+                }
+            });
+        });
+    },
+    deleteCoreDeptPersonById: function (_data) {      //删除人员
+        return new Promise(function (resolve, reject) {
+            pajax.post({
+                url: 'restPersonService/deleteCoreDeptPersonById',
+                data: _data,
+                success: function (res) {
+                    var data = res ? res : [];
+                    resolve(data);
+                },
+                error: function (err) {
+                    reject(err);
+                },
+                complete: function () {
+                    $('#globalloading').phide();
+                }
+            });
+        });
+    },
+    updateCoreDeptPersonById: function (_data) {      //编辑中心人员信息
+        return new Promise(function (resolve, reject) {
+            pajax.post({
+                url: 'restPersonService/updateCoreDeptPersonById',
+                data: _data,
+                success: function (res) {
+                    var data = res ? res : [];
+                    resolve(data);
+                },
+                error: function (err) {
+                    reject(err);
+                    $("#message").pshow({ text: "保存失败！", state: "failure" });
+                },
+                complete: function () {
+                    $('#globalloading').phide();
+                }
+            });
+        });
+    },
+    updateCoreDeptPersonByIdWithImg: function (_data) {      //快速添加中心部门人员（有图）
+        
+        return new Promise(function (resolve, reject) {
+            pajax.updateWithFile({
+                url: 'restPersonService/updateCoreDeptPersonById',
+                data: _data,
+                success: function (res) {
+                    var data = res ? res : [];
+                    resolve(data);
+                },
+                error: function (err) {
+                    reject(err);
+                    $("#message").pshow({ text: "保存失败！", state: "failure" });
+                },
+                complete: function () {
+                    $('#globalloading').phide();
+                }
+            });
+        });
+    },
 }

@@ -1,0 +1,330 @@
+@import "./public";
+@import "./structure";
+
+.margin0{
+    margin: 0 !important;
+}
+
+.layer{
+    position:fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+@mixin inputparent{
+    font-size: 14px;
+    color: $blacker-font-color;
+    box-sizing: border-box;
+    border-bottom: 1px solid $blue-border-colorer;
+}
+
+@mixin percent{
+    font-size: 12px;
+    color: $blue-font-color;
+    text-align: right;
+}
+
+@mixin object{
+    @include inputparent;
+    position: relative;
+
+    & > .textarea{
+        padding: 16px 0;
+        font-size: 14px;
+        @content;
+        border: none;
+    }
+
+    & > .bottom{
+        height: 30px;
+        line-height: 30px;
+
+        & > .btn{
+            float: left;
+            color: $blue-font-color;
+        }
+
+        & > .percent{
+            float: right;
+            line-height: 30px;
+            @include percent;
+        }
+    }
+}
+
+#app{
+    @extend .complete;
+    .towork{
+        @include structure{
+            & > .header{
+                @include header;
+
+                .ff{
+                    position: relative;
+                    width: auto;
+
+                    u {
+                        cursor: pointer;
+                    }
+
+                    .block{
+                        position: absolute;
+                        width: 376px;
+                        height: 416px;
+                        top: 30px;
+                        right: 0;
+                        z-index: 2;
+                    }
+                }
+
+            }
+            & > .content{
+                @include content;
+                margin: 0 !important; 
+                border: none !important; 
+
+                #workOrderDetail{
+                    // margin: 0;
+                    // width: 100%;
+                    // border: none !important;
+
+                    .grid{
+                        // border: none !important;
+                    }
+                }
+
+
+                & > .left{
+                    height: 100%;
+                    // width: 280px;
+                    width: 300px;
+                    padding:0 20px;
+                    border-right: 1px solid $blue-border-color;
+                    overflow-y: auto;
+                    overflow-y: overlay;
+
+                    & > .title{
+                        height: 60px;
+                        line-height: 60px;
+                        font-size: 16px;
+                        color: $blacker-font-color;
+                        box-sizing: border-box;
+                        border-bottom: 1px solid $blue-border-colorer;
+                        margin-bottom: -6px;
+                    }
+
+                                             // Drop-down box per section
+                    & > .item{
+                            // height: 80px;
+                            display: flex;
+                            flex-flow: column nowrap;
+                            justify-content: flex-end;
+
+                            & > .text{
+                                flex: 1;
+                                padding-top: 12px;
+                                line-height: 38px;
+                                font-size: 14px;
+                            }
+
+                            & > .must{
+                                position: relative;
+
+                                &::after{
+                                    position: absolute;
+                                    width: 10px;
+                                    content: "*";
+                                    line-height: 10px;
+                                    top: 31px;
+                                    left: -10px;
+                                    font-size: 20px;
+                                    color: #68C5B3;
+                                }
+                            }
+
+                            & > .block{
+                                height: 30px;
+                            }
+
+                        }
+
+                        // dotted line
+                        & > .dashed{
+                            height: 0;
+                            margin: 40px 0;
+                            border-top: 1px dashed $blue-border-colorer;
+                        }
+
+                        // checkbox
+                        & > .checkbox{
+                            font-size: 14px;
+                            height: 18px;
+                            line-height: 18px;
+                            margin-bottom: 20px;
+                        }
+
+                   
+
+                }
+
+                & > .right{
+                    height: 100%;
+                    flex: 1;
+                    margin: 0 20px;
+
+                    & > .title{
+                        height: 60px;
+                        line-height: 60px;
+                        font-size: 16px;
+                        color: $blacker-font-color;
+                    }
+
+                    & > .view{
+                        height: calc( 100% - 60px);
+                        overflow-y: auto;
+                        overflow: overlay;
+                        margin-right: -20px;
+                            & > .btn{
+                                line-height: 30px;
+                                cursor: pointer;
+                                color: $blue-font-color;
+                            }
+
+                            & > .section{
+                                padding: 0 20px;
+                                margin-bottom: 20px;
+                                margin-right: 20px;
+                                border: 1px solid $blue-border-color;
+
+                                & >  .name{
+                                    @include inputparent;
+
+                                    & > .input{
+                                        height: 50px;
+                                        border: none;
+                                        width: calc( 100% - 40px);
+                                    }
+
+                                    & > .percent{
+                                        float: right;
+                                        line-height: 50px;
+                                        @include percent;
+                                    }
+                                }
+
+                                & > .obj{
+                                    @include object{
+                                        height: 84px;
+                                    }
+                                }
+
+                                & > .picture{
+                                    margin: 20px 0;
+                                }
+
+                                & > .sop{
+                                    @include object{
+                                        padding: inherit !important;
+                                        height: 32px;
+                                    }
+                                }
+
+                                & > .work{
+                                    @include object{
+                                        height: 66px;
+                                    }
+                                }
+
+                                & > .group{
+                                    height: 30px;
+                                    line-height: 30px;
+                                    padding: 10px 0;
+                                    
+                                    & > .checkbox{
+                                        margin-top: 7px;
+                                        float: left;
+                                    }
+
+                                    .pcheckbox{
+                                        margin-top: 7px !important;
+                                    }
+
+                                    @include pcheckbox{
+                                        margin-top: 7px;
+                                    };
+
+                                    & > .delete{
+                                        float: right;
+                                        color: $red-font-color;
+                                    }
+                                }
+
+                                & > .matter-error{
+                                    background: #f8f8f8;
+                                    clear: both;
+
+                                    .error{
+                                        position: relative;
+                                        border-top: 1px solid #d9e2e8;
+                                        width: 100%;
+                                        height: 40px;
+                                        line-height: 40px;
+                                        font-size: 12px;
+                                        -webkit-box-sizing: border-box;
+                                        -moz-box-sizing: border-box;
+                                        box-sizing: border-box;
+                                        padding: 0 15px;
+
+                                        em{
+                                            display: inline-block;
+                                            width: 12px;
+                                            height: 12px;
+                                            -webkit-box-sizing: border-box;
+                                            -moz-box-sizing: border-box;
+                                            box-sizing: border-box;
+                                            -webkit-border-radius: 3px;
+                                            -moz-border-radius: 3px;
+                                            border-radius: 3px;
+                                            background-color: #ef6767;
+                                            color: white;
+                                            text-align: center;
+                                            line-height: 12px;
+                                            font-size: 10px;
+                                            vertical-align: initial;
+                                        }
+
+                                        span{
+                                            color: #ef6767;
+                                            display: inline-block;
+                                            vertical-align: text-bottom;
+                                            line-height: normal;
+                                        }
+                                        
+                                        .ignore{
+                                            position: absolute;
+                                            top:0;
+                                            right: 16px;
+                                            color: #7a94ad;
+                                            cursor: pointer;
+
+                                            & > span{
+                                                display: inline-block;
+                                                vertical-align: text-bottom;
+                                                line-height: normal;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+

@@ -10,7 +10,8 @@
                 </div>
             </div>
             <div class="planCreate_page_con">
-                <baseinfomation :addwoplan='addWoPlan' :isquote="isquote" :isedit="isedit" v-if="onPage=='createPlan'" :isterm="isterm" ref='baseinfomation'>
+                <baseinfomation :addwoplan='addWoPlan' :wotypelistall="WoTypeListAll" :isquote="isquote" :isedit="isedit" v-if="onPage=='createPlan'"
+                    :isterm="isterm" ref='baseinfomation'>
                 </baseinfomation>
                 <div class="planCreate_page_con_rig">
 
@@ -28,8 +29,8 @@
 
                                 <!-- 每一个事项 Start -->
                                 <!-- <div class="matter-kind" v-for="(model, index0) in allMatters"> -->
-                                <template v-for="(item,index) in matters">
-                                    <matter :matter="item" :views="mattersViews[index]" :ref="'matter' + index">
+                                <template v-for="(item,index) in matters" v-if='onPage=="createPlan"'>
+                                    <matter :matter="item" :isterm="isterm" :views="mattersViews[index]" :ref="'matter' + index">
                                         <matter/>
                                 </template>
 

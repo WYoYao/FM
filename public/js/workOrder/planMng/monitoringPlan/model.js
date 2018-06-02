@@ -22,15 +22,9 @@ v.pushComponent({
     },
 
     methods: {
-        // 打开工单详情
-        openWorkOrderDetail: function (model) {
-            if (model.type == '') { return }
-            this.cache = { workOrderId: model.id, name: "工单详情" };
-            v.initPage('workOrderDetail');
-        },
         // 打开项目计划详情
         openPlanDetail: function (model) {
-            this.cache = { planType: 'project', planId: model.plan_id, name: "项目计划详情", projectId: model.project_id };
+            this.cache = { planType: 'project', planId: model.plan_id, name: "项目计划详情", project_id: model.project_id, project_name: model.project_name };
             v.initPage('planInformation');
         },
         // 生成时间数据
@@ -91,21 +85,21 @@ v.pushComponent({
         createGroupOrderGrid: function () {
             var _that = this;
             var param = {
-                group_plan_id: this.cache.groupPlanId,
+                group_plan_id: this.cache.group_plan_id,
                 is_update_group_plan: $("#isUpdateGroupPlan").psel().id,
-                freq_cycle: _.find(this.fiveFreq, { sel: true }).id,
+                freq_cycle: "",
                 start_time: (this.timeData.startTime || new Date().format("yyyyMMddhhmmss")),
                 end_time: (this.timeData.endTime || new Date().format("yyyyMMdd235959")),
-            }
-            // 根据计划频率调相应接口拿数据
-            var p = param.freq_cycle === 'd' ? controller.queryWoPlanDayExecuteList.bind(null, param) : controller.queryWoPlanExecuteList.bind(null, param);
-
-            p().then(function (res) {
-                _that.monitoringGrid = groupDataControll(res);
-            }).catch(function (err) {
-
+            };
+            this.fiveFreq.forEach(function (item) { item.sel && (param.freq_cycle = item.id); });
+            param.freq_cycle || (param.freq_cycle = this.cache.freq_cycle);
+            var p = param.freq_cycle === 'd' ? PMA.GDO : PMA.GPO;
+            $("#moniPlanLoading").pshow();
+            p(param, function (data) {
+                _that.monitoringGrid = groupDataControll(data && data.length || []);
+            }, function () { }, function () {
+                $("#moniPlanLoading").phide();
             })
-
         },
         // 查询工单管理
         queryOrderManage: function (planId, order_state) {
@@ -135,22 +129,21 @@ v.pushComponent({
             _that.timeData.time = new Date().getTime();
             _that.creatTimeData();
         }
-
         // 获取创建表格数据
         _that.createGroupOrderGrid();
-
         // 获取没有引用本计划的项目列表
+        $("#unUseGPProLoading").pshow();
         controller.queryUnuseGroupPlanProjectList({ group_plan_id: req.group_plan_id }).then(function (data) {
-            _that.notCitePlanList = JSON.parse(JSON.stringify(data.Content));
+            _that.notCitePlanList = JSON.parse(JSON.stringify(data || []));
+            $("#unUseGPProLoading").phide();
         }).catch(function (err) {
-
+            _that.notCitePlanList = [];
+            $("#unUseGPProLoading").phide();
         })
-
         // 查询工单状态
-        controller.queryWorkOrderState().then(function (res) {
+        _that.allOrderState.length === 0 ? controller.queryWorkOrderState().then(function (res) {
             _that.allOrderState = res;
             _that.workOrderStateAndAll = [{ name: "全部", code: "" }].concat(res);
-
             _that.$nextTick(function () {
                 var arr = Array.prototype.slice.call($("#app .monitoring_plan .main .content .contenter .status_view .icon_list .item .icon img"));
                 arr.forEach(function (item, index) {
@@ -159,7 +152,7 @@ v.pushComponent({
                     }
                 })
             })
-        });
+        }) : void 0;
 
 
         // controller.queryWoPlanExecuteList({
@@ -174,72 +167,3 @@ v.pushComponent({
         // })
     }
 })
-
-
-
-
-
-
-
-
-
-window.hhh = {
-    "Result": "success",
-    "Content": [
-        {
-            "plan_id": "***",                //计划id
-            "project_id": "***",             //项目id
-            "project_name": "***",           //项目名称
-            "is_update_group_plan": "***",   //是否更新集团计划，1-已更新、0-未更新
-            "create_wo_total": "8",    //发单总数
-            "uncreate_wo_total": "2",      //未发出数
-            "executing_wo_total": "2",      //执行中数
-            "finished_wo_total": "2",        //已完成数
-            "row_count": 3,                  //行数
-            "work_orders": [                 //时间段内生成工单数组
-                {
-                    "order_id": "Wo13010200015dc32a0ca3b746e5bff69575a5769577",
-                    "ask_start_time": "20180501000000",
-                    "ask_end_time": "20180501000000",
-                    "order_state": "4",
-                    "is_next_order": false
-                },
-                {
-                    "order_id": "Wo1301020001f253969a926444c48834a3764b5039b8",
-                    "ask_start_time": "20180501000000",
-                    "ask_end_time": "20180501000000",
-                    "order_state": "4",
-                    "is_next_order": false
-                }
-            ]
-        },
-        {
-            "plan_id": "***",                //计划id
-            "project_id": "***",             //项目id
-            "project_name": "***",           //项目名称
-            "is_update_group_plan": "***",   //是否更新集团计划，1-已更新、0-未更新
-            "create_wo_total": "8",      //发单总数
-            "uncreate_wo_total": "2",     //未发出数
-            "executing_wo_total": "2",      //执行中数
-            "finished_wo_total": "2",      //已完成数
-            "row_count": 3,                  //行数
-            "work_orders": [                 //时间段内生成工单数组
-                {
-                    "order_id": "Wo13010200015dc32a0ca3b746e5bff69575a5769577",
-                    "ask_start_time": "20180501000000",
-                    "ask_end_time": "20180509000000",
-                    "order_state": "4",
-                    "is_next_order": false
-                },
-                {
-                    "order_id": "Wo1301020001f253969a926444c48834a3764b5039b8",
-                    "ask_start_time": "20180501000000",
-                    "ask_end_time": "20180501000000",
-                    "order_state": "4",
-                    "is_next_order": false
-                }
-            ]
-        }
-    ],
-    "Count": 2,
-}

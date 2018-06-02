@@ -1,0 +1,241 @@
+<div class="equipmentDetail" id="addSystem" v-if='onPage=="System"'>
+    <div class="content">
+        <div class="headerd">
+            <span class="btn fl" @click.capture="_clickInsertBack()">
+                <pbutton-white text="取消"></pbutton-white>
+            </span>
+
+            <% if (tool_type=="Web") { %>
+                <span class="btn fr">
+                    <pbutton-white text="添加新系统" click="showAddSystem"></pbutton-white>
+                </span>
+                <% } %>
+        </div>
+        <div class="contentd addSystemCont">
+            <div class="leftCont">
+                <div class="leftHead">
+                    <div class="dropItem">
+                        <span class="dropTitle">系统类型：
+                        </span>
+                        <div class="dropBox">
+                            <pcombobox-normal bind="true" id="'cbx_id_system'" sel="cbx_sel_system">
+                                <header placeholder="'请选择系统'"></header>
+                                <item datasource="systemTypeArr" text="name"></item>
+                            </pcombobox-normal>
+                        </div>
+                    </div>
+                    <div class="dropItem">
+                        <span class="dropTitle">专业：
+                        </span>
+                        <div class="dropBox">
+                            <pcombobox-normal bind="true" id="'cbx_id_domin'" sel="cbx_sel_domin">
+                                <header placeholder="'请选择专业'"></header>
+                                <item datasource="majorTypeArr" text="name"></item>
+                            </pcombobox-normal>
+                        </div>
+                    </div>
+                </div>
+                <div class="treeList">
+                    <div class="buildItem" v-for="item in buildSystemTree">
+                        <div class="buildTitle" stype="show">
+                            <span class="arrow" onclick="showSystList(event)">b</span>
+                            <span>{{item.build_name}}</span>
+                        </div>
+                        <div class="systemCont">
+                            <div class="noData" v-show="item.system.length==0">该建筑在当前筛选项下尚无系统</div>
+                            <ul class="systemList" v-show="item.system.length>0">
+                                <li v-for="sitem in item.system" @click='queryPoints(sitem)' :class="{sel:(SystemModel.system_id==sitem.system_id)}">{{sitem.system_local_name}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="buildItem" v-show='!buildSystemTree.length'>
+                        <div class="buildTitle" stype="close">
+                            <span class="arrow" onclick="showSystList(event)">r</span>
+                            <span></span>
+                        </div>
+                        <div class="systemCont">
+                            <div class="noData">该建筑在当前筛选项下尚无系统</div>
+                            <ul class="systemList"></ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="rightCont">
+                <div class="detailFloat">
+                    <div class="detailHead">系统详情</div>
+                    <div v-for='item in totalPoints'>
+                        <div class="detailItem" v-for='info in item.info_Points'>
+                            <div class="contShow canEdit" style="display:flex" v-show="!info.isShow">
+                                <span class="name">{{info.info_name}}：</span>
+                                <span class="cont" v-if='info.cmpt!="pupload_attachmentonly"'>{{info.name | filterStrValue}}</span>
+                                <span class="cont" v-if='info.cmpt=="pupload_attachmentonly"'>
+                                    <ul class="upload-item-ul">
+                                        <li v-for='pic in info.att_value' class="per-upload-manyfile_item ipt-upload-item">
+                                            <div class="per-upload-onlyfile_name" pdisabled="false">
+                                                <b v-text='pic.name'></b>
+                                                <a target="_blank" :href="pic.type==1?pic.url:('/' + pconst.requestType.pdownload + '/' + psecret.create(pic.key))">
+                                                    <span class="per-upload-manyfile_x" style="display:block">D</span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </span>
+                                <% if (tool_type=="Web") { %>
+                                    <!-- <span class="edit" onclick="editItem(event)" v-if='info.info_code!="BIMID" && info.info_code!="system_local_id" && info.info_code!="build_local_name" && info.info_code!="domain_name" && info.info_code!="system_category_name"'>
+                                            <em @click="info.isShow=true">e</em>编辑</span> -->
+                                    <span class="edit" @click="info.isShow=true,comPsel(info,'system')" v-if='info.info_code!="build_local_name" && info.info_code!="domain_name" && info.info_code!="system_category_name"'>
+                                        <em>e</em>编辑</span>
+                                <% } %>
+                            </div>
+                            <div class="editShow" v-show="info.isShow">
+                                <span class="name">{{info.info_name}}：</span>
+
+                                <!-- 选择适用的控件 Start -->
+                                <div class="editInput" v-if='info.cmpt=="font" && info.info_code=="system_local_id"'>
+                                    <ptext-text bind='true' bind='true' blur="vSystemText" id="'ides_'+info.info_code" value='info.str_value'>
+                                        <verify errtip="不可为空" verifytype="space">
+                                        </verify>
+                                    </ptext-text>
+                                </div>
+                                <div class="editInput" v-if='info.cmpt=="font" && info.info_code=="system_local_name"'>
+                                    <ptext-text bind='true' blur="vSystemText" bind='true' id="'ides_'+info.info_code" value='info.str_value'>
+                                        <verify errtip="不可为空" verifytype="space">
+                                        </verify>
+                                        <verify errtip="长度不可超过50" verifytype="length" length="50">
+                                        </verify>
+                                    </ptext-text>
+                                </div>
+                                <div class="editInput" v-if='info.cmpt=="font" && info.info_code=="BIMID"'>
+                                    <ptext-text bind='true' bind='true' blur="vSystemText" id="'ides_'+info.info_code" value='info.str_value'>
+                                        <!-- <verify errtip="不可为空" verifytype="space"></verify> -->
+                                    </ptext-text>
+                                </div>
+                                <div class="editInput" v-if='info.cmpt=="font" && info.info_code!="system_local_id" && info.info_code!="system_local_name" && info.info_code!="BIMID"'>
+                                    <ptext-text bind='true' value='info.str_value'>
+                                    </ptext-text>
+                                </div>
+                                <div class="editInput" v-if='info.cmpt=="ptext_text"'>
+                                    <ptext-text bind='true' value='info.str_value'>
+                                        <!-- <verify errtip="请输入数字" verifytype="positivenumber">
+                                        </verify> -->
+                                    </ptext-text>
+                                </div>
+                                <div class="editInput" v-if='info.cmpt=="ptext_unit"'>
+                                    <ptext-text bind='true' value='info.str_value' text="info.unit">
+                                        <!-- <verify errtip="请输入数字" verifytype="positivenumber">
+                                        </verify> -->
+                                    </ptext-text>
+                                </div>
+                                <div class="editInput" v-if='info.cmpt=="ptext_numscope"'>
+                                    <div class="tf">
+                                        <ptext-text bind='true' value='info.str_arr_value[0]'>
+                                        </ptext-text>
+                                    </div>
+                                    <div class="tf">~</div>
+                                    <div class="tf">
+                                        <ptext-text bind='true' value='info.str_arr_value[1]'>
+                                        </ptext-text>
+                                    </div>
+                                </div>
+                                <div class="editInput" v-if='info.cmpt=="ptext_unitnumscope"'>
+                                    <div class="tf">
+                                        <ptext-text bind='true' value='info.str_arr_value[0]' text="info.unit">
+                                        </ptext-text>
+                                    </div>
+                                    <div class="tf">~</div>
+                                    <div class="tf">
+                                        <ptext-text bind='true' value='info.str_arr_value[1]' text="info.unit">
+                                        </ptext-text>
+                                    </div>
+                                </div>
+                                <div class="editInput" v-if='info.cmpt=="ptext_textarea"'>
+                                    <ptext-textarea bind='true' value='info.str_value' style="height: 100px;">
+                                    </ptext-textarea>
+                                </div>
+                                <div class="editInput" v-if='info.cmpt=="ptime_timeymdhm"'>
+                                    <ptime-form id="'cbx_Points_id_'+info.info_code" bind='true'>
+                                        <panel timetype="yMdhm" startyear="1993" endyear="2020"></panel>
+                                    </ptime-form>
+                                </div>
+                                <div class="editInput" v-if='info.cmpt=="ptime_timeymdhmscope"'>
+                                    <ptime-form id="'cbx_Points_id_'+info.info_code" bind='true'>
+                                        <panel timetype="yMdhms" startyear="1993" endyear="2020"></panel>
+                                    </ptime-form>
+                                </div>
+                                <div class="editInput" v-if='info.cmpt=="ptime_timeymd"'>
+                                    <ptime-form id="'cbx_Points_id_'+info.info_code" bind='true'>
+                                        <panel timetype="yMd" startyear="1993" endyear="2020"></panel>
+                                    </ptime-form>
+                                </div>
+                                <div class="editInput" v-if='info.cmpt=="ptime_timeymdscope"'>
+                                    <div class="tf">
+                                        <ptime-form id="'cbx_Points_id_'+info.info_code+'0'" bind='true'>
+                                            <panel timetype="yMd" startyear="1993" endyear="2020"></panel>
+                                        </ptime-form>
+                                    </div>
+                                    <div class="tf">~</div>
+                                    <div class="tf">
+                                        <ptime-form id="'cbx_Points_id_'+info.info_code+'1'" bind='true'>
+                                            <panel timetype="yMd" startyear="1993" endyear="2020"></panel>
+                                        </ptime-form>
+                                    </div>
+                                </div>
+                                <div class="editInput" v-if='info.cmpt=="ptime_timehm"'>
+                                    <ptime-form id="'cbx_Points_id_'+info.info_code" bind='true'>
+                                        <panel timetype="hm" startyear="1993" endyear="2020"></panel>
+                                    </ptime-form>
+                                </div>
+                                <div class="editInput" v-if='info.cmpt=="ptime_timehmscope"'>
+                                    <div class="tf">
+                                        <ptime-form id="'cbx_Points_id_'+info.info_code+'0'" bind='true'>
+                                            <panel timetype="hm" startyear="1993" endyear="2020"></panel>
+                                        </ptime-form>
+                                    </div>
+                                    <div class="tf">~</div>
+                                    <div class="tf">
+                                        <ptime-form id="'cbx_Points_id_'+info.info_code+'1'" bind='true'>
+                                            <panel timetype="hm" startyear="1993" endyear="2020"></panel>
+                                        </ptime-form>
+                                    </div>
+                                </div>
+                                <div class="editInput" v-if='info.cmpt=="pcombobox_normal"'>
+                                    <pcombobox-normal id="'cbx_Points_id_'+info.info_code" bind='true'>
+                                        <header></header>
+                                        <item datasource="info.cmpt_data" text="name"></item>
+                                    </pcombobox-normal>
+                                </div>
+                                <div class="editInput" v-if='info.cmpt=="pswitch_checkbox"'>
+                                    <div class="per-switch-checkbox" v-for='check in info.cmpt_data' @click='check.isChecked=!check.isChecked'>
+                                        <span class="per-checkbox_input" :class="{'per-checkbox-checked':check.isChecked}"></span>
+                                        <span class="per-switch_label" v-text='check.name'></span>
+                                    </div>
+                                </div>
+                                <div class="editInput" v-show='info.cmpt=="pupload_attachmentonly"'>
+                                    <pupload-attachment id="'cbx_Points_id_'+info.info_code" number="1" bind='true'></pupload-attachment>
+                                </div>
+                                <!-- 选择适用的控件 End -->
+                                <span class="sure" @click="_clickSystemWillSubmit($event,info)">Z</span>
+                                <span class="cancel" @click="_clickSystemWillCancel($event,info)">x</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="noData noDataDiv"></div><!-- v-show="!totalPoints.length"-->
+            </div>
+        </div>
+    </div>
+    <div class="content" id="addSystemDiv" v-if='isShowAddSystem'>
+        <div class="headerd">
+            <span class="btn fl" @click.capture="hideAddSystem">
+                <pbutton-white text="取消"></pbutton-white>
+            </span>
+            <span class="btn fr" @click.capture="_clickInsertSystem()">
+                <pbutton-blue text="保存"></pbutton-blue>
+            </span>
+        </div>
+        <div class="contentd i_borderTop">
+            <% include ./addSystemAdd.html %>
+        </div>
+    </div>
+</div>

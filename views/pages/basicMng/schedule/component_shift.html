@@ -1,0 +1,264 @@
+<script type="text/html" id="shift">
+    <ul class="shiftUl">
+        <li class="item clearfix" v-for="(row,index_row) in shift_arr" :id="'liID'+'_'+index_row">
+            <div class="left">
+                <p class="delete" @click="deleteShift();">p</p>
+                <div class="id">
+                    <ptext-text placeholder="'班次代号'" value="row.code" bind="true" blur="shiftComponent.options.methods.checkSpecialCharacters()" id="'shiftName_'+index_row">
+                        <verify errtip="不可为空" verifytype="space"></verify>
+                        <verify errtip="最多4个字符" verifytype="length" length="4"></verify>
+                    </ptext-text>
+                </div>
+                <div class="name">
+                    <ptext-text placeholder="'班次名称'" value="row.name" bind="true">
+                        <verify errtip="不可为空" verifytype="space"></verify>
+                        <verify errtip="最多20个字符" verifytype="length" length="20"></verify>
+                    </ptext-text>
+                </div>
+            </div>
+            <div class="right">
+                <ul class="time">
+                    <li v-for="(dott,index_dott) in row.time_plan" :id="'liID'+'_'+index_row+'_'+index_dott">
+                        <span class="date">
+                            <ptime-form id="'startTime'+'_'+index_row+'_'+index_dott" sel="shiftComponent.options.methods.setTime1" bind='true'>
+                                <panel timetype="hm" startyear="1993" endyear="2020"></panel>
+                            </ptime-form>
+                        </span>
+                        <p class="font">到</p>
+                        <span class="edate">
+                            <ptime-form id="'endTime'+'_'+index_row+'_'+index_dott" sel="shiftComponent.options.methods.setTime2" bind='true'>
+                                <panel timetype="hm" startyear="1993" endyear="2020"></panel>
+                            </ptime-form>
+                        </span>
+                        <p class="re" v-if="(row.time_plan.length > 1)" @click="deleteTimeLine">-</p>
+                        <p class="sum" v-if="(index_dott === (row.time_plan.length - 1))" @click="addTimeLine">J</p>
+                    </li>
+                </ul>
+                <div class="overlapErr">时间段存在重叠！</div>
+            </div>
+        </li>
+        <li class="item clearfix">
+            <div class="abc" @click="addShift()">
+                <span class="addbanc">J</span>
+                <span class="addbanctext">添加班次</span>
+            </div>
+            <div id="keepshift" style="background:#fd2f14;display:none" @click="commit"><button>验证保存</button></div>
+        </li>
+    </ul>
+</script>
+
+<script>
+var shiftComponent = Vue.component('shift', {
+        props: [
+            "shift_arr",
+        ],
+        data: function () {
+            return {
+           
+            }
+        },
+        methods: {
+            // 同步 start 时间到 model
+            setTime1 : function(event){
+                if(!event.target){
+                    return false;
+                }
+                var id_ = $($(event.target).parents("li")[1]).find(".date>div").attr("id");
+                var val = $("#"+id_).psel().startTime;
+                var val1 = val.split(":")[0];
+                var val2 = val.split(":")[1];
+                var index1 = id_.split("_")[1];
+                var index2 = id_.split("_")[2];
+                appData.currentShift[index1].time_plan[index2].start = val;
+                appData.currentShift[index1].time_plan[index2].start_ = {h: val1,m: val2};
+            },
+            // 同步 end 时间到 model
+            setTime2 : function(event){
+                if(!event.target){
+                    return false;
+                }
+                var id_ = $($(event.target).parents("li")[1]).find(".edate>div").attr("id");
+                var val = $("#"+id_).psel().startTime;
+                var val1 = val.split(":")[0];
+                var val2 = val.split(":")[1];
+                var index1 = id_.split("_")[1];
+                var index2 = id_.split("_")[2];
+                appData.currentShift[index1].time_plan[index2].end = val;
+                appData.currentShift[index1].time_plan[index2].end_ = {h: val1,m: val2};
+            },
+            // 校验特殊字符
+            checkSpecialCharacters : function(){
+                var idElement = $(event.target).parent()
+                var shiftName_ = idElement.pval();
+                if(shiftName_ == ""){
+                    return false;
+                }
+                var regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im,regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
+                if(regEn.test(shiftName_) || regCn.test(shiftName_)) {
+                    idElement.pshowTextTip("不能有特殊字符");
+                }   
+            },
+            addShift: function(){
+                this.shift_arr.push({
+                    "code": "",
+                    "name": "",
+                    "create_time": "",
+                    "time_plan": [
+                        {
+                            "end": "0:00",
+                            "start": "0:00",
+                            "end_": { h: "0",m: "0"},
+                            "start_": { h: "0",m: "0"},
+                        }
+                    ]
+                });
+            },
+            deleteShift: function(){
+                var index = $(event.target).parents("li").attr("id").split("_")[1];
+                this.shift_arr.splice(index,1);
+            },
+            addTimeLine: function(){
+                var index1 = $(event.target).parents("li")[0].id.split("_")[1];
+                this.shift_arr[index1].time_plan.push({
+                    "end": "0:00",
+                    "start": "0:00",
+                    "end_": { h: "0",m: "0"},
+                    "start_": { h: "0",m: "0"},
+                });
+            },
+            deleteTimeLine: function(){
+                var index1 = $(event.target).parents("li")[0].id.split("_")[1];
+                var index2 = $(event.target).parents("li")[0].id.split("_")[2];
+                this.shift_arr[index1].time_plan.splice(index2,1);
+            },
+            updateTime: function(){  //更新时间段显示
+                var arr = this.shift_arr;
+                for(var i=0;i<arr.length;i++){
+                    if(arr[i].time_plan && (arr[i].time_plan.length > 0)){
+                        for(var j=0;j<arr[i].time_plan.length;j++){
+                            $('#endTime'+'_'+i+'_'+j).psel(arr[i].time_plan[j].end_);
+                            $('#startTime'+'_'+i+'_'+j).psel(arr[i].time_plan[j].start_);
+                        }
+                    }
+                }
+            },
+            // 校验时间段重叠
+            checkTimeLine: function(){  
+                var arr=this.shift_arr;
+                var errArr = [];
+                function check(arr) {
+                    var curTime = dayjs();
+                    arr = JSON.parse(JSON.stringify({"newArr":arr})).newArr; //拷贝数组（效率较低，后期用其他深拷贝算法替代）
+                    var index;
+                    //格式化存在跨天的时间段
+                    for (var j = 0; j < arr.length; j++) {
+                        var time1 = dayjs(curTime).set("minute",arr[j]["start_"]["m"]).set("hour",arr[j]["start_"]["h"]);  
+                        var time2 = dayjs(curTime).set("minute",arr[j]["end_"]["m"]).set("hour",arr[j]["end_"]["h"]);
+                        if(dayjs(time1).isAfter(time2)){
+                            arr.push({
+                                "end": "23:59",
+                                "start": arr[j].start,
+                                "end_": { h: "23",m: "59"},
+                                "start_": { h: arr[j].start_.h,m: arr[j].start_.m},
+                            });
+                            arr.push({
+                                "start": "0:00",
+                                "end": arr[j].end,
+                                "start_": { h: "0",m: "00"},
+                                "end_": { h: arr[j].end_.h,m: arr[j].end_.m},
+                            });
+                            if(!time2.isSame(dayjs(curTime).set("minute",0).set("hour",0))){
+                                arr.push({
+                                    "start": "0:00",
+                                    "end": "0:00",
+                                    "start_": { h: "0",m: "00"},
+                                    "end_": { h: "0",m: "00"},
+                                });
+                            }
+                            arr.splice(j,1);
+                        }
+                    };
+                    //排序
+                    for (var j = 0; j < arr.length; j++) {
+                        for (var i = j + 1; i < arr.length; i++) {
+                            //利用dayjs获取当前年月下的秒数
+                            var unix1 = dayjs(curTime).set("minute",arr[i]["start_"]["m"]).set("hour",arr[i]["start_"]["h"]).unix();  
+                            var unix2 = dayjs(curTime).set("minute",arr[j]["start_"]["m"]).set("hour",arr[j]["start_"]["h"]).unix();
+                            if (unix1 < unix2) {
+                                index = arr[i];
+                                arr[i] = arr[j];
+                                arr[j] = index;
+                            } else if (unix1 == unix2){
+                                var unix3 = dayjs(curTime).set("minute",arr[i]["end_"]["m"]).set("hour",arr[i]["end_"]["h"]).unix();  
+                                var unix4 = dayjs(curTime).set("minute",arr[j]["end_"]["m"]).set("hour",arr[j]["end_"]["h"]).unix();
+                                if(unix3 < unix4){
+                                    index = arr[i];
+                                    arr[i] = arr[j];
+                                    arr[j] = index;
+                                } else if (unix3 == unix4){  //不允许存在两个完全一样的区间
+                                    return false;
+                                }
+                            }
+                        }
+                    };
+                    //比较
+                    for (var j = 0; j < arr.length - 1; j++) {
+                        var unix1 = dayjs(curTime).set("minute",arr[j]["end_"]["m"]).set("hour",arr[j]["end_"]["h"]).unix();
+                        var unix2 = dayjs(curTime).set("minute",arr[j+1]["start_"]["m"]).set("hour",arr[j+1]["start_"]["h"]).unix();
+                        if (unix1 > unix2) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                for(var i=0;i<this.shift_arr.length;i++){
+                    if(this.shift_arr[i].time_plan.length > 1){
+                        if(!check(this.shift_arr[i].time_plan)){
+                            errArr.push(i);
+                        }
+                    }
+                }
+                $(".shiftUl>li").find(".overlapErr").hide();
+                if(errArr.length === 0){
+                    return true;
+                }else{
+                    for(var i=0;i<errArr.length;i++){
+                        $($(".shiftUl>li").find(".overlapErr")[errArr[i]]).show();
+                    }
+                    return false;
+                }
+            },
+            commit: function(){
+                // 校验input
+                var inputverifi = $(".shiftUl").pverifi();        
+                if(inputverifi && this.checkTimeLine()){
+                    $('#globalloading').pshow();
+                    this.$emit("saveshift",this.shift_arr);
+                }  
+            }
+        },    
+        watch: {
+            
+        },
+        created: function(){
+                 
+        },
+        mounted: function(){
+            this.updateTime();  
+        },
+        updated: function(){
+            this.updateTime();
+        },
+        template: '#shift'
+    })  
+</script>
+
+<style>
+
+    .editShift .right .time>li {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+    }
+
+</style>

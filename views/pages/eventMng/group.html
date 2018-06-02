@@ -1,0 +1,40 @@
+<% include ../../template/pageHead.html %>
+
+    <script src="../js/eventMng/lodash.min.js"></script>
+    <script src="../js/eventMng/polyfill.js"></script>
+    <script src="../js/eventMng/public.js"></script>
+    <script src="../js/eventMng/term/controller.js"></script>
+    <script src="../js/eventMng/controller.js"></script>
+
+    <link rel="stylesheet" href="../css/eventMng/term/public.css">
+
+    <!-- 项目事件列表模板Start -->
+    <script src="./js/eventMng/eventListTem/model.js"></script>
+    <script src="./js/eventMng/eventListTem/event.js"></script>
+    <link rel="stylesheet" href="../css/eventMng/term/eventListTem.css">
+    <!-- 项目事件列表模板End -->
+
+    <!-- 工单详情Start -->
+    <link rel="stylesheet" href="/css/workOrder/planMng/term/public.css">
+    <script src="./js/workOrder/planMng/term/controller.js"></script>
+    <!-- 工单详情End -->
+
+    <ploading-part id='globalloading' text="加载中..."></ploading-part>
+
+    <div id="app">
+
+        <!-- 关闭事件弹窗 -->
+        <% include ./closeEvent.html %>
+
+            <!-- 工单详情 -->
+            <% include ./workOrderInfo.html %>
+
+                <!-- 项目事件详情弹窗 -->
+                <% include ./eventInfo.html %>
+
+                    <!-- 事件管理 -->
+                    <% include ./eventManage.html %>
+
+    </div>
+
+    <% include ../../template/pageFoot.html %>

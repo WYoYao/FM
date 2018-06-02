@@ -1,3 +1,116 @@
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * 创建Controller 的请求类可以添加
+ */
+var Controller = function () {
+    function Controller(arr, user) {
+        _classCallCheck(this, Controller);
+
+        // 保存每次提交的时候需要的参数
+        this.user = _.isPlainObject(user) ? user : {};
+
+        return this.push.call(this, arr);
+    }
+
+    Controller.prototype.push = function push(arr) {
+        var _this = this;
+
+        if (!_.isArray(arr)) throw new TypeError('Arugments must be an Array');
+
+        var _loop = function _loop() {
+            if (_isArray) {
+                if (_i >= _iterator.length) return "break";
+                _ref = _iterator[_i++];
+            } else {
+                _i = _iterator.next();
+                if (_i.done) return "break";
+                _ref = _i.value;
+            }
+
+            var _ref2 = _ref,
+                name = _ref2.name,
+                url = _ref2.url,
+                argu = _ref2.argu,
+                cb = _ref2.cb,
+                convert = _ref2.convert,
+                configServiceName = _ref2.configServiceName;
+
+
+            if (_.has(_this, name)) {
+                console.log(name + "\u4E0E\u73B0\u6709\u7684\u5C5E\u6027\u91CD\u590D,\u5DF2\u5408\u5E76\u3002");
+            };
+
+            _this[name] = function () {
+                var argus = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+
+                if (false) {
+
+                    // 调用假数据方法进行查询
+                    return new Promise(function (resolve, reject) {
+                        setTimeout(function () {
+
+                            resolve(_.isFunction(convert) ? convert(cb(argus)) : cb(argus));
+                        }, _.random(1000, 2000));
+                    });
+                } else {
+
+                    // 真实发请求
+                    return new Promise(function (resolve, rejcet) {
+                        pajax.post({
+                            url: url,
+                            data: Object.assign({}, argu, argus, _this.user),
+                            configServiceName: configServiceName,
+                            success: function success(res) {
+                                res = _.has(res, "data") ? res.data : res;
+                                resolve(_.isFunction(convert) ? convert(res) : res);
+                            },
+                            error: rejcet
+                        });
+                    });
+                }
+            };
+        };
+
+        for (var _iterator = arr, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+            var _ref;
+
+            var _ret = _loop();
+
+            if (_ret === "break") break;
+        }
+        return this;
+    };
+
+    return Controller;
+}();
+
+
+//  开发环境下绑定的用户信息
+var USER = {
+    // "user_id": "RY1505218031651",
+    // "customer_id": "",
+    // "project_id": "Pj1301020001",
+}
+
+//  给最节点添加 selected 属性
+function addSelected(arr) {
+    if (!_.isArray(arr)) return arr;
+
+    var own = addSelected;
+
+    arr.forEach(function (item) {
+        item.selected = false;
+        own(item.content);
+    });
+
+    return arr;
+}
+
+var controller = new Controller([], USER);
 
 
 // 整数 + 0
@@ -93,7 +206,7 @@ SetLoading.prototype.set = function (name) {
     name = name || +new Date() + _.random(1000, 9999);
 
     // 有相同的键值的时候的抛出错误
-    if (_that.keys.hasOwnProperty(name))
+    if (_.has(_that.keys, name))
         throw new Error("The property has already existed");
     else
         // 状态添加到的容器中  值为释放当前的状态的方法
@@ -126,10 +239,10 @@ SetLoading.prototype.remove = function (name) {
 
 var loadding = new SetLoading(
     function () {
-        $("#globaloadng").pshow();
+        $("#globalloading").pshow();
     },
     function () {
-        $("#globaloadng").phide();
+        $("#globalloading").phide();
     }
 );
 
@@ -330,6 +443,10 @@ v.pushComponent({
         // 默认的以及自定义的工单状态
         allOrderState: [],
         workOrderStateAndAll: [],
+        // 上一个页面
+        lastPage: "",
+        // 所有工单类型
+        allPlanType: [{ name: "全部", code: "" }],
         // 工单时间状态
         orderTimeType: [{ name: "全部", code: 0 }, { name: "临时性工单", code: 1 }, { name: "计划性工单", code: 1 }],
         // 页面间跳转时传递的参数
@@ -337,13 +454,37 @@ v.pushComponent({
         paths: {
             base: {              //手动配置的根目录
                 'planManage': { name: "首页", path: "planManage", cache: "" },
-                'grouphome': { name: "首页", path: "grouphome", cache: "" },
+                'grouphome': { name: "集团计划", path: "grouphome", cache: "" },
             },
             path: [],            //自动生成的路径数据,{name,path,cache}分别为该路径的名字，该路径的对应的onPage值，和该路径缓存
             isBase: true,        //当前页是否为根目录
+            auto: true           //是否显示自动生成的面包屑
         },
+        project_id: "",
+        userInfo: {},
     },
     methods: {
+        // 解决日历控件和下拉框控件下拉框隐藏问题
+        fakerClick: function (event) {
+            if (event) {
+
+                var el = event.srcElement ? event.srcElement : event.target;
+                $(el).addClass("NowSelthisEl");
+
+                var elList = $("._combobox_bottom");
+
+                for (var i = 0; i < elList.length; i++) {
+                    var elWrap = $(elList[i]).parents(".comboMark");
+                    var len = $(elWrap).find(".NowSelthisEl").length;
+                    len != 0 ? void 0 : $(elList[i]).css("display", "none");
+                }
+
+                $(el).removeClass("NowSelthisEl");
+            } else {
+                // 兼容IE,页面发生一次点击事件
+                $("body").trigger("click");
+            }
+        },
         transfYMWD: function (str) { //通过年月周天转换对应的中文
             var obj = {
                 y: "年",
@@ -450,6 +591,19 @@ v.pushComponent({
             v.goBack(maps.slice(-2, -1)[0].path, true);
             this.paths.path.pop();
         },
+        // 后台格式转换日期格式
+        yyyyMMddhhmmss2date: function (str) {
+
+            return str.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/g, function () {
+                var arr = Array.prototype.slice.call(arguments);
+                return arr.slice(1, 4).join('/') + " " + arr.slice(4, 7).join(':');
+            });
+        },
+        // 普通格式转换
+        date2yyyyMMddhhmm: function (date) {
+
+            return (new Date(date)).format('yyyy.MM.dd hh:mm');
+        }
     },
     filters: {
 
@@ -461,7 +615,33 @@ v.pushComponent({
     }
 });
 $(function () {
+
     v.createVue();
+
+    var url = window.location.href;
+    var reg = /pt\=(.+)&?/;
+    if (reg.test(url)) {
+        var str = url.match(reg)[1];
+        v.instance.project_id = psecret.parser(str);
+    }
+    // 生成计划模块的AJAX以及Promise集合PMA与PMP
+    createPlanModuleController();
+    // 获取用户信息
+    // 正式提测的时候取消注释
+    // $.ajax({
+    //     url: '/userInfo',
+    //     type: 'get',
+    //     data: {},
+    //     success: function (result) {
+    //         v.instance.userInfo = result;
+    //         debugger
+    //         console.log(v.instance.userInfo);
+    //     },
+    //     error: function (error) {
+    //     },
+    //     complete: function () {
+    //     }
+    // });
 
     if (v.name.hasOwnProperty('grouphome')) v.initPage('grouphome');
 

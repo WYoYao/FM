@@ -12,8 +12,8 @@
 #planCreate_bg {
     width: 100%;
     height: 100%;
-    background: #e5e8ea;
-    padding: 18px 12px 0 12px;
+    /* background: #e5e8ea; */
+    /* padding: 18px 12px 0 12px; */
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
@@ -155,6 +155,11 @@
 .planCreate_page_con_left_sendTime >h4 >i{
 	margin-left: 4px;
 }
+
+.nomust{
+	margin-left: 10px !important;
+}
+
 .planCreate_page_con_left_sendTime >div{
 	margin-top: 10px;
 	position: relative;
@@ -167,23 +172,68 @@
 	z-index: 5;
 	color: #6d6d6d;
 }
-.planCreate_page_con_left_planRate >div input{
-	/* text-indent: 48px; */
+
+.planCreate_page_con_left_planRate .xd{
+	display: flex;
+	flex-flow: column nowrap;
+	align-items:stretch; 
+	width: 100%;
 }
+
+.planCreate_page_con_left_planRate .xd .item{
+	display: flex;
+	flex-flow: row nowrap;
+	margin: 10px 0;
+	line-height: 30px;
+}
+
+.planCreate_page_con_left_planRate .xd .item .b.f{
+
+}
+
+.planCreate_page_con_left_planRate .xd .item .b{
+	text-align: left;
+}
+
+.planCreate_page_con_left_planRate .xd .item .b.tr{
+	text-align: right;
+}
+
+.planCreate_page_con_left_planRate .xd .item .b.tl{
+	text-align: left;
+}
+
+.planCreate_page_con_left_planRate .xd .item .b.day > div{
+	width: 300px;
+}
+
+.planCreate_page_con_left_planRate .xd .item .b.hour > div{
+	width: 265px;
+}
+
+.planCreate_page_con_left_planRate .xd .item .b.text{
+	width: 40px;
+}
+
+.planCreate_page_con_left_planRate >div input{}
 
 .planCreate_page_con_left_planRate{
 	margin: 20px 20px;
 }
+
 .planCreate_page_con_left_planRate >h4{
 	position: relative;
 	left: -10px;
 }
+
 .planCreate_page_con_left_planRate >h4 >span{
 	color: #68c5b3;
 }
+
 .planCreate_page_con_left_planRate >h4 >i{
 	margin-left: 4px;
 }
+
 .planCreate_page_con_left_planRate >div{
 	margin-top: 20px;
 	position: relative;
@@ -191,44 +241,54 @@
 	flex-flow: row nowrap;
 	align-items: center;
 }
+
 .planCreate_page_con_left_planRate >div>span{
 	display: inline-block;
 	/* margin-right: 10px; */
 }
+
 .planCreate_page_con_left_sendTime >div >div input{
 	/* text-indent: 48px; */
 }
+
 #planRateLeft{
 	margin-left: 10px;
 	margin-right: 4px;
 	/* width: 120px; */
 }
+
 #planRateRig{
 	margin-right: 10px;
 	width: 144px;
 }
+
 .planCreate_page_con_left_planRate >ul{
 	margin-top: 20px;
 	
 }
+
 .planCreate_page_con_left_planRateList >li{
 	display: flex;
 	flex-flow: column nowrap;
 }
+
 .planCreate_page_con_left_planRateList >li >section{
 	margin: 10px 0px 10px 0px;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
 }
+
 .planCreate_page_con_left_planRateList >li >section >div{
 	margin: 0 auto 10px;
 }
+
 .planCreate_page_con_left_planRateList_week >li >section >span {
 	margin-bottom: 10px;
     display: flex;
     flex-flow: row nowrap;
 }
+
 .planCreate_page_con_left_planRateList_week >li >section >span >div:nth-child(2) {
 	margin-left: 10px;
 }

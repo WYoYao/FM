@@ -2,31 +2,27 @@
 v.pushComponent({
     name: "groupPlan",
     data: {
-        // groupPlanPaths:[
-        //     {name:"首页",path:"planManage"},{name:"集团计划"}
-        // ],
-        groupPlanList:[],
-        planSiteType:[{name:"全部",id:""},{name:"是",id:1},{name:"否",id:0}]
+        groupPlanList: [],
+        planSiteType: [{ name: "全部", id: "" }, { name: "已引用", id: 1 }, { name: "未引用", id: 0 }]
     },
     methods: {
-        getGroupPlanList : function(){
+        // 获取集团计划列表
+        getGroupPlanList: function () {
             var that = this;
-            
-            $("#groupPlanPartLoad").pshow(); 
-
-            ajx("groupPlanList",{order_type:$("#groupPlanTypeCombo").psel.id,is_use_group_plan:$("#isPlanSite").psel().id},function(data){
-                that.groupPlanList = JSON.parse(JSON.stringify(data[0].Content));
-            },function(){
+            $("#groupPlanPartLoad").pshow();
+            PMA.GPL({ order_type: $("#groupPlanTypeCombo").psel().id, is_use_group_plan: $("#isPlanSite").psel().id }, function (data) {
+                that.groupPlanList = JSON.parse(JSON.stringify(data || []));
+            }, function () {
                 that.groupPlanList = [];
-            },function(){
-                $("#groupPlanPartLoad").phide(); 
+            }, function () {
+                $("#groupPlanPartLoad").phide();
             })
 
         },
         // type   'site'引用该计划   'copy'复制该计划
-        getThisPlan : function(model,type){
+        getThisPlan: function (model, type) {
             var that = this;
-            ajx("groupPlanInfo",{group_plan_id:model.group_plan_id},function(data){
+            PMA.GPI({ group_plan_id: model.group_plan_id }, function (data) {
                 that.cache = {
                     argu: {
                         isquote: type === 'site' ? true : false,
@@ -35,91 +31,34 @@ v.pushComponent({
                         iscopy: type === 'copy' ? true : false,
                         addWoPlan: JSON.parse(JSON.stringify(data)),
                         cb: function () {
-                            v.goBack('groupPlan',true);
+                            v.goBack('groupPlan', true);
                         }
                     },
                 };
                 v.initPage("createPlan");
-            },function(){},function(){})
+            }, function () { }, function () { })
         }
     },
     filters: {
-        
+
     },
-    beforeMount : function(){
-        var arr = [
-            {name:"groupPlanList",data:{order_type:$("#groupPlanTypeCombo").psel.id,is_use_group_plan:$("#isPlanSite").psel().id}},
-            {name:"groupPlanUse",data:{}}
-        ]
-        $("#groupPlanPartLoad").pshow();
-        Promise.all(cteatePromise(arr)).then(function(data){
-            this.groupPlanList = JSON.parse(JSON.stringify(data[0].Content));
-            this.groupPlanUse = {
-                total:data[1].Item.plan_total,
-                unUse:data[1].Item.plan_unused_num
+    beforeMount: function () {
+        var that = this;
+        // 恢复两个下拉框至默认状态
+        $("#groupPlanTypeCombo").psel(0, false);
+        $("#isPlanSite").psel(0, false);
+        // 拿计划列表数据
+        this.getGroupPlanList();
+        // 拿一次集团计划总数及引用数量
+        PMA.GPU({}, function (data) {
+            data = JSON.parse(JSON.stringify(data || {}));
+            that.groupPlanUse = {
+                total: data.plan_total || 0,
+                unUse: data.plan_unused_num || 0
             }
-            $("#groupPlanPartLoad").phide();          
-        }).catch(function(err){
-            $("#groupPlanPartLoad").phide();
-        })
-
-    this.groupPlanList = [
-        {
-            "group_plan_id":"***",            //集团计划id
-            "group_plan_name":"***",          //集团计划名称
-            "order_type": "***",              //工单类型编码
-            "order_type_name": "***",         //工单类型名称
-            "freq_cycle":"m",                 //计划频率-周期，y/m/w/d
-            "freq_num":"3",                   //计划频率-次数，n
-            "urgency":"高",                   //紧急程度 ，高、中、低
-            "use_status":"1"                  //引用状态，1-已引用，2-未引用
-        },
-        {
-            "group_plan_id":"***",            //集团计划id
-            "group_plan_name":"***",          //集团计划名称
-            "order_type": "***",              //工单类型编码
-            "order_type_name": "***",         //工单类型名称
-            "freq_cycle":"m",                 //计划频率-周期，y/m/w/d
-            "freq_num":"3",                   //计划频率-次数，n
-            "urgency":"高",                   //紧急程度 ，高、中、低
-            "use_status":"1"                  //引用状态，1-已引用，2-未引用
-        },
-        {
-            "group_plan_id":"***",            //集团计划id
-            "group_plan_name":"***",          //集团计划名称
-            "order_type": "***",              //工单类型编码
-            "order_type_name": "***",         //工单类型名称
-            "freq_cycle":"m",                 //计划频率-周期，y/m/w/d
-            "freq_num":"3",                   //计划频率-次数，n
-            "urgency":"高",                   //紧急程度 ，高、中、低
-            "use_status":"1"                  //引用状态，1-已引用，2-未引用
-        },
-        {
-            "group_plan_id":"***",            //集团计划id
-            "group_plan_name":"***",          //集团计划名称
-            "order_type": "***",              //工单类型编码
-            "order_type_name": "***",         //工单类型名称
-            "freq_cycle":"m",                 //计划频率-周期，y/m/w/d
-            "freq_num":"3",                   //计划频率-次数，n
-            "urgency":"高",                   //紧急程度 ，高、中、低
-            "use_status":"1"                  //引用状态，1-已引用，2-未引用
-        },
-        {
-            "group_plan_id":"***",            //集团计划id
-            "group_plan_name":"***",          //集团计划名称
-            "order_type": "***",              //工单类型编码
-            "order_type_name": "***",         //工单类型名称
-            "freq_cycle":"m",                 //计划频率-周期，y/m/w/d
-            "freq_num":"3",                   //计划频率-次数，n
-            "urgency":"高",                   //紧急程度 ，高、中、低
-            "use_status":"1"                  //引用状态，1-已引用，2-未引用
-        },
-    ]
-
-
-
+        }, function () { }, function () { })
     },
-    watch:{
+    watch: {
 
     }
 });

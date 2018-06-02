@@ -1,0 +1,223 @@
+<div class="towork" v-if="onPage === 'addwork'">
+    <!-- Header Start -->
+    <div class="header">
+        <div class="cancel" @click.capture="v.initPage('eventList')">
+            <pbutton-white text="取消"></pbutton-white>
+        </div>
+
+        <div @click.capture="next">
+            <pbutton-blue text="下一步"></pbutton-blue>
+        </div>
+    </div>
+    <!-- Header End -->
+
+    <!-- Content Start -->
+    <div class="content">
+        <!-- Left Start -->
+        <div class="left">
+
+            <div class="title">
+                基本信息
+            </div>
+
+            <!-- Item Start -->
+            <div class="item">
+                <div class="text must">
+                    工单类型
+                </div>
+
+                <div class="block">
+                    <pcombobox-normal sel="handlerWoType" bind="true">
+                        <header placeholder="selecet(WoTypeList,{plan_id:addwork.order_type},'plan_name')"></header>
+                        <item datasource="WoTypeList" text="plan_name"></item>
+                    </pcombobox-normal>
+                </div>
+
+            </div>
+            <!-- Item End -->
+
+            <!-- Item Start -->
+            <div class="item">
+                <div class="text">
+                    工单紧急程度
+                </div>
+
+                <div class="block">
+                    <pcombobox-normal sel="handlerUrgency" bind="true">
+                        <header placeholder="selecet(urgencyType,{code:addwork.urgency},'name')"></header>
+                        <item datasource="urgencyType" text="name"></item>
+                    </pcombobox-normal>
+                </div>
+
+            </div>
+            <!-- Item End -->
+
+            <!-- Item Start -->
+            <div class="item">
+                <!-- 根据工单类型判断是否抢单来判断是否需要必填执行人数 -->
+                <div class="text" :class="addwork.robbing_flag?'must':''">
+                    建议执行人数
+                </div>
+
+                <div class="block" v-if="!addwork.robbing_flag">
+                    <ptext-text id="'execute_count_id'" placeholder="'请输入'" value="addwork.execute_count" text="'人'" bind="true">
+                    </ptext-text>
+                </div>
+
+                <div class="block" v-if="addwork.robbing_flag">
+                    <ptext-text id="'execute_count_id'" placeholder="'请输入'" value="addwork.execute_count" text="'人'" bind="true">
+                        <verify errtip="不可为空" verifytype="space"></verify>
+                        <verify errtip="只能为自然数" verifytype="ZInteger"></verify>
+                    </ptext-text>
+                </div>
+            </div>
+
+            <div class="item" v-if="addwork.robbing_flag" v-for="(item,index) in addwork.pit_positions">
+                <div class="text">
+                    位置{{index + 1}}
+                </div>
+                <div class="block">
+                    <multiple :ref=" 'multiple'+index" :arr="getSelected(WoTypeListAll,item.pit_position_asks, 'code')" :datasource="WoTypeListAll"
+                        :attr=" 'name'" :placeholder=" '请选择'" :cb="getPositon.bind(this,index)" />
+                </div>
+            </div>
+            <!-- Item End -->
+
+            <!-- 虚线 Start -->
+            <div class="dashed"></div>
+            <!-- 虚线 End -->
+
+
+            <!-- 单选框 Start -->
+            <div class="checkbox">
+                <div class="per-switch-radio" @click="shouldStartType='1'">
+                    <span class="per-radio_input" :class="shouldStartType=='1' ? 'per-radio-checked': ''"></span>
+                    <span class="per-switch_label">要求开始和结束时间</span>
+                </div>
+            </div>
+            <!-- 单选框 End -->
+
+            <!-- 单选框 Start -->
+            <div class="checkbox margin0">
+                <div class="per-switch-radio" @click="shouldStartType='0'">
+                    <span class="per-radio_input" :class="shouldStartType!='1' ? 'per-radio-checked': ''"></span>
+                    <span class="per-switch_label">要求固定时间内完成</span>
+                </div>
+            </div>
+            <!-- 单选框 End -->
+
+            <!-- 要求开始时间 Start -->
+            <div class="item">
+                <div class="text">
+                    要求开始时间
+                </div>
+
+                <div class="block">
+                    <pcombobox-normal sel="handlerStart_time_type" bind="true">
+                        <header placeholder="selecet(shouldStartEnums,{code:addwork.start_time_type}, 'name')"></header>
+                        <item datasource="shouldStartEnums" text="name"></item>
+                    </pcombobox-normal>
+                </div>
+
+                <div class="text" v-if="addwork.start_time_type==2">
+                    <ptime-form id="ask_start_time" sel="handlerstart_time">
+                        <panel timetype="yMdhm" startyear="2003" endyear="2018"></panel>
+                    </ptime-form>
+                </div>
+
+            </div>
+            <!-- 要求开始时间 End -->
+
+
+            <!-- Item Start 要求结束时间 -->
+            <div class="item" v-if="shouldStartType=='1'">
+                <div class="text">
+                    要求完成时间
+                </div>
+
+                <div class="block">
+                    <ptime-form id="ask_end_time" sel="handlerEnd_time">
+                        <panel timetype="yMdhm" startyear="2003" endyear="2018"></panel>
+                    </ptime-form>
+                </div>
+
+            </div>
+            <!-- Item End -->
+            <!-- 要求开始和结束时间 End   -->
+
+            <!-- 固定时间完成 Start -->
+
+            <!-- Item Start -->
+            <div class="item" v-if="shouldStartType!='1'">
+                <div class="text">
+                    要求固定时间内完成
+                </div>
+
+                <div class="block">
+                    <ptext-text placeholder=" '请输入'" value="addwork.ask_end_limit" text=" '小时'" bind="true">
+                        <verify errtip="不可为空" verifytype="space"></verify>
+                    </ptext-text>
+                </div>
+
+            </div>
+            <!-- Item End -->
+            <!-- 固定时间完成 End -->
+
+        </div>
+        <!-- Left End -->
+
+        <!-- Rigth Start -->
+        <div class="right">
+            <div class="title">
+                工作事项
+            </div>
+
+            <div class="view">
+
+                <!-- 事项 Start -->
+                <template v-for="(item,index) in matters">
+                    <matter :matter="item" :views="mattersViews[index]" :candelete="matters.length>1" :delete="deleteMatter" :ref="'matter' + index">
+                        <matter/>
+                </template>
+                <!-- 事项 End -->
+                <div class="btn" @click="matters.push(new MatterO()),mattersViews.push(new ViewError())">
+                    添加新事项
+                </div>
+
+            </div>
+        </div>
+        <!-- Right End -->
+    </div>
+    <!-- Content End -->
+</div>
+
+
+<div class="towork" v-if="onPage === 'Preview'">
+    <!-- Header Start -->
+    <div class="header">
+        <div class="cancel" @click.capture="onPage = 'addwork'">
+            <pbutton-white text="返回"></pbutton-white>
+        </div>
+
+        <div>
+            <pbutton-blue text="发布"></pbutton-blue>
+        </div>
+
+        <div class="ff">
+            工单将会发给：人员A，人员b
+            <u @click.stop="showPersonTree=!showPersonTree">我要修改</u>
+            <div class="block" v-show="showPersonTree">
+                <persontree :datasource="persons" :cb="getPersions" :cc="cc" />
+            </div>
+            <div class="layer" v-show="showPersonTree" @click="showPersonTree=false"></div>
+        </div>
+    </div>
+    <!-- Header End -->
+
+    <!-- Content Start -->
+    <div class="content">
+        <!-- 引入工单详情的信息  -->
+        <%include ../workOrder/planMng/workOrderDetail.html %>
+    </div>
+    <!-- Content End -->
+</div>

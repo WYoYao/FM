@@ -1,0 +1,105 @@
+@import "../../../eventMng/groupInput/_public.scss";
+@import "./_public.scss";
+@import "./_structure.scss";
+@mixin inputparent{
+    font-size: 14px;
+    color: $blacker-font-color;
+    box-sizing: border-box;
+    border-bottom: 1px solid $blue-border-colorer;
+}
+
+@mixin percent{
+    font-size: 12px;
+    color: $blue-font-color;
+    text-align: right;
+}
+
+@mixin object{
+    @include inputparent;
+    position: relative;
+
+    & > .textarea{
+        padding: 16px 0;
+        font-size: 14px;
+        @content;
+        border: none;
+    }
+
+    & > .bottom{
+        height: 30px;
+        line-height: 30px;
+
+        & > .btn{
+            float: left;
+            color: $blue-font-color;
+        }
+
+        & > .percent{
+            float: right;
+            line-height: 30px;
+            @include percent;
+        }
+    }
+}
+
+.matter.section{
+    padding: 0 20px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    border: 1px solid $blue-border-color;
+
+    & >  .name{
+        @include inputparent;
+
+        & > .input{
+            height: 50px;
+            border: none;
+            width: calc( 100% - 40px);
+        }
+
+        & > .percent{
+            float: right;
+            line-height: 50px;
+            @include percent;
+        }
+    }
+
+    & > .obj{
+        @include object{
+            height: 84px;
+        }
+    }
+
+    & > .picture{
+        margin: 20px 0;
+    }
+
+    & > .sop{
+        @include object{
+            padding: inherit !important;
+            height: 32px;
+        }
+    }
+
+    & > .work{
+        @include object{
+            height: 66px;
+        }
+    }
+
+    & > .group{
+        height: 30px;
+        line-height: 30px;
+        padding: 10px 0;
+
+        @include pcheckbox{
+            margin-top: 7px;
+            float: left;
+        }
+
+        & > .delete{
+            float: right;
+            color: $red-font-color;
+        }
+    }
+}

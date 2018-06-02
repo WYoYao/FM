@@ -1,0 +1,36 @@
+<% include ../../../template/pageHead.html %>
+<link rel="stylesheet" href="../css/public/common.css" />
+<link rel="stylesheet" href="../css/basicMng/schedule/index.css" />
+<script type="text/javascript" src="../js/basicMng/schedule/controller.js"></script>
+<script type="text/javascript" src="../js/basicMng/schedule/event.js"></script>
+<script type="text/javascript" src="../js/basicMng/schedule/dayjs.min.js"></script>
+
+<!-- 组件列表 -->
+<% include component_plan.html %>
+<% include component_position.html %>
+<% include component_shift.html %>
+
+<div id="scheduleManage" class="frameWrap">
+
+    <!-- 列表 初始页 -->
+    <% include list.html %>
+
+    <!-- 编辑排班计划 -->
+    <% include editPlan.html %>
+
+</div>
+
+<ploading-global id="globalloading"></ploading-global>
+
+<pnotice-message id="message"></pnotice-message>
+
+<pwindow-confirm id="confirmWindow" subtitle="选择新文件后原文件将被覆盖" title="您确定要重新上传文件吗？">
+    <button>
+        <pbutton-backred text="确定" click="wMethods.determineConfirm"></pbutton-backred>
+        <pbutton-white text="取消" click="wMethods.cancelConfirm"></pbutton-white>
+    </button>
+</pwindow-confirm>
+
+<% include ../../../template/pageFoot.html %>
+
+<script type="text/javascript" src="../js/basicMng/schedule/model.js"></script>

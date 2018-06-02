@@ -41,10 +41,6 @@ Vue.component('matter', {
     },
     props: ["matter", "views"],
     methods: {
-        //事项名称输入事件
-        input_matter_name: function () {
-
-        },
         // 获取对象
         getObj: function (arr) {
             var _that = this;

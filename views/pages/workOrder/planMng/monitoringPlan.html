@@ -20,10 +20,10 @@
                         </pcombobox-normal>
                     </div> -->
                     <span class="font">项目是否更新集团计划：</span>
-                    <div class="cbx">
+                    <div class="cbx comboMark" @click.capture="fakerClick(event)">
                         <pcombobox-normal sel="createGroupOrderGrid" bind="true" id="'isUpdateGroupPlan'">
                             <header placeholder="'全部'"></header>
-                            <item datasource="isUpdateGPWO" text="name" id="code"></item>
+                            <item datasource="isUpdateGPWO" text="name" id="id"></item>
                         </pcombobox-normal>
                     </div>
                     <span class="font">发单时间：</span>
@@ -48,13 +48,14 @@
                         <div class="hoverList">
                             <div>未引用集团计划项目</div>
                             <ul>
+                                <ploading-part id='unUseGPProLoading' text="加载中..."></ploading-part>
                                 <pscroll-small templateid="monitoringPlanTem"></pscroll-small>
                             </ul>
                         </div>
                     </span>
 
                     <!-- icon Start -->
-                    <div class="icon clear">
+                    <div class="icons clear">
                         <div>
                             <div></div>
                             <span>下次待发出工单</span>
@@ -100,6 +101,8 @@
 
                 <!-- 表体 Start -->
                 <div class="t_bodyer">
+                    
+                    <ploading-part id='moniPlanLoading' text="加载中..."></ploading-part>
 
                     <!-- 行 Start -->
                     <template v-for="item in monitoringGrid">
@@ -116,7 +119,7 @@
                             <ul class="row">
                                 <li v-for="row in item.grid" class="item">
                                     <div v-for="(grid,ind) in row" :style="{'flex':grid.width}" :title="(_.find(allOrderState,{code:grid.type}) || {}).name">
-                                        <div v-if="grid.type != 'none'" class="pointer" @click="openWorkOrderDetail(grid)">
+                                        <div v-if="grid.type != 'none'" class="pointer" @click="openWorkOrderDetail(grid.id,'workOrderDetailHead','工单详情')">
                                             <div v-show="grid.type == ''"></div>
                                             <img v-show="grid.type != ''" :src=" '../../../../images/orderState/' + grid.type + '.png'" alt="">
                                         </div>

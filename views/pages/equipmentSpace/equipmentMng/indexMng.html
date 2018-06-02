@@ -1,0 +1,323 @@
+
+
+    <script type="text/javascript" src="../js/public/globalController.js"></script>
+
+
+    <!-- 控件库处理 -->
+    <script src="../js/equipmentSpace/equipmentMng/tool.js"></script>
+    <script src="../js/public/createVue.js"></script>
+
+    <!-- createVue -->
+    <script src="../js/equipmentSpace/equipmentMng/index.js"></script>
+
+    <script type="text/javascript" src="../js/public/polyfill.js"></script>
+    <script type="text/javascript" src="../js/public/lodash.min.js"></script>
+    <script type="text/javascript" src="../js/public/promise.min.js"></script>
+
+    <link rel="stylesheet" href="<%=host%>pcontrol/css/flatBlueSeries_min_2.0.css"/>
+
+    <% include ./layer.html %>
+
+    <!-- 设备管理列表 Start -->
+    <link rel="stylesheet" href="../css/equipmentSpace/equipmentMng/list.css">
+    <script src="../js/equipmentSpace/equipmentMng/list/controller.js"></script>
+    <script src="../js/equipmentSpace/equipmentMng/list/model.js"></script>
+    <script src="../js/equipmentSpace/equipmentMng/list/event.js"></script>
+
+    <!-- 设备管理列表 End -->
+
+    <!-- 设备管理详情 Start -->
+    <link rel="stylesheet" href="../css/equipmentSpace/equipmentMng/detail.css">
+    <script src="../js/equipmentSpace/equipmentMng/detail/controller.js"></script>
+    <script src="../js/equipmentSpace/equipmentMng/detail/model.js"></script>
+    <script src="../js/equipmentSpace/equipmentMng/detail/event.js"></script>
+    <!-- 设备管理详情 End -->
+
+    <!-- 新建设备详情 Start -->
+    <link rel="stylesheet" href="../css/equipmentSpace/equipmentMng/insert.css">
+    <script src="../js/equipmentSpace/equipmentMng/insert/controller.js"></script>
+    <script src="../js/equipmentSpace/equipmentMng/insert/model.js"></script>
+    <script src="../js/equipmentSpace/equipmentMng/insert/event.js"></script>
+    <!-- 新建设备详情 End -->
+
+    <!-- 新建设备详情 Start -->
+    <link rel="stylesheet" href="../css/equipmentSpace/equipmentMng/SystemMngAdd.css">
+    <script src="../js/equipmentSpace/equipmentMng/SystemMng/controllerAdd.js"></script>
+    <script src="../js/equipmentSpace/equipmentMng/SystemMng/modelAdd.js"></script>
+    <script src="../js/equipmentSpace/equipmentMng/SystemMng/eventAdd.js"></script>
+    <!-- 新建设备详情 End -->
+
+    <!-- 新建设备中的弹窗需要文件 Start -->
+
+    <!-- 新建厂商 Start -->
+    <link rel="stylesheet" href="../css/equipmentSpace/equipmentMng/addEquiment.css">
+    <script src="../js/equipmentSpace/equipmentAddress/controller.js"></script>
+    <script src="../js/equipmentSpace/equipmentAddress/model.js"></script>
+    <script src="../js/equipmentSpace/equipmentAddress/event.js"></script>
+    <!-- 新建厂商 End -->
+
+    <!-- 新建位置  Start -->
+    <link rel="stylesheet" href="../css/equipmentSpace/spaceMng/indexSecond.css"/>
+    <script type="text/javascript" src="../js/equipmentSpace/spaceMng/controller.js"></script>
+    <script type="text/javascript" src="../js/equipmentSpace/spaceMng/eventSecond.js"></script>
+    <script type="text/javascript" src="../js/equipmentSpace/spaceMng/modelSecond.js"></script>
+    <!-- 新建位置  End -->
+
+
+    <!-- 新建设备中的弹窗需要文件 End -->
+
+    <!-- 工单详情Start  -->
+
+    <!--<link rel="stylesheet" href="/css/workOrder/planMonitor/see_orderDetail.css" />-->
+    <!--<link rel="stylesheet" href="/css/workOrder/planMonitor/search_box.css" />-->
+    <script src="../js/public/orderDetail_pub.js"></script>
+    <script type="text/javascript" src="../js/public/publicMethod.js"></script>
+
+    <!-- 工单详情End -->
+
+
+
+<div pc="" class="per-loading-nomal" id="startLoading" _pt="ploading-part" _id="bfbbcdbeehgaggadcad"
+     style="display: block;">
+    <div class="loading-con">
+        <div class="per-loading-nomal_pic"></div>
+        <div class="per-loading-nomal_text">加载中...</div>
+    </div>
+</div>
+
+<% include ./../spaceMng/treeTemplate.html %>
+<!-- component Start -->
+<div class="component" id="component" style="display:none">
+    <div id="equipmentMng">
+
+        <layer :layer="layer"></layer>
+
+
+        <% include ./list.html %>
+
+        <% include ./detail.html %>
+
+        <% include ./insert.html %>
+
+        <% include ./system.html %>
+
+        <div v-show='showWorkOrder=="wordorder"' style="width:100%;height:100%;">
+            <!-- TODO: 工单详情 -->
+        </div>
+
+    </div>
+
+
+
+    <!-- 图片展示弹窗 -->
+    <pwindow-global id="globalWindow1" templateid="windowTemp"></pwindow-global>
+    <script type="text/html" id="windowTemp">
+        <div class="imgBox">
+            <img id="bigImage" src=""/>
+        </div>
+    </script>
+
+    <!-- 添加品牌 Start -->
+    <pwindow-modal id="float_Brand" isshade="true" title="" templateid="float_Brand">
+        <button>
+            <pbutton-blue text="取消" icon="e" click="confirmhide" isborder="false" id="ds"></pbutton-blue>
+        </button>
+        <animate maxpx="0" minpx="-830" orientation="right"></animate>
+    </pwindow-modal>
+    <script type="text/html" id="float_Brand">
+        <div style="width: 450px;height: 294px;" v-if="addBrandO.company_id">
+            <div class="htxt" :title="'添加成功后将被自动加入到'+insertModel.manufacturer+'所含的型号列表中'">
+                添加成功后将被自动加入到{{insertModel.manufacturer}}所含的型号列表中
+            </div>
+            <div class='fW'>
+                <div class="contenter">
+                    <div class="moduleItem">
+                        <div class="eachItem leftItem addBrands">
+                            <div class="name">
+                                <span>型号名称</span>
+                            </div>
+                            <div class="cont">
+                                <ptext-text bind="true" id="'addBrandText'" value="addBrandO.brand"
+                                            placeholder="'最多20个字'">
+                                    <verify errtip="最多20个字" verifytype="length" length='20'></verify>
+                                    <verify errtip="不可为空" verifytype="space"></verify>
+                                </ptext-text>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottmer">
+                    <div class='iln' @click.capture='cancelAddBrand()'>
+                        <pbutton-white text="取消"></pbutton-white>
+                    </div>
+                    <div class='iln' @click.capture='submitAddBrand()'>
+                        <pbutton-blue text="保存"></pbutton-blue>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <!-- 添加品牌 End -->
+
+    <!-- 添加保险单号 Start -->
+    <pwindow-modal id="float_InsuranceNum" isshade="true" title="" templateid="float_InsuranceNum">
+        <button>
+            <pbutton-blue text="取消" icon="e" click="confirmhide" isborder="false" id="ds"></pbutton-blue>
+        </button>
+        <animate maxpx="0" minpx="-830" orientation="right"></animate>
+    </pwindow-modal>
+    <script type="text/html" id="float_InsuranceNum">
+        <div style="width: 450px;height: 424px;" v-if="addInsurerNumO.company_id">
+            <div class="htxt" :title="'添加成功后将被自动加入到'+insertModel.insurer+'所含的保险单号列表中'">
+                添加成功后将被自动加入到{{insertModel.insurer}}所含的保险单号列表中
+            </div>
+            <div class='fW'>
+                <div class="contenter">
+                    <div class="moduleItem">
+                        <div class="eachItem leftItem addBrands">
+                            <div class="name">
+                                <span>保险单号</span>
+                            </div>
+                            <div class="cont">
+                                <ptext-text bind="true" id="'addInsuranceNumText'"
+                                            value="addInsurerNumO.insurer_info.insurer_num" placeholder="'最多20个字'">
+                                    <!-- <verify errtip="最多20个字" verifytype="length" length='20'></verify> -->
+                                    <verify errtip="不可为空" verifytype="space"></verify>
+                                </ptext-text>
+                            </div>
+                        </div>
+                        <div class="eachItem leftItem addBrands">
+                            <div class="name">
+                                <span>保险文件</span>
+                            </div>
+                            <div class="cont">
+                                <pupload-attachment number="1" id="addinsurance_file">
+                                </pupload-attachment>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottmer">
+                    <div class='iln' @click.capture='cancelAddInsuranceNum()'>
+                        <pbutton-white text="取消"></pbutton-white>
+                    </div>
+                    <div class='iln' @click.capture='SubmitAddInsuranceNum()'>
+                        <pbutton-blue text="保存"></pbutton-blue>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <!-- 添加保险单号 End -->
+
+    <!-- 添加系统 Start -->
+    <pwindow-modal id="float_system" isshade="true" title="" templateid="float_system">
+        <button>
+            <pbutton-blue text="取消" icon="e" click="confirmhide" isborder="false" id="ds"></pbutton-blue>
+        </button>
+        <animate maxpx="0" minpx="-830" orientation="right"></animate>
+    </pwindow-modal>
+    <!-- 添加系统 End -->
+
+    <!-- 添加系统 Start -->
+    <script type="text/html" id="float_system">
+        <div style="width: 760px; height: 640px;">
+            <div class="htxt">添加成功后将被自动加入到系统列表中</div>
+            <div class='fW' v-if="isShowAddSystem">
+                <div class="contenter">
+                    <% include ./addSystemAdd.html %>
+                </div>
+                <div class="bottmer">
+                    <div class='iln' @click.capture='_clickInsertLayerCancelSystem()'>
+                        <pbutton-white text="取消"></pbutton-white>
+                    </div>
+                    <div class='iln' @click.capture='_clickInsertSystemLayer()'>
+                        <pbutton-blue text="保存"></pbutton-blue>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <!-- 添加系统 End -->
+
+    <!-- 添加位置 Start -->
+    <pwindow-modal id="float_postion" isshade="true" title="" templateid="float_postion_temp">
+        <button>
+            <pbutton-blue text="取消" icon="e" click="confirmhide" isborder="false" id="ds"></pbutton-blue>
+        </button>
+        <animate maxpx="0" minpx="-830" orientation="right"></animate>
+    </pwindow-modal>
+    <!-- 添加位置 End -->
+
+    <!-- 添加位置 Start -->
+    <script type="text/html" id="float_postion_temp">
+        <div style="width: 940px;height: 640px;" v-if="showPostion">
+            <div class="htxt">添加成功后将被自动加入到安装位置列表中</div>
+            <div class='fW'>
+                <div class="contenter">
+                    <% include ../spaceMng/addSpaceSecond.html %>
+                </div>
+                <div class="bottmer">
+                    <div class='iln' @click.capture='_clickInsertLayerCancelByPostion()'>
+                        <pbutton-white text="取消"></pbutton-white>
+                    </div>
+                    <div class='iln' @click.capture='_clickInsertLayerSubmitByPostion()'>
+                        <pbutton-blue text="保存"></pbutton-blue>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <!-- 添加位置 End -->
+
+    <!-- 添加厂家 Start -->
+    <pwindow-modal id="eqaddressfloat" isshade="true" title="" templateid="floatTemp_factory">
+        <button>
+            <pbutton-blue text="取消" icon="e" click="confirmhide" isborder="false" id="ds"></pbutton-blue>
+        </button>
+        <animate maxpx="0" minpx="-830" orientation="right"></animate>
+    </pwindow-modal>
+    <!-- 添加厂家 End   -->
+
+    <!-- 添加四个厂家 Start -->
+    <script type="text/html" id="floatTemp_factory">
+        <div style="width: 540px; height: 640px;" v-if="tabSelName" @click.stop="void 0;">
+            <div class="htxt">添加成功后将被自动加入到{{tabSelName}}列表中</div>
+            <div class='fW'>
+                <div class="contenter">
+                    <div class="eqaddressFloatWrap ">
+                        <% include ../../../template/newMerchant.html %>
+                    </div>
+                </div>
+                <div class="bottmer">
+                    <div class='iln' @click.capture='_clickInsertLayerCancel()'>
+                        <pbutton-white text="取消"></pbutton-white>
+                    </div>
+                    <div class='iln' @click.capture='_clickInsertLayerSubmit()'>
+                        <pbutton-blue text="保存"></pbutton-blue>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <!-- 添加四个厂家 End -->
+
+    <!-- 报废设备 Start -->
+    <pwindow-confirm id="confirmWindow">
+        <button>
+            <pbutton-blue text="报废" click="scrappedEquipment"></pbutton-blue>
+            <pbutton-white text="取消" click="cancelScrappedEquipment"></pbutton-white>
+        </button>
+    </pwindow-confirm>
+    <!-- 报废设备 End -->
+
+
+    <ploading-part id='equipmentMngloading'></ploading-part>
+    <pnotice-message id='equipmentMngpnotice'></pnotice-message>
+
+    <ploading-part id='globalloading' text="加载中..."></ploading-part>
+    <!-- <pnotice-message id='globalnotice'></pnotice-message> -->
+
+
+
+</div>   <!-- component End -->

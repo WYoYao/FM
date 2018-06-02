@@ -1,0 +1,21 @@
+<div id="editPlan" v-if="editPlanStatus">
+    <!-- 头部按钮 -->
+    <div id="editTop">
+        <div class="btnCon btnLeft">
+            <pbutton-white text="'取消'" click="appMethods.hideEditPlan" bind="true"></pbutton-white>
+        </div>
+        <div class="btnCon btnRight">
+            <pbutton-blue text="'保存'" click="appMethods.commitShift" bind="true"></pbutton-blue>
+        </div>
+        <div class="title">编辑排班计划</div>
+    </div>
+    <div id="editBody">
+        <!-- 班次编辑 -->
+        <div class="editShift">
+            <p class="title1">请添加班次，并为每种班次选定一个字母代指它：</p>
+            <p class="title2">例如：班次时间：09:00~19:00 代指字母：A</p>
+            <p class="title3">您只需要将工作时间设定为班次（我们会将不填写班次的日期自动判定为休息日）</p>
+            <shift :shift_arr="currentShift" @saveshift= "saveShift"></shift>
+        </div>
+    </div>
+</div>

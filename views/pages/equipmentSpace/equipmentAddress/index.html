@@ -1,0 +1,397 @@
+<% include ../../../template/pageHead.html %>
+<link rel="stylesheet" href="../css/equipmentSpace/equipmentAddress/equiment.css" />
+<script type="text/javascript" src="../js/equipmentSpace/equipmentAddress/controller.js"></script>
+<script type="text/javascript" src="../js/equipmentSpace/equipmentAddress/model.js"></script>
+<script type="text/javascript" src="../js/equipmentSpace/equipmentAddress/event.js"></script>
+<script type="text/javascript">
+    var addressTabArr = [];
+    <%if( user.authorObj.vendorlist){%>
+        addressTabArr.push({ name: "供应商名录", icon: 'z',type:'gys' });
+        <%}%>
+    <%if(user.authorObj.manufacturerlist){%>
+        addressTabArr.push( { name: "生产商名录", icon: 'z' ,type:'scs'});
+        <% }%>
+    <%if(user.authorObj.maintainerlist){ %>
+        addressTabArr.push( { name: "维修商名录", icon: 'z',type:'wxs' });
+        <%}%>
+    <%if(user.authorObj.insurancelist){ %>
+        addressTabArr.push( { name: "保险公司名录", icon: 'z',type:'bxgs' });
+        <% }%>
+ var eqaddresstabArr = addressTabArr;
+</script>
+
+<div class="eqaddressWrap" id="eqaddressWrap">
+    <ptab-navigation id="eqaddresstab" datasource="eqaddresstabArr" text="name" icon="icon" templateid="eqaddressTemp" sel="equipmentAddressVueMethod.tabSel"></ptab-navigation>
+    <!-- float弹窗 -->
+    <pwindow-float id="eqaddressfloat" isshade="false" title="录入" templateid="floatTemp" hide="equipmentLogic.closeFloat()" onclick="aStopPro(event)">
+            <button>
+                <pbutton-borderred text="'删除'" icon="'p'"  isborder="false" id="'delEqaddress'" click="delEqaddress" disabled="!selMerchantToInfo.can_delete" bind="true"></pbutton-borderred>
+            </button>
+             <animate maxpx="0" minpx="-480"  orientation="right"></animate>
+        </pwindow-float>
+
+    <!--保险列表pop气泡-->
+    <div class="insuranceGridPop">
+        <div class="header"><span>保险单号</span><span>保险文件</span></div>
+        <ul>
+            <li v-for="item in selInsureOrderArr">
+                <span v-text="item.insurer_num"></span>
+                <span class="span2"><a :href="item.insurance_file.key" v-text="item.insurance_file.name"></a></span></li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/html" id="eqaddressTemp">
+    <div class="eqaddressGridWrap">
+        <!-- 供应商 -->
+          <%if( user.authorObj.vendorlist){%>
+         <div class="eqaddressGrid">
+            <pgrid-multifunction>
+                <panel datasource="merchantArr"  lineclick="equipmentAddressVueMethod.gridLineSel" sel="equipmentAddressVueMethod.gridPageChange" pagesize="50"></panel>
+                <header>
+                    <column name="供应商名称" source="company_name"></column>
+                    <column name="联系人" source="contacts"></column>
+                    <column name="联系电话" source="phone"></column>
+                    <column name="网址" source="web"></column>
+                    <column name="传真" source="fax"></column>  
+                    <column name="电子邮件" source="email"></column>  
+                </header>
+               <page>
+                    <ppage-simple number="50" orientation="up"></ppage-simple>
+                </page>
+               <notice>
+                    <pnotice-nodata text="暂无数据" icon="../../../images/sassNodata.png"></pnotice-nodata>
+               </notice>
+                
+                 <button>
+                    <pbutton-white text="录入供应商" click="addfloatShow"></pbutton-white>
+                </button>
+            </pgrid-multifunction>
+        </div>
+          <% }%>
+      <!-- 生产商 -->
+         <%if(user.authorObj.manufacturerlist){%>
+         <div class="eqaddressGrid">
+            <pgrid-multifunction>
+                <panel datasource="merchantArr"  lineclick="equipmentAddressVueMethod.gridLineSel" sel="equipmentAddressVueMethod.gridPageChange" pagesize="50"></panel>
+                <header>
+                    <column name="生产厂商名称" source="company_name"></column>
+                    <column name="联系人" source="contacts"></column>
+                    <column name="联系电话" source="phone"></column>
+                    <column name="网址" source="web"></column>
+                    <column name="传真" source="fax"></column>  
+                    <column name="电子邮件" source="email"></column>
+                    <column name="所含型号" source="brandStr"></column>
+                </header>
+                <page>
+                    <ppage-simple number="50" orientation="up"></ppage-simple>
+                </page>
+                <notice>
+                    <pnotice-nodata text="暂无数据" icon="../../../images/sassNodata.png"></pnotice-nodata>
+                </notice>
+
+                   <button>
+                    <pbutton-white text="录入生产商" click="addfloatShow"></pbutton-white>
+                </button>
+            </pgrid-multifunction>
+        </div>
+            <% }%>
+    <!-- 维修商 -->
+          <%if(user.authorObj.maintainerlist){ %>
+  <div class="eqaddressGrid">
+            <pgrid-multifunction>
+                <panel datasource="merchantArr"  lineclick="equipmentAddressVueMethod.gridLineSel" sel="equipmentAddressVueMethod.gridPageChange" pagesize="50"></panel>
+                <header>
+                    <column name="维修商名称" source="company_name"></column>
+                    <column name="联系人" source="contacts"></column>
+                    <column name="联系电话" source="phone"></column>
+                    <column name="网址" source="web"></column>
+                    <column name="传真" source="fax"></column>  
+                    <column name="电子邮件" source="email"></column>  
+                </header>
+                  <page>
+                    <ppage-simple number="50" orientation="up"></ppage-simple>
+                </page>
+                <notice>
+                    <pnotice-nodata text="暂无数据"  icon="../../../images/sassNodata.png"></pnotice-nodata>
+                </notice>
+
+                <button>
+                    <pbutton-white text="录入维修商" click="addfloatShow"></pbutton-white>
+                </button>
+            </pgrid-multifunction>
+        </div>
+            <% }%>
+    <!-- 保险公司 -->
+        <%if(user.authorObj.insurancelist){ %>
+    <div class="eqaddressGrid" id="insuranceGridWrap">
+            <pgrid-multifunction>
+                <panel templateid="sctinsuregrid" datasource="merchantArr"  lineclick="equipmentAddressVueMethod.gridLineSel" sel="equipmentAddressVueMethod.gridPageChange" pagesize="50"></panel>
+                <header>
+                    <column name="保险公司名称"></column>
+                    <column name="联系人"></column>
+                    <column name="联系电话"></column>
+                    <column name="保险单号"></column>
+                    <column name="保险文件"></column>
+                </header>
+                  <page>
+                    <ppage-simple number="50" orientation="up"></ppage-simple>
+                </page>
+                  <notice>
+                    <pnotice-nodata text="暂无数据"  icon="../../../images/sassNodata.png"></pnotice-nodata>
+                </notice>
+
+                <button>
+                    <pbutton-white text="录入保险公司" click="addfloatShow"></pbutton-white>
+                </button>
+            </pgrid-multifunction>
+        </div>
+         <% }%>
+   </div>
+</script>
+<script type="text/html" id="sctinsuregrid">
+    <em v-text="model.company_name"></em>
+    <em v-text="model.contacts"></em>
+    <em v-text="model.phone"></em>
+    <div>
+        <em v-if="model.insurer_info&&model.insurer_info.length==1" v-text="model.insurer_info[0].insurer_num"></em>
+        <em v-if="model.insurer_info&&model.insurer_info.length>1" v-text="model.insurer_info.length+'个保险单号'" @click="gridInsureOrderClick(model,$event)" style="color:#637e99"></em>
+    </div>
+    <div style="color:#637e99">
+        <a  onclick="aStopPro(event)" v-if="model.insurer_info&&model.insurer_info.length==1" v-text="model.insurer_info[0].insurance_file.name" :href='model.insurer_info[0].insurance_file.key'></a>
+    </div>
+</script>
+
+<script type="text/html" id="floatTemp">
+    <div class="eqaddressFloatWrap" id="divMerchantInfo">
+        <!--新建 -->
+        <div class="addWrap" id="divMerchantInfoToNew">
+            <!-- 设备管理与设备通讯录新建时公用页面，修改请注意wyy -->
+            <% include ../../../template/newMerchant.html %>
+
+            <div class="butWrap">
+                <pbutton-blue text="保存" click="addList(equipmentAddressModal.selMerchantToUpdate.company_name)"></pbutton-blue>
+            </div>
+        </div>
+        <!-- 查看、编辑 -->
+        <div class="selWrap" id="divMerchantInfoToEdit">
+            <div class="selTemp selTempSel" type="company_name">
+                <span class="selname"><b>{{tabSelName}}名称:</b></span>
+                <div class="selcon">
+                    <div class="selInput">
+                        <span v-text="selMerchantToInfo.company_name">name</span>
+                        <div class="selBut">
+                            <pbutton-blue text="编辑" isborder="false" icon="e" click="editSelClick"></pbutton-blue>
+                        </div>
+                    </div>
+                    <div class="editInput">
+                        <div>
+                            <ptext-text value="selMerchantToUpdate.company_name" bind="true" id="'txtMerchantNameEdit'" blur="equipmentAddressVueMethod.nameBlurValidRepeatToEdit">
+                                <verify errtip="不可为空"  verifytype="space"></verify>
+                                <verify errtip="最多输入50个字"  verifytype="length" length="50"></verify>
+                            </ptext-text>
+                        </div>
+                        <div class="selBut">
+                            <em class="Ficon co" onclick="editConfirm(event,null,equipmentAddressModal.selMerchantToUpdate.company_name)">Z</em>
+                            <em class="Ficon" onclick="editCancel(this,event)">x</em>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="selTemp selTempSel" type="contacts">
+                <span class="selname"><b>联系人:</b></span>
+                <div class="selcon">
+                    <div class="selInput">
+                        <span v-text="selMerchantToInfo.contacts">name</span>
+                        <div class="selBut">
+                            <pbutton-blue text="编辑" isborder="false" icon="e" click="editSelClick"></pbutton-blue>
+                        </div>
+                    </div>
+                    <div class="editInput">
+                        <div>
+                            <ptext-text value="selMerchantToUpdate.contacts" bind="true">
+                                <verify errtip="最多输入20个字"  verifytype="length" length="20"></verify>
+                            </ptext-text>
+                        </div>
+                        <div class="selBut">
+                            <em class="Ficon co" onclick="editConfirm(event)">Z</em>
+                            <em class="Ficon" onclick="editCancel(this,event)">x</em>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="selTemp selTempSel" type="phone">
+                <span class="selname"><b>联系电话:</b></span>
+                <div class="selcon">
+                    <div class="selInput">
+                        <span v-text="selMerchantToInfo.phone">name</span>
+                        <div class="selBut">
+                            <pbutton-blue text="编辑" isborder="false" icon="e" click="editSelClick"></pbutton-blue>
+                        </div>
+                    </div>
+                    <div class="editInput">
+                        <div>
+                            <ptext-text value="selMerchantToUpdate.phone" bind="true" blur="equipmentAddressVueMethod.phoneTextValidEdit" id="'txtEditMerchPhone'"></ptext-text>
+                        </div>
+                        <div class="selBut"><em class="Ficon co" onclick="editConfirm(event)">Z</em><em class="Ficon" onclick="editCancel(this,event)">x</em></div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="selTemp selTempSel" type="web" v-show="!(tabSelIndex==3)">
+                <span class="selname"><b>网址:</b></span>
+                <div class="selcon">
+                    <div class="selInput">
+                        <span v-text="selMerchantToInfo.web">name</span>
+                        <div class="selBut">
+                            <pbutton-blue text="编辑" isborder="false" icon="e" click="editSelClick"></pbutton-blue>
+                        </div>
+                    </div>
+                    <div class="editInput">
+                        <div>
+                            <ptext-text value="selMerchantToUpdate.web" bind="true"></ptext-text>
+                        </div>
+                        <div class="selBut"><em class="Ficon co" onclick="editConfirm(event)">Z</em><em class="Ficon" onclick="editCancel(this,event)">x</em></div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="selTemp selTempSel" type="fax" v-show="!(tabSelIndex==3)">
+                <span class="selname"><b>传真:</b></span>
+                <div class="selcon">
+                    <div class="selInput">
+                        <span v-text="selMerchantToInfo.fax">name</span>
+                        <div class="selBut">
+                            <pbutton-blue text="编辑" isborder="false" icon="e" click="editSelClick"></pbutton-blue>
+                        </div>
+                    </div>
+                    <div class="editInput">
+                        <div>
+                            <ptext-text value="selMerchantToUpdate.fax" bind="true"></ptext-text>
+                        </div>
+                        <div class="selBut"><em class="Ficon co" onclick="editConfirm(event)">Z</em><em class="Ficon" onclick="editCancel(this,event)">x</em></div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="selTemp selTempSel" type="email" v-show="!(tabSelIndex==3)">
+                <span class="selname"><b>电子邮件:</b></span>
+                <div class="selcon">
+                    <div class="selInput">
+                        <span v-text="selMerchantToInfo.email">name</span>
+                        <div class="selBut">
+                            <pbutton-blue text="编辑" isborder="false" icon="e" click="editSelClick"></pbutton-blue>
+                        </div>
+                    </div>
+                    <div class="editInput">
+                        <div>
+                            <ptext-text value="selMerchantToUpdate.email" bind="true"></ptext-text>
+                        </div>
+                        <div class="selBut"><em class="Ficon co" onclick="editConfirm(event)">Z</em><em class="Ficon" onclick="editCancel(this,event)">x</em></div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="selTemp selTempSel" v-if="tabSelIndex==1" type="equip_models">
+                <span class="selname"><b>所含型号:</b></span>
+                <div class="selcon">
+                    <div class="selInput">
+                        <span v-for="(item,index) in selMerchantToInfo.equip_models" v-text="(index!=(selMerchantToInfo.equip_models.length-1))?item.name+'、':item.name" class="spanLine"></span>
+                        <div class="selBut">
+                            <pbutton-blue text="编辑" isborder="false" icon="e" click="editSelClick"></pbutton-blue>
+                        </div>
+                    </div>
+                    <div class="editInput ">
+                        <div class="editbrand brandWrapPar">
+                            <div class="insurerWrap" v-for="(model,index) in selMerchantToUpdate.equip_models">
+                                <div class="inputTemp">
+                                    <div class="inputwrap">
+                                        <ptext-text txtbrand placeholder="'请输入型号'" value="model.name" bind="true" blur="equipmentAddressVueMethod.brandRepeatValidEdit">
+                                            <verify errtip="最多输入100个字"  verifytype="length" length="100"></verify>
+                                        </ptext-text>
+                                    </div>
+                                </div>
+                                <div class="insureraddBut">
+                                    <pbutton-white icon="p" shape="ellipse" click="delInsurerClick" v-bind:ji="index" v-show="selMerchantToUpdate.equip_models.length>1"></pbutton-white>
+                                    <pbutton-white icon="J" shape="ellipse" click="addBrandClick" v-show="index==0"></pbutton-white>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <div class="selBut"><em class="Ficon co" onclick="editConfirm(event)">Z</em><em class="Ficon" onclick="editCancel(this,event)">x</em></div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- 保险 -->
+            <div class="selTemp selTempSel bxDiv brandWrapPar" type="insurer_info" v-if="tabSelIndex==3">
+                <!-- 查看 -->
+                <div class="selInput" v-for="(insurelook,oindex) in selMerchantToInfo.insurer_info">
+                    <div class="tempDiv">
+                        <span class="selname"><b>保险单号:</b></span>
+                        <div class="selcon selInput">
+                            <span v-text="insurelook.insurer_num">name</span>
+                        </div>
+                    </div>
+                    <div class="tempDiv">
+                        <span class="selname"><b>保险文件:</b></span>
+                        <div class="selInput selcon">
+                            <span v-text="insurelook.insurance_file.name">name</span>
+                        </div>
+                    </div>
+                    <div class="selBut" v-show="oindex==0">
+                        <pbutton-blue text="编辑" isborder="false" icon="e" click="editSelClick"></pbutton-blue>
+                    </div>
+                </div>
+                <!-- 编辑 -->
+                <div class="editInput" v-for="(insurelook,oindex) in selMerchantToUpdate.insurer_info">
+                    <div class="tempDiv">
+                        <span class="selname"><b>保险单号:</b></span>
+                        <div class="selcon ">
+                            <ptext-text id="'editnumber'+oindex" value="insurelook.insurer_num" bind="true" insurenumedit blur="equipmentAddressVueMethod.insureNumRepeatValidEdit">
+                            </ptext-text>
+                        </div>
+                    </div>
+                    <div class="tempDiv">
+                        <span class="selname"><b>保险文件:</b></span>
+                        <div class="selcon bxwj">
+                            <pupload-attachment insurefileedit></pupload-attachment>
+                        </div>
+                    </div>
+                    <div class="selBut" v-show="oindex==0">
+                        <em class="Ficon co" onclick="editConfirm(event,true)">Z</em>
+                        <em class="Ficon" onclick="editCancel(this,event)">x</em>
+                    </div>
+                    <div class="insureraddBut">
+                        <pbutton-white icon="p" shape="ellipse" click="delInsurerClick" v-bind:ji="oindex" v-show="selMerchantToUpdate.insurer_info.length>1"></pbutton-white>
+                        <pbutton-white icon="J" shape="ellipse" click="addInsurerClick" v-show="oindex==0"></pbutton-white>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</script>
+
+
+<!-- 删除二次弹窗 -->
+<pwindow-confirm id="confirmWindow" onclick="aStopPro(event)">
+    <button>
+        <pbutton-blue text="删除" click="confirmDel"></pbutton-blue>
+        <pbutton-white text="取消" click="confirmhide"></pbutton-white>
+    </button>
+</pwindow-confirm>
+
+<% include ../../../template/pageFoot.html %>

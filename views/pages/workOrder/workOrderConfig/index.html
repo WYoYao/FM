@@ -1,0 +1,22 @@
+<% include ../../../template/pageHead.html %>
+<link rel="stylesheet" href="../css/workOrder/workOrderConfig/create.css" />
+<link rel="stylesheet" href="../css/workOrder/workOrderConfig/list.css" />
+
+<script type="text/javascript" src="../js/workOrder/workOrderConfig/model.js"></script>
+<script type="text/javascript" src="../js/workOrder/workOrderConfig/controller.js"></script>
+<script type="text/javascript" src="../js/workOrder/workOrderConfig/event.js"></script>
+
+<!-- 选择岗位树 -->
+<% include positionTreeTemplate.html %>
+
+<div id="workOrderConfig" class="">
+    <!-- 工单配置列表页 -->
+    <% include list.html %>
+
+    <!-- 新建编辑工单配置 -->
+    <% include create.html %>
+    
+</div>
+
+
+<% include ../../../template/pageFoot.html %>

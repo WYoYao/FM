@@ -18,7 +18,8 @@
       width: calc(100% - 40px);
       background: #eaeef0; }
       #planWorkOrder > .body .sel > div {
-        width: 150px; }
+        float: left;
+        min-width: 150px; }
     #planWorkOrder > .body .title {
       height: 30px;
       line-height: 30px;
@@ -30,7 +31,8 @@
     #planWorkOrder > .body .grid {
       overflow-x: hidden;
       overflow-y: auto;
-      height: calc(100% - 101px); }
+      height: calc(100% - 101px);
+      position: relative; }
       #planWorkOrder > .body .grid li {
         font-size: 14px;
         list-style-type: none;

@@ -1,7 +1,8 @@
 <div class="organizationList" v-show="curPage === 'list'">
     <div class="title">
-        组织结构
+        组织结构  
     </div>
+
     <div class="organizationBox">
         <!-- 中心部门 -->
         <div class="centerDepartment" id="centerDepart_">
@@ -10,12 +11,12 @@
                     中心部门
                 </div>
                 <div class="operat">
-                    <% if (user.indexOf('editOrganization') != '-1') { %>
+                    <% if (user.authorObj.editOrganization) { %>
                     <div class="edit">
                         <pbutton-white bind="true" icon="'`'" text="'修改'" @click="organizationMethods.centerDepartEdit()"></pbutton-white>
                     </div>
                     <% } %>
-                    <% if (user.indexOf('addEditPerson') != '-1') { %>
+                    <% if (user.authorObj.addEditPerson) { %>
                     <div class="addPerson">
                         <pbutton-white bind="true" icon="'J'" text="'快速添加人员'" click="windowEvent.showPwindow5(false)"></pbutton-white>
                     </div>
@@ -33,7 +34,7 @@
                     项目通用部门
                 </div>
                 <div class="operat">
-                    <% if (user.indexOf('editOrganization') !='-1') { %>
+                    <% if (user.authorObj.editOrganization) { %>
                     <div class="edit">
                         <pbutton-white bind="true" icon="'`'" text="'修改'" @click="organizationMethods.projectCommonEdit()"></pbutton-white>
                     </div>
@@ -46,24 +47,39 @@
         </div>
     </div>
 
+    
     <!-- 快速添加人员 -->
    
-    <pwindow-float title="添加中心部门人员" id="fastAdd" beforehide="windowEvent.initStatus" templateid="temp_window">
+    <pwindow-float title="'添加中心部门人员'" :id="'fastAdd'" beforehide="windowEvent.initStatus" @click="function(e){e.stopPropagation();}" isshade="false" templateid="temp_window" bind="true">
+        <button>
+            <div class="personRelatedOperat" v-show="(organizationModel.fastAddPage === 2)">
+                
+                <section>
+                    <pbutton-blue text="删除" icon="p" @click="organizationMethods.deleteDetails" isborder="false" id="deletePersonBtn"></pbutton-blue>
+                </section>
+                
+                
+                <section v-if="">
+                    <pbutton-blue text="编辑" icon="`" @click="organizationMethods.editDetails" isborder="false" id="editPersonBtn"></pbutton-blue>
+                </section>
+                
+            </div>
+            
+        </button>
         <animate maxpx="0" minpx="-455" orientation="right"></animate>
     </pwindow-float>
 
     <script type="text/html" id="temp_window">
-        <div class="conFastAdd">
+        <div class="conFastAdd" v-show="(organizationModel.fastAddPage === 1)">
             
             <h1 class="essentialInformation">基本信息</h1>
             <ul>
                 <li class="itemFastAdd">
                     <span><a class="starSymbol">*</a>员工识别码：</span>
                     <div class="conItem">
-                        <ptext-text placeholder="'请输入20位以内数字'" :id="'identificationCode'" bind="true" @input="organizationMethods.queryById">
+                        <ptext-text placeholder="'请输入20位以内字符'" :id="'identificationCode'" bind="true" @input="organizationMethods.queryById">
                             <verify errtip="员工识别码不能为空！"  verifytype="space"></verify>
-                            <!-- <verify errtip="请输入数字"  verifytype="pisNumber"></verify> -->
-                            <!-- <verify errtip="最多输入20个字符！"  verifytype="length" length="20"></verify> -->
+                            <verify errtip="员工识别码不可超过20个字！"  verifytype="length" length="20"></verify>
                         </ptext-text>
                     </div>
                 </li>
@@ -117,9 +133,6 @@
                 <li class="itemFastAdd">
                     <span><a class="starSymbol">*</a>项目：</span>
                     <div class="conItem">
-                        <!-- <pcombobox-custom templateid="temp_project" id="selectedProject">
-                            <header  placeholder="请选择项目" ></header>
-                        </pcombobox-custom> -->
                         <div id="selectedStr"></div>
                         <div id="addProject"  @click="windowEvent.showProjectList">添加</div>
                         <div class="promptForm">
@@ -133,8 +146,8 @@
             <ul>
                 <li class="itemFastAdd">
                     <span>员工编号：</span>
-                    <div class="conItem" id="employeeNumber">
-                        <ptext-text placeholder="请输入编号">
+                    <div class="conItem" >
+                        <ptext-text placeholder="请输入编号" id="employeeNumber">
                             <verify errtip="员工编号不可超过20个字！"  verifytype="length" length="20"></verify>
                         </ptext-text>
                     </div>
@@ -178,21 +191,27 @@
                                 @click="organizationMethods.clickAccountAddPermission(item)"
                                 ></li>
                             </ul>
+                        </div>
+                        <div class="conJurisdictionlist">
+                            <div class="selArea">  
+                                <div class="projectCommonUl projectList2" v-for="(item, index) in organizationModel.jurisdiction" >
+                                    <organizationx :model="item"></organizationx>       
+                                </div>
+                                <div style="height:52px; color: transparent;">123</div>
+                            </div>    
+                            <div class="buttonArea" >
+                                <button class="yesBtu" @click="windowEvent.slideUpJurisdiction">确定</button>
+                            </div>
                         </div>                   
                     </div>
                 </li>
                 <li class="itemFastAdd" id="jurisdictionId" style="color:#cacaca">
-                    <span>功能权限：</span>
+                    <span><a class="starSymbol">*</a>功能权限：</span>
                     <div class="conItem" id="jurisdictionList" >
                         --
                     </div>
-                </li>
-                <li class="itemFastAdd" id="jurisdictionId_" >
-                    <span>功能权限：</span>
-                    <div class="conItem">
-                        <pcombobox-custom templateid="temp_jurisdiction" id="selectedJurisdiction">
-                            <header  placeholder="请选择权限" ></header>
-                        </pcombobox-custom>
+                    <div class="promptForm" style="top: 28px;left: 108px;">
+                        请选择权限
                     </div>
                 </li>
             </ul>
@@ -207,12 +226,116 @@
             </ul>
             <div style="height:60px"></div>
         </div>
-        <div class="conKeep">
+
+        <!-- 详情     -->
+
+        <div class="conFastAdd personDetails" v-show="(organizationModel.fastAddPage === 2)">
+            <h1 class="essentialInformation">基本信息</h1>
+            <ul>
+                <li class="itemFastAdd">
+                    <span>员工识别码：</span>
+                    <div class="conItem">
+                        <div class="detailStr id_number"></div> 
+                    </div>
+                </li>
+                <li class="itemFastAdd">
+                    <span>姓名：</span>
+                    <div class="conItem">
+                        <div class="detailStr name"></div> 
+                    </div>
+                </li>
+                <li class="itemFastAdd">
+                    <span>性别：</span>
+                    <div class="conItem">
+                        <div class="detailStr gender"></div> 
+                    </div>
+                </li>
+                <li class="itemFastAdd">
+                    <span>出生年月：</span>
+                    <div class="conItem">
+                        <div class="detailStr birthday"></div> 
+                    </div>
+                </li>
+                <li class="itemFastAdd">
+                    <span>手机号：</span>
+                    <div class="conItem">
+                        <div class="detailStr phone_num"></div> 
+                    </div>
+                </li>
+                <li class="itemFastAdd">
+                    <span>邮箱：</span>
+                    <div class="conItem">
+                        <div class="detailStr person_mail"></div> 
+                    </div>
+                </li>    
+            </ul>
+            <h1 class="essentialInformation">项目信息</h1>
+            <ul>
+                <li class="itemFastAdd">
+                    <div class="project_names" >
+                        <!-- <div class="projectList4" v-for="model in organizationModel.personList.project_names" v-html="model.name" :title="model.name"></div> -->
+                    </div> 
+                    
+                </li>
+            </ul>
+            <h1 class="essentialInformation">工作信息</h1>
+            <ul>
+                <li class="itemFastAdd">
+                    <span>员工编号：</span>
+                    <div class="conItem">
+                        <div class="detailStr person_num"></div> 
+                    </div>
+                </li>
+                <li class="itemFastAdd">
+                    <span>部门：</span>
+                    <div class="conItem">
+                        <div class="detailStr dept_name"></div> 
+                    </div>
+                </li>
+                <li class="itemFastAdd">
+                    <span>岗位：</span>
+                    <div class="conItem">
+                        <div class="detailStr position_name"></div> 
+                    </div>
+                    
+                </li>
+                <li class="itemFastAdd">
+                    <span>专业：</span>
+                    <div class="conItem">
+                        <div class="detailStr specialty_name"></div> 
+                    </div>
+                </li>
+            </ul>
+            <h1 class="essentialInformation">绑定账号</h1>
+            <ul>
+                <li class="itemFastAdd">
+                    <span>账号名称：</span>
+                    <div id="searchAccountInfo_" class="right">
+                        <div class="detailStr person_user_name"></div>        
+                    </div>
+                </li>
+                <li class="itemFastAdd" style="color:#cacaca">
+                    <span>功能权限：</span>
+                    <div class="conItem">
+                        <div class="detailStr func_pack_names"></div> 
+                    </div>
+                </li>
+            </ul>
+            <h1 class="essentialInformation">照片</h1>
+            <ul>
+                <li class="itemFastAdd">
+                    <div class="imgBox">
+                        <img alt="" src="">
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="conKeep" v-show="(organizationModel.fastAddPage === 1)">
             <div class="conKeepIn">
                 <pbutton-blue bind="true"  text="'保存'" @click="windowEvent.keepFastAdd()"></pbutton-blue>
             </div>
         </div>
-
     </script>
     
     <!-- 项目模板 -->
@@ -261,4 +384,10 @@
             <organization :model="item"></organization>
         </div>
     </script>
+    <pwindow-confirm title="您确定要删除该人员吗" subtitle="删除后，不能恢复该信息" id="pwindow6">
+        <button>
+            <pbutton-backred text="确定" click="windowEvent.removePwindow6()"></pbutton-backred>
+            <pbutton-white text="取消" click="windowEvent.hidePwindow6"></pbutton-white>
+        </button>
+    </pwindow-confirm>  
 </div>

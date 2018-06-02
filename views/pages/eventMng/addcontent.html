@@ -1,0 +1,689 @@
+<script type="text/html" id="addcontent">
+<div class="alert-all" @click="cb()">
+    <div class="alert-shade">
+        <!-- 冒泡点消失弹窗 -->
+        <div class="alert-box" @click.stop="onItem='',onPoint='',get_content_Obj([])">
+            <div class="alert-content">
+                <div class="alert-container">
+                    <div class="alert-header">
+                        <div class="matter-title">
+                            <div class="matter-title-div">
+                                <input type="text" v-model="desc_work.work_name" maxlength="100" placeholder="请输入作业简称" />
+                                <span class="counter" :class="{'errorNumber':desc_work.work_name.length>100}"><b v-text="desc_work.work_name.length"></b>/100</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert-body">
+                        <div class="import-box">
+
+                            <!-- 对象选择 Start -->
+                            <div class="content-prev standard-content">
+                                <div class="prev-title" onclick="">
+                                    <div class="title-tip-div">
+                                        <span class="starSymbol">*</span>
+                                        <span>对象选择</span>
+                                        <img src="../images/question.png" class="question" />
+                                        <p>设置工单的操作内容明确的完成标准，工人执行时需按此内容逐步确认。</p>
+                                    </div>
+                                    <div class="edit-clear-div">
+                                        <div class="edit-div" v-show="!view.content" @click.capture="view.content=true">
+                                            <!--<pbutton-white text="编辑" icon="e" isborder="false" click="yn_method.editable"></pbutton-white>-->
+                                            <pbutton-blue text="编辑" icon="e" isborder="false" click=""></pbutton-blue>
+                                        </div>
+                                        <div class="clear-div" v-show="view.content">
+                                            <img src="../images/clear_03.png" alt="清空图标" />
+                                            <pbutton-blue text="清空" isborder="false" click="$('#content_bubble').pshow()"></pbutton-blue>
+                                        </div>
+                                        <!-- 清空按钮弹窗 Start -->
+                                        <pwindow-bubble id="content_bubble" title='确定要清空此条内容吗？' subtitle='被清空的内容将不可恢复'>
+                                            <button>
+                                                <pbutton-backred text="清空" click="clear_content(),$('#content_bubble').phide()"></pbutton-backred>
+                                                <pbutton-white text="取消" click="$('#content_bubble').phide()"></pbutton-white>
+                                            </button>
+                                        </pwindow-bubble>
+                                        <!-- 清空按钮弹窗 End -->
+                                    </div>
+                                </div>
+                                <!-- 输入区域 Start -->
+                                <div class="prev-body" v-show="view.content">
+                                    <div class="slide-div operate">
+                                        <div class="textarea-div">
+                                            <!-- 输入框注释 -->
+                                            <!-- <textarea id="content-textarea" readonly="readonly" v-model="desc_work.content" maxlength="200" placeholder="例如：从@低压侧负荷分开关 开始停电，然后再停@变压器低压侧总开关 和@高压侧总开关 。监护人需穿@戴绝缘手套 @绝缘鞋 。"></textarea> -->
+                                   
+                                            <div class="obj-fragment-div">
+                                                <span class="aite-btn" @click.stop="content_str='@'" :class="content_str ? 'eleDisable' : ''">@对象</span>
+                                                <span class="counter" :class="{'errorNumber':false}">
+                                                    <b v-text="desc_work.content.length">0</b>/200</span>
+                                            </div>
+                                            <div class="textareadiv">
+                                                <div class="block" v-for="(item,index) in desc_work.content_objs">
+                                                    <span v-text="item.obj_name"></span>
+                                                    <img src="../images/del.png" alt="删除图标" @click.captrue="desc_work.content_objs.splice(index,1);desc_work.confirm_result.splice(index,1)">
+                                                </div>
+                                            </div>
+                                            <div class="" v-if="content_str">
+                                                <aite :str="content_str" ref="aite" :isterm="isterm" :cb="get_content_Obj" v-if="content_str"></aite>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- 输入区域 End -->
+                            </div>
+                            <!-- 标准操作要求 End -->
+
+
+                            <!-- 作业检查项 Start -->
+                            <div class="content-prev">
+                                <div class="prev-title" onclick="">
+                                    <div class="title-tip-div">
+                                        <span>强制确认操作前提</span>
+                                        <img src="../images/question.png" class="question" />
+                                        <p>可在此设置执行本条作业前的各项必要检查工作，工程师检查并确认后方可继续执行工单。</p>
+                                    </div>
+                                    <div class="edit-clear-div">
+                                        <div class="edit-div" v-show="!view.pre_conform" @click.capture="view.pre_conform=true">
+                                            <pbutton-blue text="编辑" icon="e" isborder="false"></pbutton-blue>
+                                        </div>
+                                        <div class="clear-div" v-show="view.pre_conform" @click.capture="$('#bubble').pshow()">
+                                            <img src="../images/clear_03.png" alt="清空图标" />
+                                            <pbutton-blue text="清空" isborder="false"></pbutton-blue>
+                                        </div>
+                                        <!-- 清空按钮弹窗 Start -->
+                                        <pwindow-bubble id="bubble" title='确定要清空此条内容吗？' subtitle='被清空的内容将不可恢复'>
+                                            <button>
+                                                <pbutton-backred text="清空" click="clear_pre_conform(),$('#bubble').phide()"></pbutton-backred>
+                                                <pbutton-white text="取消" click="$('#bubble').phide()"></pbutton-white>
+                                            </button>
+                                        </pwindow-bubble>
+                                        <!-- 清空按钮弹窗 End -->
+                                    </div>
+                                </div>
+                                <!-- 输入区域 Start -->
+                                <div class="prev-body" v-show="view.pre_conform">
+                                    <div class="slide-div">
+                                        <textarea maxlength="100" v-model="desc_work.pre_conform"></textarea>
+                                        <span class="counter" :class="{'errorNumber':false}">
+                                            <b class="counterNum" v-text="desc_work.pre_conform.length"></b>/100</span>
+                                    </div>
+                                </div>
+                                <!-- 输入区域 End -->
+                            </div>
+                            <!-- 作业检查项 End   -->
+
+                            <!-- 标准操作要求 Start -->
+                            <div class="content-prev standard-content">
+                                <div class="prev-title" onclick="">
+                                    <div class="title-tip-div">
+                                        <span class="starSymbol">*</span>
+                                        <span>标准作业操作内容</span>
+                                        <img src="../images/question.png" class="question" />
+                                        <p>设置工单的操作内容明确的完成标准，工人执行时需按此内容逐步确认。</p>
+                                    </div>
+                                    <div class="edit-clear-div">
+                                        <div class="edit-div" v-show="!view.newcontent" @click.capture="view.newcontent=true">
+                                            <pbutton-blue text="编辑" icon="e" isborder="false"></pbutton-blue>
+                                        </div>
+                                        <div class="clear-div" v-show="view.newcontent" @click.capture="$('#newcontent').pshow()">
+                                            <img src="../images/clear_03.png" alt="清空图标" />
+                                            <pbutton-blue text="清空" isborder="false"></pbutton-blue>
+                                        </div>
+                                        <!-- 清空按钮弹窗 Start -->
+                                        <pwindow-bubble id="newcontent" title='确定要清空此条内容吗？' subtitle='被清空的内容将不可恢复'>
+                                            <button>
+                                                <pbutton-backred text="清空" click="clear_newcontent(),$('#newcontent').phide()"></pbutton-backred>
+                                                <pbutton-white text="取消" click="$('#newcontent').phide()"></pbutton-white>
+                                            </button>
+                                        </pwindow-bubble>
+                                        <!-- 清空按钮弹窗 End -->
+                                    </div>
+                                </div>
+                                <!-- 输入区域 Start -->
+                                <div class="prev-body" v-show="view.newcontent">
+                                    <div class="slide-div">
+                                        <div class="textarea-div">
+                                            <textarea id="content-textarea" v-model="desc_work.newcontent" maxlength="200" placeholder="例如：从@低压侧负荷分开关 开始停电，然后再停@变压器低压侧总开关 和@高压侧总开关 。监护人需穿@戴绝缘手套 @绝缘鞋 。"></textarea>
+                                            <!-- @blur="publicMethod.blurContentItemOpe"-->
+                                            <!--v-bind:class="{'textcontentError':workContent.content.length>200}"-->
+                                            <!--边框标红报错去掉，改为计数器标红-->
+
+                                            <!--<div class="obj-fragment-div" onclick="yn_method.contentAiteShow(this,event)">-->
+                                            <span class="counter" :class="{'errorNumber':false}">
+                                                    <b v-text="desc_work.newcontent.length">0</b>/200
+                                                </span>
+                                            <div class="textareadiv"></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- 输入区域 End -->
+                            </div>
+                            <!-- 标准操作要求 End -->
+
+                            <!-- 注意事项 Start -->
+                            <div class="content-prev">
+                                <div class="prev-title">
+                                    <div class="title-tip-div">
+                                        <span>注意事项</span>
+                                    </div>
+                                    <div class="edit-clear-div">
+                                        <div class="edit-div" v-show="!view.notice" @click.capture="view.notice=true">
+                                            <!--<pbutton-white text="编辑" icon="e" isborder="false" click="yn_method.editable"></pbutton-white>-->
+                                            <pbutton-blue text="编辑" icon="e" isborder="false" click=""></pbutton-blue>
+                                        </div>
+                                        <div class="clear-div" v-show="view.notice">
+                                            <img src="../images/clear_03.png" alt="清空图标" />
+                                            <pbutton-blue text="清空" isborder="false" click="$('#notice_bubble').pshow()"></pbutton-blue>
+                                        </div>
+                                        <!-- 清空按钮弹窗 Start -->
+                                        <pwindow-bubble id="notice_bubble" title='确定要清空此条内容吗？' subtitle='被清空的内容将不可恢复'>
+                                            <button>
+                                                <pbutton-backred text="清空" click="clear_notice(),$('#notice_bubble').phide()"></pbutton-backred>
+                                                <pbutton-white text="取消" click="$('#notice_bubble').phide()"></pbutton-white>
+                                            </button>
+                                        </pwindow-bubble>
+                                        <!-- 清空按钮弹窗 End -->
+                                    </div>
+                                </div>
+                                <!-- 输入区域 Start -->
+                                <div class="prev-body" v-show="view.notice">
+                                    <div class="slide-div">
+                                        <textarea v-model="desc_work.notice"></textarea>
+                                    </div>
+                                </div>
+                                <!-- 输入区域 End -->
+                            </div>
+                            <!-- 注意事项 End -->
+
+                            <!-- 操作记录要求 Start --> 
+                            <div class="content-prev contentResult">
+                                <div class="prev-title" onclick="">
+                                    <div class="title-tip-div">
+                                        <span>需确认的操作结果</span>
+                                        <img src="../images/question.png" class="question" />
+                                        <p>可在此明确工人执行工单过程中，需要记录或反馈的操作结果。</p>
+                                    </div>
+                                    <div class="edit-clear-div">
+                                        <div class="edit-div" v-show="!view.confirm_result" @click.capture="view.confirm_result=true">
+                                            <!--<pbutton-white text="编辑" icon="e" isborder="false" click="yn_method.editable"></pbutton-white>-->
+                                            <pbutton-blue text="编辑" icon="e" isborder="false" click=""></pbutton-blue>
+
+                                        </div>
+                                        <div class="clear-div" v-show="view.confirm_result">
+                                            <img src="../images/clear_03.png" alt="清空图标" />
+                                            <pbutton-blue text="清空" isborder="false" click="$('#confirm_result_bubble').pshow()"></pbutton-blue>
+                                        </div>
+                                        <!-- 清空按钮弹窗 Start -->
+                                        <pwindow-bubble id="confirm_result_bubble" title='确定要清空此条内容吗？' subtitle='被清空的内容将不可恢复'>
+                                            <button>
+                                                <pbutton-backred text="清空" click="clear_confirm_result(),$('#confirm_result_bubble').phide()"></pbutton-backred>
+                                                <pbutton-white text="取消" click="$('#confirm_result_bubble').phide()"></pbutton-white>
+                                            </button>
+                                        </pwindow-bubble>
+                                        <!-- 清空按钮弹窗 End -->
+                                    </div>
+                                </div>
+                                <!-- 输入区域 Start -->
+                                <div class="prev-body confirmSlideBody" v-show="view.confirm_result">
+                                    <div class="slide-div result">
+                                        <div class="objs">
+
+                                            <idepoint :point="onPoint" :cb="idecallback" ref="idepoint" v-if="_.isPlainObject(onPoint)"></idepoint>
+                                            <!-- <div class="obj-div" v-show="true"
+                                                 v-for="(confirmObj, index1) in commonData.publicModel.workContent.confirm_result"> -->
+                                            <div class="obj-div" v-for="(item, index) in desc_work.confirm_result">
+                                                <div class="obj-name">
+                                                    <span v-text="item.obj_name">对象名称1</span>
+                                                    <em v-text="getParentsLinks(item.parents)">(建筑-楼层-空间名称/专业-系统/)</em>
+                                                    <!-- <a href="javascript:void (0)" @click="desc_work.confirm_result.splice(index,1)">
+                                                        <i>p</i>删除对象</a> -->
+                                                </div>
+                                                <div class="obj-info-self">
+                                                    <!--选择的信息点列表 Start-->
+                                                    <div class="obj-info">
+                                                        <div class="info-dot" v-for="(point, index2) in item.info_points">
+                                                            <span :title="point.name" @click.stop="onPoint=point">
+                                                                {{point.name}}
+                                                                <em :title="getError(point)" v-text="getError(point)"></em>
+                                                            </span>
+                                                            <img src="../images/info_close.png" alt="删除图标x" @click="item.info_points.splice(index2,1)" />
+                                                        </div>
+                                                    </div>
+                                                    <!--选择的信息点列表 End -->
+                                                    <!--自定义的信息点列表 Start -->
+                                                    <div class="obj-info">
+                                                        <div class="info-dot" v-for="(custom, index2) in item.customs">
+                                                            <span :title="custom.name" @click.stop="onPoint=custom">{{custom.name}}
+                                                                <em :title="getError(custom)" v-text="getError(custom)"></em>
+                                                            </span>
+                                                            <img src="../images/info_close.png" alt="删除图标x" @click="item.customs.splice(index2,1)" />
+                                                        </div>
+                                                    </div>
+                                                    <!--自定义的信息点列表 End -->
+
+
+                                                    <!--  -->
+                                                    <div class="add-info-btn">
+                                                        <span class="info-btn" @click.stop="onItem=item">添加信息点</span>
+                                                        <point ref="point" :obj_type="onItem.obj_type" :obj_id="onItem.obj_id" :codes="getkeys(item.info_points,'code')" :cb="get_point" v-if="onItem==item && _.isPlainObject(onItem)"></point>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="obj-info-btn">
+                                            <div class="per-switch-checkbox pcheckbox" v-for="(item,index) in GeneralDictByKeyIn" @click="item.selected=!item.selected" :class="item.disabled?'eleDisable':''">
+                                                <span class="pcheckbox_input" :class="item.selected ? 'pcheckbox-checked' : ''"></span>
+                                                <span class="pswitch_label" :title="item.name" v-text="item.name"></span>
+                                            </div>
+                                            <!-- <span class="aite-btn" @click="showAddObjAndPoint=true">+ 添加对象和信息点</span>
+                                            <addinfo v-if="showAddObjAndPoint" :cb="addObjAndPoint" ref="addinfo"></addinfo> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 输入区域 End -->
+                            </div>
+                            <!-- 操作记录要求 End -->
+
+                            <!-- 专业限定 Start -->
+                            <div class="content-prev">
+                                <div class="prev-title">
+                                    <div class="title-tip-div workcontent-major">
+                                        <span>专业要求</span>
+                                        <img src="../images/question.png" class="question" />
+                                        <p>若本条作业需要限定专业人员，请在此选定。</p>
+                                    </div>
+                                    <div class="edit-clear-div">
+                                        <div class="edit-div" v-show="!view.domain" @click.capture="view.domain=true">
+                                            <pbutton-blue text="编辑" icon="e" isborder="false"></pbutton-blue>
+
+                                        </div>
+                                        <div class="clear-div" v-show="view.domain">
+                                            <img src="../images/clear_03.png" alt="清空图标" />
+                                            <pbutton-blue text="清空" isborder="false" click="$('#domain_bubble').pshow()"></pbutton-blue>
+                                        </div>
+                                        <!-- 清空按钮弹窗 Start -->
+                                        <pwindow-bubble id="domain_bubble" title='确定要清空此条内容吗？' subtitle='被清空的内容将不可恢复'>
+                                            <button>
+                                                <pbutton-backred text="清空" click="clear_domain(),$('#domain_bubble').phide(),$('#add-major').precover()"></pbutton-backred>
+                                                <pbutton-white text="取消" click="$('#domain_bubble').phide()"></pbutton-white>
+                                            </button>
+                                        </pwindow-bubble>
+                                        <!-- 清空按钮弹窗 End -->
+                                    </div>
+                                </div>
+                                <!-- 输入区域 Start -->
+                                <div class="prev-body" v-show="view.domain">
+                                    <div class="slide-div">
+                                        <div class="major-sel">
+                                            <pcombobox-normal bind="true" id="'add-major'" sel="domainSel">
+                                                <header placeholder="'选择专业'"></header>
+                                                <item datasource="GeneralDictByKey" text="name"></item>
+                                            </pcombobox-normal>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 输入区域 End -->
+                            </div>
+                            <!-- 专业限定 End -->
+                        </div>
+                    </div>
+                    <div class="alert-footer" @click.capture="commit">
+                        <!--<pbutton-blue text="确定" click="yn_method.addWorkContent"></pbutton-blue>-->
+                        <pbutton-blue text="确定"></pbutton-blue>
+                    </div>
+                </div>
+            </div>
+            <div class="alert-close">
+                <img src="/images/alert_close_btn.png" />
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script>
+    var Custom = function (obj) {
+        this.name = obj.name;
+        this.type = obj.type;
+
+        if (obj.type == 2 || obj.type == 3) {
+            this.items = obj.items || [];
+            this.wrongs = obj.wrongs || [];
+        } else if (obj.type == 4 || obj.type == 5) {
+            this.wrong_ranges = obj.wrong_ranges || [];
+
+            if (obj.type == 5) this.unit = obj.unit || "";
+        }
+    }
+
+    Vue.component('addcontent', {
+        template: '#addcontent',
+        data: function () {
+
+            return {
+                showAddObjAndPoint: false,
+                uRangesType: [
+                    {
+                        name: "大于",
+                        code: "gt",
+                    }, {
+                        name: "大于等于",
+                        code: "gte",
+                    }, {
+                        name: "小于",
+                        code: "lt",
+                    }, {
+                        name: "小于等于",
+                        code: "lte",
+                    }],
+                wrongType: [
+                    {
+                        name: "区间",
+                        code: 1,
+                    },
+                    {
+                        name: "非区间",
+                        code: 0,
+                    }
+                ],
+
+                onItem: "",
+                onPoint: "",
+                // 自定义的控件
+                controlsList: [
+                    { name: "普通文本", type: "1" },
+                    { name: "单选", type: "2" },
+                    { name: "多选", type: "3" },
+                    { name: "无单位的数字", type: "4" },
+                    { name: "有单位的数字", type: "5" }
+                ],
+                GeneralDictByKey: [],
+                view: {
+                    // 新的作业操作内容
+                    newcontent: false,
+                    // 作业前检查项
+                    pre_conform: false,
+                    //标准操作要求
+                    content: false,
+                    // 注意事项
+                    notice: false,
+                    // 操作记录要求
+                    confirm_result: false,
+                    // 专业限定
+                    domain: false,
+                },
+                content_str: "",
+                desc_work: {
+                    "newcontent": "",
+
+                    "work_name": "",
+                    "pre_conform": "",
+                    "content": "",
+                    "content_objs": [],
+                    "notice": "",
+                    "confirm_result": [],
+                    "domain": "",
+                    "domain_name": ""
+                },
+                GeneralDictByKeyCode: [],
+                readyDelete: null,
+            }
+        },
+        props: ["cb", "isterm", "generalDictByKey"],
+        methods: {
+            // 获取对象
+            get_content_Obj: function (arr) {
+                var _that = this;
+
+                _that.desc_work.content_objs = _that.desc_work.content_objs.concat(arr);
+
+                // 去重
+                var obj = {};
+                _that.desc_work.content_objs = _that.desc_work.content_objs.filter(function (item) {
+                    if (obj.hasOwnProperty(item.obj_name)) return false;
+                    obj[item.obj_name] = true;
+                    return true;
+                })
+
+                _that.desc_work.content = _that.desc_work.content_objs.map(function (obj) {
+                    return "@" + obj.obj_name + " ";
+                }).join('');
+
+                // 如果 confirm_result 没有，则添加到 confirm_result 中
+                var arr_name = _that.desc_work.confirm_result.map(function (item) {
+                    return item.obj_name;
+                });
+
+                JSON.parse(JSON.stringify(arr)).filter(function (item) {
+
+                    return arr_name.indexOf(item.obj_name) == -1;
+                }).forEach(function (info) {
+
+                    _that.desc_work.confirm_result.push(Object.assign({}, {
+                        info_points: [],
+                        parents: [],
+                        customs: [],
+                    }, info));
+                })
+
+                _that.content_str = "";
+            },
+            // 获取单个对象的信息点
+            get_point: function (obj) {
+                var _that = this;
+                // 返回什么附加什么
+                if (obj.info_points.length) {
+                    _that.onItem.info_points = obj.info_points;
+                    _that.onItem = void 0;
+                    return;
+                }
+                if (obj.customs.length) {
+                    _that.onItem.customs = _that.onItem.customs.concat(obj.customs);
+                    _that.onItem = void 0;
+                    return;
+                }
+                //  什么否没返回直接置空
+                _that.onItem.customs = [];
+                _that.onItem.info_points = [];
+
+                _that.onItem = void 0;
+
+            },
+            //转换成父级链字符串形式
+            getParentsLinks: function (parents) {
+                if (!parents || !parents.length) return '';
+                var str = '(';
+                for (var i = 0; i < parents.length; i++) {
+                    str += parents[i].parent_names.join('-');
+                    if (i != parents.length - 1) str += '/';
+                }
+                return str + ')';
+            },
+            // 获取key 集合
+            getkeys: function (list, key) {
+                if (!_.isArray(list) || !list.length) return [];
+                return list.map(function (item) {
+                    return item[key];
+                })
+            },
+            // 获取异常范围
+            getError: function (item) {
+                var str = "";
+                var type = [
+                    {
+                        name: "大于",
+                        code: "gt",
+                    }, {
+                        name: "大于等于",
+                        code: "gte",
+                    }, {
+                        name: "小于",
+                        code: "lt",
+                    }, {
+                        name: "小于等于",
+                        code: "lte",
+                    }];
+                if (item.type == 2 || item.type == 3) {
+                    str = item.wrongs.join();
+                } else if (item.type == 4 || item.type == 5) {
+
+                    str = item.wrong_ranges.map(function (info) {
+
+                        if (info.type == "range") {
+                            return info.values.join('~');
+                        } else {
+                            return (_.find(type, { code: info.type }) || {}).name + info.values;
+                        }
+                    }).join();
+                }
+
+                return str.length ? ("异常范围：" + str) : '';
+            },
+            //  编辑信息点
+            idecallback: function (item) {
+                var _that = this;
+                Object.assign(_that.onPoint, item);
+                _that.onPoint = void 0;
+            },
+            // 该对象下的所有已选内容将会被一起删除
+            readyDelete: function (index) {
+
+                var _that = this;
+                // 保存对应的属性
+                _that.readyDelete = index;
+
+            },
+            // 添加对象和信息点
+            addObjAndPoint: function (arr) {
+                var _that = this;
+                _that.desc_work.confirm_result = _that.desc_work.confirm_result.concat(arr);
+                _that.showAddObjAndPoint = false;
+            },
+            // 提交返回内容
+            commit: function () {
+                var _that = this;
+                // 当前的内容
+                var dw = _that.desc_work;
+
+                // 获取强制操作
+                dw.obj_required_control = _.map(_.filter(_that.GeneralDictByKeyCode, { selected: true }), "code");
+
+                // 常规验证
+                // 验证作业简称不能为空
+                if (!dw.work_name.length) {
+                    $('#globalnotice').pshow({ text: '作业简称不能为空', state: "failure", });
+                    return;
+                }
+
+                // 作业简称不能为空
+                if (!dw.content.length) {
+                    $('#globalnotice').pshow({ text: '标准操作要求不能为空', state: "failure", });
+                    return;
+                }
+
+                // 作业简称不能为空
+                if (!dw.content.length) {
+                    $('#globalnotice').pshow({ text: '标准操作要求不能为空', state: "failure", });
+                    return;
+                }
+
+                // 返回上级
+                if (_.isFunction(_that.cb)) _that.cb(dw);
+            }
+        },
+        computed: {
+            GeneralDictByKeyIn: function () {
+                var _that = this;
+                // 只保存 当工作事项完成后人工签字确认 选项
+                return _.filter(_that.GeneralDictByKeyCode, function (item) {
+                    return /^obj_first/.test(item.code);
+                }) || [];
+            },
+        },
+        watch: {
+            "desc_work.content": function (newValue, old) {
+                var _that = this;
+
+                var res = createInputWatch('@', _that.desc_work.content_objs)(newValue, old);
+
+                _that.desc_work.content = res.value;
+                _that.desc_work.content_objs = res.list;
+                _that.content_str = res.str;
+
+                console.log(res);
+
+            }
+        },
+        beforeMount: function () {
+            var _that = this;
+
+            controller.queryGeneralDictByKey().then(function (res) {
+
+                // 只保存 当工作事项完成后人工签字确认 选项
+                // _that.GeneralDictByKey = _.filter(res, { code: "matter_end_scan" });
+                _that.GeneralDictByKeyCode = res;
+            });
+
+            // 加载专业限定
+            controller.GeneralDictByKey().then(function (res) {
+                _that.GeneralDictByKey = res;
+            })
+
+            window.clear_newcontent = function () {
+                _that.desc_work.newcontent = "";
+                _that.view.newcontent = false;
+            };
+
+            window.clear_pre_conform = function () {
+                _that.desc_work.pre_conform = "";
+                _that.view.pre_conform = false;
+            };
+            window.clear_domain = function () {
+                _that.desc_work.domain = "";
+                _that.desc_work.domain_name = "";
+                _that.view.domain = false;
+            };
+            window.clear_confirm_result = function () {
+                _that.desc_work.confirm_result = [];
+                _that.view.confirm_result = false;
+            };
+            window.clear_notice = function () {
+                _that.desc_work.notice = "";
+                _that.view.notice = false;
+            };
+            window.clear_content = function () {
+                // _that.desc_work.pre_conform = "";
+                _that.view.content = false;
+                _that.desc_work.content = "";
+                _that.desc_work.content_objs = [];
+            };
+
+            // 专业限定下拉选择事件
+            window.domainSel = function (item) {
+                _that.desc_work.domain = item.code;
+                _that.desc_work.domain_name = item.name;
+            }
+
+            _that.$nextTick(function () {
+                $(".alert-all .alert-shade .alert-box .alert-content .alert-container .question").hover(function () {
+                    $(this).next().css("visibility", "initial");
+                    $(this).next().show()
+                }, function () {
+                    $(this).next().hide()
+                })
+            })
+
+
+        },
+        destroyed: function () {
+            window.clear_newcontent = undefined;
+            window.clear_pre_conform = undefined;
+            window.clear_domain = undefined;
+            window.clear_confirm_result = undefined;
+            window.clear_notice = undefined;
+            window.clear_content = undefined;
+            window.domainSel = undefined;
+        }
+    })
+</script>

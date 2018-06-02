@@ -1,0 +1,40 @@
+#workOrderInfo{
+    width: 100%;
+    height: 100%;
+    &>.head{
+        margin: 0 20px 0;
+        width: calc(100% - 40px);
+        height: 50px;
+        border-bottom: 1px solid #d9e2e8;
+        margin-bottom: -1px;
+        i{
+            width: 30px;
+            height: 30px;
+            border: 1px solid #d9e2e8;
+            cursor: pointer;
+            display: block;
+            float: left;
+            margin-top: 10px;
+            text-align: center;
+            line-height: 30px;
+        }
+        span{
+            float: left;
+            margin-left: 5px;
+            line-height: 50px;
+        }
+        &>span:nth-of-type(1){
+            cursor: pointer;
+        }
+    }
+    &>.body{
+        width: 100%;
+        height: calc(100% - 70px);
+    }
+    .bottBoder{
+        width: calc(100% - 40px);
+        height: 1px;
+        border-bottom: 1px solid #d9e2e8;
+        margin: -2px 20px 0;
+    }
+}

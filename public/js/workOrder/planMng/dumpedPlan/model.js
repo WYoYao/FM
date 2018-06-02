@@ -15,12 +15,11 @@ v.pushComponent({
     },
     beforeMount:function(){
         var that = this;
-
         $("#dumpedPlanPartLoad").pshow();
         // 获取作废计划列表
-        ajx("dumpedPlan",{order_type:this.cache.orderType},function(data){
-            that.dumpedPlanList = JSON.parse(JSON.stringify(data.Content));
-        },function(err){
+        PMA.DP({order_type:this.cache.orderType},function(data){
+            that.dumpedPlanList = JSON.parse(JSON.stringify(data || []));
+        },function(){
             that.dumpedPlanList = [];
         },function(){
             $("#dumpedPlanPartLoad").phide();

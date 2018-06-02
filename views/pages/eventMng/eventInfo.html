@@ -1,0 +1,329 @@
+<script src="../js/eventMng/eventInfo/model.js"></script>
+
+<link rel="stylesheet" href="../css/eventMng/term/eventInfo.css">
+
+
+<!-- 事件详情侧弹窗Start -->
+
+<pwindow-float id="eventInfoFloat" isshade="true" title="事件详情" templateid="eventInfoTemplate">
+    <button>
+        <pbutton-blue text="指派" v-show="EvInfoType === 'group'" icon="U" click="openAssignW"  isborder="false"></pbutton-blue>
+        <pbutton-blue v-show="groupEvInfoData.full.groupEventState === '0' && EvInfoType === 'group'" text="关闭" icon="x" click="closeGroupEv"  isborder="false"></pbutton-blue>
+        <pbutton-blue v-show="groupEvInfoData.full.groupEventState != '0' && EvInfoType === 'group'" text="删除" icon="x" click="deleteGroupEv"  isborder="false"></pbutton-blue>
+        <pbutton-blue bind="true" text="'转工单'" icon="'`'" @click="eventToWorkOrder(proEvInfoData.full.eventId)" isborder="false"
+            v-show="proEvInfoData.full.eventState == '0' && proEvListPower.closeEvent && EvInfoType === 'project'" disabled="proEvInPower.isEdit"></pbutton-blue>
+        <img id="eventInfoWCloseImg" :class="{'couldClick':!proEvInPower.isEdit}" src="../images/scrap_blue_btn.png" alt="" @click="openProEvInfoCloseSel('#closeEventInfoCombo')"
+            v-show="proEvInfoData.full.eventState == '0' && proEvListPower.closeEvent && EvInfoType === 'project'">
+        <div class="shadow" v-show="proEvInPower.isEdit && EvInfoType === 'project'"></div>
+        <pbutton-menuminor sel="proEvInfoCloseSel" id="'closeEventInfoCombo'" bind="true" v-show="proEvInfoData.full.eventState === '0' && EvInfoType === 'project' && proEvListPower.closeEvent"
+            disabled="proEvInPower.isEdit">
+            <header placeholder="'关闭'"></header>
+            <item datasource="eventCloseReason" text="name" id="code"></item>
+        </pbutton-menuminor>
+    </button>
+    <animate maxpx="0" minpx="-830" orientation="right"> </animate>
+</pwindow-float>
+
+<script type="text/html" id="eventInfoTemplate">
+    
+    <ploading-part id="EvInfoLoading"></ploading-part>
+
+    <div id="evInfoFloat">
+
+        <div id="projectEvInfo" v-if="EvInfoType === 'project'">
+
+            <div class="content">
+    
+                <div class="head">
+                    <div class="box">
+                        <span>事件类型</span>
+                        <span v-text="allEvType[proEvInfoData.full.eventType]"></span>
+                    </div>
+                    <div class="box">
+                        <span v-text="proEvInfoData.full.eventState == '3' ? '提交人' : '报修人'"></span>
+                        <span v-text="proEvInfoData.full.creater"></span>
+                    </div>
+                    <div class="box">
+                        <span>报修时间</span>
+                        <span v-text="proEvInfoData.full.createTime"></span>
+                    </div>
+                    <div class="box"> 
+                        <span>处理部门</span>
+                        <span v-text="proEvInfoData.full.deptName"></span>
+                    </div>
+                    <div class="box" v-if="proEvInfoData.full.eventState == '3'"> 
+                        <span>解决人</span>
+                        <span v-text="proEvInfoData.full.handlePersons"></span>
+                    </div>
+                    <div class="box" v-if="proEvInfoData.full.eventState == '3'">
+                        <span>关闭时间</span>
+                        <span v-text="proEvInfoData.full.closeTime"></span>
+                    </div>
+                    <div class="box">
+                        <span>状态</span>
+                        <span :class="proEvInfoData.full.eventState == '0' ? 'orange' : proEvInfoData.full.eventState == '3' ? 'grayBule' : 'moreBlue'">
+                            <span v-text="allEvSte[proEvInfoData.full.eventState]"></span>
+                            <span class="evInfoBtn" v-show="proEvInfoData.full.eventState == '1' || proEvInfoData.full.eventState == '2'">
+                                <pbutton-blue text="'查看工单'" bind="true" @click="evInfoToWorkOrder(proEvInfoData.full.workOrderId)" icon="'S'" isborder="false"></pbutton-blue>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="box" v-if="proEvInfoData.full.eventState == '3'">
+                        <span>原因</span>
+                        <span>
+                            <span v-text="allcleRon[proEvInfoData.full.closeType]"></span>
+                            <span class="evInfoBtn" v-show="proEvInfoData.full.closeType && proEvInfoData.full.closeType === '1'">
+                                    <pbutton-blue text="'查看重复事件'" bind="true" @click="lookProEvRepeatEv" icon="'R'" isborder="false"></pbutton-blue>
+                            </span>
+                            <span class="evInfoBtn" v-show="proEvInfoData.full.closeType && proEvInfoData.full.closeType === '3'">
+                                    <pbutton-blue text="'查看工单'" bind="true" @click="evInfoToWorkOrder(proEvInfoData.full.workOrderId)" icon="'S'" isborder="false"></pbutton-blue>
+                            </span>
+                        </span>
+                    </div>
+    
+                    <div class="box" v-if="proEvInfoData.full.eventState == '3' && proEvInfoData.full.closeType && proEvInfoData.full.closeType==='2'">
+                        <span>备注</span>
+                        <span v-text="proEvInfoData.full.closeRemark" class="MT"></span>
+                    </div>
+    
+                </div>
+    
+                <div class="body">
+    
+                    <div></div>
+    
+                    <div class="crtEdit" v-show="(!proEvInPower.isEdit) && (proEvInfoData.full.eventState == '0')">
+                        <pbutton-blue isborder="false" text="'问题修正'" bind="true" @click="editProEvInfo()"></button-blue>
+                    </div> 
+
+                    <div class="crtEdit" v-show="(!proEvInPower.isEdit) && (proEvInfoData.full.eventState != '0')">
+                        <pbutton-blue isborder="false" text="'重新编辑'" bind="true" @click="editProEvInfo()"></button-blue>
+                    </div> 
+    
+                    <div class="edit" v-show="proEvInPower.isEdit">
+                        <div class="top">
+                            <div class="type">
+                                <div>问题类型</div>
+                                <div>
+                                    <pcombobox-normal id="'editEvTypeCombo'" sel="" bind="true">
+                                        <header placeholder="'客户报修'"></header>
+                                        <item datasource="someEventType" text="name" id="code"></item>
+                                    </pcombobox-normal>
+                                </div>
+                            </div>
+                            <div class="input">
+                                <textarea type="text" v-model="proEvStr"></textarea>
+                                <aite :str="proEvDesc_str" :isterm="true" :cb="ProEvgetObjs" ref="aite" v-if="proEvDesc_str"></aite>
+                            </div>
+                            <span class="grayBule hint" @click="v.instance.proEvStr+='@'">@对象</span>
+                             
+                        </div>
+                        <div class="bottom">
+                            <div><pbutton-white text="'取消'" bind="true" @click="editEventInfo(false)"></pbutton-white></div>
+                            <div><pbutton-blue text="'保存'"  bind="true" @click="editEventInfo(true)"></pbutton-blue></div>
+                        </div>
+                    </div>
+    
+                    <div class="new" v-if="proEvInfoData.full.reviseData" v-show="!proEvInPower.isEdit">
+                        <div class="title">
+                            <span>修正信息</span>
+                            <span v-text="proEvInfoData.full.reviseData.revisePersonName + ',修改于' + proEvInfoData.full.reviseData.reviseDate">
+                                张主管，修改于开天辟地之时
+                            </span>
+                        </div>
+                        <div class="box">
+                            <span>问题类型</span>
+                            <span v-text="proEvInfoData.full.reviseData.reviseProblemType"></span>
+                        </div>
+                        <div class="box">
+                            <span>报修位置</span>
+                            <span v-text="proEvInfoData.full.reviseData.reviseRepairPositionName || proEvInfoData.full.reviseData.reviseRepairPositionString"></span>
+                        </div>
+                        <div class="box">
+                            <span>事件描述</span>
+                            <span v-text="proEvInfoData.full.reviseData.reviseEventDescribe"></span>
+                        </div>
+                        <div class="box">
+                            <span>关联对象</span>
+                            <span class="EvObj">
+                                <span v-text="proEvInfoData.full.reviseData.reviseAssociationObjectCount + '个对象'" class="evInfoObj"></span>
+                                <span class="soh" v-text="proEvInPower.showObjT ? '收起' : '显示'" @click="proEvInPower.showObjT = !proEvInPower.showObjT"></span>
+                                <ul class="obj" v-show="proEvInPower.showObjT">
+                                    <li v-for="item in proEvInfoData.full.reviseData.reviseAssociationObject">
+                                        <div v-text="item.obj_name + ' - ' + allObjType[item.obj_type]"></div>
+                                        <div v-if="item.obj_type === 'equip'">
+                                            <i class="icon">O</i>
+                                            <span v-text="item.space_name"></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </span>
+                        </div>
+                    </div>
+    
+                    <div class="old">
+    
+                        <div class="title" v-if="proEvInfoData.full.originalData">
+                            <span>原始信息</span>
+                        </div>
+    
+                        <div class="box" v-if="proEvInfoData.full.originalData && proEvInfoData.full.originalData.originalProblemType">
+                            <span>问题类型</span>
+                            <span v-text="proEvInfoData.full.originalData.originalProblemType"></span>
+                        </div>
+    
+                        <div class="box" v-if="proEvInfoData.full.originalData && proEvInfoData.full.originalData.originalRepairPosition">
+                            <span>报修位置</span>
+                            <span v-text="proEvInfoData.full.reviseData.originalRepairPositionName || proEvInfoData.full.reviseData.originalRepairPositionString"></span>
+                        </div>
+    
+                        <div class="box" v-if="proEvInfoData.full.originalData && proEvInfoData.full.originalData.originalEventDescribe">
+                            <span>事件描述</span>
+                            <span v-text="proEvInfoData.full.originalData.originalEventDescribe"></span>
+                        </div>
+    
+                        <div class="box" v-if="proEvInfoData.full.originalData && proEvInfoData.full.originalData.originalAssociationObject">
+                            <span>关联对象</span>
+                            <span class="EvObj">
+                                <span v-text="proEvInfoData.full.originalData.originalAssociationObjectCount + '个对象'" class="evInfoObj"></span>
+                                <span class="soh" v-text="proEvInPower.showObj ? '收起' : '显示'" @click="proEvInPower.showObj = !proEvInPower.showObj"></span>
+                                <ul class="obj" v-show="proEvInPower.showObj">
+                                    <li v-for="item in proEvInfoData.full.originalData.originalAssociationObject">
+                                        <div v-text="item.obj_name + ' - ' + allObjType[item.obj_type]"></div>
+                                        <div v-if="item.obj_type === 'equip'">
+                                            <i class="icon">O</i>
+                                            <span v-text="item.space_name"></span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </span>
+                        </div>
+    
+                        <div class="box">
+                            <span>要求开始时间</span>
+                            <span v-text="proEvInfoData.full.startTime"></span>
+                        </div>
+    
+                        <div class="box">
+                            <span>要求完成时间</span>
+                            <span v-text="proEvInfoData.full.endTime"></span>
+                        </div>
+    
+                        <div class="box" v-if="proEvInfoData.full.originalData && proEvInfoData.full.originalData.infoPointName">
+                            <span>信息点</span>
+                            <span v-text="proEvInfoData.full.originalData.infoPointName"></span>
+                        </div>
+    
+                        <div class="box" v-if="proEvInfoData.full.originalData && proEvInfoData.full.originalData.actualValue">
+                            <span>实际参数</span>
+                            <!-- <span v-text="proEvInfoData.full.originalData.actualValue"></span> -->
+                            <span v-text="evListActual(proEvInfoData.full.originalData.actualValue,proEvInfoData.full.originalData.actualValues,proEvInfoData.full.originalData.unit)"></span>
+                        </div>
+    
+                        <div class="box" v-if="proEvInfoData.full.originalData && (proEvInfoData.full.originalData.wrongs || proEvInfoData.full.originalData.wrongRanges)">
+                            <span>异常范围</span>
+                            <span v-text="evListWrong(proEvInfoData.full.originalData.wrongs,proEvInfoData.full.originalData.wrongRanges)"></span>
+                        </div>
+    
+                        <div class="box">
+                            <span>联系人</span>
+                            <span v-text="proEvInfoData.full.contacts"></span>
+                        </div>
+    
+                        <div class="box">
+                            <span>联系电话</span>
+                            <span v-text="proEvInfoData.full.phone"></span>
+                        </div>
+    
+                        <div class="box">
+                            <span>照片</span>
+                            <div class="pic">
+                                <div v-for="item in proEvInfoData.full.pictures">
+                                    <img :src="item">
+                                </div>
+                            </span>
+                        </div>
+    
+                    </div>
+    
+                    </div> 
+                
+                </div>
+    
+            
+            </div>
+        
+        </div>
+    
+        <div id="groupEvInfo" v-if="EvInfoType === 'group'">
+
+            <div class="head">
+                <div class="box clear">
+                    <span>创建人</span>
+                    <span v-text="groupEvInfoData.full.createrName">32432423423423</span>
+                </div>
+                <div class="box clear">
+                    <span>创建时间</span>
+                    <span v-text="groupEvInfoData.full.createTime"></span>
+                </div>
+                <div class="box clear">
+                    <span>状态</span>
+                    <span v-text="groupEvInfoData.full.groupEventState == '0' ? allEvSta[groupEvInfoData.full.groupEventState] :
+                    allEvSta[groupEvInfoData.full.groupEventState] + groupEvInfoData.full.assignedCount + '个项目'"></span>
+                    <div class="toggle" @click="evProControl">
+                        <div v-text="!groupEvInfoData.isResever ? '收起' : '展开'"></div>
+                        <div :class="{'reverse' : !groupEvInfoData.isResever}"><i class="icon">m</i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pro clear" id="evProWrap">
+
+                <div v-for="item in groupEvInfoData.full.assignedProjects">
+                    <div v-text="item.projectName" class="MT"></div>
+                    <div>
+                        <img src="../images/waitD.png" alt="" v-if="item.eventState == '0'">
+                        <i class="icon moreBlue" v-if="item.eventState == '1'">G</i>
+                        <img src="../images/closed.png" v-if="item.eventState == '2'">
+                        <span v-text="allEvSta[item.eventState]"></span>
+                        <div class="state" v-if="item.eventState != '0'" v-text="item.eventState == '1' ? 
+                        allWkOrdSta[item.workOrderState] : allcleRon[item.closeType]"></div>
+                    </div>
+                    <div v-if="item.eventState != '1'" @click="lookProjectEvInfo(item)">
+                        <img src="../images/somep.png" alt="">
+                        <img src="../images/nono.png" alt="">
+                        <span>查看详情</span>
+                    </div>
+                    <div v-if="item.eventState == '1'" @click="evInfoToWorkOrder(item.workOrderId)">
+                        <i class="icon">S</i>
+                        <span>查看工单</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="box clear">
+                <span>事件描述</span>
+                <span v-text="groupEvInfoData.full.eventDescribe"></span>
+            </div>
+            <div class="box clear">
+                <span>要求开始时间</span>
+                <span v-text="groupEvInfoData.full.startTime"></span>
+            </div>
+            <div class="box clear">
+                <span>要求完成时间</span>
+                <span v-text="groupEvInfoData.full.endTime"></span>
+            </div>
+            <div class="box clear">
+                <span>照片</span>
+                <div class="clear pic">
+                    <div v-for="item in groupEvInfoData.full.pictures"><img :src="item"></div>
+                </div>
+            </div>
+
+        </div>
+
+</div>
+
+</script>
+
+<!-- 事件详情侧弹窗End -->

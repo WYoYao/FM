@@ -19,7 +19,7 @@ var organizationModel = {
         {
             obj_id: '',
             obj_name: '中心部门',
-            obj_type: '',
+            obj_type: 'd1',
             child_objs: []
         },
     ],
@@ -27,52 +27,13 @@ var organizationModel = {
     listByProjectCommon: [
         {
             obj_id: '',
-            obj_name: '项目通用部门',
-            obj_type: '',
+            obj_name: '通用部门',
+            obj_type: 'd2',
             child_objs: []
         }
     ],
     //快速添加人员-项目list
-    listByProject: [
-        {
-          "partition_project_id":"1",           //分区或者项目id
-          "partition_project_name":"集团1",         //分区或者项目名称
-          "type":"1",                           //备注：1-分区，0-项目
-          "contents":[                            //分区或者项目，项目一定是叶子节点
-             {
-                "partition_project_id":"2",
-                "partition_project_name":"项目1", 
-                "type":"0",     
-                "contents":[]
-             },
-             {
-                "partition_project_id":"3",
-                "partition_project_name":"项目2", 
-                "type":"0",     
-                "contents":[]
-             }
-          ]
-        },
-        {
-          "partition_project_id":"4",           //分区或者项目id
-          "partition_project_name":"集团2",         //分区或者项目名称
-          "type":"1",                           //备注：1-分区，0-项目
-          "contents":[{                           //分区或者项目，项目一定是叶子节点
-                "partition_project_id":"5",
-                "partition_project_name":"分区1", 
-                "type":"1",     
-                "contents":[                            //分区或者项目，项目一定是叶子节点
-                    {
-                       "partition_project_id":"6",
-                       "partition_project_name":"项目3", 
-                       "type":"0",     
-                       "contents":[]
-                    }
-                ],
-            }
-          ]
-        },
-    ],
+    listByProject: [],
     //操作状态
     operationState: [
         {
@@ -102,13 +63,45 @@ var organizationModel = {
         }
     ],
     //当前活动状态的数据对象
-    activeDataObj: {
-
-    },
+    activeDataObj: {},
     //验证项目是否选择
     verifi3 : false,
     //验证职位是否选择
     verifi4 : false,
+    //快速添加的状态
+    fastAddPage: 1,
+
+    //人员详情
+    personList: {
+        "person_id":"123",            //员工id
+        "name":"佩奇",                 //姓名 
+        "id_number":"130533XXXXXXX",            //身份证号码
+        "phone_num":"15023215896",            //手机号 
+        "gender":"male",               //性别，male-男、female-女
+        "birthday":"1949-10-1",             //出生年月，yyyy-MM-dd
+        "person_mail":"24851565521@163.com",           //邮箱
+        "person_type":"1",          //人员类型，1-中心部门人员，2-项目人员
+        "project_ids": ["pj001","pj002"],           //所属项目id 
+        "project_names":[             //所属项目名称
+            {"code":"1","name":"项目一"},
+            {"code":"2","name":"项目二"},
+        ],
+        "person_num":"13246541ad",           //员工编号
+        "dept_id":"123",              //部门id
+        "dept_name":"中心部门",            //部门名称
+        "position_id":"岗位id",          //岗位id
+        "position_name":"岗位名称",        //岗位名称
+        "specialty":["1","2"],    //专业编码
+        "specialty_name":[            //已选中专业对象
+            {"code":"1","name":"专业1"}
+         ],
+        "id_photo":"",                //证件照片
+        "head_portrait":"key",         //系统头像
+        "person_status":"1",           //人员状态, 1-在职，0-离职
+        "person_user_id":"2",        //账号id
+        "person_user_name":"账号名称",      //账号名称
+        "func_pack_names":"权限1，权限2"        //权限包名称，之间用、号隔开
+    },
     //性别list
     buttonArr: [{
         name: '男', id: '1'
@@ -174,8 +167,43 @@ var organizationMethods = {
         }
         return arr;
     },
+    //写入详情
+    showPerson: function(person_id){
+        $('#globalloading').pshow();
+        //查询人员详情	
+        organizationController.queryCoreDeptPersonDetailById({"person_id":person_id}).then(function(list) {
+            organizationModel.personList = JSON.parse(JSON.stringify(list));
+            var obj = organizationModel.personList;
+            var arr = ["dept_name","id_number", "name", "project_names", "gender", "birthday", "phone_num", "person_mail", "person_num", "position_name", "specialty_name", "person_user_name", "func_pack_names"];
+            var str = "";
+            $("#fastAdd .per-madal-float_titcon b").html(obj.name);
+            var link = '/' + pconst.requestType.pdownload + '/' + psecret.create(obj.head_portrait);
+            $(".imgBox img").attr("src",link);
+            for(var i = 0 ; i < arr.length ; i++) {
+                str = obj[arr[i]] ? obj[arr[i]] : "";
+                var str_ = "";
+                if((arr[i] == "project_names") || (arr[i] == "specialty_name")){
+                    for(var j = 0 ; j < obj[arr[i]].length ; j++){  
+                        str_ += obj[arr[i]][j].name + "，";
+                    }
+                    $(".personDetails ."+arr[i]).html(str_.slice(0,-1)).attr("title",str_.slice(0,-1));
+                    continue;
+                }
+                if((arr[i] == "gender")){
+                    $(".personDetails ."+arr[i]).html(((str == "male") ? "男" : "女")).attr("title",((str == "male") ? "男" : "女"));
+                    continue;
+                }
+                $(".personDetails ."+arr[i]).html(str).attr("title",str);
+            }
+        });  
+
+    },
     //权限 点击enter
     enterAccountAddPermission: function(){
+        $("#searchAccountInfo > div").hide();
+        if($("#searchAccountInfo>input").val() == ""){
+            return false;
+        }
         organizationModel.accountId = "";
         var list = organizationModel.personAccountList;
         var str = '';
@@ -187,28 +215,27 @@ var organizationMethods = {
             }
         }
         if(str === ''){
-            $("#searchAccountInfo > div").hide();
-            $("#jurisdictionId").hide();
-            $("#jurisdictionId_").show();
-            $('#jurisdictionList').html("--").css("color","#cacaca").parent().css("color","#cacaca");
+            $("#searchAccountInfo > div.options").hide();
+            $("#searchAccountInfo > div.conJurisdictionlist").show();
+            $('#jurisdictionList').html("--").attr("title","--").css("color","#cacaca").parent().css("color","#cacaca");
         }else{
-            $("#searchAccountInfo > div").hide();
-            $("#jurisdictionId").show();
-            $("#jurisdictionId_").hide();
-            $('#jurisdictionList').html(str).css("color","rgb(51, 51, 51)");
+            $("#searchAccountInfo > div.options").hide();
+            $('#jurisdictionList').html(str).attr("title",str);
+            $("#jurisdictionList").parent().find(".promptForm").hide();
         }
 
     },
     //选择账号添加权限
     clickAccountAddPermission: function(item) {
-        $("#searchAccountInfo > div").hide();
+        $("#searchAccountInfo > div.options").hide();
         if (item.person_user_name != "暂无结果") {
             organizationModel.accountName = item.person_user_name;
             organizationModel.accountId = item.person_user_id;
             if(item.func_pack_names){
-                $("#jurisdictionId_").hide();
-                $("#jurisdictionId").show();
-                $('#jurisdictionList').html((item.func_pack_names ? item.func_pack_names : "")).css("color","#333").parent().css("color","#333");
+                // $("#jurisdictionId_").hide();
+                // $("#jurisdictionId").show();
+                $("#jurisdictionList").parent().find(".promptForm").hide();
+                $('#jurisdictionList').html((item.func_pack_names ? item.func_pack_names : "")).attr("title",(item.func_pack_names ? item.func_pack_names : "")).parent().css("color","#333");
             }
         }else{
             organizationModel.accountId = "";
@@ -217,62 +244,214 @@ var organizationMethods = {
     //查询识别码
     queryById:  function(event){
         if(tools.trim(event.target.value) == ""){
-            windowEvent.showPwindow5(true);
+            windowEvent.showPwindow5(true); //传true时该方法的作用为初始化
             return false;
         }
-        organizationController.queryPersonDetailByidNumber({"id_number":event.target.value}).then(function(list) {
-            // if(JSON.stringify(list).length == 2){
-            //     return false;
-            // }
-            var date = new Date();
-            var _year = date.getFullYear();
-            var _month = date.getMonth() + 1;
-            var _date = date.getDate();
-            // $("#identificationCode").precover();
-            $("#personName").precover();
-            $("#personName").pval((list.name ? list.name : ""));    
-            $("#personSex").precover();
-            $("#personSex").psel((list.gender === "female" ? "女" : "男"));
-            $("#phoneNumber").precover();
-            $("#phoneNumber").pval((list.phone_num ? list.phone_num : ""));
-            $("#birthDate").precover();
-            $("#birthDate").psel({y:_year,M:_month,d:_date});
-            if(list.birthday){
-                var birthday = list.birthday.split("-");
-                $("#birthDate").psel({y:birthday[0],M:birthday[1],d:birthday[2]});
+        clearTimeout(windowEvent.timer);  
+        windowEvent.timer=setTimeout(function(){  
+            windowEvent.showPwindow5(true,"123","check"); //传true时该方法的作用为初始化
+            if(tools.trim(event.target.value) == ""){
+                return false;
             }
-            $("#email").precover();
-            $("#email").pval((list.person_mail ? list.person_mail : ""));
-            organizationModel.accountId = (list.person_user_id ? list.person_user_id : "");
-            $("#searchAccountInfo>input").val((list.person_user_name ? list.person_user_name : ""));
-            $("#jurisdictionId").show();
-            $("#jurisdictionId_").hide(); 
-            $("#jurisdictionList").html((list.func_pack_names ? list.func_pack_names : "--"));
+            // console.log(event);
+            organizationController.queryPersonDetailByidNumber({"id_number":event.target.value}).then(function(list) {
+                // if(JSON.stringify(list).length == 2){
+                //     return false;
+                // }
+                var date = new Date();
+                var _year = date.getFullYear();
+                var _month = date.getMonth() + 1;
+                var _date = date.getDate();
+                // $("#identificationCode").precover();
+                $("#personName").precover();
+                $("#personName").pval((list.name ? list.name : ""));    
+                $("#personSex").precover();
+                $("#personSex").psel((list.gender === "female" ? "女" : "男"));
+                $("#phoneNumber").precover();
+                $("#phoneNumber").pval((list.phone_num ? list.phone_num : ""));
+                $("#birthDate").precover();
+                $("#birthDate").psel({y:_year,M:_month,d:_date});
+                if(list.birthday){
+                    var birthday = list.birthday.split("-");
+                    $("#birthDate").psel({y:birthday[0],M:birthday[1],d:birthday[2]});
+                }
+                $("#email").precover();
+                $("#email").pval((list.person_mail ? list.person_mail : ""));
+                organizationModel.accountId = (list.person_user_id ? list.person_user_id : "");
+                $("#searchAccountInfo>input").val((list.person_user_name ? list.person_user_name : ""));
+                if(list.person_user_name){
+                    $("#searchAccountInfo>input").attr("pdisabled",true);
+                }else{
+                    $("#searchAccountInfo>input").attr("pdisabled",false);
+                }
+                $("#jurisdictionList").html((list.func_pack_names ? list.func_pack_names : "--")).attr("title",(list.func_pack_names ? list.func_pack_names : "--"));
 
-            //初始化权限
-            arr = organizationModel.jurisdiction;
-            (function find_(arr){
+                if(list.head_portrait && (list.head_portrait.length > 0)){
+                    var link = list.head_portrait;
+                    $("#fastAddImg").pval([{name: '', url: link}]);
+                }
+
+                //初始化权限
+                arr = organizationModel.jurisdiction;
+                (function find_(arr){
+                    var find = arguments.callee;
+                    for(var i=0;i<arr.length;i++){     
+                        if(arr[i].selected){
+                            arr[i].selected = false;  
+                        } 
+                        if(arr[i].disabled){
+                            arr[i].disabled = false;
+                        }     
+                        if (arr[i].child_objs && arr[i].child_objs.length) {
+                            find(arr[i].child_objs);
+                        }
+                    }
+                })(arr);
+            }); 
+        },500);  
+        
+    },
+    //删除人员
+    deleteDetails: function(){
+        $("#pwindow6").pshow();
+    },
+    //编辑详情
+    editDetails:  function(){
+        organizationModel.fastAddPage = 1;
+        $("#fastAdd .per-madal-float_titcon b").html("编辑");
+        var list = organizationModel.personList;
+        var date = new Date();
+        var _year = date.getFullYear();
+        var _month = date.getMonth() + 1;
+        var _date = date.getDate();
+        $("#identificationCode").pval((list.id_number ? list.id_number : "")); 
+        $("#personName").precover();
+        $("#personName").pval((list.name ? list.name : ""));    
+        $("#personSex").precover();
+        $("#personSex").psel((list.gender === "female" ? "女" : "男"));
+        $("#phoneNumber").precover();
+        $("#phoneNumber").pval((list.phone_num ? list.phone_num : ""));
+        $("#birthDate").precover();
+        $("#birthDate").psel({y:_year,M:_month,d:_date});
+        if(list.birthday){
+            var birthday = list.birthday.split("-");
+            $("#birthDate").psel({y:birthday[0],M:birthday[1],d:birthday[2]});
+        }
+        //写入岗位
+        if(list.position_id){
+            $("#selectedPosition").psel(list.position_name);
+        }
+        
+        //写入项目
+        if(list.project_ids && (list.project_ids.length > 0)){
+            var arr = organizationModel.listByProject;
+            var headerString = '';
+            (function find_(arr) {
                 var find = arguments.callee;
-                for(var i=0;i<arr.length;i++){     
-                    if(arr[i].selected){
-                        arr[i].selected = false;  
-                    } 
-                    if(arr[i].disabled){
-                        arr[i].disabled = false;
-                    }     
+                for (var i = 0; i < arr.length; i++) {
+                    for(var j = 0;j < list.project_ids.length;j++){
+                        if (arr[i].obj_id == list.project_ids[j]) {
+                            arr[i].selected = true;
+                            headerString += (headerString.length === 0 ? '' : ',') + arr[i].obj_name;
+                            break;
+                        }
+                    }
                     if (arr[i].child_objs && arr[i].child_objs.length) {
                         find(arr[i].child_objs);
                     }
                 }
             })(arr);
-        });
+            $("#selectedStr").html((headerString === '' ? '' : headerString)).attr("title",(headerString === '' ? '' : headerString));
+        }
+
+        //写入专业
+        if(list.specialty && (list.specialty.length > 0)){
+            console.log(list.specialty)
+            var arr = organizationModel.majorArr;
+            var headerString = '';
+            (function find_(arr) {
+                var find = arguments.callee;
+                for (var i = 0; i < arr.length; i++) {
+                    for(var j = 0;j < list.specialty.length;j++){
+                        if (arr[i].obj_id == list.specialty[j]) {
+                            arr[i].selected = true;
+                            headerString += (headerString.length === 0 ? '' : ',') + arr[i].obj_name;
+                            break;
+                        }
+                    }
+                    if (arr[i].child_objs && arr[i].child_objs.length) {
+                        find(arr[i].child_objs);
+                    }
+                }
+            })(arr);
+            // if(){
+                $("#selectedMajor .per-combobox_name").html((headerString === '' ? '' : headerString)).attr("title",(headerString === '' ? '' : headerString));
+            // }
+        }
+
+        $("#email").precover();
+        $("#email").pval((list.person_mail ? list.person_mail : ""));
+        $("#employeeNumber").precover();
+        $("#employeeNumber").pval((list.person_num ? list.person_num : ""));
+        organizationModel.accountId = (list.person_user_id ? list.person_user_id : "");
+        setTimeout(function(){
+            $("#searchAccountInfo > input").val((list.person_user_name ? list.person_user_name : ""));
+        },0)
+        if(list.person_user_name){
+            $("#searchAccountInfo>input").attr("pdisabled",true);
+        }else{
+            $("#searchAccountInfo>input").attr("pdisabled",false);
+        }
+        $("#jurisdictionList").html((list.func_pack_names ? list.func_pack_names : "--")).attr("title",(list.func_pack_names ? list.func_pack_names : "--"));
+
+        if(list.head_portrait && (list.head_portrait.length > 0)){
+            var link = '/' + pconst.requestType.pdownload + '/' + psecret.create(list.head_portrait);
+            $("#fastAddImg").pval([{name: '', url: link}]);
+        }    
+
+        //初始化权限
+        arr = organizationModel.jurisdiction;
+        (function find_(arr){
+            var find = arguments.callee;
+            for(var i=0;i<arr.length;i++){     
+                if(arr[i].selected){
+                    arr[i].selected = false;  
+                } 
+                if(arr[i].disabled){
+                    arr[i].disabled = false;
+                }     
+                if (arr[i].child_objs && arr[i].child_objs.length) {
+                    find(arr[i].child_objs);
+                }
+            }
+        })(arr);
     },
     searchAccountByName: function() {
-        $("#searchAccountInfo > div").show();
-        var functionShow = $("#permissionPackageList").is(":hidden");
-        if(!functionShow){
-            $("#permissionPackageList").hide();
+        organizationModel.accountId = "";
+        if($("#searchAccountInfo > input").val() == ""){
+            $("#jurisdictionList").parent().find(".promptForm").hide();
         }
+        $("#jurisdictionList").html("--");
+        (function find_(arr){
+            var find = arguments.callee;
+            for(var i=0;i<arr.length;i++){     
+                if(arr[i].selected){
+                    arr[i].selected = false;  
+                } 
+                if(arr[i].disabled){
+                    arr[i].disabled = false;
+                }     
+                if (arr[i].child_objs && arr[i].child_objs.length) {
+                    find(arr[i].child_objs);
+                }
+            }
+        })(organizationModel.jurisdiction);
+        $("#searchAccountInfo > div.options").show();
+        var functionShow = $("#searchAccountInfo > .conJurisdictionlist").is(":hidden");
+        if(!functionShow){
+            $("#searchAccountInfo > .conJurisdictionlist").hide();
+        }
+
         organizationModel.functionPermissionObj = [];
         var keyWord = organizationModel.accountName || "";
         var list = organizationModel.personAccountList;
@@ -286,7 +465,8 @@ var organizationMethods = {
                 }];
             }
         } else if(keyWord == '') {
-            $("#searchAccountInfo > div").hide();
+            $("#searchAccountInfo > div.options").hide();
+            $("#searchAccountInfo > .conJurisdictionlist").hide();
             organizationModel.searchAccountList = [{
                 person_user_name: "",
             }];
@@ -296,8 +476,6 @@ var organizationMethods = {
             }];
         }
 
-        console.log(arr);
-
     },
     
     //保存中心部门修改
@@ -306,7 +484,7 @@ var organizationMethods = {
             $("#message").pshow({ text: "请根据提示信息补充完整！", state: "failure" });
             return false;
         }
-        var deptPositions = this.listFormat(organizationModel.listByCenterDepartment);
+        var deptPositions = this.listFormat(organizationModel.listByCenterDepartment)
         organizationController.saveDeptPosition({
             "dept_type": "d1",
             "deptPositions": deptPositions
@@ -531,10 +709,6 @@ var organizationMethods = {
 */
 var organizationMounted = function () {
 
-    //初始化中心部门岗位
-    organizationController.queryPositionByDeptId({"dept_id":"BMBMb4bad6394438481c8488366b9d49aee1"}).then(function(result){
-        organizationModel.postArr = result;
-    })
     //初始化快速添加-项目
     organizationController.queryCurrentUserProjectLimits()
     .then(function(list) {
@@ -603,16 +777,29 @@ var organizationMounted = function () {
         organizationModel.jurisdiction = JSON.parse(JSON.stringify(orgTreeProject));
     });
     //初始化中心部门
-    var data_department = organizationController.queryDeptPositionTreeByType({"dept_type": "d1" });
-    data_department.then(function (result) {
-        var orgTreeCenterDepart = organizationMethods.organizationTreeInit(result, '', '', 1);
+    var data_department = organizationController.queryDeptPositionTreeByType({"dept_type": "d1","query_person":"1"});
+    data_department.then(function (result) { 
+        if(result && (result.length > 0)){
+            var orgTreeCenterDepart = organizationMethods.organizationTreeInit(result, '', '', 1);
+        }else{
+            var orgTreeCenterDepart = organizationMethods.organizationTreeInit(organizationModel.listByCenterDepartment, '', '', 1);
+        }
         organizationModel.listByCenterDepartment = JSON.parse(JSON.stringify(orgTreeCenterDepart));
+        var centerId = organizationModel.listByCenterDepartment[0].obj_id;
+        //初始化中心部门岗位
+        organizationController.queryPositionByDeptId({"dept_id":centerId}).then(function(result){
+            organizationModel.postArr = result;
+        })
         windowEvent.windowInit();
     });
     //初始化项目通用部门
-    var data_projectcommo = organizationController.queryDeptPositionTreeByType({"dept_type": "d2" });
-    data_projectcommo.then(function (result) {
-        var orgTreeProjectCommon = organizationMethods.organizationTreeInit(result, '', '', 1);
+    var data_projectcommo = organizationController.queryDeptPositionTreeByType({"dept_type": "d2","query_person":"1"});
+    data_projectcommo.then(function (result) {      
+        if(result && (result.length > 0)){
+            var orgTreeProjectCommon = organizationMethods.organizationTreeInit(result, '', '', 1);
+        }else{
+            var orgTreeProjectCommon = organizationMethods.organizationTreeInit(organizationModel.listByProjectCommon, '', '', 1);
+        }
         organizationModel.listByProjectCommon = JSON.parse(JSON.stringify(orgTreeProjectCommon));
         windowEvent.windowInit();
     }); 
@@ -630,12 +817,6 @@ var organizationMounted = function () {
 vue的watch属性 
 */
 var organizationWatch = {
-    listByProject: {
-        handler: function (val, oldVal) {
-            // $("#projectMotai").find(".selectedMul").remove();
-        },
-        deep: true
-    },
     listByProjectCommon: {
         handler: function (val, oldVal) {
             windowEvent.borderInit();
@@ -706,11 +887,20 @@ var organizationWatch = {
     }
 }
 
+var organizationComputed = {
+    //编辑
+    edit : function(){
+        
+    }
+
+}
+
 var organizationLogger = {
     init: function () {
         new Vue({
             el: '#organizationManage',
             data: organizationModel,
+            computed: organizationComputed,
             methods: organizationMethods,
             mounted: organizationMounted,
             updated: function () {
@@ -723,7 +913,7 @@ var organizationLogger = {
                 $("#centerDepart_ input,#projectCommon_ input,#selectedProject input,#selectedMajor input,#selectedJurisdiction input").attr("readonly","readonly").keydown(function(e) {
                     e.preventDefault();
                 });
-                
+                windowEvent.showPerson_();
             },
             watch: organizationWatch
         });

@@ -1,0 +1,90 @@
+*{
+    margin: 0;
+    padding: 0;
+    user-select: none; 
+}
+body{
+    background: #f8f8f8;
+    padding: 12px 10px 0;
+    width: calc(100% - 20px);
+    height: calc(100% - 12px);
+    overflow: hidden;
+}
+#app{
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    background: white;
+    @extend .box-shadow;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.icon{
+    font-family: "perficon";
+}
+
+$icon : "perficon";
+
+$red-font-color:#FF7B7B;
+
+$blue-font-color : #637e99;
+
+$blue-border-color:#d9e2e8;
+
+$blue-border-colorer:#cacaca;
+
+$blue-block-color:#f8f8f8;
+
+$white-block-color:#ffffff;
+
+$black-font-color:#000000;
+
+$blacker-font-color:#333333;
+
+._font_over{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.flex-column{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.flex-row{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.complete{
+    height: 100%;
+    width: 100%;
+}
+
+.border-radius{
+    border-radius: 6px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.box-shadow{
+    box-shadow:0 0 4px 1px rgba(0,0,0,0.12);
+}
+
+@mixin clear{
+    &:after{
+        content: "\0020";
+        display: block;
+        height: 0;
+        clear: both;
+    }
+    zoom: 1;
+}

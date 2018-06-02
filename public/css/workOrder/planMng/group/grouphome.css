@@ -1,8 +1,15 @@
 .pointer {
   cursor: pointer; }
 
+.inline-block {
+  display: inline-block;
+  cursor: pointer; }
+
 body {
   overflow: hidden; }
+
+.rc {
+  color: #f97c7c; }
 
 ._font_over, #app .group_home .main .content .contenter .t_body .info .item, #app .group_home .main .content .contenter .t_body .info .item1 {
   overflow: hidden;
@@ -37,6 +44,64 @@ body {
   flex: 1;
   padding-left: 20px; }
 
+#app .toP {
+  height: 500px;
+  width: 400px; }
+  #app .toP .tc {
+    height: calc( 100% - 90px );
+    overflow: auto; }
+    #app .toP .tc .ti {
+      height: 50px;
+      line-height: 50px;
+      padding: 0 20px;
+      border-bottom: 1px solid #d9e2e8; }
+      #app .toP .tc .ti .titxt {
+        float: left;
+        line-height: 50px;
+        font-size: 14px; }
+      #app .toP .tc .ti .c {
+        float: right; }
+        #app .toP .tc .ti .c .pcheckbox {
+          overflow: hidden;
+          color: #637e99;
+          line-height: 16px;
+          cursor: pointer;
+          display: inline-block;
+          margin-top: 14px; }
+          #app .toP .tc .ti .c .pcheckbox > .pcheckbox_input {
+            float: left;
+            width: 16px;
+            height: 16px;
+            border: 1px solid #7a94ad;
+            border-radius: 2px;
+            box-sizing: border-box;
+            position: relative;
+            cursor: pointer;
+            background: #fff; }
+          #app .toP .tc .ti .c .pcheckbox .pswitch_label {
+            float: left; }
+          #app .toP .tc .ti .c .pcheckbox .pcheckbox-checked {
+            background: #7a94ad; }
+          #app .toP .tc .ti .c .pcheckbox .pcheckbox-checked.pcheckbox_input:before {
+            box-sizing: content-box;
+            content: "";
+            border: 2px solid #fff;
+            border-left: 0;
+            border-top: 0;
+            height: 7px;
+            left: 4px;
+            top: 1px;
+            transform: rotate(45deg);
+            width: 4px;
+            transition: transform 0.15s cubic-bezier(0.71, -0.46, 0.88, 0.6) 0.05s;
+            transform-origin: center;
+            position: absolute; }
+  #app .toP .tb {
+    margin: 30px auto;
+    text-align: center; }
+    #app .toP .tb .btn {
+      display: inline-block;
+      margin: 0px 10px; }
 #app .group_home {
   position: relative;
   background: #f8f8f8; }
@@ -53,12 +118,9 @@ body {
     #app .group_home .header .right > div {
       width: 90px; }
   #app .group_home .main {
-    position: absolute;
     background: #ffffff;
-    top: 12px;
-    left: 10px;
-    right: 10px;
-    bottom: 0; }
+    width: 100%;
+    height: 100%; }
     #app .group_home .main .content {
       margin: 0 20px;
       height: 100%; }

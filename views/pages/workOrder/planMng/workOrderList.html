@@ -45,7 +45,7 @@
 </div>
 
 <script type="text/html" id="workOrderListTem">
-    <div class="info" v-for="(item,index) in workOrderListData" @click="lookWorkOrderDetail(item)">
+    <div class="info" v-for="(item,index) in workOrderListData" @click="openWorkOrderDetail(item.order_id,'workOrderDetailHead','工单详情')">
         <div class="item" :title="item.summary" v-text="item.summary"></div>
         <div class="item" :title="timeFormat(item.create_time,'0')" v-text="timeFormat(item.create_time,'0')"></div>
         <div class="item" :title="item.summary" v-text="item.summary"></div>

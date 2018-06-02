@@ -73,7 +73,6 @@ function groupDataControll(data) {
             plan.row == 0 ? plan.row = 1 : void 0;
             plan.rowData == [] ? plan.rowData = [[]] : void 0;
             var days = v.instance.timeData.day.length;//页面显示天数总长度
-            // var cell = window.document.getElementById('monitoringWidth').offsetWidth/v.instance.dateData.day.length;//单格宽度
             plan.grid = [];
             for (var i = 0; i < plan.row; i++) {
                 plan.grid.push([]);
@@ -101,7 +100,6 @@ function groupDataControll(data) {
                 row.forEach(function (item, index2) {
                     if (item.width > 1) {
                         row.splice(index2 + 1, item.width);
-                        // item.width = (item.width + 1) + " 0 " + (item.width + "px");
                         item.width = (item.width + 1) + " 0 " + (item.width + "px");
                     }
                 })
@@ -115,7 +113,9 @@ function groupDataControll(data) {
     }
 
     var arr = data.map(function (plan) {
-        return plan.freq_cycle ? dayOrderDataToRow(plan) : orderDataToRow(orderDataFilter(plan));
+        if(plan){
+            return plan.freq_cycle ? dayOrderDataToRow(plan) : orderDataToRow(orderDataFilter(plan));
+        }else{return}
     })
     return rowDataTransform(arr);
 }

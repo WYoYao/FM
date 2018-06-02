@@ -1,0 +1,719 @@
+.pointer {
+  cursor: pointer; }
+
+.inline-block {
+  display: inline-block;
+  cursor: pointer; }
+
+body {
+  overflow: hidden; }
+
+.rc {
+  color: #f97c7c; }
+
+._font_over {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+.flex-column {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: stretch; }
+
+.flex-row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: stretch; }
+
+.complete {
+  height: 100%;
+  width: 100%; }
+
+.border-radius {
+  border-radius: 6px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0; }
+
+.box-shadow {
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.12); }
+
+.aite-btn, .info-btn, .sel-btn {
+  color: #7a94ad; }
+
+.alert-all {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 80; }
+  .alert-all .alert-shade {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    overflow: overlay; }
+    .alert-all .alert-shade .alert-box {
+      width: 950px;
+      min-height: 560px;
+      max-height: 840px;
+      background: white;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+      position: relative;
+      top: 0;
+      left: 0; }
+      .alert-all .alert-shade .alert-box .alert-content {
+        width: 100%;
+        height: 100%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 50px 60px 30px; }
+        .alert-all .alert-shade .alert-box .alert-content .alert-container {
+          width: 100%;
+          height: 100%;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+          max-height: 760px; }
+          .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-header {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #d9e2e8; }
+            .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-header:hover {
+              border: 1px solid #02aad1; }
+            .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-header .matter-title {
+              width: 100%;
+              height: 50px;
+              line-height: 49px;
+              box-sizing: border-box;
+              padding: 0 20px;
+              background: white; }
+              .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-header .matter-title .matter-title-div {
+                border-bottom: none;
+                width: 100%;
+                height: 100%;
+                box-sizing: border-box;
+                position: relative;
+                top: 0;
+                left: 0; }
+                .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-header .matter-title .matter-title-div input {
+                  padding: 0;
+                  width: 94%;
+                  display: inline-block;
+                  border: none;
+                  outline: none;
+                  box-sizing: border-box;
+                  font-size: 14px;
+                  vertical-align: top; }
+                .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-header .matter-title .matter-title-div .counter.errorNumber {
+                  color: #ef6767; }
+                .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-header .matter-title .matter-title-div .counter {
+                  vertical-align: top;
+                  position: absolute;
+                  right: 0;
+                  float: right;
+                  font-size: 12px; }
+          .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body {
+            width: 100%;
+            height: calc(100% - 122px);
+            max-height: 638px;
+            overflow-y: auto;
+            box-sizing: border-box;
+            border: 1px solid #d9e2e8;
+            border-top: none; }
+            .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box {
+              width: 100%;
+              height: 100%;
+              -webkit-box-sizing: border-box;
+              -moz-box-sizing: border-box;
+              box-sizing: border-box;
+              padding: 20px; }
+              .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev {
+                width: 100%;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                border: 1px solid #d9e2e8;
+                margin-bottom: 10px; }
+                .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-title {
+                  width: 100%;
+                  height: 50px;
+                  line-height: 50px;
+                  -webkit-box-sizing: border-box;
+                  -moz-box-sizing: border-box;
+                  box-sizing: border-box;
+                  padding: 0 20px;
+                  background-color: #f8f8f8; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-title .title-tip-div {
+                    float: left;
+                    position: relative;
+                    top: 0;
+                    left: 0; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-title .title-tip-div .starSymbol {
+                      color: #68c5b3;
+                      margin-right: 5px; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-title .title-tip-div .question {
+                      vertical-align: text-bottom;
+                      margin-left: 15px;
+                      cursor: pointer;
+                      margin-top: 18px; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-title .title-tip-div > p {
+                      width: 400px;
+                      height: 55px;
+                      -webkit-box-sizing: border-box;
+                      -moz-box-sizing: border-box;
+                      box-sizing: border-box;
+                      border: 1px solid #d9e2e8;
+                      -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+                      -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+                      box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+                      position: absolute;
+                      top: -10px;
+                      left: 150px;
+                      padding: 5px 10px;
+                      color: #000;
+                      background-color: white;
+                      -webkit-border-radius: 5px;
+                      -moz-border-radius: 5px;
+                      border-radius: 5px;
+                      text-align: left;
+                      line-height: 24px;
+                      z-index: 15;
+                      visibility: hidden; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-title .edit-clear-div {
+                    float: right;
+                    position: relative;
+                    top: 0;
+                    left: 0; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-title .edit-clear-div > div {
+                      display: inline-block;
+                      vertical-align: top; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-title .edit-clear-div .clear-div + div {
+                      position: absolute;
+                      top: 40px;
+                      left: -310px;
+                      z-index: 50;
+                      line-height: normal; }
+                .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div.operate {
+                  width: 100%;
+                  height: 120px;
+                  -webkit-box-sizing: border-box;
+                  -moz-box-sizing: border-box;
+                  box-sizing: border-box; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div.operate .textareadiv {
+                    width: 100%;
+                    height: 90px;
+                    box-sizing: border-box;
+                    padding: 10px 10px 5px 20px;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 10;
+                    font-size: 12px;
+                    max-height: 90px;
+                    overflow-y: auto;
+                    overflow-y: overlay; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div.operate .textareadiv .block {
+                      display: inline-block;
+                      height: 30px;
+                      line-height: 30px;
+                      position: relative;
+                      margin: 0 20px 15px 0;
+                      vertical-align: top;
+                      -ms-text-overflow: ellipsis;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                      overflow: hidden;
+                      border-radius: 15px;
+                      padding: 0 15px;
+                      background-color: #f3f3f3; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div.operate .textareadiv .block > span {
+                        box-sizing: border-box;
+                        display: inline-block;
+                        height: 30px;
+                        line-height: 30px;
+                        -ms-text-overflow: ellipsis;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        vertical-align: middle;
+                        cursor: pointer; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div.operate .textareadiv .block > img {
+                        vertical-align: middle;
+                        cursor: pointer; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div.operate .counter {
+                    position: absolute;
+                    right: -710px;
+                    bottom: 0; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div.operate textarea {
+                    width: 100%;
+                    height: 90px;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    padding: 10px 10px 5px 20px;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 15; }
+                .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div.result {
+                  height: auto;
+                  min-height: 60px; }
+                .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div {
+                  width: 100%;
+                  height: 60px;
+                  position: relative;
+                  top: 0;
+                  left: 0;
+                  -webkit-box-sizing: border-box;
+                  -moz-box-sizing: border-box;
+                  box-sizing: border-box; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .objs .obj-div {
+                    clear: both; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .objs .obj-div .obj-name {
+                      width: 100%;
+                      -webkit-box-sizing: border-box;
+                      -moz-box-sizing: border-box;
+                      box-sizing: border-box;
+                      padding: 0 20px;
+                      line-height: 40px; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .objs .obj-div .obj-name > em {
+                        font-size: 12px;
+                        color: #cacaca; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .objs .obj-div .obj-name > a {
+                        text-decoration: none;
+                        color: #ef6767;
+                        float: right; }
+                        .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .objs .obj-div .obj-name > a > i {
+                          font-family: 'perficon';
+                          margin-right: 10px;
+                          vertical-align: baseline; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .objs .obj-div .obj-info-self {
+                      width: 100%;
+                      -webkit-box-sizing: border-box;
+                      -moz-box-sizing: border-box;
+                      box-sizing: border-box;
+                      padding: 0 20px; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .objs .obj-div .obj-info-self .obj-info .info-dot {
+                        position: relative;
+                        top: 0;
+                        left: 0;
+                        border: 1px solid #e5e5e5;
+                        line-height: 28px;
+                        box-sizing: border-box;
+                        display: inline-block;
+                        vertical-align: top;
+                        margin: 10px 10px 0 0;
+                        padding-right: 3px; }
+                        .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .objs .obj-div .obj-info-self .obj-info .info-dot > span {
+                          /* width: 170px; */
+                          display: inline-block;
+                          box-sizing: border-box;
+                          padding-left: 10px;
+                          vertical-align: middle;
+                          cursor: default;
+                          -ms-text-overflow: ellipsis;
+                          text-overflow: ellipsis;
+                          overflow: hidden;
+                          white-space: nowrap;
+                          max-width: 710px; }
+                        .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .objs .obj-div .obj-info-self .obj-info .info-dot > img {
+                          cursor: pointer;
+                          vertical-align: middle; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .objs .obj-div .obj-info-self .add-info-btn {
+                        width: 100%;
+                        height: 40px;
+                        line-height: 40px;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                        cursor: pointer;
+                        position: relative; }
+                        .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .objs .obj-div .obj-info-self .add-info-btn .aite-btn, .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .objs .obj-div .obj-info-self .add-info-btn .info-btn, .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .objs .obj-div .obj-info-self .add-info-btn .sel-btn {
+                          color: #7a94ad; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .obj-info-btn {
+                    width: 100%;
+                    height: 40px;
+                    line-height: 40px;
+                    padding: 0 20px;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    border-top: 1px solid #d9e2e8;
+                    cursor: pointer;
+                    position: relative; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .obj-info-btn .pcheckbox {
+                      overflow: hidden;
+                      color: #637e99;
+                      line-height: 16px;
+                      cursor: pointer;
+                      display: inline-block;
+                      margin-top: 14px; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .obj-info-btn .pcheckbox > .pcheckbox_input {
+                        float: left;
+                        width: 16px;
+                        height: 16px;
+                        border: 1px solid #7a94ad;
+                        border-radius: 2px;
+                        box-sizing: border-box;
+                        position: relative;
+                        cursor: pointer;
+                        background: #fff; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .obj-info-btn .pcheckbox .pswitch_label {
+                        float: left; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .obj-info-btn .pcheckbox .pcheckbox-checked {
+                        background: #7a94ad; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .obj-info-btn .pcheckbox .pcheckbox-checked.pcheckbox_input:before {
+                        box-sizing: content-box;
+                        content: "";
+                        border: 2px solid #fff;
+                        border-left: 0;
+                        border-top: 0;
+                        height: 7px;
+                        left: 4px;
+                        top: 1px;
+                        transform: rotate(45deg);
+                        width: 4px;
+                        transition: transform 0.15s cubic-bezier(0.71, -0.46, 0.88, 0.6) 0.05s;
+                        transform-origin: center;
+                        position: absolute; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .obj-info-btn .aite-btn {
+                      color: #7a94ad; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .obj-fragment-div {
+                    position: absolute !important;
+                    bottom: 10px;
+                    left: 20px;
+                    cursor: pointer;
+                    display: initial !important;
+                    vertical-align: top !important;
+                    width: auto !important;
+                    height: auto !important; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div textarea {
+                    width: 100%;
+                    height: 100%;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    padding: 10px 10px 5px 20px;
+                    border: 1px solid white;
+                    outline: none; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div textarea:hover {
+                    border: 1px solid white; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .counter {
+                    position: absolute;
+                    bottom: 5px;
+                    right: 10px;
+                    color: #cacaca; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .major-sel {
+                    width: 140px;
+                    height: 100%;
+                    box-sizing: border-box;
+                    margin-left: 20px;
+                    padding-top: 10px; }
+              .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content {
+                width: 100%;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                border: 1px solid #d9e2e8;
+                margin-bottom: 10px; }
+                .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-title {
+                  width: 100%;
+                  height: 50px;
+                  line-height: 50px;
+                  -webkit-box-sizing: border-box;
+                  -moz-box-sizing: border-box;
+                  box-sizing: border-box;
+                  padding: 0 20px;
+                  background-color: #f8f8f8; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-title .title-tip-div {
+                    float: left;
+                    position: relative;
+                    top: 0;
+                    left: 0; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-title .title-tip-div .starSymbol {
+                      color: #68c5b3;
+                      margin-right: 5px; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-title .title-tip-div .question {
+                      vertical-align: text-bottom;
+                      margin-left: 15px;
+                      cursor: pointer;
+                      margin-top: 18px; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-title .title-tip-div > p {
+                      width: 400px;
+                      height: 55px;
+                      -webkit-box-sizing: border-box;
+                      -moz-box-sizing: border-box;
+                      box-sizing: border-box;
+                      border: 1px solid #d9e2e8;
+                      -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+                      -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+                      box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+                      position: absolute;
+                      top: -10px;
+                      left: 150px;
+                      padding: 5px 10px;
+                      color: #000;
+                      background-color: white;
+                      -webkit-border-radius: 5px;
+                      -moz-border-radius: 5px;
+                      border-radius: 5px;
+                      text-align: left;
+                      line-height: 24px;
+                      z-index: 15;
+                      visibility: hidden; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-title .edit-clear-div {
+                    float: right;
+                    position: relative;
+                    top: 0;
+                    left: 0; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-title .edit-clear-div > div {
+                      display: inline-block;
+                      vertical-align: top; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-title .edit-clear-div .clear-div + div {
+                      position: absolute;
+                      top: 40px;
+                      left: -310px;
+                      z-index: 50;
+                      line-height: normal; }
+                .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div.operate {
+                  width: 100%;
+                  height: 120px;
+                  -webkit-box-sizing: border-box;
+                  -moz-box-sizing: border-box;
+                  box-sizing: border-box; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div.operate .textareadiv {
+                    width: 100%;
+                    height: 90px;
+                    box-sizing: border-box;
+                    padding: 10px 10px 5px 20px;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 10;
+                    font-size: 12px;
+                    max-height: 90px;
+                    overflow-y: auto;
+                    overflow-y: overlay; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div.operate .textareadiv .block {
+                      display: inline-block;
+                      height: 30px;
+                      line-height: 30px;
+                      position: relative;
+                      margin: 0 20px 15px 0;
+                      vertical-align: top;
+                      -ms-text-overflow: ellipsis;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                      overflow: hidden;
+                      border-radius: 15px;
+                      padding: 0 15px;
+                      background-color: #f3f3f3; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div.operate .textareadiv .block > span {
+                        box-sizing: border-box;
+                        display: inline-block;
+                        height: 30px;
+                        line-height: 30px;
+                        -ms-text-overflow: ellipsis;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        vertical-align: middle;
+                        cursor: pointer; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div.operate .textareadiv .block > img {
+                        vertical-align: middle;
+                        cursor: pointer; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div.operate .counter {
+                    position: absolute;
+                    right: -710px;
+                    bottom: 0; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div.operate textarea {
+                    width: 100%;
+                    height: 90px;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    padding: 10px 10px 5px 20px;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 15; }
+                .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div.result {
+                  height: auto;
+                  min-height: 60px; }
+                .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div {
+                  width: 100%;
+                  height: 60px;
+                  position: relative;
+                  top: 0;
+                  left: 0;
+                  -webkit-box-sizing: border-box;
+                  -moz-box-sizing: border-box;
+                  box-sizing: border-box; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .objs .obj-div {
+                    clear: both; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .objs .obj-div .obj-name {
+                      width: 100%;
+                      -webkit-box-sizing: border-box;
+                      -moz-box-sizing: border-box;
+                      box-sizing: border-box;
+                      padding: 0 20px;
+                      line-height: 40px; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .objs .obj-div .obj-name > em {
+                        font-size: 12px;
+                        color: #cacaca; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .objs .obj-div .obj-name > a {
+                        text-decoration: none;
+                        color: #ef6767;
+                        float: right; }
+                        .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .objs .obj-div .obj-name > a > i {
+                          font-family: 'perficon';
+                          margin-right: 10px;
+                          vertical-align: baseline; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .objs .obj-div .obj-info-self {
+                      width: 100%;
+                      -webkit-box-sizing: border-box;
+                      -moz-box-sizing: border-box;
+                      box-sizing: border-box;
+                      padding: 0 20px; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .objs .obj-div .obj-info-self .obj-info .info-dot {
+                        position: relative;
+                        top: 0;
+                        left: 0;
+                        border: 1px solid #e5e5e5;
+                        line-height: 28px;
+                        box-sizing: border-box;
+                        display: inline-block;
+                        vertical-align: top;
+                        margin: 10px 10px 0 0;
+                        padding-right: 3px; }
+                        .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .objs .obj-div .obj-info-self .obj-info .info-dot > span {
+                          /* width: 170px; */
+                          display: inline-block;
+                          box-sizing: border-box;
+                          padding-left: 10px;
+                          vertical-align: middle;
+                          cursor: default;
+                          -ms-text-overflow: ellipsis;
+                          text-overflow: ellipsis;
+                          overflow: hidden;
+                          white-space: nowrap;
+                          max-width: 710px; }
+                        .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .objs .obj-div .obj-info-self .obj-info .info-dot > img {
+                          cursor: pointer;
+                          vertical-align: middle; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .objs .obj-div .obj-info-self .add-info-btn {
+                        width: 100%;
+                        height: 40px;
+                        line-height: 40px;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                        cursor: pointer;
+                        position: relative; }
+                        .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .objs .obj-div .obj-info-self .add-info-btn .aite-btn, .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .objs .obj-div .obj-info-self .add-info-btn .info-btn, .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .objs .obj-div .obj-info-self .add-info-btn .sel-btn {
+                          color: #7a94ad; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .obj-info-btn {
+                    width: 100%;
+                    height: 40px;
+                    line-height: 40px;
+                    padding: 0 20px;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    border-top: 1px solid #d9e2e8;
+                    cursor: pointer;
+                    position: relative; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .obj-info-btn .pcheckbox {
+                      overflow: hidden;
+                      color: #637e99;
+                      line-height: 16px;
+                      cursor: pointer;
+                      display: inline-block;
+                      margin-top: 14px; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .obj-info-btn .pcheckbox > .pcheckbox_input {
+                        float: left;
+                        width: 16px;
+                        height: 16px;
+                        border: 1px solid #7a94ad;
+                        border-radius: 2px;
+                        box-sizing: border-box;
+                        position: relative;
+                        cursor: pointer;
+                        background: #fff; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .obj-info-btn .pcheckbox .pswitch_label {
+                        float: left; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .obj-info-btn .pcheckbox .pcheckbox-checked {
+                        background: #7a94ad; }
+                      .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .obj-info-btn .pcheckbox .pcheckbox-checked.pcheckbox_input:before {
+                        box-sizing: content-box;
+                        content: "";
+                        border: 2px solid #fff;
+                        border-left: 0;
+                        border-top: 0;
+                        height: 7px;
+                        left: 4px;
+                        top: 1px;
+                        transform: rotate(45deg);
+                        width: 4px;
+                        transition: transform 0.15s cubic-bezier(0.71, -0.46, 0.88, 0.6) 0.05s;
+                        transform-origin: center;
+                        position: absolute; }
+                    .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .obj-info-btn .aite-btn {
+                      color: #7a94ad; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .obj-fragment-div {
+                    position: absolute !important;
+                    bottom: 10px;
+                    left: 20px;
+                    cursor: pointer;
+                    display: initial !important;
+                    vertical-align: top !important;
+                    width: auto !important;
+                    height: auto !important; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div textarea {
+                    width: 100%;
+                    height: 100%;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    padding: 10px 10px 5px 20px;
+                    border: 1px solid white;
+                    outline: none; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div textarea:hover {
+                    border: 1px solid white; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .counter {
+                    position: absolute;
+                    bottom: 5px;
+                    right: 10px;
+                    color: #cacaca; }
+                  .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .major-sel {
+                    width: 140px;
+                    height: 100%;
+                    box-sizing: border-box;
+                    margin-left: 20px;
+                    padding-top: 10px; }
+          .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-footer {
+            width: 100%;
+            height: auto;
+            text-align: center;
+            margin-top: 40px; }
+      .alert-all .alert-shade .alert-box .alert-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        z-index: 15;
+        cursor: pointer; }
+
+/*# sourceMappingURL=addcontent.css.map */

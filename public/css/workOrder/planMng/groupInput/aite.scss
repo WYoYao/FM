@@ -1,3 +1,5 @@
+@import "./structure";
+
 .aite-list{
     width: 100%;
     height: 44px;
@@ -19,22 +21,7 @@
         float: right;
         height: 100%;
 
-        .pcheckbox{
-            overflow: hidden;
-            color: #637e99;
-            line-height: 16px;
-            cursor: pointer;
-            display: inline-block;
-            margin-top: 14px;
-
-            .pswitch_label {
-                float: left;
-            }
-
-            .pcheckbox-checked {
-                background: #7a94ad;
-            }
-        }
+        @include pcheckbox;
     }
 }
 
@@ -124,7 +111,7 @@
             .aite-list{
                 @extend .aite-list;
 
-                .name{
+                & >  .name{
                     display: inline-block;
                     max-width: 230px;
                     height: 100%;
@@ -157,7 +144,7 @@
                 .aite-list{
                     @extend .aite-list;
 
-                    .name{
+                    & > .name{
                         display: inline-block;
                         max-width: 100px;
                         height: 100%;
@@ -202,7 +189,7 @@
                 .aite-list{
                     @extend .aite-list;
 
-                    .name{
+                     & > .name{
                         display: inline-block;
                         max-width: 100px;
                         height: 100%;
@@ -230,7 +217,7 @@
                 padding: 0 8px 0 14px;
                 border-bottom: 1px solid #d9d9d9;
 
-                .title {
+                & >  .title {
                     line-height: 35px;
                     color: #888;
                     max-width: 78px;
@@ -275,7 +262,7 @@
                     .aite-list{
                         @extend .aite-list;
 
-                        .name{
+                        & > .name{
                             display: inline-block;
                             max-width: 100px;
                             height: 100%;

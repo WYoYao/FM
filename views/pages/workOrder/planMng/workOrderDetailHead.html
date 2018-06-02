@@ -1,0 +1,15 @@
+
+
+<script src="../js/workOrder/planMng/workOrderDetailHead/model.js"></script>
+
+<link rel="stylesheet" href="../css/workOrder/planMng/term/workOrderDetailHead.css">
+
+<div id="workOrderDetailHead" v-show="onPage === 'workOrderDetailHead'">
+    <!-- here页面头部导航 -->
+    <div class="nav" v-if="paths.auto">
+        <sitemap :maps='paths.path' :createsitemap='gobackSelPath' :back='gobackLastPath' />
+    </div>
+    <div class="body">
+        <%include ./workOrderDetail.html %>
+    </div>
+</div>

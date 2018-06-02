@@ -13,20 +13,20 @@
         
         <div class="cite">
             <pcombobox-normal id="'isPlanSite'" sel="getGroupPlanList" bind="true">
-                <header prefix="是否引用：" placeholder="'全部'"></header>
-                <item datasource="planSiteType" text="name" id="code"></item>
+                <header prefix="使用状态：" placeholder="'全部'"></header>
+                <item datasource="planSiteType" text="name" id="id"></item>
             </pcombobox-normal>
         </div>
 
         <div class="type">
-            <pcombobox-normal id="'groupPlanTypeCombo'" sel="getGroupPlanList" bind="true">
+            <pcombobox-normal id="'groupPlanTypeCombo'" sel="getGroupPlanList" bind="true" align="right">
                 <header prefix="计划类型：" placeholder="'全部'"></header>
                 <item datasource="allPlanType" text="name" id="code"></item>
             </pcombobox-normal>
         </div>
 
         <div class="text MT">
-            集团计划总数:{{groupPlanUse.unUse}}&nbsp;&nbsp;&nbsp;未引用计划数&nbsp;&nbsp;&nbsp;{{groupPlanUse.total}}&nbsp;&nbsp;&nbsp;
+            集团计划总数:{{groupPlanUse.total}}&nbsp;&nbsp;&nbsp;未引用计划数&nbsp;&nbsp;&nbsp;{{groupPlanUse.unUse}}&nbsp;&nbsp;&nbsp;
         </div>
 
     </div>
@@ -55,12 +55,12 @@
 <script type="text/html" id="groupPlanList">
     <li v-for="(item,index) in groupPlanList">
         <div class="name MT" v-text="item.group_plan_name" :title="item.group_plan_name"></div>
-        <div class="type" v-text="item.order_type_name" :title="item.order_type_name"></div>
-        <div class="freq" v-text="'每' + transfYMWD(item.freq_cycle) + item.freq_cycle + '次'" :title="'每' + transfYMWD(item.freq_cycle) + item.freq_cycle + '次'"></div>
+        <div class="type MT" v-text="item.order_type_name" :title="item.order_type_name"></div>
+        <div class="freq" v-text="'每' + transfYMWD(item.freq_cycle) + item.freq_num + '次'" :title="'每' + transfYMWD(item.freq_cycle) + item.freq_num + '次'"></div>
         <div class="urgency" v-text="item.urgency" :title="item.urgency"></div>
         <div class="cite" v-text="item.use_status == 1 ? '是' : '否'" :title="item.use_status == 1 ? '是' : '否'"></div>
         <div class="operate">
-            <div><pbutton-blue bind="true" text="'引用计划'" @click.stop="getThisPlan(item,'site')" isborder="false"></pbutton-blue></div>
+            <div><pbutton-blue bind="true" text="'引用计划'" @click.stop="getThisPlan(item,'site')" isborder="false" disabled="item.use_status == 1"></pbutton-blue></div>
             <div><pbutton-blue bind="true" text="'复制计划'" @click.stop="getThisPlan(item,'copy')" isborder="false"></pbutton-blue></div>
         </div>
     </li>

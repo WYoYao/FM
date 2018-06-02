@@ -79,16 +79,17 @@
                         <div class="see_planDetail_grid_name" v-text="matters.matter_name">
                         </div>
                     </div>
-                    <div class="see_planDetail_grid_tab" v-for="(matter_steps,index2) in matters.matter_steps">
+                    <div class="see_planDetail_grid_tab">
                         <!-- {{有id或者有描述}} -->
                         <div class="see_planDetail_grid_tab_div">
                             <!-- 左侧列表 -->
                             <div class="see_planDetail_grid_tab_left">
-                                <div class="see_planDetail_grid_matter_info" v-if="matter_steps.obj_id || matter_steps.description">
+                                <div class="see_planDetail_grid_matter_info">
                                     <h4>事件概述：</h4>
-                                    <p v-text="matter_steps.description"></p>
+                                    <p v-text="matters.description"></p>
                                 </div>
-                                <div class="see_planDetail_grid_list" v-for="(steps,index3) in matter_steps.steps" v-if="matter_steps.obj_id || matter_steps.description">
+                                <div class="see_planDetail_grid_list" v-for="(matter_steps,index2) in matters.matter_steps" v-for="(steps,index3) in matter_steps.steps"
+                                    v-if="matter_steps.obj_id || matter_steps.description">
                                     <ul>
                                         <!-- 判断如果内容是常规内容并且数量大于0 -->
                                         <li class="see_planDetail_grid_list_operat2">

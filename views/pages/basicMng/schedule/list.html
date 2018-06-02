@@ -1,0 +1,58 @@
+<div id="scheduleCon">
+    <div id="scheduleTime">
+        <ptime-calendar id="divCalendar" orientation="down" sel="appMethods.getDate">
+            <panel timetype="M" align="left" double="false" startyear="2003" iscommontime="false" lock="false"></panel>
+        </ptime-calendar>
+        <% if (user.authorObj.editSchedulingPlan) { %>
+        <div class="modifyForm">
+            <pbutton-white text="'班次设置'" click="appMethods.showEditPlan" bind="true"></pbutton-white>
+        </div>
+        <% } %>
+    </div>
+    <div id="scheduleView">
+        <!-- 左侧职位 -->
+        <div id="viewMenu"> 
+            <position :position_arr = "positionArr" :date = "currentDate" @changeposition="changeposition" @queryplan="queryPlan"></position>
+        </div>
+        <!-- 右侧排班计划 -->
+        <div id="viewFormCon">
+            <!-- 默认显示内容 -->
+            <div class="viewInit">
+                <p class="wordicon">S</p>
+                <div class="wordtip">当前尚无排班表</div>   
+                <div class="loadCon">
+                    <a href="#">
+                        <pbutton-blue text="'下载月排班表模板'" icon="'D'" click="appMethods.downloadModel" id="'downloadModel'" bind="true"></pbutton-blue>
+                    </a>
+                </div>
+                <% if (user.authorObj.uploadSchedulingPlan) { %>
+                <div class="loadCon">
+                    <pupload-attachment id="uploadPlan1" text="点击上传">
+                        <panel success="upload1"></panel>
+                    </pupload-attachment>
+                    <div class="uploadMask_" @click.stop="wMethods.checkShift"></div>
+                </div>
+                <% } %>
+            </div>
+            <!-- 查询后显示排班表 -->
+            <div class="viewForm" v-show="viewFormStatus">
+                <div class="optionCon">
+                    <div class="reload" v-show="!optionStatus"><pbutton-white text="下载月排班表模板" icon="D" click="appMethods.downloadModel" id="download"></pbutton-white></div> 
+                    <% if (user.authorObj.uploadSchedulingPlan) { %>
+                    <div class="upload" v-show="!optionStatus">
+                        <pupload-attachment id="uploadPlan2" text="上传排班表" >
+                            <panel success="upload2"></panel>
+                        </pupload-attachment>
+                        <div class="uploadMask" @click.stop="wMethods.showConfirm"></div>
+                    </div>
+                    <% } %>
+                    <div class="reload" v-show="optionStatus"><pbutton-white text="重新上传文件" icon="D" click="reloadPlan" id="reload"></pbutton-white></div>
+                    <div class="release" v-show="optionStatus"><pbutton-blue text="发布" click="releasePlan" id="release"></pbutton-blue></div>
+                </div>
+                <div class="planCon">
+                    <plan :plan_arr = "currentPlan"></plan>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -34,13 +34,11 @@ function getThisAndLastMonthDays(num){
 
 // 数据处理流程控制
 function dataControll(data){
-// 以下5个函数为工单数据转表格数据计算函数
 // 在流程控制函数中将数据分割为计划粒度，根据计划类型处理计划数据
 // 第一轮筛选出在界面显示的工单并对其开始和结束时间进行切割
 // 第二轮将工单进行分行处理，将work_orders数据转换为row数据
 // 第三轮将分行的工单数据转换为基于单元格子的数据
-// 日计划类型因为工单长度为基础长度，所以不需要第一轮处理，但开始和结束日期必须处于页面显示日期之内，否则有BUG
-// 这块重构比改起来块
+// 日计划类型因为工单长度为基础长度，所以不需要第一轮处理，但开始和结束日期必须处于页面显示日期之内
 
     // 日工单数据转行数据
     function dayOrderDataToRow(plan){
@@ -49,9 +47,15 @@ function dataControll(data){
         for(var i=0;i<len;i++){arr.push([])};
         plan.work_order_date.forEach(function(day){
             for(var i=0;i<len;i++){
-                    if(day.work_order[i]){
-                        arr[i].push(day.work_order[i]);
-                    }
+                if(day.work_orders[i]){
+
+                    // 5.30 已确认日工单不可跨日，在此进行一次覆盖，修改该工单日期为计划日期
+                    day.work_orders[i].ask_start_time = day.date + "000000";
+                    day.work_orders[i].ask_end_time = day.work_orders[i].ask_start_time;
+
+
+                    arr[i].push(day.work_orders[i]);
+                }
             }
         })
         plan.rowData = arr;
@@ -135,9 +139,18 @@ function dataControll(data){
                         var l = getDaysIndex(numToObj(order.ask_start_time));
                         var r = getDaysIndex(numToObj(order.ask_end_time));
                         if(l == r){
-                            plan.grid[index][l] = {type:(order.order_state || ''),id:(order.order_id || null),width:1};
+                            // 没有order_state则为is_next_order，将其状态置为""
+                            plan.grid[index][l] = {
+                                type:order.order_state || (order.is_next_order ? '' : null),
+                                id:order.order_id || null,
+                                width:1
+                            };
                         }else{
-                            plan.grid[index][l] = {type:(order.order_state || ''),id:(order.order_id || null),width:r-l};
+                            plan.grid[index][l] = {
+                                type:order.order_state || (order.is_next_order ? '' : null),
+                                id:order.order_id || null,
+                                width:r-l
+                            };
                         }
                     }   
                 })
@@ -163,14 +176,14 @@ function dataControll(data){
         var time = JSON.parse(JSON.stringify(v.instance.dateData));
         var min = numToObj(time.startTime);
         var max = numToObj(time.endTime);
-        var mid = {m:new Date(v.instance.centerMonth).getMonth() + 1,d:time.day - 4};
+        var mid = {m:new Date(v.instance.centerMonth).getMonth() + 1,d:time.day.length - 4};
         var a;
         if(obj.m == min.m){
             a = obj.d == min.d ? 0 : 1;
         }else if(obj.m == mid.m){
             a = 1 + obj.d;
         }else{
-            a = 1 + min.d + (obj.d == max.d ? 2 : 1);
+            a = 1 + mid.d + (obj.d == max.d ? 2 : 1);
         }
         return a;
     }

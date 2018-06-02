@@ -308,7 +308,7 @@
     overflow-x: hidden;
 }
 
-.equipmentDetail .verticalAxes:not(.inset_verticalAxes) {
+.equipmentDetail .verticalAxes:not(.inset_verticalAxes,.addsystems_verticalAxes) {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -353,15 +353,15 @@
 }
 
 .equipmentDetail .base .contentb .contenter {
-    padding-top: 18px;
+    /*padding-top: 18px;*/
     position: relative;
-    min-height: 100%;
+    height: 100%;
     padding-bottom: 2px;
     box-sizing: border-box;
 }
 
 .equipmentDetail .base .contentb .infos {
-    padding-left: 172px;
+    /*padding-left: 172px;*/
     padding-right: 26px;
 }
 
@@ -505,11 +505,12 @@
     padding: 7px 60px 7px 0;
     min-height: 58px;
     box-sizing: border-box;
+    min-width: 160px
 }
 
 .equipmentDetail .a-box .ipt .editInput {
     max-width: 368px;
-    min-width: 170px;
+    min-width: 100px;
 }
 
 .equipmentDetail .a-box .ipt>div,
@@ -586,7 +587,7 @@
 }
 
 .fW .moduleItem {
-    padding-top: 30px;
+    /*padding-top: 30px;*/
 }
 
 .fW .moduleItem:after {
@@ -707,8 +708,8 @@
 
  .imgBox{
     position: relative;
-    height: 100%;
-    width:100%;
+    height: 600px;
+    width: 890px;
 }
 
 .imgBox #bigImage{
@@ -718,4 +719,29 @@
     top:50%;
     left: 50%;
     transform: translate(-50%,-50%);
+}
+/* second version start*/
+.detail2_visibleViewDiv{
+    width: 30%;
+}
+.detail2_verticalView{
+    position: relative;
+    width: calc(100% + 5px);
+    height: 100%;
+    overflow-y: auto;
+}
+.detail2_verticalView .verticalAxes{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 80px;
+    border-left: 2px solid #becede;
+}
+#verticalAlxescontentB .detail2_verticalView .verticalAxes{
+    right: 50px;
+}
+/* second version end*/
+
+.ipt .per-combobox_name{
+    max-width: 150px;
 }

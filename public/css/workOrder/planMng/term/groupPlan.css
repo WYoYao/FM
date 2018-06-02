@@ -9,18 +9,16 @@
     #groupPlan > .head .path {
       float: left; }
     #groupPlan > .head .cite {
-      width: 150px;
       height: 30px;
       float: right;
       margin-top: 10px; }
     #groupPlan > .head .type {
-      width: 150px;
       height: 30px;
       float: right;
       margin-top: 10px;
       margin-right: 10px; }
     #groupPlan > .head .text {
-      width: 300px;
+      min-width: 300px;
       height: 100%;
       line-height: 50px;
       font-size: 14px;
@@ -47,6 +45,8 @@
         height: 38px;
         list-style-type: none;
         line-height: 38px; }
+        #groupPlan > .body ul li div {
+          height: 38px; }
         #groupPlan > .body ul li:nth-of-type(odd) {
           background: #f5f7fa; }
         #groupPlan > .body ul li:hover {

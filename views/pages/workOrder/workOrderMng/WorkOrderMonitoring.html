@@ -1,0 +1,120 @@
+<div class="monitor-all" id="monitor-all">
+    <!-- 添加筛选条件 -->
+    <pwindow-modal id="screeningModal" title="设备" templateid="screeningModalTemp"></pwindow-modal>
+
+    <div class="monitor-tab">
+        <div class="monitor-content">
+            <div class="monitor-content-list">
+                <div class="monitor-content-list-header">
+                    <div class="timeWrap">
+                        <span>创建时间</span>
+                           <ptime-calendar id="divCalendar" orientation="down" sel="workOrderEvent.selEventsTime">
+                                  <panel timetype="d" align="left" double="true" startyear="2000" endyear="2028" iscommontime="false" ></panel>
+                            </ptime-calendar>
+                    </div>                  
+                    <pcombobox-normal id="'work-type'" type="work-type" bind="true" sel="workOrderMngMethod.selEventsTyle">
+                        <header prefix="工单类型："></header>
+                        <item datasource="workOrderMngModel.workType" text="name"></item>
+                    </pcombobox-normal>
+                    <pcombobox-normal id="'work-state'" type="work-state"  bind="true" sel="workOrderMngMethod.selEventsState">
+                        <header prefix="工单状态："></header>
+                        <item datasource="workOrderMngModel.workState" text="name"></item>
+                    </pcombobox-normal>
+                    <div class="advancedScreeningBut" onclick="workOrderEvent.advancedScreeningClick(event);">高级筛选</div>
+                </div>
+                <div class="screeningConditions">
+                    <div class="screenTemp">
+                        <div class="screenTempTitle">系统：</div>
+                        <ul>
+                            <li v-for="(item,index) in systemSel"><b v-text="item.obj_name">名称</b><em @click="removeSelScreening(index,item,'system')">x</em></li>
+                            <li class="add" onclick="workOrderEvent.screeningModalShow(event);" type="system"><em>J</em><b>添加</b></li>
+
+                        </ul>
+                    </div>
+                    <div class="screenTemp">
+                        <div class="screenTempTitle">设备类型：</div>
+                        <ul>
+                            <li v-for="(item,index) in equipTypeSel"><b v-text="item.obj_name">名称</b><em @click="removeSelScreening(index,item,'equipType')">x</em></li>
+                            <li class="add" onclick="workOrderEvent.screeningModalShow(event);" type="equipType"><em>J</em><b>添加</b></li>
+
+                        </ul>
+                    </div>
+                    <div class="screenTemp">
+                        <div class="screenTempTitle">设备：</div>
+                        <ul>
+                            <li v-for="(item,index) in equipSel"><b v-text="item.obj_name">名称</b><em @click="removeSelScreening(index,item,'equip')">x</em></li>
+                            <li class="add" onclick="workOrderEvent.screeningModalShow(event);" type="equip"><em>J</em><b>添加</b></li>
+
+                        </ul>
+                    </div>
+                    <div class="screenTemp">
+                        <div class="screenTempTitle">空间类型：</div>
+                        <ul>
+                            <li v-for="(item,index) in spaceTypeSel"><b v-text="item.obj_name">名称</b><em @click="removeSelScreening(index,item,'spaceType')">x</em></li>
+                            <li class="add" onclick="workOrderEvent.screeningModalShow(event);" type="spaceType"><em>J</em><b>添加</b></li>
+                        </ul>
+                    </div>
+                    <div class="screenTemp">
+                        <div class="screenTempTitle">空间：</div>
+                        <ul>
+                            <li v-for="(item,index) in spaceSel"><b v-text="item.obj_name">名称</b><em @click="removeSelScreening(index,item,'space')">x</em></li>
+                            <li class="add" onclick="workOrderEvent.screeningModalShow(event);" type="space"><em>J</em><b>添加</b></li>
+                        </ul>
+                    </div>         
+                    <div class="screenTemp">
+                        <div class="screenTempTitle">参与人：</div>
+                        <ul>
+                            <li v-for="(item,index) in participantsSel"><b v-text="item.obj_name">名称</b><em @click="removeSelScreening(index,item,'participants')">x</em></li>
+                            <li class="add" onclick="workOrderEvent.screeningModalShow(event);" type="participants"><em>J</em><b>添加</b></li>
+                        </ul>
+                    </div>                         
+                    <div class="screenTemp">
+                        <div class="screenTempTitle">执行人：</div>
+                        <ul>
+                            <li v-for="(item,index) in executorSel"><b v-text="item.obj_name">名称</b><em @click="removeSelScreening(index,item,'executor')">x</em></li>
+                            <li class="add" onclick="workOrderEvent.screeningModalShow(event);" type="executor"><em>J</em><b>添加</b></li>
+                        </ul>
+                    </div>          
+                    <div><pbutton-white text="查找" click="workOrderEvent.queryListClick"></pbutton-white></div>               
+                </div>
+                <div class="monitor-content-list-body">
+                    <div class="monitor-list-body-table">
+                        <div class="monitor-table monitor-flash flash-no" v-show="workOrderMngModel.workList.length!=0">
+                            <div class="monitor-table-header">
+                                <div class="table-header-create"><span>发布时间</span></div>
+                                <div class="table-header-type"><span>工单类型</span></div>
+                                <div class="table-header-state"><span>工单状态</span></div>
+                                <div class="table-header-summary"><span>工作事项</span></div>
+                            </div>
+                            <div class="monitor-table-body">
+                                <div class="tr" v-for="item in workOrderMngModel.workList" @click="openOrderDetail_workOrderManage(item)">
+                                    <div class="table-header-create" :title="item.create_time"><span v-text="item.create_time"></span></div>
+                                    <div class="table-header-type" :title="item.order_type_name"><span v-text="item.order_type_name"></span></div>
+                                    <div class="table-header-state" :title="item.order_state_name"><span v-text="item.order_state_name"></span>
+                                        <!-- <span class="self-state" v-if="item.custom_state_name != '--'" v-text="item.custom_state_name"></span> -->
+                                    </div>  
+                                  
+                                    <div class="table-header-summary" :title="item.summary"><span v-text="item.summary"></span></div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="monitor-table-noData monitor-flash flash-no" v-show="workOrderMngModel.workList.length==0">
+                            <!--搜索无结果-->
+                            <div class="sop-nodata">
+                                <pnotice-nodata text="暂无数据" icon="../images/sassNodata.png"></pnotice-nodata>
+                            </div>
+                            <!--<div class="image-div">
+                                <img src="../images/nodata.png" alt="暂无内容" />
+                                <p>暂无内容</p>
+                            </div>-->
+                        </div>
+                        <ploading-part id="loadCover" text="加载中..."></ploading-part>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

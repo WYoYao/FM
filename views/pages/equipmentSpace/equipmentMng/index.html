@@ -1,0 +1,81 @@
+<% include ../../../template/pageHead.html %>
+<style type="text/css">
+    #sbPageWrap {
+        padding: 16px 10px 0;
+        box-sizing: border-box;
+        height: 100%;
+    }
+
+        #sbPageWrap .per-tab-navigation_con > div {
+            height: 100%;
+            width: 100%;
+        }
+</style>
+<div id="sbPageWrap">
+        <div class="prompt-box" id="prompt-box">
+                <i class="icon">x</i>
+                <em>获取数据失败</em>
+            </div>
+    <div class="per-tab-navigation">
+        <div class="per-tab-navigation_title">
+            <ul>
+               <% if(user.authorObj.equipmentlist){%><li class="per-tab-navigation_item" type="equip" ><i class="per-tab-navigation_icon">z</i><em>设备名录</em></li><%}%>
+               <% if(user.authorObj.spacelist) {%> <li class="per-tab-navigation_item" type="room" ><i class="per-tab-navigation_icon">z</i><em>房间名录</em></li><%}%>
+                <% if(user.authorObj.printcard) {%><li class="per-tab-navigation_item" type="card" ><i class="per-tab-navigation_icon">z</i><em>打印名片</em></li><%}%>
+            </ul>
+        </div>
+        <div class="per-tab-navigation_con">
+             <% if(user.authorObj.equipmentlist) {%>
+                <div>
+                    <% include indexMng.html %>
+                </div>
+             <%}%>
+            <% if(user.authorObj.spacelist) {%> 
+            <div style="display: none;">
+                <% include ../spaceMng/index.html %>
+            </div>
+              <%}%>
+              <% if(user.authorObj.printcard) {%>
+             <div style="display: none;">
+                <% include ../printCard/index.html %>
+            </div>
+            <%}%>
+        </div>
+
+    </div>
+
+
+</div>
+<pnotice-message id='equipmentMessage'></pnotice-message>
+<ploading-part id="equipmentPartLoading" text="拼命加载中..."></ploading-part>
+
+ <script>
+     $(function () {
+
+         $("#sbPageWrap .per-tab-navigation_title li").on("click", function () {
+             var index = $(this).index();
+             var type = $(this).attr("type");
+             $(this).addClass("active").siblings().removeClass("active");
+             $("#sbPageWrap .per-tab-navigation_con>div").eq(index).show().siblings().hide();
+             switch (type) {
+                 case 'equip':
+                     if (v._instance) {
+                         v.instance.computelistHeight;
+                     }
+                     break;
+                 case 'room':
+                 spaceInfoController.getUserInfo();
+                     break;
+                 case 'card':
+                     cardPrintEvent.setEqGridHeight();
+                     break;
+             };
+         });
+
+         $($("#sbPageWrap .per-tab-navigation_title li")[0]).click();
+
+     });
+ </script>
+
+
+<% include ../../../template/pageFoot.html %>

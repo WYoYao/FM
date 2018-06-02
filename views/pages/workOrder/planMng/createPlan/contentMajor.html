@@ -1,7 +1,8 @@
 <div class="content-prev">
-    <div class="prev-title"  onclick="yn_method.barClickShow(this)">
+    <div class="prev-title" onclick="yn_method.barClickShow(this)">
         <div class="title-tip-div workcontent-major">
-            <span>专业限定</span><img src="../images/question.png" class="question" />
+            <span>专业限定</span>
+            <img src="../images/question.png" class="question" />
             <p>若本条作业需要限定专业人员，请在此选定。</p>
         </div>
         <div class="edit-clear-div">
@@ -11,8 +12,8 @@
 
             </div>
             <div class="clear-div" v-show="true">
-                <img src="../images/clear_03.png" alt="清空图标"/>
-                <pbutton-blue text="清空"  isborder="false" click="yn_method.delBubbleShow"></pbutton-blue>
+                <img src="../images/clear_03.png" alt="清空图标" />
+                <pbutton-blue text="清空" isborder="false" click="yn_method.delBubbleShow"></pbutton-blue>
             </div>
             <!-- 清空按钮弹窗 -->
             <pwindow-bubble>
@@ -28,8 +29,7 @@
             <div class="major-sel">
                 <pcombobox-normal bind="true" id="'add-major'" sel="yn_method.addMajor">
                     <header placeholder="选择专业"></header>
-                    <item datasource="[]"
-                          text="name"></item>
+                    <item datasource="[]" text="name"></item>
                 </pcombobox-normal>
             </div>
         </div>

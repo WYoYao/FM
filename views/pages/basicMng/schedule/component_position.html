@@ -1,0 +1,45 @@
+<script type="text/html" id="position">
+    <ul class="">
+        <li v-for = "row in position_arr" :positionid = "row.positionId" @click="queryPlan(row.positionId)" :title="row.name">
+            {{row.name}}<span class="icon" v-show="(row.hasplan === '1')" @click.stop="queryPlan_(row.positionId)">﹂</span>
+        </li>
+    </ul>
+</script>
+
+<script>
+    Vue.component('position', {
+        props: [
+            "position_arr","date",
+        ],
+        data: function () { 
+            return {
+                time: 0
+            }
+        },
+        methods: {
+            queryPlan: function(positionid){
+                this.$emit('changeposition',positionid);
+                $(event.target).parent().find("li").removeClass("position_active").find("span").removeClass("position_active_span");  
+                $(event.target).addClass("position_active").find("span").addClass("position_active_span"); 
+                this.$emit('queryplan',this.date.ym,positionid);
+            },
+            queryPlan_: function(){
+                $(event.target).parent().trigger("click");
+            },
+        },
+        mounted: function () {
+            
+        },
+        updated: function () {
+            if(this.time == 0){
+                $($("#viewMenu>ul>li")[0]).trigger("click");
+                this.time += 1;
+            }    
+        },
+        template: '#position'
+    })
+</script>
+
+<style>
+
+</style>

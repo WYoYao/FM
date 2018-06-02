@@ -1,0 +1,36 @@
+<script src="../js/workOrder/workOrderMng/model.js"></script>
+<link rel="stylesheet" href="../css/workOrder/workOrderMng/WorkOrderDetail.css">
+
+
+<div id="see_orderDetail_bg">
+    <div class="see_orderDetail_page_top">
+        <div class="see_orderDetail_page_back">
+            <div class="goBack" onclick="workOrderMngMethod.goBackOrderList()">
+                <span class="icon">I</span>
+            </div>
+            <div class="showMessage">
+                <span  onclick="workOrderMngMethod.goBackOrderList()">工单管理 /</span>
+                <span>工单详情</span>
+            </div>
+        </div>
+        <div class="see_orderDetail_page_save">
+            <% if(user.authorObj.evaluationExecutor) {%> 
+            <div>
+                <pbutton-white text="评价执行人" click="workOrderMngMethod.showEvaluateModal"></pbutton-white>
+            </div>
+            <%}%>
+             <% if(user.authorObj.closeWorkOrder) {%> 
+           <div id="pauseBtn">
+                <pbutton-white text="中止" click="workOrderMngMethod.stopOrder_con_show"></pbutton-white>
+            </div>
+            <%}%>
+        </div>
+    </div>
+</div>
+<div style="height:calc(100% - 60px)">
+    <%include ../planMng/workOrderDetail.html%>
+</div>
+
+
+
+

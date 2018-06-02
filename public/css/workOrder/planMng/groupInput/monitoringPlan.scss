@@ -100,6 +100,8 @@
                             background: white;
                             overflow-y: auto;
                             li{
+                                padding: 0 10px 0;
+                                width: calc(100% - 20px);
                                 height: 20px;
                                 line-height: 20px;
                                 font-size: 12px;
@@ -118,7 +120,7 @@
                     }
                 }
                 
-                .icon{
+                .icons{
                     float: right;
                     width: calc(100% - 430px);
                     height: auto;

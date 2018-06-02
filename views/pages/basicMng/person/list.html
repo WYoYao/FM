@@ -1,18 +1,18 @@
 <div class="table_list" v-if="personModel.curPage == 'list'">
     <!-- 人员管理，登录信息 -->
-    <% if (user.indexOf('personalManagement') != '-1' && user.indexOf('loginInformation') != '-1') { %>
+    <% if (user.authorObj.personalManagement && user.authorObj.loginInformation) { %>
     <div class="table_top">
         <ptab-navigation text="name" icon="icon" id="navBar" datasource="personModel.buttonMenus1" templateid='tabTemplate' sel="personMethods.tabChange(model,event)"></ptab-navigation>
     </div>
     <% } %>
     <!-- 人员管理 -->
-    <% if (user.indexOf('personalManagement') != '-1') { %>
+    <% if (user.authorObj.personalManagement) { %>
         <div class="table_top">
             <ptab-navigation text="name" icon="icon" id="navBar" datasource="personModel.buttonMenus2" templateid='tabTemplate' sel="personMethods.tabChange(model,event)"></ptab-navigation>
         </div>
     <% } %>
      <!-- 登录信息 -->
-     <% if (user.indexOf('loginInformation') != '-1') { %>
+     <% if ( user.authorObj.loginInformation) { %>
         <div class="table_top">
             <ptab-navigation text="name" icon="icon" id="navBar" datasource="personModel.buttonMenus3" templateid='tabTemplate' sel="personMethods.tabChange(model,event)"></ptab-navigation>
         </div>
@@ -26,7 +26,7 @@
         
             
         <!-- 人员管理 -->
-        <% if (user.indexOf('personalManagement') != '-1') { %>
+        <% if (user.authorObj.personalManagement) { %>
         <div id="personManageList" class="personManageList">
             <!-- 组织结构树 -->
             <div class="personListLeft">
@@ -34,7 +34,7 @@
                     <div class="name">
                         组织结构
                     </div>
-                    <% if (user.indexOf('editCustomDepartment') != '-1') { %>
+                    <% if (user.authorObj.editCustomDepartment) { %>
                     <div class="editBtn">
                         <pbutton-blue  icon ="`" isborder="false" text="编辑自定义部门" click="personMethods.editOrganizationList()"></pbutton-blue>
                     </div>
@@ -75,12 +75,12 @@
                                 <img src="../images/personShow.png" alt="">
                             </div>
                         </div>
-                        <% if (user.indexOf('addPerson') != '-1') { %>
+                        <% if (user.authorObj.addPerson) { %>
                         <div class="newPersonBtn">
                             <pbutton-white icon ="J" text="新建人员" click="personMethods.createAndEditShow"></pbutton-white>
                         </div>
                         <% }%>
-                        <% if (user.indexOf('bulkUploadPerson') != '-1') { %>
+                        <% if (user.authorObj.bulkUploadPerson) { %>
                         <div class="uploadBtn" style="width:120px;height:33px;">
                             <pupload-attachment id='upload' text="批量上传" number="1" accept="">
                                 <panel success='personMethods.batchUpload'></panel>
@@ -140,7 +140,7 @@
         </div>
         <% } %>
         <!-- 登录信息 -->
-        <% if (user.indexOf('loginInformation') != '-1' && user.indexOf('personalManagement') != '-1') { %>
+        <% if (user.authorObj.loginInformation && user.authorObj.personalManagement) { %>
         <div id="loginInfoList" class="loginInfoList">
             <div class="top">
                 <div class="search" id="personNameSearch">
@@ -157,6 +157,9 @@
                         <column name="登录设备" source="login_device" width="20%"></column>
                         <column name="登录距离项目距离" source="distance+'km'" width="20%" sort="true" defaultsort="desc"></column>
                     </header>
+                    <!-- <page>
+                        <ppage-simple number="10" orientation="up"></ppage-simple>
+                    </page> -->
                 </pgrid-multifunction>
                 <div v-show="personModel.loginInfoGrid.length == 0">
                     <pnotice-nodata text="暂无数据"></pnotice-nodata>
@@ -165,7 +168,7 @@
         </div>
         <% } %>
 
-        <% if (user.indexOf('loginInformation') != '-1' && user.indexOf('personalManagement') == '-1') { %>
+        <% if (user.authorObj.loginInformation && !user.authorObj.personalManagement) { %>
             <div id="loginInfoList" class="loginInfoList" style="display:block">
                 <div class="top">
                     <div class="search" id="personNameSearch">

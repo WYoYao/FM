@@ -1,0 +1,708 @@
+<script type="text/html" id="addinfo">
+<div class="aite-bubble addinfo">
+    <!-- 头部返回 Strat -->
+    <div class="aite-title">
+        <span class="returnImg" @click="back()" v-show="onBlock!='index'">
+            <img src="../images/return_left.png" alt="返回图片"/>
+        </span>
+
+        <span>
+            <em v-show="true">选择</em>
+            <em v-text="titles[onBlock]">分类</em>
+        </span>
+    </div>
+    <!-- 头部返回 End -->
+
+    <!-- 头部搜索 Start  -->
+    <div class="list-search" v-show="true">
+        <div class="info-search-box">
+            <input type="text" class="keyinput" v-model="searchStr">
+            <div class="icon-div">
+                <i @click="searchStr=''">x</i>
+                <i @click="searchInfoPoint(searchStr),onBlock='search'">f</i>
+            </div>
+        </div>
+        <!--<div class="search-result" v-show="commonData.publicModel.curObjType2!='init' && commonData.publicModel.curObjType2!='custom' && commonData.publicModel.searchResultLength">&lt;!&ndash; v-show="commonData.publicModel.searchResultLength"&ndash;&gt;-->
+        <div class="search-result" v-show="onBlock=='search'">
+            <div class="key-result">
+                <span>共搜索到
+                    <em class="search-num" v-text="searchRes.length"></em>个相关结果</span>
+            </div>
+        </div>
+    </div>
+    <!-- 头部搜索 End  -->
+
+    <!-- 身体部分 Start -->
+    <div class="aite-body" :class="{'result-aite-body-nosearch': true,'custom-no-searchAll':true}">
+        <div class="list-body">
+
+            <!-- 搜索 Start -->
+            <div class="search" v-if="onBlock=='search'">
+                <div class="aite-list" v-for="(item,index) in searchRes" @click="item.selected=!item.selected">
+                    <div class="prev">
+                        <p class="title" title="item.info_point.name">
+                            <span v-for="(info,index2) in item.info_point.name_arr" v-text="info.char" :class="info.mark?'redMark':''"></span>
+                        </p>
+                        <p class="descript" title="getParentsLinks(item.parents)" v-text="getParentsLinks(item.parents)"></p>
+                    </div>
+                    <div class="next">
+                        <div class="pcheckbox">
+                            <span class="pcheckbox_input" :class="item.selected?'pcheckbox-checked':''"></span>
+                            <span class="pswitch_label"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 搜索 End -->
+
+            <!--选择大类 Start-->
+            <div class="index" v-show="onBlock=='index'">
+                <div class="aite-list" @click="handler_class('Build')">
+                    <div>
+                        <span>建筑体</span>
+                    </div>
+                </div>
+                <div class="aite-list" @click="handler_class('Floor')">
+                    <div>
+                        <span>楼层</span>
+                    </div>
+                </div>
+                <div class="aite-list" @click="handler_class('Room')">
+                    <div>
+                        <span>房间</span>
+                    </div>
+                </div>
+                <div class="aite-list" @click="handler_class('System')">
+                    <div>
+                        <span>系统</span>
+                    </div>
+                </div>
+                <div class="aite-list" @click="handler_class('Equip')">
+                    <div>
+                        <span>设备</span>
+                    </div>
+                </div>
+            </div>
+            <!--选择大类 End-->
+
+            <!-- 建筑体 Start -->
+            <div class="build" v-if="onBlock=='Build' ">
+                <div class="level-box">
+                    <div class="aite-list" v-for="(item,index) in Build" :class="item.selected?'aite_on':''" @click="listClick(Build,item),clickInfoPointsByItem(item,'build')">
+                        <div class="left" :title="item.obj_name">
+                            <span v-text="item.obj_name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-box">
+                    <div class="aite-list" v-for="(model, index) in InfoPoint" @click="model.selected=!model.selected">
+                        <div class="name" :title="model.name">
+                            <span v-text="model.name"></span>
+                        </div>
+                        <div class="ck">
+                            <div class="pcheckbox">
+                                <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
+                                <span class="pswitch_label"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 建筑体 End -->
+
+            <!-- 楼层 Start -->
+            <div class="floor" v-if="onBlock=='Floor' ">
+                <div class="level-box">
+                    <div class="aite-list" v-for="(item,index) in Floor" :class="item.selected?'aite_on':''" @click="listClick(Floor,item)" >
+                        <div class="left" :title="item.obj_name">
+                            <span v-text="item.obj_name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-box">
+                    <div class="aite-list" v-for="(item,index) in querySelectedContent(Floor)" :class="item.selected?'aite_on':''" @click="listClick(querySelectedContent(Floor),item),clickInfoPointsByItem(item,'floor')">
+                        <div class="left" :title="item.obj_name">
+                            <span v-text="item.obj_name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-box">
+                    <div class="aite-list" v-for="(model, index) in InfoPoint" @click="model.selected=!model.selected">
+                        <div class="name" :title="model.name">
+                            <span v-text="model.name"></span>
+                        </div>
+                        <div class="ck">
+                            <div class="pcheckbox">
+                                <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
+                                <span class="pswitch_label"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 楼层 End -->
+
+            <!-- 房间 Start -->
+            <div class="room" v-if="onBlock=='Room' ">
+                <div class="tree-box">
+                    <ptree-normal datasource="Room" sel="roomTree">
+                        <item text="obj_name" issearch="false" child="content"></item>
+                    </ptree-normal>
+                </div>
+                <div class="last-level-box">
+                    <!-- <div class="aite-list" v-for="(obj,index1) in commonData.publicModel.curLevelList" > -->
+                    <div class="aite-list" v-for="(item,index) in Space" :class="item.selected?'aite_on':''" @click="listClick(Space,item),clickInfoPointsByItem(item,'space')">
+                        <div class="left" :title="item.obj_name">
+                            <span v-text="item.obj_name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-box">
+                    <div class="aite-list" v-for="(model, index) in InfoPoint" @click="model.selected=!model.selected">
+                        <div class="name" :title="model.name">
+                            <span v-text="model.name"></span>
+                        </div>
+                        <div class="ck">
+                            <div class="pcheckbox">
+                                <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
+                                <span class="pswitch_label"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 房间 End   -->
+
+            <!-- 系统 Start -->
+            <div class="system" v-if="onBlock=='System' ">
+                <div class="level-box">
+                    <div class="aite-list" v-for="(item,index) in System" :class="item.selected?'aite_on':''" @click="listClick(System,item)">
+                        <div class="left" :title="item.obj_name">
+                            <span v-text="item.obj_name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-box">
+                    <div class="aite-list" v-for="(item,index) in querySelectedContent(System)" :class="item.selected?'aite_on':''" @click="listClick(querySelectedContent(System),item),clickInfoPointsByItem(item,'system')">
+                        <div class="left" :title="item.obj_name">
+                            <span v-text="item.obj_name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="level-box">
+                    <div class="aite-list" v-for="(model, index) in InfoPoint" @click="model.selected=!model.selected">
+                        <div class="name" :title="model.name">
+                            <span v-text="model.name"></span>
+                        </div>
+                        <div class="ck">
+                            <div class="pcheckbox">
+                                <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
+                                <span class="pswitch_label"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 系统 End -->
+
+            <!-- 设备 Start -->
+            <div class="equip" v-if="onBlock=='Equip' ">
+                <!-- <div class="system-major">
+                    <div class="title">
+                        <span>添加筛选条件:</span>
+                    </div>
+                    <pcombobox-normal isborder="false" id="'id_GeneralDict'" bind="true" :class="'major-need'" sel="DictSel">
+                        <header placeholder="专业"></header>
+                        <item datasource="GeneralDict" text="name"></item>
+                    </pcombobox-normal>
+                    <pcombobox-normal isborder="false" id="'id_GeneralSystem'" bind="true" id="'system'" :class="'major-need'" sel="DictSystemSel">
+                        <header placeholder="系统"></header>
+                        <item datasource="GeneralSystem" text="system_name"></item>
+                    </pcombobox-normal>
+                </div> -->
+                <div class="tree-body">
+                    <div class="tree-box">
+                        <ptree-normal id="'id_BuildFloorSpaceTree'" datasource="BuildFloorSpaceTree" sel="QuipTreeSel">
+                            <item text="obj_name" issearch="false" child="content"></item>
+                        </ptree-normal>
+                    </div>
+                    <div class="last-level-box">
+                        <div class="aite-list" v-for="(item,index) in EquipList" :class="item.selected?'aite_on':''" @click="listClick(EquipList,item),clickInfoPointsByItem(item,'equip')">
+                            <div class="left" :title="item.obj_name">
+                                <span v-text="item.obj_name"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="level-box">
+                        <div class="aite-list" v-for="(model, index) in InfoPoint" @click="model.selected=!model.selected">
+                            <div class="name" :title="model.name">
+                                <span v-text="model.name"></span>
+                            </div>
+                            <div class="ck">
+                                <div class="pcheckbox">
+                                    <span class="pcheckbox_input" :class="model.selected?'pcheckbox-checked':''"></span>
+                                    <span class="pswitch_label"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 设备 End -->
+            <!--搜索无结果-->
+            <div class="sop-nodata" v-show="onBlock=='search' && !searchRes.length">
+                <pnotice-nodata :style="'display:block'" text="暂无数据" subtitle="哎呀，什么都没有找到！" icon="../images/sassNodata.png"></pnotice-nodata>
+            </div>
+            <!--loading-->
+            <ploading-part v-if="isLoading" :style="'display:block'" data-loading="resultPopLoading" text="加载中..."></ploading-part>
+        </div>
+    </div>
+    <!-- 身体部分 End -->
+
+    <div class="aite-footer">
+            <div class="sureBtnDivs" v-show="onBlock!='index'" @click.capture="submit">
+                <pbutton-blue text="确定" id="sureBtn"></pbutton-blue>
+            </div>
+    </div>
+</div>
+</script>
+<script>
+    Vue.component('addinfo', {
+        template: '#addinfo',
+        data: function () {
+
+            return {
+                // 查询字符创
+                searchStr: "",
+                // 定时查询的实例
+                timer: null,
+                // 显示哪块内容 index默认首页
+                onBlock: "index",
+                // 加载动画
+                isLoading: "false",
+                // 顶部标题
+                titles: {
+                    Build: '建筑',
+                    Floor: '楼层',
+                    Room: '房间',
+                    System: '系统',
+                    Equip: '设备',
+                },
+                // 建筑列表
+                Build: [],
+                // 楼层列表
+                Floor: [],
+                // 房间类表
+                Room: [],
+                // 空间列表
+                Space: [],
+                // 系统列表
+                System: [],
+                // 设备列表
+                // 空间树
+                BuildFloorSpaceTree: [],
+                // 设备专业集合
+                GeneralDict: [],
+                // 设备专业集合
+                GeneralSystem: [],
+                // 设备列表
+                EquipList: [],
+                // 部件列表
+                Part: [],
+                // 工具列表
+                Tool: [],
+                // 信息点列表
+                InfoPoint: [],
+                // 自定义对象
+                auto: "",
+                // 查询的对象
+                searchObject: [],
+                // 搜索时候返回保存的对象集合
+                searchRes: [],
+                // 自定义页面控制
+                autoView: {
+                    autoTypeNull: false,
+                    error: ""
+                },
+                // 类别集合
+                typeList: [
+                    { name: "对象", code: 1, selected: false },
+                    { name: "部件", code: 2, selected: false },
+                    { name: "工具", code: 3, selected: false },
+                    { name: "其他", code: 9, selected: false }]
+            }
+        },
+        props: ['str', 'cb'],
+        methods: {
+            // 获取返回值单层
+            getValue: function (arr) {
+                var _that = this;
+                return _.filter(arr, { selected: true });
+                // return _.filter(arr, { selected: true }).map(function (item) {
+                //     return {
+                //         obj_id: item.obj_id,
+                //         obj_name: item.obj_name,
+                //     }
+                // })
+            },
+            querySelectedDeep: function (list, index) {
+
+                return (function (list, index) {
+
+                    if (index != 0) {
+                        var result = (_.find(list, { selected: true }) || {}).content || [];
+                        return arguments.callee(result, --index);
+                    } else {
+                        return _.filter(list, { selected: true })
+                    }
+
+                })(list, --index || 0);
+            },
+            // 获取返回值多层
+            getValueDeep: function (arr) {
+                var _that = this;
+
+                return _that.querySelectedDeep(arr, 2);
+
+                // return _that.querySelectedDeep(arr, 2).map(function (item) {
+                //     return {
+                //         obj_id: item.obj_id,
+                //         obj_name: item.obj_name,
+                //     }
+                // })
+            },
+            // 返回对应的值
+            submit: function () {
+                var _that = this;
+
+                var obj;
+                // 查询出来获取的参数
+                if (_that.onBlock == "search") {
+
+                    obj = _.filter(_that.searchRes, { selected: true }).map(function (item) {
+                        // 去除多余的页面渲染需要的数据
+                        delete item.info_point.name_arr;
+
+                        item.info_point = [item.info_point]
+                        return item;
+                    });
+                } else {
+
+                    // 现获取对象
+                    if (_that.onBlock == "Floor" || _that.onBlock == "System") {
+                        obj = _that.getValueDeep(_that[_that.onBlock]);
+                    } else {
+                        var type = _that.onBlock;
+                        if (type == 'Room') type = 'Space';
+                        if (type == 'Equip') type = 'EquipList';
+                        obj = _that.getValue(_that[type]);
+                    }
+
+                    obj = obj.map(function (item) {
+
+                        item.info_points = _.filter(_that.InfoPoint, { selected: true });
+                        return item;
+                    })
+                }
+
+                console.log(obj);
+                if (_.isFunction(_that.cb)) _that.cb(obj);
+            },
+            // 返回的首页
+            back: function () {
+                var _that = this;
+                // 搜索的时候返回 需要保存现有的内容
+                // if (_that.onBlock == 'Search')
+                // 返回保存当前的对象
+                // _that.createAuto();
+                _that.onBlock = 'index';
+                // 清空数据
+                // 建筑列表
+                _that.Build = [];
+                // 楼层列表
+                _that.Floor = [];
+                // 房间类表
+                _that.Room = [];
+                // 空间列表
+                _that.Space = [];
+                // 系统列表
+                _that.System = [];
+                // 设备列表
+                // 空间树
+                _that.BuildFloorSpaceTree = [];
+                // 设备实例集合
+                _that.GeneralDict = [];
+                // 设备等于空
+                _that.EquipList = [];
+                // 信息点清空
+                _that.InfoPoint = [];
+            },
+            // 获取选中的值
+            querySelectedItem: function (list, index) {
+
+                return (function (list, index) {
+
+                    if (index == 0) {
+                        return _.filter(list, { selected: true })
+                    }
+
+                    var res = (_.find(list, { selected: true }) || {}).content || [];
+
+                    return arguments.callee(res, --index)
+
+                })(list, --index || 0);
+            },
+            // 获取选中值的集合
+            querySelectedContent: function (list, index) {
+
+                return (_.find(list, { selected: true }) || {}).content || [];
+            },
+            // 集合中选中一个
+            listClick: function (list, item) {
+                list.forEach(function (info) {
+                    info.selected = info == item;
+                })
+            },
+            // 大类点击时间
+            handler_class: function (key) {
+                var _that = this;
+                // 页面转换
+                _that.onBlock = key;
+
+                _that.queryClass(key);
+
+                _that.$nextTick(function () {
+                    $("#id_GeneralSystem").pdisable(true)
+                })
+            },
+            // 插叙相关接口
+            queryClass: function (key, item) {
+                var _that = this;
+
+                _that.isLoading = true;
+                //  除了设备都只需要查询一个接口
+                if (key != 'Equip') {
+                    controller[key](item || {}).then(function (res) {
+                        _that[key] = res;
+                    }).finally(function () { _that.isLoading = false; })
+
+                } else {
+                    // 设备需要查询控件树和设备实例
+                    var a = controller.BuildFloorSpaceTree();
+                    var b = controller.GeneralDict();
+
+                    a.then(function (res) {
+                        _that.BuildFloorSpaceTree = res;
+
+                        b.then(function (res) {
+                            _that.GeneralDict = res;
+
+                        }).finally(function () { _that.isLoading = false; })
+                    })
+                };
+                _that.InfoPoint = [];
+            },
+            // 查询设备
+            queryQuip: function () {
+                var _that = this,
+                    argu = {};
+
+                var arr = $("#id_BuildFloorSpaceTree").psel(),
+                    generalDict = $("#id_GeneralDict").psel(),
+                    generalSystem = $("#id_GeneralSystem").psel();
+
+                //  空间树选择之后才进行查询
+                if (_.isArray(arr) && arr.length) {
+
+                    var space = arr.slice(-1)[0];
+                    // 楼层不进行查询
+                    if (space.obj_type == "floor") return;
+
+                    argu[space.obj_type == "space" ? "space_id" : "build_id"] = space.obj_id;
+                }
+
+                if (generalDict) {
+                    argu.domain_code = _that.GeneralDict[generalDict.index].code;
+                }
+
+                if (generalSystem) {
+                    argu.system_id = _that.GeneralSystem[generalSystem.index].system_id;
+                }
+
+                _that.queryClass("EquipList", argu);
+            },
+            // 对调内容
+            callback: function (arr) {
+                //  如果传入回调调用回调
+                if (_.isFunction(this.cb)) this.cb(this.searchRes.concat(arr));
+                //  清空已经保存的信息
+                this.searchRes = [];
+                // 清空所有的类表
+                this.back();
+            },
+            // 桌面点击时间
+            documentClick: function () {
+                var _that = this;
+                if (_that.str.length) {
+                    _that.callback([]);
+                }
+            },
+            // 查询对应的信息点
+            queryInfoPoints: function (argu) {
+                var _that = this;
+                _that.isLoading = true;
+                controller.queryInfoPointForObject(argu)
+                    .then(function (res) {
+                        _that.InfoPoint = res;
+                    }).catch(function () {
+                        _that.InfoPoint = [];
+                    }).finally(function () {
+                        _that.isLoading = false;
+                    })
+            },
+            //  查询其对应信息点
+            clickInfoPointsByItem: function (item, type) {
+                var _that = this;
+                if (item.selected == true) {
+                    _that.queryInfoPoints({
+                        keyword: "",
+                        obj_id: item.obj_id,
+                        obj_type: type,
+                    })
+                }
+            },
+            //根据关键字查询 信息点
+            searchInfoPoint: function (str) {
+                var _that = this;
+                _that.isLoading = true;
+                controller.searchInfoPoint({
+                    keyword: str
+                }).then(function (res) {
+
+                    _that.searchRes = res.map(function (item) {
+
+                        item.info_point = [item.info_point].map(function (item) {
+                            var arr = [],
+                                reg = new RegExp(str, 'g'),
+                                res = reg.exec(item.name);
+
+                            while (res) {
+                                arr = arr.concat(_.range(+res.index, res.index + str.length))
+                                res = reg.exec(item.name);
+                            }
+
+                            item.name_arr = item.name.split("").map(function (char, index) {
+
+                                return {
+                                    mark: arr.indexOf(index) != -1,
+                                    char: char,
+                                }
+                            })
+
+                            return item;
+                        })[0];
+                        return item;
+                    })
+
+                }).finally(function () { _that.isLoading = false; })
+            },
+            //转换成父级链字符串形式
+            getParentsLinks: function (parents) {
+                if (!parents || !parents.length) return '';
+                var str = '(';
+                for (var i = 0; i < parents.length; i++) {
+                    str += parents[i].parent_names.join('-');
+                    if (i != parents.length - 1) str += '/';
+                }
+                return str + ')';
+            },
+        },
+        computed: {
+            // 根据@后面的字符判断时候是搜索选项
+            isSearch: function () {
+                return /^\@\S+/g.test(this.str);
+            },
+            // 根据传入的字符长度来判断长度来判断时候需要显示隐藏
+            isShow: function () {
+
+                return this.str.indexOf('@') != -1;
+            }
+        },
+        watch: {
+            str: function (newValue, oldValue) {
+
+                var _that = this;
+                // 跟上次相同不做任何处理
+                if (newValue == oldValue) return;
+                // 验证格式 格式不对不进行搜索
+                if (!/^\@\S+/g.test(newValue)) {
+                    _that.onBlock = 'index';
+                    return;
+                };
+                _that.onBlock = "Search"
+                _that.searchStr = newValue.replace(/@/g, "");
+
+                if (!_that.searchStr.length) return;
+
+                if (!_.isNull(_that.timer)) {
+                    clearTimeout(_that.timer);
+                    _that.timer = null;
+                }
+
+            },
+            auto: function () {
+                this.autoView.error = "";
+            }
+        },
+        beforeMount: function () {
+            var _that = this;
+
+            // 加载完毕
+            _that.isLoading = false;
+
+            // 绑定树形的点击事件
+            window.roomTree = function (item) {
+
+                var argu = {
+                    "obj_id": item.obj_id,
+                    "obj_type": item.obj_id.slice(0, 1) == 'B' ? "build" : "floor",
+                }
+
+                _that.queryClass('Space', argu);
+
+            };
+            // 专业点击事件
+            window.DictSel = function (item) {
+                // 查询 专业对应的系统
+                _that.queryClass("GeneralSystem", { system_domain: item.code });
+
+                $("#id_GeneralSystem").pdisable(false)
+
+                // 查询设备
+                _that.queryQuip()
+            }
+            //  设备树形菜单事件
+            window.QuipTreeSel = function () {
+                // 查询设备
+                _that.queryQuip();
+            }
+            // 系统选择事件
+            window.DictSystemSel = function () {
+                // 查询设备
+                _that.queryQuip();
+            }
+
+            // 绑定点击桌面消失内容
+            document.addEventListener("click", _that.documentClick, false)
+        },
+        destroyed: function () {
+            // 释放桌面点击事件
+            document.removeEventListener("click", this.documentClick, false)
+            // 释放所有的全局方法
+            window.roomTree = undefined;
+            window.DictSel = undefined;
+            window.QuipTreeSel = undefined;
+            window.DictSystemSel = undefined;
+        }
+    })
+</script>

@@ -1,23 +1,24 @@
 <pwindow-float id="createPersonFloatWindow" isshade="false" title="新建" templateid="createPersonWindow" onclick="pub_method.returnPop(event)">
     <button>
         <div class="personRelatedOperat" v-if="personInformationObj.page == 'detail'">
-            <% if (user.indexOf('deletePerson') != '-1') { %>
-            <section>
+            <!-- personModel.personDetalObj.person_type=1时为中心部门人员，不能对其进行操作 -->
+            <% if (user.authorObj.deletePerson) { %>
+            <section v-if="personModel.personDetalObj.person_type !='1'">
                 <pbutton-blue text="删除" icon="p" @click="personMethods.deletePersonShow(personModel.personDetalObj.person_id)" isborder="false" id="deletePersonBtn"></pbutton-blue>
             </section>
             <% }%>
-            <% if (user.indexOf('editPerson') != '-1') { %>
+            <% if (user.authorObj.editPerson) { %>
             <section v-if="personModel.personDetalObj.person_type !='1'">
                 <pbutton-blue text="编辑" icon="`" @click="personMethods.editPersonDetail" isborder="false" id="editPersonBtn"></pbutton-blue>
             </section>
             <% }%>
-            <% if (user.indexOf('personStatusSetting') != '-1') { %>
-            <section v-if="personModel.personDetalObj.person_status == '1'">
+            <% if (user.authorObj.personStatusSetting) { %>
+            <section v-if="personModel.personDetalObj.person_type !='1' && personModel.personDetalObj.person_status == '1'">
                 <pbutton-blue text="离职" icon="#" @click="personMethods.dismissionPerson(personModel.personDetalObj.person_id)" isborder="false" id="dimissionPersonBtn"></pbutton-blue>
             </section>
             <% }%>
-            <% if (user.indexOf('personStatusSetting') != '-1') { %>
-            <section v-if="personModel.personDetalObj.person_status == '0'">
+            <% if (user.authorObj.personStatusSetting) { %>
+            <section v-if="personModel.personDetalObj.person_type !='1' && personModel.personDetalObj.person_status == '0'">
                 <pbutton-blue text="复职" icon="#" @click="personMethods.reinstatedPerson(personModel.personDetalObj.person_id)" isborder="false" id="reinstatedPersonBtn"></pbutton-blue>
             </section>
             <% }%>
@@ -54,7 +55,7 @@
 
 <script type="text/html" id="createPersonWindow">
     <!-- 新建编辑 -->
-    <div class="createPersonBox" v-if="personInformationObj.page == 'create' || personInformationObj.page == 'edit'">
+    <div id="createPersonBox" class="createPersonBox" v-if="personInformationObj.page == 'create' || personInformationObj.page == 'edit'">
         <!-- 基本信息 -->
         <div class="basicInformation">
             <div class="createBlock">
@@ -68,11 +69,11 @@
                         
                     </div>
                     <div class="right">
-                        <ptext-text placeholder="不超过20位数字" id="employeeId" input="personMethods.checkPersonId" blur="personMethods.employeeIdBlur">
+                        <ptext-text placeholder="请输入20位以内字符" id="employeeId" input="personMethods.checkPersonId">
                             <verify errtip="员工识别码不能为空!" verifytype="space"></verify>
                             <verify errtip="最多输入20个字符" length="20" verifytype="length"></verify>
                         </ptext-text>
-                        <span id="employeeIdTip">请输入正整数或0</span>
+                        <!-- <span id="employeeIdTip">请输入正整数或0</span> -->
                     </div>
                 </div>
                 <div class="content">
@@ -224,12 +225,12 @@
                         <em>账号名称：</em>
                         
                     </div>
-                    <div id="searchAccountInfo" class="right">
-                        <input type="text" placeholder="请输入账号" 
+                    <div id="searchAccountInfo" class="right searchAccountInfo">
+                        <input type="text" 
                         @input="personMethods.searchAccountByName"
                         @keyup.enter="personMethods.enterAccountAddPermission"  
                         v-model="personModel.accountName">
-                        <div>
+                        <div  class="permissionList" id="permissionList">
                             <ul>
                                 <li v-for="item in personModel.searchAccountList" 
                                 v-text="item.person_user_name"
@@ -242,7 +243,7 @@
                 </div>
                 <div class="content" id="functionPermissionBlock">
                     <div class="left">
-                        <!-- <span>*</span> -->
+                        <span>*</span>
                         <em>功能权限：</em>
                         
                     </div>
@@ -261,6 +262,9 @@
                                 <pbutton-blue text="确定" click="personMethods.moreSelectPermissionList"></pbutton-blue>
                             </div>
                         </section>
+                        <div id="functionIdTip">
+                            请给当前账号配置权限
+                        </div>
                     </div>
                 </div>
                
@@ -299,7 +303,7 @@
         </div>
     </div>
     <!-- 人员详情 -->
-    <div class="personDetailBox" v-if="personInformationObj.page == 'detail'">
+    <div id="personDetailBox" class="personDetailBox" v-if="personInformationObj.page == 'detail'">
         <!-- 基本信息 -->
         <div class="basicInformation">
             <div class="createBlock">

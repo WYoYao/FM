@@ -1,3 +1,5 @@
+@import "./structure";
+
 .aite-list{
     width: 100%;
     height: 44px;
@@ -12,30 +14,14 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
 
-@mixin ck{
-    .ck{
+    @include pcheckbox{
         float: right;
         height: 100%;
-
-        .pcheckbox{
-            overflow: hidden;
-            color: #637e99;
-            line-height: 16px;
-            cursor: pointer;
-            display: inline-block;
-            margin-top: 14px;
-
-            .pswitch_label {
-                float: left;
-            }
-            .pcheckbox-checked {
-                background: #7a94ad;
-            }
-        }
     }
 }
+
+
 
 .aite-bubble.point {
     position: absolute;
@@ -136,7 +122,10 @@
                     white-space: nowrap;
                 }
 
-                @include ck;
+                @include pcheckbox{
+                    float: right;
+                    height: 100%;
+                }
             }
         }
 
@@ -169,7 +158,10 @@
                         white-space: nowrap;
                     }
 
-                    @include ck;
+                    @include pcheckbox{
+                        float: right;
+                        height: 100%;
+                    }
                 }
                 .aite_on,.aite-list:hover{
                     background: #02a9d1 !important;
@@ -214,7 +206,10 @@
                         white-space: nowrap;
                     }
 
-                    @include ck;
+                    @include pcheckbox{
+                        float: right;
+                        height: 100%;
+                    }
                 }
             }
         }
@@ -287,7 +282,10 @@
                             white-space: nowrap;
                         }
 
-                        @include ck;
+                        @include pcheckbox{
+                            float: right;
+                            height: 100%;
+                        }
                     }
                 }
             }
@@ -325,6 +323,82 @@
         .sureBtnDivs{
             display: inline-block;
             vertical-align: top;
+        }
+    }
+
+    .list-search{
+        .info-search-box{
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            position: relative;
+            padding: 5px 30px 5px 5px;
+            line-height: normal;
+            font-size: 12px;
+            border-bottom: 1px solid #ddd;
+
+            input.keyinput{
+                display: inline-block;
+                border: none;
+                /* min-width: 50px; */
+                line-height: 18px;
+                height: 18px;
+                vertical-align: top;
+            }
+
+            .icon-div{
+                position: absolute;
+                top: 0;
+                right: 14px;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                margin-top: 5px;
+
+                i{
+                    display: inline-block;
+                    width: 14px;
+                    height: 14px;
+                    -webkit-border-radius: 50%;
+                    -moz-border-radius: 50%;
+                    border-radius: 50%;
+                    background-color: #d9d9d9;
+                    font-family: 'perficon';
+                    color: white;
+                    font-size: 12px;
+                    text-align: center;
+                    cursor: pointer;
+                    /* vertical-align: top; */
+                    line-height: normal;
+                }
+
+                i:last-of-type{
+                    background-color: white;
+                    color: #d9d9d9;
+                    font-size: 16px;
+                }
+            }
+        }
+        .search-result{
+            line-height: normal;
+            background: #f8f8f8;
+            padding-left: 10px;
+            box-sizing: border-box;
+            font-size: 12px;
+
+            .key-result{
+                width: 100%;
+                height: 28px;
+                background: #f8f8f8;
+                font-size: 12px;
+                line-height: 28px;
+                box-sizing: border-box;
+                color: #b7b7b7;
+
+                .search-num{
+                    color: red;
+                }
+            }
         }
     }
 

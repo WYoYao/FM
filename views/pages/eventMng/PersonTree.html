@@ -1,0 +1,100 @@
+<script type="text/html" id="PersonTree">
+<div class="persontree">
+    <div class="ptheader">
+        选择人员
+    </div>
+    <div class="ptbody">
+        <ul class="list">
+            <template v-for="(item,index) in datasource">
+            <li class="line" @click="listClick(item)">
+                <span class="icon" :class="index==lv1?'rt':'btm'" :class="'btm'" @click.stop="index==lv1?lv1=-1:lv1=index"></span>
+                <span :title="item.position_name" v-text="item.position_name"></span>
+                <div class="txt">
+                    <div class="per-switch-checkbox pcheckbox">
+                        <span class="pcheckbox_input" :class="item.selected?'pcheckbox-checked':''"></span>
+                    </div>
+                </div>
+            </li>
+            <ul class="list" v-if="item.persons.length" v-show="index==lv1">
+                <li class="line child" v-for="(info,i) in item.persons" @click="itemClick(info,item)">
+                    <span :title="info.name" v-text="info.name"></span>
+                    <div class="txt">
+                        <div class="per-switch-checkbox pcheckbox">
+                            <span class="pcheckbox_input" :class="info.selected?'pcheckbox-checked':''"></span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            </template>
+        </ul>
+    </div>
+    <div class="ptfooter">
+        <span class="btn" @click="cancel">
+            取消
+        </span>
+        <span class="btn smt" @click="submit">
+            确定
+        </span>
+    </div>
+</div>
+</script>
+
+<script>
+    Vue.component('persontree', {
+        template: '#PersonTree',
+        data: function () {
+            return {
+                lv1: 0,
+            }
+        },
+        props: ["datasource", "cb", "cc"],
+        methods: {
+            //  列表点击事件
+            listClick: function (item) {
+                item.selected = !item.selected;
+                item.persons = item.persons.map(function (info) {
+                    info.selected = item.selected;
+                    return info;
+                })
+            },
+            // 单个实例点击
+            itemClick: function (item, list) {
+                item.selected = !item.selected;
+
+                if (list.persons.filter(function (info) {
+                    return info.selected == true;
+                }).length == list.persons.length) {
+                    list.selected = true;
+                } else {
+                    list.selected = false;
+                }
+            },
+            // 点击确定的事件
+            submit: function () {
+                // 执行回调
+                if (_.isFunction(this.cb)) {
+                    this.cb(_that.datasource.reduce(function (con, item) {
+                        return con.concat(_.filter(item.persons, { selected: true }));
+                    }, []));
+                }
+            },
+            cancel: function () {
+                if (_.isFunction(this.cc)) {
+                    this.cc();
+                }
+            }
+        },
+        computed: {
+
+        },
+        watch: {
+
+        },
+        beforeMount: function () {
+            // document.addEventListener("click", this.documentClick);
+        },
+        beforeDestroy: function () {
+            // document.removeEventListener("click", this.documentClick);
+        }
+    })
+</script>

@@ -1,4 +1,4 @@
-<div class="group_home" v-if="onPage=='grouphome'">
+<div class="group_home" v-show="onPage=='grouphome'">
 
     <pwindow-confirm id="confirmWindow">
         <button>
@@ -15,13 +15,13 @@
 
                 <div class="left">
                     <pcombobox-normal sel="handler_orderTypes" id="'id_orderTypes'" align="left" orientation="down" bind="true">
-                        <header placeholder="'全部'"></header>
+                        <header placeholder="(_.find(orderTypes,{code:queryGroupPlanList.order_type}) || {name:'全部'}).name"></header>
                         <item datasource="orderTypes" text="name"></item>
                     </pcombobox-normal>
                 </div>
                 <div class="left">
                     <pcombobox-normal sel="handler_validTypes" id="'id_validTypes'" align="left" orientation="down" bind="true">
-                        <header placeholder="'全部'"></header>
+                        <header placeholder="(_.find(validTypes,{code:queryGroupPlanList.valid}) || {name:'全部'}).name"></header>
                         <item datasource="validTypes" text="name"></item>
                     </pcombobox-normal>
                 </div>
@@ -45,12 +45,11 @@
                     </template>
 
                     <template v-if="!queryGroupPlanList.valid">
-                        <div class="item1"> 计划模板名称</div>
+                        <div class="item1"> 集团计划名称</div>
                         <div class="item1">计划频率</div>
                         <div class="item1">工单紧急程度</div>
-                        <div class="item1">针对对象类</div>
                         <div class="item1">引用项目数</div>
-                        <div class="item1">生效时间</div>
+                        <div class="item1">作废时间</div>
                         <div class="item1">作废人</div>
                         <div class="item1">操作</div>
                     </template>
@@ -62,8 +61,8 @@
                             <div class="item" :title="item.group_plan_name" v-text="item.group_plan_name"></div>
                             <div class="item" :title="'一'+transfYMWD(item.freq_cycle)+sectionToChinese(item.freq_num)+'次'" v-text="'一'+transfYMWD(item.freq_cycle)+sectionToChinese(item.freq_num)+'次'"></div>
                             <div class="item" :title="item.urgency" v-text="item.urgency"></div>
-                            <div class="item" :title="item.use_project_num" v-text="item.use_project_num"></div>
-                            <div class="item" :title="item.no_update_project_num" v-text="item.no_update_project_num"></div>
+                            <div class="item" :title="item.use_project_num" v-text="item.use_project_num || 0"></div>
+                            <div class="item" :title="item.no_update_project_num" v-text="item.no_update_project_num || 0"></div>
                             <div class="item" @click.stop="void 0">
                                 <span class="ide" @click.stop="handler_to_monitoringPlan(item,item.freq_cycle)">
                                     <em class="icon">A</em>
@@ -87,13 +86,12 @@
 
                     <template v-if="!queryGroupPlanList.valid">
                         <div class="info pointer" v-for="(item,index) in planList" @click="queryGroupPlanById(item.group_plan_id,'groupD')">
-                            <div class="item1" :title="'item.group_plan_name'" v-text="item.group_plan_name"></div>
-                            <div class="item1" :title="'一'+transfYMWD(item.freq_cycle)+sectionToChinese(item.freq_num)+'次'" v-text="'一'+transfYMWD(item.freq_cycle)+sectionToChinese(item.freq_num)+'次'"></div>
-                            <div class="item1" :title="item.urgency" v-text="item.urgency"></div>
-                            <div class="item1" :title="'强电井'" v-text="'强电井'"></div>
-                            <div class="item1" :title="index" v-text="index"></div>
-                            <div class="item1" :title="'2018.03.26 11:20'" v-text="'2018.03.26 11:20'"></div>
-                            <div class="item1" :title="'测试工程师'" v-text="'测试工程师'"></div>
+                            <div class="item" :title="item.group_plan_name" v-text="item.group_plan_name"></div>
+                            <div class="item" :title="'一'+transfYMWD(item.freq_cycle)+sectionToChinese(item.freq_num)+'次'" v-text="'一'+transfYMWD(item.freq_cycle)+sectionToChinese(item.freq_num)+'次'"></div>
+                            <div class="item" :title="item.urgency" v-text="item.urgency"></div>
+                            <div class="item" :title="item.use_project_num" v-text="item.use_project_num || 0"></div>
+                            <div class="item1" :title="date2yyyyMMddhhmm(yyyyMMddhhmmss2date(item.destroy_time))" v-text="date2yyyyMMddhhmm(yyyyMMddhhmmss2date(item.destroy_time))"></div>
+                            <div class="item1" :title="item.destroy_person_name" v-text="item.destroy_person_name"></div>
                             <div class="item1" :title="'项目计划监控'" v-text="'项目计划监控'" @click.stop="handler_to_monitoringPlan(item,item.freq_cycle)"></div>
                         </div>
                     </template>

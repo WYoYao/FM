@@ -1,0 +1,318 @@
+#workOrderConfig{
+    width: 100%;
+    min-width:1280px;
+    height: 100%;
+    overflow-x: hidden;
+    position:relative;
+}
+.configAll {
+    width: 100%;
+    height: 100%;
+    background-color: #e3e6e9;
+    position: relative;
+}
+
+.config {
+    width: 100%;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 15px 10px 0;
+    background-color: #e3e6e9;
+}
+
+.configTab {
+    width: 100%;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 20px 20px 10px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: white;
+    -webkit-box-shadow: 1px 0 4px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 1px 0 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 0 4px rgba(0, 0, 0, 0.2);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.configContent {
+    width: 100%;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid #d9e2e8;
+}
+
+.configHeader {
+    width: 100%;
+    height: 50px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border-bottom: 1px solid #d9e2e8;
+    text-align: right;
+    line-height: 50px;
+    padding-right: 20px;
+}
+.configHeader>div {
+    margin-top: 10px;
+}
+.configBody {
+    width: 100%;
+    height: calc(100% - 50px);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.configBodyTable {
+    width: 100%;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0 20px;
+
+}
+.configTable{
+    width: 100%;
+    height: 100%;
+    font-size: 12px;
+}
+.configTableHeader {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    border-bottom: 1px solid #eee;
+}
+
+.configTableHeader > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+.configTableHeader > div:nth-child(1){
+    width:15%;
+}
+.configTableHeader > div:nth-child(2){
+    width:15%;
+}
+.configTableHeader > div:nth-child(3){
+    width:15%;
+}
+.configTableHeader > div:nth-child(4){
+    width:18%;
+}
+.configTableHeader > div:nth-child(5){
+    width:22%;
+}
+.configTableHeader > div:nth-child(6){
+    width:15%;
+}
+
+
+
+.configTableBody {
+    height: calc(100% - 31px);
+    overflow-y: auto;
+}
+.border-on{
+    border-bottom: 1px solid #eee;
+}
+.configTableBody .option > ul{
+    width:100%;
+    height: 36px;
+    line-height: 36px;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    cursor: pointer;
+}
+.configTableBody .option > ul:nth-child(odd){
+    background:#f4f6f9;
+}
+.configTableBody .option > ul >li{
+    height: 36px;
+}
+.configTableBody .option > ul >li >span.markRed{
+    color:#ff6666;
+}
+.configTableBody .option > ul >li:nth-child(1) {
+    width:15%;
+}
+.configTableBody .option > ul >li:nth-child(2) {
+    width:15%;
+    max-width:15%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.configTableBody .option > ul >li:nth-child(3) {
+    width:15%;
+}
+.configTableBody .option > ul >li:nth-child(4) {
+    width:18%;
+}
+.configTableBody .option > ul >li:nth-child(5) {
+    width: 22%;
+    max-width: 22%;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.configTableBody .option > ul >li:nth-child(6) {
+    width: 15%;
+}
+.configTableBody .option > ul:hover{
+    background-color: #f8f8f8!important;
+}
+
+
+.dataRed {
+    color: red;
+}
+
+.scheme-table-noData {
+    width: 100%;
+    height: 100%;
+}
+
+.image-div {
+    /*width:;*/
+    text-align: center;
+}
+
+.image-div > img {
+    width: 110px;
+    height: 90px;
+    margin: 85px 0 15px;
+}
+
+.image-div > img + p {
+    font-size: 18px;
+}
+.flash-pub{
+    display: none;
+}
+/*侧边窗*/
+.configFloat{
+    line-height: normal;
+}
+.singleConfigContent {
+    width: 450px;
+    padding-left: 20px;
+    box-sizing: border-box;
+    height: 100%;
+    overflow-y: auto;
+    padding-top: 25px;
+    padding-right: 10px;
+}
+
+.singleConfigContent div {
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.singleConfigContentCon {
+    margin: 0 0 25px;
+}
+
+.singleConfigContentCon > div {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.singleConfigContentConChild {
+    /* margin: 25px 0; */
+    /*padding-left: 30px;*/
+    border-left:1px solid #ddd;
+    border-right:1px solid #ddd;
+    border-bottom:1px solid #ddd;
+    display:flex;
+    flex-flow: row nowrap;
+}
+.singleConfigContentConChild .childName{
+    background:#f8f8f8;
+    border-right:1px solid #ddd;
+    padding:10px 0 10px 20px;
+}
+.singleConfigContentConChild:nth-child(2){
+    border-top:1px solid #ddd;
+    margin-top:10px;
+}
+.singleConfigContentConChild > div {
+    display: inline-block;
+    vertical-align: top;
+    width: calc(100% - 100px);
+}
+.singleConfigContentConChild .childOperate{
+    padding:10px 0 0 20px;
+}
+.singleConfigContentConChild .childOperate > div {
+
+}
+
+.singleConfigContentConChild .childOperateContent h3 {
+    margin-bottom: 10px;
+}
+
+.singleConfigContentConChild .childOperateContent div {
+    margin-bottom: 10px;
+    white-space: normal;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.singleConfigContentConChild > div:first-of-type {
+    width: 100px;
+    
+}
+
+.singleConfigContentConChild .childOperateContent span {
+    font-size: 12px;
+    color: #999;
+}
+.sop-nodata {
+    width: 100%;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
+}
+/*二次确认删除框*/
+#sure-btn {
+    background-color: #ef6767;
+}
+
+.tip-span {
+    color: #ef6767;
+    margin-right: 10px;
+    vertical-align: top;
+}
+
+/*hover效果*/
+.scheme-table-body .table-header-operate {
+    /*visibility: hidden;*/
+    opacity: 0;
+}
+
+.scheme-table-body .tr:hover .table-header-operate {
+    /*visibility: visible;*/
+    opacity: 1;
+}

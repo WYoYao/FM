@@ -26,14 +26,14 @@
     <div id="projectMotai" @click.stop="windowEvent.show()" style="display: none">
         <div>
             <div class="projectTitle">选择项目</div>
-            <div class="selArea"> 
+            <div class="selArea">
                 <div class="projectCommonUl projectList" v-for="(item, index) in organizationModel.listByProject" >
                     <organizationx :model="item"></organizationx>
                 </div>
             </div>
             <div class="buttonArea" >
                 <button class="yesBtu" @click="windowEvent.hideProjectList">确定</button>
-                <button class="cancelBtu" @click="windowEvent.cancelProjectList">取消</button>    
+                <button class="cancelBtu" @click="windowEvent.cancelProjectList">取消</button>
             </div>
         </div>
     </div>

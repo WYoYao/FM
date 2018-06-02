@@ -1,0 +1,494 @@
+@import "./public";
+@import "./structure";
+
+@mixin title{
+    .prev-title {
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 0 20px;
+        background-color: #f8f8f8;
+        .title-tip-div{
+            float: left;
+            position: relative;
+            top: 0;
+            left: 0;
+
+            .starSymbol{
+                color: #68c5b3;
+                margin-right: 5px;
+            }
+
+            .question{
+                    vertical-align: text-bottom;
+                    margin-left: 15px;
+                    cursor: pointer;
+                    margin-top: 18px;
+            }
+
+            & > p{
+                    width: 400px;
+                    height: 55px;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    border: 1px solid #d9e2e8;
+                    -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+                    -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+                    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+                    position: absolute;
+                    top: -10px;
+                    left: 150px;
+                    padding: 5px 10px;
+                    color: #000;
+                    background-color: white;
+                    -webkit-border-radius: 5px;
+                    -moz-border-radius: 5px;
+                    border-radius: 5px;
+                    text-align: left;
+                    line-height: 24px;
+                    z-index: 15;
+                    visibility: hidden;
+            }
+        }
+
+        .edit-clear-div {
+                float: right;
+                position: relative;
+                top: 0;
+                left: 0;
+                & > div{
+                    display: inline-block;
+                    vertical-align: top;
+                }
+                .clear-div + div{
+                    position: absolute;
+                    top: 40px;
+                    left: -310px;
+                    z-index: 50;
+                    line-height: normal;
+                }
+        }
+    }
+    .prev-body{
+        .slide-div.operate{
+            width: 100%;
+            height: 120px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+
+            .textareadiv{
+                width: 100%;
+                height: 90px;
+                box-sizing: border-box;
+                padding: 10px 10px 5px 20px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 10;
+                font-size: 12px;
+                max-height: 90px;
+                overflow-y: auto;
+                overflow-y: overlay;
+
+                .block{
+                    display: inline-block;
+                    height: 30px;
+                    line-height: 30px;
+                    position: relative;
+                    margin: 0 20px 15px 0;
+                    vertical-align: top;
+                    -ms-text-overflow: ellipsis;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    border-radius: 15px;
+                    padding: 0 15px;
+                    background-color: #f3f3f3;
+
+                    & > span{
+                        box-sizing: border-box;
+                        display: inline-block;
+                        height: 30px;
+                        line-height: 30px;
+                        -ms-text-overflow: ellipsis;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        vertical-align: middle;
+                        cursor: pointer;
+                    }
+
+                    & > img{
+                        vertical-align: middle;
+                        cursor: pointer;
+                    }
+                }
+
+            }
+
+            .counter{
+                position: absolute;
+                right: -710px;
+                bottom: 0;
+            }
+
+            textarea{
+                width: 100%;
+                height: 90px;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                padding: 10px 10px 5px 20px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 15;
+            }
+        }
+
+        .slide-div.result{
+            height: auto;
+            min-height: 60px;
+        }
+
+        .slide-div{
+            width: 100%;
+            height: 60px;
+            position: relative;
+            top: 0;
+            left: 0;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+
+            .objs{
+                .obj-div{
+                    clear: both;
+                    .obj-name{
+                        width: 100%;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                        padding: 0 20px;
+                        line-height: 40px;
+
+                        & > em{
+                            font-size: 12px;
+                            color: #cacaca;
+                        }
+
+                        & > a{
+                            text-decoration: none;
+                            color: #ef6767;
+                            float: right;
+
+                            & > i{
+                                font-family: 'perficon';
+                                margin-right: 10px;
+                                vertical-align: baseline;
+                            }
+                        }
+                    }
+                    .obj-info-self{
+                        width: 100%;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                        padding: 0 20px;
+
+                        .obj-info{
+                            .info-dot{
+                                position: relative;
+                                top: 0;
+                                left: 0;
+                                border: 1px solid #e5e5e5;
+                                line-height: 28px;
+                                box-sizing: border-box;
+                                display: inline-block;
+                                vertical-align: top;
+                                margin: 10px 10px 0 0;
+                                padding-right: 3px;
+
+                                & > span{
+                                    /* width: 170px; */
+                                    display: inline-block;
+                                    box-sizing: border-box;
+                                    padding-left: 10px;
+                                    vertical-align: middle;
+                                    cursor: default;
+                                    -ms-text-overflow: ellipsis;
+                                    text-overflow: ellipsis;
+                                    overflow: hidden;
+                                    white-space: nowrap;
+                                    max-width: 710px;
+                                }
+
+                                & > img{
+                                    cursor: pointer;
+                                    vertical-align: middle;
+                                }
+                            }
+                        }
+
+                        .add-info-btn{
+                            width: 100%;
+                            height: 40px;
+                            line-height: 40px;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            box-sizing: border-box;
+                            cursor: pointer;
+                            position: relative;
+
+                            .aite-btn, .info-btn, .sel-btn{
+                                color: #7a94ad;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .obj-info-btn{
+                width: 100%;
+                height: 40px;
+                line-height: 40px;
+                padding: 0 20px;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                border-top: 1px solid #d9e2e8;
+                cursor: pointer;
+                position: relative;
+
+                @include pcheckbox;
+
+                .aite-btn{
+                    color: #7a94ad;
+                }
+            }
+
+            .obj-fragment-div{
+                position: absolute !important;
+                bottom: 10px;
+                left: 20px;
+                cursor: pointer;
+                display: initial !important;
+                vertical-align: top !important;
+                width: auto !important;
+                height: auto !important;
+            }
+
+            textarea{
+                width: 100%;
+                height: 100%;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                padding: 10px 10px 5px 20px;
+                border: 1px solid white;
+                outline: none;
+            }
+
+            textarea:hover{
+                border: 1px solid white;
+            }
+
+            .counter{
+                position: absolute;
+                bottom: 5px;
+                right: 10px;
+                color: #cacaca;
+            }
+
+            .major-sel{
+                width: 140px;
+                height: 100%;
+                box-sizing: border-box;
+                margin-left: 20px;
+                padding-top: 10px;
+            }
+        }
+    }
+}
+
+.aite-btn, .info-btn, .sel-btn{
+    color: #7a94ad;
+}
+
+
+.alert-all {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 80;
+
+    .alert-shade {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: auto;
+        overflow: overlay;
+
+        .alert-box {
+            width: 950px;
+            min-height: 560px;
+            max-height: 840px;
+            background: white;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+            -moz-box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+            position: relative;
+            top: 0;
+            left: 0;
+
+            .alert-content {
+                width: 100%;
+                height: 100%;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                padding: 50px 60px 30px;
+
+                .alert-container {
+                    width: 100%;
+                    height: 100%;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    max-height: 760px;
+
+                    .alert-header {
+                        width: 100%;
+                        box-sizing: border-box;
+                        border: 1px solid #d9e2e8;
+
+                        &:hover{
+                            border:1px solid #02aad1;
+                        }
+
+                        .matter-title {
+                            width: 100%;
+                            height: 50px;
+                            line-height: 49px;
+                            box-sizing: border-box;
+                            padding: 0 20px;
+                            background: white;
+
+                            .matter-title-div {
+                                border-bottom: none;
+                                width: 100%;
+                                height: 100%;
+                                box-sizing: border-box;
+                                position: relative;
+                                top: 0;
+                                left: 0;
+
+                                input{
+                                    padding: 0;
+                                    width: 94%;
+                                    display: inline-block;
+                                    border: none;
+                                    outline: none;
+                                    box-sizing: border-box;
+                                    font-size: 14px;
+                                    vertical-align: top;
+                                }
+
+                                .counter.errorNumber{
+                                    color: #ef6767;
+                                }
+
+                                .counter{
+                                    vertical-align: top;
+                                    position: absolute;
+                                    right: 0;
+                                    // bottom: 10px;
+                                    float: right;
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+
+                        
+                    }
+                    
+
+                    .alert-body{
+                        width: 100%;
+                        height: calc(100% - 122px);
+                        max-height: 638px;
+                        overflow-y: auto;
+                        box-sizing: border-box;
+                        border: 1px solid #d9e2e8;
+                        border-top: none;
+
+                        .import-box{
+                            width: 100%;
+                            height: 100%;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            box-sizing: border-box;
+                            padding: 20px;
+
+                            .content-prev{
+                                width: 100%;
+                                -webkit-box-sizing: border-box;
+                                -moz-box-sizing: border-box;
+                                box-sizing: border-box;
+                                border: 1px solid #d9e2e8;
+                                margin-bottom: 10px;
+
+                                @include title;
+                            }
+
+                            .standard-content{
+                                width: 100%;
+                                -webkit-box-sizing: border-box;
+                                -moz-box-sizing: border-box;
+                                box-sizing: border-box;
+                                border: 1px solid #d9e2e8;
+                                margin-bottom: 10px;
+
+                                @include title;
+                            }
+
+                            .contentResult{
+
+                            }
+                        }
+                    }
+
+                    .alert-footer{
+                        width: 100%;
+                        height: auto;
+                        text-align: center;
+                        margin-top: 40px;
+                    }
+                    
+                }
+            }
+
+            .alert-close{
+                position: absolute;
+                top: 16px;
+                right: 16px;
+                z-index: 15;
+                cursor: pointer;
+            }
+
+        }
+    }
+}

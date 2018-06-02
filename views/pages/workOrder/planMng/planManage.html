@@ -8,16 +8,16 @@
 
     <div class="head">
 
-        <div class="plantype">
-            <pcombobox-normal id="'planTypeCombo'" sel="refreshRenderGrid(false)" bind="true">
+        <div class="plantype comboMark" @click.capture="fakerClick(event)">
+            <pcombobox-normal id="'planTypeCombo'" sel="refreshRenderPMGrid(false)" bind="true">
                 <header placeholder="'全部'"></header>
                 <item datasource="allPlanType" text="name" id="code"></item>
             </pcombobox-normal>
         </div>
-        <div class="planSource">
-            <pcombobox-normal id="'planSourceCombo'" sel="refreshRenderGrid(false)" bind="true">
+        <div class="planSource comboMark" @click.capture="fakerClick(event)">
+            <pcombobox-normal id="'planSourceCombo'" sel="refreshRenderPMGrid(false)" bind="true">
                 <header placeholder="'全部'"></header>
-                <item datasource="allPlanSource" text="name" id="code"></item>
+                <item datasource="allPlanSource" text="name" id="id"></item>
             </pcombobox-normal>
         </div>
         <div class="other">发布时间</div>
@@ -27,7 +27,7 @@
             </ptime-calendar>
         </div>
         <div class="search">
-            <psearch-delay id="'planKeyword'" bind="true" change="refreshRenderGrid(false)" placeholder="'输入计划名称或编号查找'"></psearch-delay>
+            <psearch-delay id="'planKeyword'" bind="true" change="refreshRenderPMGrid(false)" placeholder="'输入计划名称或编号查找'"></psearch-delay>
         </div>
         <div class="box">
             <pbutton-blue bind="true" text="'集团计划(' + groupPlanUse.unUse + '/' + groupPlanUse.total + ')'" @click="openGroupModule"></pbutton-blue>
@@ -57,7 +57,7 @@
                         <span>下次待发出工单</span>
                     </div>
                     <div v-for="item in allOrderState">
-                        <img :src="'../../../../images/orderState/' + item.type + '.png'" alt="">
+                        <img :src="'../../../../images/orderState/' + item.code + '.png'" alt="">
                         <span v-text="item.name"></span>
                     </div>
                 </div>
@@ -91,10 +91,12 @@
         <!-- 表头End -->
 
         <!-- 表格Start -->
-        <ul class="grid clear" :style="{'max-height':residueHeight + 'px'}">
-            <pscroll-small templateid="planManageList"></pscroll-small>
-            <ploading-part id="planManagePartLoad"></ploading-part>
-        </ul>
+        <div class="body">
+            <ul class="grid clear" :style="{'max-height':residueHeight - 131 + 'px'}">
+                <ploading-part id="planManagePartLoading"></ploading-part>
+                <pscroll-small templateid="planManageList"></pscroll-small>
+            </ul>
+        </div>
         <!-- 表格End -->
 
     </div>
@@ -102,12 +104,13 @@
 
 <script type="text/html" id="planManageList">
 
-    <li class="row clear" v-for="(item,index) in planData">
         
-        <div class="name grayblue MT" :style="{height:item.grid.length*60 - 1 + 'px','line-height':item.grid.length*60 - 1 + 'px'}" @click="openPlanDetail(item)">
+    <li class="row clear" v-for="(item,index) in planData">
+    
+        <div class="name grayblue MT" :style="{'height':item.grid.length*60 - 1 + 'px','line-height':item.grid.length*60 - 1 + 'px'}" @click="openPlanDetail(item)">
             <span v-text="item.plan_name"></span>
-            <div class="warn1" v-if="item.plan_from == 1" v-show="item.plan_update_status == 0">&nbsp;&nbsp;已引用集团计划&nbsp;&nbsp;</div>
-            <div class="warn2" v-if="item.plan_from == 1" v-show="item.plan_update_status == 1 && item.remind_type == 1">&nbsp;&nbsp;已引用集团计划，集团计划已修改&nbsp;&nbsp;</div>
+            <div class="warn1" v-if="item.plan_from == 1" v-show="item.plan_update_status == 1">&nbsp;&nbsp;已引用集团计划&nbsp;&nbsp;</div>
+            <div class="warn2" v-if="item.plan_from == 1" v-show="item.plan_update_status == 0">&nbsp;&nbsp;已引用集团计划，集团计划已修改&nbsp;&nbsp;</div>
         </div>
         
         <div class="period black3" :style="{height:item.grid.length*60 - 1 + 'px','line-height':item.grid.length*60 - 1 + 'px'}" v-text="item.freq_cycle_desc"></div>
@@ -115,7 +118,7 @@
         <div class="state">
             <div v-for="(model,times) in item.grid">
                 <div v-for="(box,boxIndex) in model" :style="{width:box.width+'px'}">
-                    <div v-if="box.type != 'none'" @click="openOrderDetail(box)">
+                    <div v-if="box.type != 'none'" @click="openWorkOrderDetail(box.id,'workOrderDetailHead','工单详情')">
                         <div v-show="box.type == ''"></div>
                         <img v-show="box.type != ''" :src=" '../../../../images/orderState/' + box.type + '.png'" alt="">
                     </div>

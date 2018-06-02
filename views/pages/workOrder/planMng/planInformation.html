@@ -97,13 +97,13 @@
             <div class="title">基本信息</div>
 
             <div class="row" v-if="cache.planType == 'order' || cache.planType === 'orderD' || cache.planType === 'project'">
-                项目计划名称:
+                项目计划名称：
                 <span v-text="planInfo.plan_name"></span>
             </div>
 
             <div class="row" v-if="cache.planType == 'group' || cache.planType === 'groupD'">
                 集团计划名称:
-                <span v-text="planInfo.plan_name"></span>
+                <span v-text="planInfo.group_plan_name"></span>
             </div>
 
             <div class="row">
@@ -118,87 +118,124 @@
 
             <div class="row">
                 工单提前发送时间：提前
-                <i v-text="planInfo.ahead_create_time">0</i>小时
+                <i v-text="planInfo.ahead_create_time"></i>
+                小时
             </div>
 
             <div class="row">
+                是否实例化全部对象：
+                <i v-text="planInfo.instantiated_object_flag == 1 ? '是' : '否'"></i>
+            </div>
+
+            <div class="row">
+                建议执行人数：
+                <i v-text="planInfo.suggest_executor_num"></i>
+            </div>
+
+            <div class="row" v-if="planInfo.plan_freq_type == 1">
                 计划频率：每
                 <i v-text="transfYMWD(planInfo.freq_cycle)"></i>
-                <i v-text="planInfo.freq_num"></i>次
+                <i v-text="planInfo.freq_num"></i>
+                次
+            </div>
+
+            <div class="row" v-if="planInfo.plan_freq_type == 3">
+                计划频率：每
+                <i v-text="planInfo.freq_time_span.num"></i>
+                <i v-text="transfYMWD(planInfo.freq_time_span.unit)"></i>
+                1次
             </div>
 
             <div class="more">
 
-                <ul v-if="planInfo.freq_cycle == 'y'">
+                <ul v-if="planInfo.freq_cycle == 'y' && planInfo.plan_freq_type == 1">
                     <li v-for="(times,index) in planInfo.freq_times" class="clear">
-                        <div>第
-                            <span>{{index +1}}</span>次&nbsp;:&nbsp;</div>
+                        <div v-text="'第' + (index + 1) + '次:'"></div>
                         <div>
                             <i v-text="times.start_time.time_day.substr(0,2) +'月'"></i>
                             <i v-text="times.start_time.time_day.substr(2,4) +'日'"></i>
 
-                            <i v-text="times.start_time.time_hour"></i>:
+                            <i v-text="times.start_time.time_hour + ':'"></i>
                             <i v-text="times.start_time.time_minute"></i>
                         </div>
                         <div> &nbsp;至&nbsp; </div>
                         <div>
                             <i v-text="times.end_time.time_day.substr(0,2)+'月'"></i>
                             <i v-text="times.end_time.time_day.substr(2,4) +'日'"></i>
-                            <i v-text="times.end_time.time_hour"></i>:
+                            <i v-text="times.end_time.time_hour + ':'"></i>
                             <i v-text="times.end_time.time_minute"></i>
                         </div>
                     </li>
                 </ul>
 
-                <ul v-if="planInfo.freq_cycle == 'm'">
+                <ul v-if="planInfo.freq_cycle == 'm' && planInfo.plan_freq_type == 1">
                     <li v-for="(times,index) in planInfo.freq_times" class="clear">
-                        <div>
-                            第
-                            <span>{{index +1}}</span>次&nbsp;:&nbsp;</div>
+                        <div v-text="'第' + (index + 1) + '次:'"></div>
                         <div>
                             <i v-text="times.start_time.time_day.substr(0,2)+'日'"></i>
-                            <i v-text="times.start_time.time_hour"></i>:
+                            <i v-text="times.start_time.time_hour + ':'"></i>
                             <i v-text="times.start_time.time_minute"></i>
                         </div>
                         <div> &nbsp;至&nbsp; </div>
                         <div>
                             <i v-text="times.end_time.time_day.substr(0,2)+'日'"></i>
-                            <i v-text="times.end_time.time_hour"></i>:
+                            <i v-text="times.end_time.time_hour + ':'"></i>
                             <i v-text="times.end_time.time_minute"></i>
                         </div>
                     </li>
                 </ul>
 
-                <ul v-if="planInfo.freq_cycle == 'w'">
+                <ul v-if="planInfo.freq_cycle == 'w' && planInfo.plan_freq_type == 1">
                     <li v-for="(times,index) in planInfo.freq_times" class="clear">
-                        <div>第
-                            <span>{{index +1}}</span>次&nbsp;:&nbsp;</div>
+                        <div v-text="'第' + (index + 1) + '次:'"></div>
                         <div>
                             <i v-text="filter_weekDetail_trans( '0' +times.start_time.time_day)"></i>
-                            <i v-text="times.start_time.time_hour"></i>:
+                            <i v-text="times.start_time.time_hour + '次'"></i>
                             <i v-text="times.start_time.time_minute"></i>
                         </div>
                         <div> &nbsp;至&nbsp; </div>
                         <div>
                             <i v-text="filter_weekDetail_trans('0' +times.end_time.time_day)"></i>
-                            <i v-text="times.end_time.time_hour"></i>:
+                            <i v-text="times.end_time.time_hour + ':'"></i>
                             <i v-text="times.end_time.time_minute"></i>
                         </div>
                     </li>
                 </ul>
 
-                <ul v-if="planInfo.freq_cycle == 'd'">
+                <ul v-if="planInfo.freq_cycle == 'd' && planInfo.plan_freq_type == 1">
                     <li v-for="(times,index) in planInfo.freq_times" class="clear">
-                        <div>第
-                            <span>{{index +1}}</span>次&nbsp;:&nbsp;</div>
+                        <div v-text="'第' + (index + 1) + '次:'"></div>
                         <div>
-                            <i v-text="times.start_time.time_hour"></i>:
+                            <i v-text="times.start_time.time_hour + ':'"></i>
                             <i v-text="times.start_time.time_minute"></i>
                         </div>
-                        <div> &nbsp;至&nbsp; </div>
+                        <div>&nbsp;至&nbsp;</div>
                         <div>
-                            <i v-text="times.end_time.time_hour"></i>:
+                            <i v-text="times.end_time.time_hour + ':'"></i>
                             <i v-text="times.end_time.time_minute"></i>
+                        </div>
+                    </li>
+                </ul>
+
+                <ul v-if="planInfo.plan_freq_type == 3">
+                    <li v-for="(times,index) in planInfo.freq_times" class="clear">
+                        <div>
+                            <span v-text="'第' + (index + 1) + '次:'">{{index +1}}</span>
+                        </div>
+                        <div>
+                            <i v-text="times.start_time.time_day.substr(0,4) + '年'"></i>
+                            <i v-text="times.start_time.time_day.substr(4,2) + '月'"></i>
+                            <i v-text="times.start_time.time_day.substr(6,2) + '日'"></i>
+                            <i v-text="('00' + times.end_time.time_hour).substr(-2,2) + ':'"></i>
+                            <i v-text="('00' + times.end_time.time_minute).substr(-2,2)"></i>
+                        </div>
+                        <div>&nbsp;至&nbsp;</div>
+                        <div>
+                            <i v-text="times.end_time.time_day.substr(0,4) + '年'"></i>
+                            <i v-text="times.end_time.time_day.substr(4,2) + '月'"></i>
+                            <i v-text="times.end_time.time_day.substr(6,2) + '日'"></i>
+                            <i v-text="('00' + times.end_time.time_hour).substr(-2,2) + ':'"></i>
+                            <i v-text="('00' + times.end_time.time_minute).substr(-2,2)"></i>
                         </div>
                     </li>
                 </ul>
@@ -219,23 +256,24 @@
             <div class="title">工作事项</div>
             <div class="box" v-for="info in planInfo.draft_matters">
                 <div class="row MT" v-text="info.matter_name"></div>
-                <p class="content" v-text="info.description"></p>
+                <div class="content" v-text="info.description ? info.description : (info.desc_forepart + '  ' + info.desc_forepart + '  ' + info.desc_works_desc)"></div>
             </div>
         </div>
-
+        
     </div>
 
 </div>
 
 
 <!-- 计划修改历史侧弹框 -->
-<pwindow-float id="planChangeHistoryWindow" isshade="false" title="计划修改历史" templateid="planChangeHistory" onclick="pub_method.returnPop(event)">
+<pwindow-float id="planChangeHistoryWindow" isshade="false" title="计划修改历史" templateid="planChangeHistoryTemplate" onclick="pub_method.returnPop(event)">
     <animate maxpx="0" minpx="-1280" orientation="right"></animate>
 </pwindow-float>
 
 
 
-<script type="text/html" id="planChangeHistory">
+<script type="text/html" id="planChangeHistoryTemplate">
+    
     <div id="planChangeHistory" class="clear" @click.stop="">
 
         <div v-for="(item,index) in historyRecordList">
@@ -283,66 +321,121 @@
                     </div>
 
                     <div class="row">
+                        是否实例化全部对象：
+                        <i v-text="item.instantiated_object_flag == 1 ? '是' : '否'"></i>
+                    </div>
+        
+                    <div class="row">
+                        建议执行人数：
+                        <i v-text="item.suggest_executor_num"></i>
+                    </div>
+
+                    <div class="row" v-if="item.plan_freq_type == 1">
                         计划频率：
                         <span>每<i v-text="transfYMWD(item.freq_cycle)"></i><i v-text="item.freq_num"></i>次</span>
                     </div>
 
+                    <div class="row" v-if="item.plan_freq_type == 3">
+                        计划频率：
+                        <span>
+                            每
+                            <i v-text="item.freq_time_span.num"></i>
+                            <i v-text="transfYMWD(item.freq_time_span.unit)"></i>
+                            1次
+                        </span>
+                    </div>
+
                     <div class="more">
 
-                        <ul v-if="item.freq_cycle == 'y'">
+                        <ul v-if="item.freq_cycle == 'y' && item.plan_freq_type == 1">
                             <li v-for="(times,num) in item.freq_times" class="clear">
-                                <div>第<span v-text="num+1"></span>次&nbsp;:&nbsp;</div>
+                                <div>第&nbsp;<span v-text="num+1"></span>&nbsp;次&nbsp;:&nbsp;</div>
                                 <div>
                                     <i v-text="times.start_time.time_day.substr(0,2) +'月'"></i><i v-text="times.start_time.time_day.substr(2,4) +'日'"></i>
-                                    <i v-text="times.start_time.time_hour"></i>:<i v-text="times.start_time.time_minute"></i>
+                                    <i v-text="times.start_time.time_hour + ':'"></i>
+                                    <i v-text="times.start_time.time_minute"></i>
                                 </div>
-                                <div> &nbsp;至&nbsp; </div>
+                                <div>&nbsp;至&nbsp;</div>
                                 <div>
                                     <i v-text="times.end_time.time_day.substr(0,2)+'月'"></i><i v-text="times.end_time.time_day.substr(2,4) +'日'"></i>
-                                    <i v-text="times.end_time.time_hour"></i>:<i v-text="times.end_time.time_minute"></i>
+                                    <i v-text="times.end_time.time_hour + ':'"></i>
+                                    <i v-text="times.end_time.time_minute"></i>
                                 </div>
                             </li>
                         </ul>
 
-                        <ul v-if="item.freq_cycle == 'm'">
+                        <ul v-if="item.freq_cycle == 'm' && item.plan_freq_type == 1">
                             <li v-for="(times,num) in item.freq_times" class="clear">
-                                <div>第<span v-text="num +1"></span>次&nbsp;:&nbsp;</div>
+                                <div>第&nbsp;<span v-text="num +1"></span>&nbsp;次&nbsp;:&nbsp;</div>
                                 <div>
                                     <i v-text="times.start_time.time_day.substr(0,2)+'日'"></i>
-                                    <i v-text="times.start_time.time_hour"></i>:<i v-text="times.start_time.time_minute"></i>
+                                    <i v-text="times.start_time.time_hour + ':'"></i>
+                                    <i v-text="times.start_time.time_minute"></i>
                                 </div>
-                                <div> &nbsp;至&nbsp; </div>
+                                <div>&nbsp;至&nbsp;</div>
                                 <div>
                                     <i v-text="times.end_time.time_day.substr(0,2)+'日'"></i>
-                                    <i v-text="times.end_time.time_hour"></i>:<i v-text="times.end_time.time_minute"></i>
+                                    <i v-text="times.end_time.time_hour + ':'"></i>
+                                    <i v-text="times.end_time.time_minute"></i>
                                 </div>
                             </li>
                         </ul>
 
-                        <ul v-if="item.freq_cycle == 'w'">
+                        <ul v-if="item.freq_cycle == 'w' && item.plan_freq_type == 1">
                             <li v-for="(times,num) in item.freq_times" class="clear">
-                                <div>第<span v-text="num +1"></span>次&nbsp;:&nbsp;</div>
+                                <div>第&nbsp;<span v-text="num +1"></span>&nbsp;次&nbsp;:&nbsp;</div>
                                 <div>
                                     <i v-text="methods.filter_weekDetail_trans( '0' +times.start_time.time_day)"></i>
-                                    <i v-text="times.start_time.time_hour"></i>:<i v-text="times.start_time.time_minute"></i>
+                                    <i v-text="times.start_time.time_hour + ':'"></i>
+                                    <i v-text="times.start_time.time_minute"></i>
                                 </div>
-                                <div> &nbsp;至&nbsp; </div>
+                                <div>&nbsp;至&nbsp;</div>
                                 <div>
                                     <i v-text="methods.filter_weekDetail_trans('0' +times.end_time.time_day)"></i>
-                                    <i v-text="times.end_time.time_hour"></i>:<i v-text="times.end_time.time_minute"></i>
+                                    <i v-text="times.end_time.time_hour + ':'"></i>
+                                    <i v-text="times.end_time.time_minute"></i>
                                 </div>
                             </li>
                         </ul>
 
-                        <ul v-if="item.freq_cycle == 'd'">
+                        <ul v-if="item.freq_cycle == 'd' && item.plan_freq_type == 1">
                             <li v-for="(times,num) in item.freq_times" class="clear">
-                                <div>第<span v-text="num +1"></span>次&nbsp;:&nbsp;</div>
                                 <div>
-                                    <i v-text="times.start_time.time_hour"></i>:<i v-text="times.start_time.time_minute"></i>
+                                    第&nbsp;
+                                    <span v-text="num +1"></span>
+                                    &nbsp;次&nbsp;:&nbsp;
+                                </div>
+                                <div>
+                                    <i v-text="times.start_time.time_hour + ':'"></i>
+                                    <i v-text="times.start_time.time_minute"></i>
+                                </div>
+                                <div>&nbsp;至&nbsp;</div>
+                                <div>
+                                    <i v-text="times.end_time.time_hour + ':'"></i>
+                                    <i v-text="times.end_time.time_minute"></i>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <ul v-if="item.plan_freq_type == 3">
+                            <li v-for="(times,num) in item.freq_times" class="clear">
+                                <div>
+                                    第<span v-text="num+1"></span>次:&nbsp;
+                                </div>
+                                <div>
+                                    <i v-text="times.start_time.time_day.substr(0,4) + '年'"></i>
+                                    <i v-text="times.start_time.time_day.substr(4,2) + '月'"></i>
+                                    <i v-text="times.start_time.time_day.substr(6,2) + '日'"></i>
+                                    <i v-text="('00' + times.end_time.time_hour).substr(-2,2) + ':'"></i>
+                                    <i v-text="('00' + times.end_time.time_minute).substr(-2,2)"></i>
                                 </div>
                                 <div> &nbsp;至&nbsp; </div>
                                 <div>
-                                    <i v-text="times.end_time.time_hour"></i>:<i v-text="times.end_time.time_minute"></i>
+                                    <i v-text="times.end_time.time_day.substr(0,4) + '年'"></i>
+                                    <i v-text="times.end_time.time_day.substr(4,2) + '月'"></i>
+                                    <i v-text="times.end_time.time_day.substr(6,2) + '日'"></i>
+                                    <i v-text="('00' + times.end_time.time_hour).substr(-2,2) + ':'"></i>
+                                    <i v-text="('00' + times.end_time.time_minute).substr(-2,2)"></i>
                                 </div>
                             </li>
                         </ul>
@@ -355,11 +448,15 @@
 
                 <div class="box" v-for="info in planInfo.draft_matters">
                     <div class="row MT" v-text="info.matter_name"></div>
-                    <div class="content" v-text="info.description"></div>
+                    <div class="content" v-text="info.description ? info.description : (info.desc_forepart + '  ' + info.desc_forepart + '  ' + info.desc_works_desc)"></div>
                 </div>
 
             </div>
 
         </div>
+    
+        <ploading-part id="planChangeHistoryLoading"></ploading-part>
+
     </div>
+
 </script>

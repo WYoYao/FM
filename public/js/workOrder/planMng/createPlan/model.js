@@ -8,6 +8,10 @@ var ViewError = function () {
     };
 }
 
+var convertEnum = {
+    plan_name: "group_plan_name",
+}
+
 v.pushComponent({
     name: "createPlan",
     data: {
@@ -45,19 +49,32 @@ v.pushComponent({
         ObjectByClassId: {},
         ObjectByClass: [],
         str: "",
-        req: {}
+        req: {},
+        // 坑位信息
+        WoTypeListAll: [],
+        // 下发的参数
+        toProjectArgu: {
+            "group_plan_id": "",              //集团计划id，必须
+            "project_ids": [],              //项目计划id集合，必须
+            "plan_start_type": "1",            //计划开始类型,1-发布成功后第二天生效，2-指定时间 ,必须
+            "plan_start_time": "",            //计划开始时间,yyyyMMdd+"000000"
+            "plan_end_time": ""               //计划结束时间,yyyyMMdd+"235959"，空值时代表一直有效
+        },
+        getIssueProjectListArgu: {
+            group_plan_id: "JTJH6a93466d7bb7465c8f893d2ba3e83b7e"
+        },
+        IssueProjectList: [],
     },
     methods: {
         // 获取对象
         getObj: function (arr) {
-            console.log(arr);
             this.str = "";
         },
         //  提交信息
         commit: function () {
             var _that = this;
-            console.log(_that.$refs.baseinfomation.addWoPlan);
-            console.log(_that.matters);
+            // console.log(_that.$refs.baseinfomation.argu());
+            // console.log(_that.matters);
 
             _that.req = {};
 
@@ -88,24 +105,29 @@ v.pushComponent({
 
             //  验证多个关系是否不匹配
             // 并行发送请求多个事项同时验证
-            PromiseConcurrent(
-                _that.matters.map(function (item) {
+            Promise.all(_that.matters.map(function (item) {
 
-                    return function () {
+                if (item.desc_objs.length && item.desc_sops.length) {
 
-                        // 对象与SOP 匹配验证
-                        return createPlan_controller.verifyObjectAndSop({
-                            objs: item.desc_objs.map(function (item) {
-                                return {
-                                    obj_id: item.obj_id,
-                                    obj_name: item.obj_name,
-                                }
-                            }),
-                            sop_ids: _.map(item.desc_sops, "sop_id")
-                        })
-                    }
-                })
-            ).then(function (res) {
+                    // 对象与SOP 匹配验证
+                    return controller.verifyObjectAndSop({
+                        objs: item.desc_objs.map(function (item) {
+                            return {
+                                obj_id: item.obj_id,
+                                obj_name: item.obj_name,
+                            }
+                        }),
+                        sop_ids: _.map(item.desc_sops, "sop_id")
+                    })
+                } else {
+                    return new Promise(function (resolve) {
+                        setTimeout(function () {
+                            resolve([]);
+                        }, 0);
+                    })
+                }
+
+            })).then(function (res) {
                 // 把原来的错误的状态替换的新的错误信息中
                 res.forEach(function (item, index) {
 
@@ -129,6 +151,7 @@ v.pushComponent({
                     //  验证是否被销毁
                     // _that.matters
                     createPlan_controller.querySopListForSel().then(function (data) {
+
                         var res = data.res;
                         // 验证所有的 SOP 都在直接提交
                         var bool = _that.matters.reduce(function (con, item, index) {
@@ -165,20 +188,37 @@ v.pushComponent({
                         }, true);
 
                         if (bool) {
+                            loadding.set("Preview");
+                            var getWoMattersPreviewPromise = _that.isterm ?
+                                createPlan_controller.getWoMattersPreview({
+                                    // order_type: _that.$refs.baseinfomation.addWoPlan.order_type,
+                                    draft_matters: _that.matters,
+                                })
+                                :
+                                createPlan_controller.getWoMattersPreviewGroup({
+                                    draft_matters: _that.matters,
+                                });
 
-
-                            createPlan_controller.getWoMattersPreview({
-                                order_type: _that.$refs.baseinfomation.addWoPlan.order_type,
-                                draft_matters: _that.matters,
-                            }).then(function (res) {
+                            getWoMattersPreviewPromise.then(function (res) {
                                 console.log("可以执行保存了");
                                 // 保存预览时候数据
-                                _that.WoMattersPreview = res[0];
+                                _that.WoMattersPreview = !_that.isterm ? res.published_matters : res;
 
                                 _that.PreView = true;
 
                                 // 保存matters
                                 _that.req.draft_matters = JSON.parse(JSON.stringify(_that.matters));
+
+                                if (_that.isterm) {
+                                    // 如果是项目版
+                                    _that.req.required_tools = res.required_tools;
+                                    _that.req.summary = res.summary;
+                                    _that.req.domain_list = res.domain_list;
+                                    _that.req.published_matters = res.published_matters;
+                                }
+
+                            }).finally(function () {
+                                loadding.remove("Preview");
                             })
                         }
                     })
@@ -211,6 +251,168 @@ v.pushComponent({
             confirm_result.obj_id = item.obj_id;
             confirm_result.obj_name = item.obj_name;
             confirm_result.obj_type = item.obj_type;
+        },
+        // 根据不同的条件做不同的背景
+        createPlan: function () {
+
+            var _that = this;
+
+            var cb = function () {
+
+                // 执行成功的回调
+                window.createPlanCallback();
+                // 释放全局的回调函数
+                window.createPlanCallback = void 0;
+            }
+
+            var argu = _.cloneDeep(_that.req);
+
+            argu.instantiated_object_flag = argu.instantiated_object_flag.toString();
+            argu.ahead_create_time = +argu.ahead_create_time;
+
+            argu.draft_matters = _.map(argu.draft_matters, function (item) {
+                /**
+                 * 对象
+                 */
+                item.desc_objs = _.map(item.desc_objs, function (info) {
+                    return {
+                        obj_id: info.obj_id,
+                        obj_name: info.obj_name,
+                    }
+                })
+
+                /**
+                 * SOP
+                 */
+                item.desc_sops = _.map(item.desc_sops, function (info) {
+                    return {
+                        sop_id: info.sop_id,
+                        sop_name: info.sop_name,
+                        version: info.version,
+                    }
+                })
+
+                return item;
+            })
+
+            if (_that.isterm) {
+                // 项目版处理
+                argu = Object.assign({}, {
+                    plan_from: _that.isquote ? 1 : 2, // 是否引用
+                    group_plan_id: _that.isquote ? _that.cache.argu.addWoPlan.group_plan_id : "", // 引用集团ID
+                    published_matters: _that.WoMattersPreview,
+                }, argu);
+
+                /**
+                 *  如果是引用集团计划
+                 */
+                // if (_that.isquote) {
+                //     // 修改计划的创建类型
+                //     argu.plan_from = "1";
+                // }
+
+                // if (_that.iscopy) {
+                //     // 如果是复制的情况下
+                //     argu.group_plan_id = "";
+                //     argu.plan_from = "2";
+                // }
+
+                loadding.set("addWoPlan");
+                if (_that.isedit && !_that.iscopy) {
+                    // 是编辑
+                    argu.draft_matters = argu.draft_matters.map(function (item) {
+                        item.description = item.desc_forepart + item.desc_aftpart + item.desc_works_desc;
+                        return item;
+                    })
+
+                    createPlan_controller.updateWoPlan(argu).then(cb).finally(function () {
+                        loadding.remove("addWoPlan");
+                    })
+                } else {
+
+                    createPlan_controller.addWoPlan(argu).then(cb).finally(function () {
+                        loadding.remove("addWoPlan");
+                    })
+                }
+
+            } else {
+                // 集团版处理
+
+                /**
+                 * 修改对应的属性完成对应的参数
+                 */
+                _.forIn(convertEnum, function (value, key) {
+                    argu[value] = argu[key];
+                    delete argu[key];
+                })
+
+                if (_that.isedit && !_that.iscopy) {
+                    // 编辑操作
+                    loadding.set("updateGroupPlan");
+                    createPlan_controller.updateGroupPlan(argu).then(cb).finally(function () {
+                        loadding.remove("updateGroupPlan");
+                    });
+
+                } else {
+
+                    if (_that.iscopy) {
+                        // 复制操作删除对应的ID
+                        delete argu.group_plan_id;
+                    }
+
+                    /**
+                     * 添加对应计划
+                     */
+                    loadding.set("addGroupPlan");
+                    createPlan_controller.addGroupPlan(argu).then(
+                        function (res) {
+                            // 跟新下发的方法
+                            window.toProject = function () {
+                                _that.toProjectArgu.group_plan_id = res.group_plan_id;
+                            }
+
+                            cb();
+                        }
+                    ).finally(function () {
+                        loadding.remove("addGroupPlan");
+
+
+                        $("#confirmWindow").pshow({ title: '发布成功！', subtitle: '是否将该计划下发到项目上？' });
+                    });
+                }
+            }
+        },
+        // 开始搞下发
+        createToProject: function () {
+            var _that = this;
+
+            $("#modalWindow").pshow();
+
+            createPlan_controller.getIssueProjectList(_that.getIssueProjectListArgu).then(function (res) {
+                _that.IssueProjectList = res;
+            })
+        },
+        submitToProjectAllBtn: function () {
+            var _that = this;
+
+            var bool = !(_that.IssueProjectList.length == _.filter(_that.IssueProjectList, { selected: true }).length && _that.IssueProjectList.length);
+
+            _that.IssueProjectList = _that.IssueProjectList.map(function (item) {
+
+                item.selected = bool;
+                return item;
+            })
+        },
+        submitToProject: function () {
+            var _that = this;
+            _that.toProjectArgu.project_ids = _.map(_.filter(_that.IssueProjectList, { selected: true }), "project_id");
+
+            createPlan_controller.issueGroupPlanToWoPlan(_that.toProjectArgu).then(function () {
+                $('#globalnotice').pshow({ text: '下发成功', state: 'success' });
+            }).catch(function () {
+                $('#globalnotice').pshow({ text: '下发失败', state: 'failure' });
+            })
+
         }
     },
     computed: {
@@ -248,24 +450,78 @@ v.pushComponent({
             }
         };
 
+
+        /**
+         * 测试添加参数
+         */
+        // argu = {
+        //     isquote: false,
+        //     isedit: true,
+        //     isterm: true,
+        //     iscopy: false,
+        //     addWoPlan: { "execute": "3", "plan_name": "计划名称添加", "order_type": "2", "urgency": "高", "ahead_create_time": "22", "freq_cycle": "m", "freq_num": 1, "freq_times": [{ "start_time": { "cycle": "m", "time_day": "1", "time_hour": "0", "time_minute": "0" }, "end_time": { "cycle": "m", "time_day": "1", "time_hour": "0", "time_minute": "0" } }], "instantiated_object_flag": 0, "freq_limit": { "num": "2", "unit": "d" }, "freq_time_span": { "num": "2", "unit": "d", "startTime": "03:03", "continue": "3" }, "plan_freq_type": "3", "plan_start_type": "1", "plan_start_time": "", "plan_end_type": "1", "plan_end_time": "", "next_route": [], "draft_matters": [], "published_matters": [] },
+        // }
+
+        // 查询位置需要的专业
+        controller.GeneralDict().then(function (res) {
+            _that.WoTypeListAll = res;
+        })
+
+        var convertEnumBak = {
+            plan_name: "group_plan_name",
+            // execute: "suggest_executor_num",
+            // pit_positions: "pitPositions"
+        }
+
+        if (argu.isterm) {
+            // 项目版处理
+            /**
+             * 修改对应的属性完成对应的参数
+             */
+            _.forIn(convertEnumBak, function (key, value) {
+                argu.addWoPlan[value] = argu.addWoPlan[key] || argu.addWoPlan[value];
+                delete argu.addWoPlan[key];
+            })
+
+        } else {
+            // 集团版
+            /**
+             * 修改对应的属性完成对应的参数
+             */
+            _.forIn(convertEnumBak, function (key, value) {
+                argu.addWoPlan[value] = argu.addWoPlan[key];
+                delete argu.addWoPlan[key];
+            })
+        }
+
+
+        _that.isquote = argu.isquote;// 是否被引用
+        _that.isedit = argu.isedit;// 是否编辑
+        _that.isterm = argu.isterm; // 是否是项目版
+        _that.iscopy = argu.iscopy;
         _that.addWoPlan = argu.addWoPlan;
-        _that.addWoPlan = argu.isquote;// 是否被引用
-        _that.addWoPlan = argu.isedit;// 是否编辑
-        _that.addWoPlan = argu.isterm; // 是否是项目版
+
+        _that.matters = argu.addWoPlan.draft_matters || [new Matter()];
+
         window.createPlanCallback = argu.cb;
+        debugger;
+        // 查询用户的权限
+        // controller.queryWoTypeListByPersonIdControlCode().then(function (list) {
+        //     _that.WoTypeList = list;
+        // })
 
         //  查询工单状态类
-        var WorkOrderTypePromise = controller.queryWoTypeList().then(function (res) {
-            //  返回对应Object 集合
-            _that.WorkOrderType = res.reduce(function (con, item) {
-                con[item.code] = item.name;
-                return con;
-            }, {});
+        // var WorkOrderTypePromise = controller.queryWoTypeList().then(function (res) {
+        //     //  返回对应Object 集合
+        //     _that.WorkOrderType = res.reduce(function (con, item) {
+        //         con[item.code] = item.name;
+        //         return con;
+        //     }, {});
 
-        }).catch(function () {
+        // }).catch(function () {
 
-            _that.WorkOrderType = {};
-        })
+        //     _that.WorkOrderType = {};
+        // })
 
 
 

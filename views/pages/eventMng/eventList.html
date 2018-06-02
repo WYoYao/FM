@@ -1,0 +1,20 @@
+<script src="./js/eventMng/eventList/model.js"></script>
+<script src="./js/eventMng/eventList/event.js"></script>
+
+<link rel="stylesheet" href="./css/eventMng/term/eventList.css">
+
+<div id="eventList" v-show="onPage === 'eventList'">
+
+    <ptab-navigation bind="true" id="'eventListTab'" datasource="eventListTab" text="name" icon="icon" templateid="eventListTemplate" sel="selEventRate"></ptab-navigation>
+
+</div>
+
+<!-- 项目事件列表模板Start -->
+<!-- 项目事件列表模板，不含列表表格模板 -->
+<script type="text/html" id="eventListTemplate">
+    <% include ./eventListTem.html %>
+</script>
+
+<!-- 项目事件列表表格模板 -->
+<% include ./eventListGridTem.html %>
+<!-- 项目事件列表模板End -->

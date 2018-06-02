@@ -1,0 +1,442 @@
+#eventManage {
+  width: 100%;
+  height: 100%; }
+  #eventManage .proList {
+    margin: 13px 9px 7px;
+    width: calc(100% - 20px);
+    height: calc(100% - 22px);
+    border: 1px solid #dee6eb; }
+    #eventManage .proList > div {
+      float: left; }
+    #eventManage .proList .left {
+      width: 280px;
+      height: 100%;
+      border-right: 2px solid #eaeef1; }
+      #eventManage .proList .left .search {
+        padding: 0 10px 0;
+        width: calc(100% - 20px);
+        height: 110px;
+        border-bottom: 1px solid #dee6eb; }
+        #eventManage .proList .left .search > div {
+          width: 100%;
+          height: 30px;
+          padding-top: 15px; }
+        #eventManage .proList .left .search > div:nth-of-type(2) {
+          padding-top: 20px; }
+      #eventManage .proList .left .content {
+        padding: 25px 10px 0;
+        width: calc(100% - 20px);
+        height: calc(100% - 136px);
+        background: #fbfbfb; }
+        #eventManage .proList .left .content .pro {
+          width: 100%;
+          height: 16px;
+          line-height: 16px;
+          font-size: 16px; }
+        #eventManage .proList .left .content .proEv {
+          padding: 20px 16px 20px;
+          width: calc(100% - 34px);
+          height: 80px;
+          border: 1px solid #dee6eb;
+          margin-top: 10px;
+          line-height: 14px;
+          font-size: 14px; }
+          #eventManage .proList .left .content .proEv .title {
+            width: 100%;
+            height: 14px;
+            color: #6F6F6F; }
+            #eventManage .proList .left .content .proEv .title a {
+              color: #333;
+              font-weight: 600; }
+          #eventManage .proList .left .content .proEv .ev {
+            width: 105px;
+            float: left;
+            margin-top: 19px;
+            height: 14px; }
+            #eventManage .proList .left .content .proEv .ev div {
+              float: left; }
+            #eventManage .proList .left .content .proEv .ev i {
+              font-family: "perficon";
+              color: #cacaca; }
+            #eventManage .proList .left .content .proEv .ev > div:nth-of-type(2) {
+              color: #6F6F6F;
+              margin-left: 5px; }
+            #eventManage .proList .left .content .proEv .ev > div:nth-of-type(3) {
+              margin-left: 4px;
+              color: #333;
+              width: calc(100% - 80px); }
+          #eventManage .proList .left .content .proEv > .ev:nth-of-type(odd) {
+            margin-left: 16px; }
+        #eventManage .proList .left .content .totalEv {
+          padding: 20px 16px 20px;
+          width: calc(100% - 34px);
+          height: 80px;
+          border: 1px solid #dee6eb;
+          margin-top: 10px;
+          line-height: 14px;
+          font-size: 14px; }
+          #eventManage .proList .left .content .totalEv > div {
+            height: 14px;
+            margin-top: 17px;
+            width: 100%; }
+            #eventManage .proList .left .content .totalEv > div div {
+              float: left; }
+            #eventManage .proList .left .content .totalEv > div > div:nth-of-type(1) {
+              color: #6F6F6F; }
+            #eventManage .proList .left .content .totalEv > div > div:nth-of-type(2) {
+              margin-left: 5px;
+              width: calc(100% - 75px); }
+    #eventManage .proList .right {
+      width: calc(100% - 310px);
+      height: calc(100% - 24px);
+      background: #fbfbfb;
+      padding: 7px 19px 17px 9px;
+      overflow-x: hidden;
+      overflow-y: auto; }
+      #eventManage .proList .right .box {
+        width: 300px;
+        float: left;
+        background: white;
+        height: 138px;
+        margin: 10px 0 0 10px;
+        border: 1px solid #eeeeee;
+        border-radius: 3px; }
+        #eventManage .proList .right .box:hover {
+          cursor: pointer;
+          box-shadow: 1px 5px 12px rgba(0, 0, 0, 0.04); }
+        #eventManage .proList .right .box .title {
+          width: calc(100 - 40px);
+          height: 46px;
+          padding: 0 20px 0;
+          border-bottom: 2px solid #f7f7f7;
+          line-height: 46px; }
+        #eventManage .proList .right .box .bot {
+          float: left;
+          width: calc(50% - 40px);
+          padding: 20px 20px;
+          height: 50px; }
+          #eventManage .proList .right .box .bot div {
+            padding: 0 20px 0;
+            width: calc(100% - 40px); }
+          #eventManage .proList .right .box .bot > div:nth-of-type(1) {
+            width: 100%;
+            height: 14px;
+            line-height: 14px;
+            font-size: 14px;
+            position: relative;
+            color: #6f6f6f; }
+            #eventManage .proList .right .box .bot > div:nth-of-type(1) i {
+              position: absolute;
+              font-family: "perficon";
+              left: 0px; }
+            #eventManage .proList .right .box .bot > div:nth-of-type(1) img {
+              width: 14px;
+              height: 14px;
+              position: absolute;
+              left: 0; }
+          #eventManage .proList .right .box .bot > div:nth-of-type(2) {
+            height: 18px;
+            line-height: 18px;
+            font-size: 18px;
+            color: #333;
+            font-weight: 600;
+            margin-top: 18px; }
+  #eventManage .proEvList {
+    width: 100%;
+    height: 100%; }
+    #eventManage .proEvList .nav {
+      width: 100%;
+      height: 30px;
+      padding: 10px 0 10px 0;
+      line-height: 30px;
+      border-bottom: 2px solid #edf1f4; }
+      #eventManage .proEvList .nav span {
+        float: left;
+        display: block;
+        cursor: pointer; }
+      #eventManage .proEvList .nav > span:nth-of-type(1) {
+        width: 28px;
+        height: 28px;
+        border: 1px solid #d4d4d4;
+        margin-left: 20px;
+        line-height: 28px;
+        color: #6f88a1;
+        text-align: center; }
+      #eventManage .proEvList .nav > span:nth-of-type(2) {
+        color: #6f88a1;
+        margin-left: 5px; }
+        #eventManage .proEvList .nav > span:nth-of-type(2) a {
+          margin-right: 5px; }
+      #eventManage .proEvList .nav > span:nth-of-type(3) {
+        color: #333;
+        margin-left: 5px; }
+    #eventManage .proEvList .body {
+      width: 100%;
+      height: calc(100% - 52px); }
+  #eventManage #groupEvList {
+    width: calc(100% - 40px);
+    height: 100%;
+    padding: 0 20px 0;
+    font-size: 14px;
+    position: relative; }
+    #eventManage #groupEvList .head {
+      width: 100%;
+      height: 50px;
+      line-height: 50px;
+      border-bottom: 1px solid #dae3e9; }
+    #eventManage #groupEvList .neck {
+      padding: 0 20px 0;
+      width: calc(100% - 40px);
+      height: 50px;
+      line-height: 50px;
+      background: #eaeef0; }
+      #eventManage #groupEvList .neck > div {
+        height: 30px;
+        margin-top: 10px; }
+      #eventManage #groupEvList .neck .left {
+        float: left;
+        width: 140px; }
+      #eventManage #groupEvList .neck .right {
+        float: right;
+        width: 200px; }
+      #eventManage #groupEvList .neck .right2 {
+        float: right;
+        margin-right: 10px;
+        width: 140px; }
+    #eventManage #groupEvList .title {
+      padding: 0 20px 0;
+      width: calc(100% - 40px);
+      height: 35px;
+      line-height: 35px;
+      border-bottom: 1px solid #eeeeee; }
+      #eventManage #groupEvList .title > span {
+        float: left;
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        white-space: nowrap;
+        margin-right: 1%; }
+      #eventManage #groupEvList .title .sort {
+        width: 14px;
+        height: 16px;
+        display: inline-block;
+        margin-left: 5px;
+        vertical-align: middle;
+        color: #7a94ad;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        /* for Firefox */ }
+        #eventManage #groupEvList .title .sort em {
+          width: 14px;
+          height: 7px;
+          display: block;
+          font-family: "perficon";
+          text-align: center;
+          line-height: 7px;
+          cursor: pointer;
+          font-size: 12px;
+          opacity: 0.5; }
+        #eventManage #groupEvList .title .sort .op {
+          opacity: 1; }
+    #eventManage #groupEvList .grid {
+      width: 100%;
+      max-height: calc(100% - 187px);
+      height: auto;
+      border-bottom: 1px solid #efefef;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative; }
+      #eventManage #groupEvList .grid li {
+        padding: 0 20px 0;
+        width: calc(100% - 40px);
+        list-style-type: none;
+        cursor: pointer;
+        height: 40px;
+        line-height: 40px; }
+        #eventManage #groupEvList .grid li > span {
+          height: 100%;
+          float: left;
+          display: block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          word-wrap: break-word;
+          white-space: nowrap;
+          margin-right: 1%; }
+      #eventManage #groupEvList .grid li:nth-of-type(odd) {
+        background: #f4f6f9; }
+    #eventManage #groupEvList .foot {
+      width: 100%;
+      height: 30px;
+      position: absolute;
+      bottom: 10px;
+      right: 20px; }
+      #eventManage #groupEvList .foot > div {
+        float: right; }
+    #eventManage #groupEvList .s0 {
+      width: 15%;
+      padding-right: 14%; }
+    #eventManage #groupEvList .s1 {
+      width: 12%; }
+    #eventManage #groupEvList .s2 {
+      width: 14%; }
+    #eventManage #groupEvList .s3 {
+      width: 14%; }
+    #eventManage #groupEvList .s4 {
+      width: 12%; }
+    #eventManage #groupEvList .s5 {
+      width: 14%;
+      margin-right: 0 !important; }
+    #eventManage #groupEvList .opearte > span {
+      float: right;
+      margin-right: 10px; }
+      #eventManage #groupEvList .opearte > span span, #eventManage #groupEvList .opearte > span i {
+        color: #637e99; }
+      #eventManage #groupEvList .opearte > span span:hover {
+        color: #546f8a; }
+      #eventManage #groupEvList .opearte > span img {
+        float: left;
+        margin-top: 13px;
+        margin-right: 5px; }
+  #eventManage .createEv {
+    width: 100%;
+    height: 100%; }
+    #eventManage .createEv .head {
+      padding: 10px 15px 10px;
+      width: calc(100% - 30px);
+      height: 30px;
+      border-bottom: 2px solid #edf1f4;
+      line-height: 30px; }
+      #eventManage .createEv .head span {
+        float: left;
+        display: block;
+        cursor: pointer; }
+      #eventManage .createEv .head > span:nth-of-type(1) {
+        width: 28px;
+        height: 28px;
+        border: 1px solid #d4d4d4;
+        line-height: 28px;
+        color: #6f88a1;
+        text-align: center; }
+      #eventManage .createEv .head > span:nth-of-type(2) {
+        color: #6f88a1;
+        margin-left: 5px; }
+        #eventManage .createEv .head > span:nth-of-type(2) a {
+          margin-right: 5px; }
+      #eventManage .createEv .head > span:nth-of-type(3) {
+        color: #333;
+        margin-left: 5px; }
+    #eventManage .createEv .body {
+      width: 550px;
+      height: calc(100% - 123px);
+      margin: 0 auto;
+      padding-top: 20px; }
+      #eventManage .createEv .body > div {
+        width: 100%; }
+      #eventManage .createEv .body .title {
+        height: 16px;
+        line-height: 16px;
+        font-size: 16px;
+        color: #333; }
+      #eventManage .createEv .body .text {
+        height: 80px;
+        margin-top: 10px; }
+      #eventManage .createEv .body .img {
+        height: 130px;
+        margin-top: 20px;
+        margin-bottom: 40px; }
+      #eventManage .createEv .body .sel {
+        height: 30px;
+        margin-top: 10px;
+        width: 200px !important; }
+      #eventManage .createEv .body .selTime {
+        margin-top: 30px;
+        height: 14px; }
+        #eventManage .createEv .body .selTime > span:nth-of-type(2) {
+          margin-left: 30px; }
+      #eventManage .createEv .body .time {
+        height: 30px;
+        margin-top: 20px;
+        padding: 15px 20px 15px;
+        width: calc(100% - 40px);
+        border: 1px solid #d9e2e8;
+        background: #fcfcfc;
+        line-height: 30px; }
+        #eventManage .createEv .body .time > div {
+          float: left; }
+        #eventManage .createEv .body .time > div:nth-of-type(2) {
+          margin-left: 10px; }
+        #eventManage .createEv .body .time .hour {
+          width: 200px; }
+          #eventManage .createEv .body .time .hour .error-tip {
+            top: 27px; }
+    #eventManage .createEv .box {
+      height: 1px;
+      background: #d9e2e8; }
+    #eventManage .createEv .sure {
+      width: 380px;
+      margin: 10px auto 0; }
+      #eventManage .createEv .sure div {
+        float: left;
+        width: 180px; }
+        #eventManage .createEv .sure div:nth-of-type(2) {
+          margin-left: 20px; }
+
+#groupEvAssignWrap, #groupEvAssignTwoWrap {
+  width: 400px;
+  height: 570px; }
+  #groupEvAssignWrap .sure, #groupEvAssignTwoWrap .sure {
+    width: 200px;
+    height: 30px;
+    margin: 20px auto 0; }
+    #groupEvAssignWrap .sure > div, #groupEvAssignTwoWrap .sure > div {
+      width: 80px;
+      float: left; }
+      #groupEvAssignWrap .sure > div:nth-of-type(2), #groupEvAssignTwoWrap .sure > div:nth-of-type(2) {
+        margin-left: 40px; }
+  #groupEvAssignWrap .search, #groupEvAssignTwoWrap .search {
+    padding: 10px 20px 10px;
+    width: 360px;
+    height: 30px;
+    background: #F8F8F8; }
+  #groupEvAssignWrap .tree, #groupEvAssignTwoWrap .tree {
+    width: 400px;
+    height: 450px; }
+
+#groupEvCloseWrap {
+  width: 300px;
+  height: 280px;
+  padding-top: 20px; }
+  #groupEvCloseWrap .text {
+    width: 100%;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    color: #333;
+    overflow: hidden; }
+  #groupEvCloseWrap .grid {
+    display: block;
+    padding: 0 10px 0;
+    width: calc(100% - 20px);
+    height: 140px;
+    margin: 10px 0 10px 0;
+    position: relative; }
+    #groupEvCloseWrap .grid li {
+      width: 100%;
+      height: 28px;
+      line-height: 28px;
+      text-align: center; }
+      #groupEvCloseWrap .grid li:nth-of-type(odd) {
+        background: #F7F7F7; }
+  #groupEvCloseWrap .sure {
+    width: 180px;
+    margin: 10px auto 20px;
+    height: 30px; }
+    #groupEvCloseWrap .sure > div {
+      float: left;
+      width: 80px; }
+      #groupEvCloseWrap .sure > div:nth-of-type(2) {
+        margin-left: 20px; }
+
+/*# sourceMappingURL=eventManage.css.map */

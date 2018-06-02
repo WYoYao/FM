@@ -1,0 +1,71 @@
+<% include ../../template/pageHead.html %>
+
+    <!-- 事件管理公用 -->
+    <script src="./js/eventMng/lodash.min.js"></script>
+    <script src="./js/eventMng/polyfill.js"></script>
+    <script src="./js/eventMng/public.js"></script>
+    <script src="./js/eventMng/controller.js"></script>
+    <link rel="stylesheet" href="./css/eventMng/term/public.css">
+
+    <!-- 项目事件列表模板Start -->
+    <script src="./js/eventMng/eventListTem/model.js"></script>
+    <script src="./js/eventMng/eventListTem/event.js"></script>
+    <link rel="stylesheet" href="./css/eventMng/term/eventListTem.css">
+    <!-- 项目事件列表模板End -->
+
+    <script src="../js/eventMng/addwork/controller.js"></script>
+    <script src="../js/eventMng/addwork/model.js"></script>
+    <!--  转工单需要的控件 和 预览需要的工单详情  -->
+    <link rel="stylesheet" href="/css/workOrder/planMng/term/workOrderDetail.css">
+
+    <link rel="stylesheet" href="/css/eventMng/group/addwork.css">
+    <link rel="stylesheet" href="/css/workOrder/planMng/group/aite.css">
+    <link rel="stylesheet" href="/css/workOrder/planMng/group/hashtag.css">
+    <link rel="stylesheet" href="/css/workOrder/planMng/group/addcontent.css">
+    <link rel="stylesheet" href="/css/workOrder/planMng/group/point.css">
+    <link rel="stylesheet" href="/css/workOrder/planMng/group/idepoint.css">
+
+    <!--  人员树需要的样式  -->
+    <link rel="stylesheet" href="/css/eventMng/group/PersonTree.css">
+
+    <% include ./matter.html %>
+        <% include ./aite.html %>
+            <% include ./hashtag.html %>
+                <% include ./addcontent.html %>
+                    <% include ./addinfo.html %>
+                        <% include ./point.html %>
+                            <% include ./idepoint.html %>
+                                <!-- 转工单End -->
+                                <!-- 下拉多选 -->
+                                <% include ./Multiple.html %>
+                                    <!-- 人员树  -->
+                                    <% include ./PersonTree.html %>
+                                        <!-- 转工单End -->
+
+                                        <!-- 工单详情Start -->
+                                        <link rel="stylesheet" href="/css/workOrder/planMng/term/public.css">
+                                        <script src="./js/workOrder/planMng/term/controller.js"></script>
+                                        <!-- 工单详情End -->
+
+                                        <ploading-part id='globalloading' text="加载中..."></ploading-part>
+
+                                        <div id="app">
+
+                                            <!-- 项目事件列表 -->
+                                            <% include ./eventList.html %>
+
+                                                <!-- 项目事件详情弹窗 -->
+                                                <% include ./eventInfo.html %>
+
+                                                    <!-- 关闭事件弹窗 -->
+                                                    <% include ./closeEvent.html %>
+
+                                                        <!-- 转工单 -->
+                                                        <% include ./addwork.html %>
+
+                                                            <!-- 工单详情 -->
+                                                            <% include ./workOrderInfo.html %>
+
+                                        </div>
+
+                                        <% include ../../template/pageFoot.html %>

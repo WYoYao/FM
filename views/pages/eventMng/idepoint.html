@@ -1,0 +1,312 @@
+<script type="text/html" id="idepoint">
+<!-- 添加信息点面板 Start -->
+<!--  判断当前是否显示 -->
+<div class="aite-bubble idepoint" style="width:540px;" @click.stop="void 0">
+    <div class="aite-title">
+         <span>
+            <em>信息点详情</em>
+        </span>
+    </div>
+    <div class="aite-body" style="height:calc(100% - 105px);">
+    
+        <div class="list-body">
+          
+            <!--自定义-->
+            <div class="customize">
+                <div class="customizename" v-text="customize.name">
+                </div>
+                <div class="customizetitle"  v-show="customize.type=='4' || customize.type=='5'">
+                       异常范围
+                       <span class="small">
+                           反馈数值处于如下范围将被标记为异常
+                       </span>
+                </div>
+                <!-- <div class="customizetitle"  v-show="customize.type=='2' || customize.type=='3'">
+                       选项
+                </div> -->
+                <div class="customizebody" v-show="customize.type!='1'">
+
+                    <!--范围信息 Start -->
+                        <div class="selection-input" v-show="customize.type=='4' || customize.type=='5'" v-for="(model,index) in customize.wrong_ranges"
+                            :key="model._id">
+                            <div class="wrong">
+                                <div class="qj">
+                                    <pcombobox-normal id="'_that.customize.wrong_ranges['+index+']'" bind="true" sel="itemClick">
+                                        <header placeholder="(_.find(wrongType,{code:model.type}) || {}).name"></header>
+                                        <item datasource="wrongType" text="name"></item>
+                                    </pcombobox-normal>
+                                </div>
+                                <!-- 区间 Start -->
+                                <div class="ty" v-if="model.type=='range'">
+                                    <ptext-text bind="true" value="model.values.start" placeholder="'请输入要采集数据的单位'">
+                                        <verify errtip="请输入数字" verifytype="space"></verify>
+                                    </ptext-text>
+                                </div>
+                                <div class="i" v-if="model.type=='range'">
+                                    ~
+                                </div>
+                                <div class="ty" v-if="model.type=='range'">
+                                    <ptext-text bind="true" value="model.values.end" placeholder="'请输入要采集数据的单位'">
+                                        <verify errtip="请输入数字" verifytype="space"></verify>
+                                    </ptext-text>
+                                </div>
+                                <!-- 区间 End -->
+
+                                <!-- 非区间 Start -->
+                                <div class="idetotal" v-if="model.type!='range'">
+                                    <ptext-text bind="true" value="model.value" placeholder="'请输入要采集数据的单位'">
+                                        <verify errtip="请输入数字" verifytype="space"></verify>
+                                    </ptext-text>
+                                </div>
+                                <!-- 非区间 End -->
+
+                                <em class="icon" @click="customize.wrong_ranges.splice(index,1)">
+                                    p
+                                </em>
+                            </div>
+                        </div>
+                        <!--范围信息 End -->
+
+                        <div class="selection-input" v-for="(i,index) in customize.items" v-show="customize.type=='2' || customize.type=='3'">
+                            <div class="wrong">
+                                <div class="qj">
+                                    选项{{index+1}}
+                                </div>
+                                <div class="ty" v-text="i.name"></div>
+                                <div :id="'classSelectInfoPoint'" class="idetotal classSelectInfoPoint right" @click="i.isWrongs=!i.isWrongs">
+                                    <div class="pcheckbox">
+                                        <span class="pcheckbox_input" :class="i.isWrongs ? 'pcheckbox-checked' : ''"></span>
+                                        <span class="pswitch_label">异常项</span>
+                                    </div>
+                                </div>
+                                <!-- <i @click="customize.items.splice(index,1)">p</i> -->
+                            </div>
+                        </div>
+
+
+                    <!-- <div class="self-add-select" v-show="customize.type=='2' || customize.type=='3'">
+                        <div class="self-add-btn" @click="customize.items.push(new Item())">
+                            <i>J</i>添加选项
+                        </div>
+                    </div> -->
+                    <div class="selection-input" v-show="customize.type=='4' || customize.type=='5'">
+                        <div class="wrong">
+                            <div class="pointer inline-block" @click="customize.wrong_ranges.push(new Wrong())">
+                                +添加
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--loading-->
+            <ploading-part data-loading="resultPopLoading" text="加载中..."></ploading-part>
+        </div>
+    </div>
+    <div class="aite-footer">
+        <div class="sureBtnDivs" @click.capture="submit">
+            <pbutton-blue text="确定" id="sureBtn"></pbutton-blue>
+        </div>
+    </div>
+</div>
+<!-- 添加信息点面板 End -->
+</script>
+
+<script>
+    var Custom = function (obj) {
+        this.name = obj.name;
+        this.type = obj.type;
+
+        if (obj.type == 2 || obj.type == 3) {
+            this.items = obj.items || [];
+            this.wrongs = obj.wrongs || [];
+        } else if (obj.type == 4 || obj.type == 5) {
+            this.wrong_ranges = obj.wrong_ranges || [];
+            if (obj.type == 5) this.unit = obj.unit || "";
+        }
+    }
+
+    var Item = function () {
+        return {
+            str: '',
+            isWrongs: false,
+        }
+    }
+
+
+    var Wrong = function () {
+        return {
+            _id: +new Date() + _.random(1, 199999),
+            type: "",
+            value: "",
+            values: {
+                start: "",
+                end: ""
+            },
+        }
+    }
+
+    Vue.component('idepoint', {
+        template: '#idepoint',
+        data: function () {
+            return {
+                page: "index",
+                wrongType: [
+                    {
+                        name: "区间",
+                        code: "range",
+                    },
+                    {
+                        name: "大于",
+                        code: "gt",
+                    }, {
+                        name: "大于等于",
+                        code: "gte",
+                    }, {
+                        name: "小于",
+                        code: "lt",
+                    }, {
+                        name: "小于等于",
+                        code: "lte",
+                    }
+                ],
+                customize: {
+                    name: "",
+                    type: "1",
+                    items: [],
+                    wrongs: [],
+                    wrong_ranges: [],
+                    unit: "",
+                },
+                // 自定义的控件
+                controlsList: [
+                    { name: "普通文本", type: "1" },
+                    { name: "单选", type: "2" },
+                    { name: "多选", type: "3" },
+                    { name: "无单位的数字", type: "4" },
+                    { name: "有单位的数字", type: "5" }
+                ],
+            }
+        },
+        props: ["point", "cb"],
+        methods: {
+            // 获取类型名称
+            getTypeName: function (type) {
+                return { gt: '大于', gte: '大于等于', lt: '小于', lte: '小于等于', range: '区间' }[type];
+            },
+            // 查询某个对象对应的信息点
+            covertObj: function (obj) {
+                var _that = this;
+
+                _that.customize.name = obj.name;
+                _that.customize.type = {
+                    Radio01: "2",
+                    Multiselect01: "3",
+                    Numberentry01: "4",
+                    Numberentry02: "5",
+                    Textentry01: "1",
+                }[obj.cmpt];
+
+                //  多选单选
+                if (_that.customize.type == 2 || _that.customize.type == 3) {
+                    _that.customize.items = JSON.parse(JSON.stringify(obj.cmpt_data.map(function (item) {
+                        item.isWrongs = false;
+                        return item;
+                    })));
+                } else if (_that.customize.type == 4 || _that.customize.type == 5) {
+                    // 范围数组
+                    _that.customize.wrong_ranges = []
+
+                    if (_that.customize.type == 5) {
+                        _that.customize.unit = obj.unit;
+                    }
+                }
+
+            },
+            // 点击确定返回信息
+            submit: function () {
+                var _that = this;
+                var obj = {
+                    name: _that.customize.name,
+                    type: _that.customize.type,
+                };
+                if (obj.type == 2 || obj.type == 3) {
+
+                    obj.items = _.map(_that.customize.items, 'name');
+                    obj.wrongs = _.map(_.filter(_that.customize.items, { isWrongs: true }), 'name');
+                } else if (obj.type == 4 || obj.type == 5) {
+                    obj.wrong_ranges = _that.customize.wrong_ranges.map(function (item) {
+                        var o = {};
+                        o.type = item.type;
+                        if (o.type == "range") {
+                            o.values = [item.values.start, item.values.end]
+                        } else {
+                            o.values = item.value;
+                        }
+                        return o;
+                    })
+                }
+
+                if (_.isFunction(_that.cb)) _that.cb(obj);
+            }
+        },
+        computed: {
+            // 经过筛选的信息
+            InfoPoints: function () {
+                var _that = this;
+                if (_that.InfoPointForObject.key.length) {
+                    return _that.InfoPointForObject.list.filter(function (item) {
+                        return item.name.indexOf(_that.InfoPointForObject.key) != -1;
+                    })
+                }
+                return _that.InfoPointForObject.list;
+            }
+        },
+        watch: {
+            //  动态绑定对应的下拉菜单
+            "customize.wrong_ranges": function (list) {
+                var _that = this;
+                _that.$nextTick(function () {
+                    list.forEach(function (item, index) {
+                        $(document.getElementById('_that.customize.wrong_ranges[' + index + ']')).psel(_.findIndex(_that.wrongType, { code: item.type }), false);
+                    });
+                })
+            }
+        },
+        beforeMount: function () {
+            var _that = this;
+            _that.covertObj(_that.point);
+
+            // 编辑框状态类型点击事件
+            window.itemClick = function (model, event) {
+                // 替换全局作用域中的 _that
+                window.back_that = window._that;
+                window._that = _that;
+
+                var item = eval($(event._currentTarget).attr("id"));
+                item.type = model.code;
+
+                // 还原全局作用域下的 _that
+                window._that = window.back_that;
+                window.back_that = void 0;
+            }
+
+            window.uRangesTypeSel = function (model, event) {
+                // 替换全局作用域中的 _that
+                window.back_that = window._that;
+                window._that = _that;
+
+                var item = eval($(event._currentTarget).attr("id"));
+                item.type = model.code;
+
+                // 还原全局作用域下的 _that
+                window._that = window.back_that;
+                window.back_that = void 0;
+            }
+        },
+        destroyed: function () {
+            window.changeCustomizeType = undefined;
+            window.itemClick = undefined;
+            window.uRangesTypeSel = undefined;
+        }
+    })
+</script>

@@ -1,0 +1,206 @@
+
+<div class="configAll" v-show="curPage == 'list'">
+    <!-- <pnotice-message id="scheme-notice"></pnotice-message> -->
+    <div class="config">
+        <div class="configTab">
+            <div class="configContent">
+                <div class="configHeader">
+                    <% if (user.authorObj.addWorkorderType) { %>
+                    <span class="tip-span"></span><pbutton-blue bind='true' text="'新建工单类型'" @click="newCreateOrder()"></pbutton-blue>
+                    <% } %>
+                </div>
+                <div class="configBody">
+                    <div class="configBodyTable">
+                        <!--<div class="table-box">-->
+                            <div class="configTable" v-show="workOrderConfigList.length > 0">
+                                <div class="configTableHeader">
+                                    <div><span>状态</span></div>
+                                    <div><span>工单类型名称</span></div>
+                                    <div><span>时间类型</span></div>
+                                    <div><span>报修是否可以转此类工单</span></div>
+                                    <div><span>涉及岗位</span></div>
+                                    <div><span>操作</span></div>
+                                </div>
+                                <div class="configTableBody">
+                                    <div class="option">
+                                        <ul class="ul" v-for="item in workOrderConfigList" @click="workOrderMethod.openConfigDetail(item.plan_id)">
+                                            <li><span :class="{markRed:item.plan_status == '0'}" v-text="item.plan_status == '0' ? '需修订' : '正常'"></span></li>
+                                            <li><span :title="item.plan_name" v-text="item.plan_name"></span></li>
+                                            <li><span v-text="item.execute_type_name"></span></li>
+                                            <li><span v-text="item.repair_flag == '0' ? '否' : '是'"></span></li>
+                                            <li><span :title="item.position" v-text="item.position"></span></li>
+                                            <li :code="JSON.stringify(item.plan_id)">
+                                                <section>
+                                                    <% if (user.authorObj.editWorkorderType) { %>
+                                                    <pbutton-blue bind="true"  icon ="'`'" isborder="false" text="'编辑'" @click.stop="workOrderMethod.editWorkOrderConfigDetail(item.plan_id)"></pbutton-blue>
+                                                    <% } %>
+                                                    <% if (user.authorObj.deleteWorkorderType) { %>
+                                                    <pbutton-blue bind="true"  icon ="'p'" isborder="false" text="'删除'" @click.stop="workOrderMethod.openDeleteBlock(item.plan_id)"></pbutton-blue>
+                                                    <% } %>
+                                                </section>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    
+                                </div>
+                            </div>
+                            <div class="scheme-table-noData" v-show="workOrderConfigList.length == 0">
+                               
+                                <div class="sop-nodata">
+                                    <pnotice-nodata text="暂无数据"></pnotice-nodata>
+                                </div>
+                            </div>
+                            <ploading-part id="loadCover" text="加载中..."></ploading-part>
+                        <!--</div>-->
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="configFloat">
+        <pwindow-float id="floatWindowPersonDetail" isshade="false" title="这是标题" templateid="floatTemp" onclick="workOrderMethod.returnPop(event)">
+            <button>
+                <% if (user.authorObj.editWorkorderType) { %>
+                <pbutton-blue text="编辑" icon="`" @click="workOrderMethod.editWorkOrderConfigDetail('')" isborder="false" id="editPersonBtn"></pbutton-blue>
+                <% } %>
+                <% if (user.authorObj.deleteWorkorderType) { %>
+                <pbutton-blue text="删除" icon="p" @click="workOrderMethod.openDeleteBlock('')" isborder="false" id="deletePersonBtn"></pbutton-blue>
+                <% } %>
+
+                    
+            </button>
+            <animate maxpx="0" minpx="-900" orientation="right"></animate>
+        </pwindow-float>
+
+    </div>
+    <!-- <pwindow-confirm id="delconfirm">
+        <button>
+            <pbutton-blue  text="确定" click="workOrderMethod.confirmDeleteConfigList"></pbutton-blue>
+            <pbutton-white text="取消" click="yn_method.cancelConfirm"></pbutton-white>
+        </button>
+    </pwindow-confirm> -->
+</div>
+<!-- 工单配置详情 -->
+<script type="text/html" id="floatTemp">
+    <div class="singleConfigContent">
+        <div class="singleConfigContentCon">
+            <div><span>工单类型名称：</span></div>
+            <div><span v-if="workOrderConfigDetail.plan_name" v-text="workOrderConfigDetail.plan_name"></span></div>
+        </div>
+        <div class="singleConfigContentCon">
+            <div><span>工作类型：</span></div>
+            <div><span v-if="workOrderConfigDetail.work_type_name" v-text="workOrderConfigDetail.work_type_name"></span></div>
+        </div>
+        <div class="singleConfigContentCon">
+            <div><span>时间类型：</span></div>
+            <div><span v-if="workOrderConfigDetail.execute_type_name" v-text="workOrderConfigDetail.execute_type_name"></span></div>
+        </div>
+        <div class="singleConfigContentCon">
+            <div><span>报修是否可以转此类工单：</span></div>
+            <div><span v-if="workOrderConfigDetail.repair_flag" v-text="workOrderConfigDetail.repair_flag == '0' ? '否': '是'"></span></div>
+        </div>
+        <div class="singleConfigContentCon">
+            <div><span>工单要求：</span></div>
+            <div>
+                <!-- vv-if="JSON.stringify(workOrderConfigDetail.time_limit) != '{}' && workOrderConfigDetail.time_limit.startTime.selected" -->
+                <section v-if="workOrderConfigDetail.time_limit.startTime && workOrderConfigDetail.time_limit.startTime.around">
+                        
+                        <span  v-text="'到达工单要求开始时间' + (workOrderConfigDetail.time_limit.startTime.around == 'after' ? '后' : '前') + (workOrderConfigDetail.time_limit.startTime.minute?workOrderConfigDetail.time_limit.startTime.minute :'0') + '分钟' + '，需有执行人接单'">
+                        </span>
+                </section>
+                <section v-if="workOrderConfigDetail.time_limit.endTime && workOrderConfigDetail.time_limit.endTime.around">
+                     <!-- vv-if="JSON.stringify(workOrderConfigDetail.time_limit) != '{}' && workOrderConfigDetail.time_limit.endTime.selected"  -->
+                     
+                    <span  v-text="'到达工单要求结束时间' + (workOrderConfigDetail.time_limit.endTime.around == 'after' ? '后' : '前' ) + (workOrderConfigDetail.time_limit.endTime.minute ? workOrderConfigDetail.time_limit.endTime.minute :'0') + '分钟' + '，需执行结束'">
+                    </span>
+                </section>
+               
+            </div>
+        </div>
+        <div class="">
+            <div><span>涉及的岗位以及对应职责：</span></div>
+            <div class="singleConfigContentConChild" 
+                v-if="workOrderConfigDetail.post_and_duty && workOrderConfigDetail.post_and_duty.length >0" 
+                v-for="post in workOrderConfigDetail.post_and_duty">
+                <div class="childName"><span :title="post&&post.name" v-text="post&&post.name"></span></div>
+                <div class="childOperate" >
+                    <div class="childOperateContent" :ss="JSON.stringify(post.duty)"
+                        v-if="post.duty && post.duty.length >0"
+                        v-for="duty in post.duty">
+                        <h3 v-text="duty.name"></h3>
+                        <!-- 新建 -->
+                        <div v-if="duty.code == 'create'">
+                            <!-- <span v-text="duty.executie_mode"></span> -->
+                            <span v-if="duty.executie_mode == 'execute'" v-text="'下级操作模块：新建后执行'"></span>
+                            <span v-else-if="duty.executie_mode == 'assign'" v-text="'下级操作模块：新建后指派'"></span>
+                            <span v-else-if="duty.executie_mode == 'robbing'" v-text="'下级操作模块：新建后抢单'"></span>
+                            <span v-text="'到达工单要求开始时间时才允许执行： ' + (duty.arrival_time_allow_execute  ? '是' :'否')"></span>
+                            <span v-text="'启用专业控制 ：' +  (duty.limit_domain ? '是' :'否')"></span>
+                        </div>
+                        <!-- 指派 -->
+                        <div v-if="duty.code == 'assign'">
+                            <span v-text="'按照排班表过滤每次可转交的人员范围：' +  (duty.filter_scheduling ? '是' :'否')"></span>
+                            <span v-text="'按照专业要求过滤每次可转交的人员范围：' +  (duty.limit_domain ? '是' :'否')"></span>
+                            <span v-if="duty.expecte_operation" v-text="'期望该操作持续时间：不超过' + duty.minute + '分钟'"></span>
+                        </div>
+
+                        <!-- 执行 -->
+                        <!-- <div v-if="duty.code == 'execute'">
+                            <span v-text="'启用专业控制 ：' +  (duty.limit_domain ? '是' :'否')"></span>
+                            
+                        </div> -->
+
+                        <!-- 申请 -->
+                        <div v-if="duty.code == 'apply'">
+                            <span v-if="duty.apply_items && duty.apply_items.length >0" v-for="info in duty.apply_items">
+                                <em v-if="info.next_code" 
+                                    v-text="info.name + ' '  + (info.next_code ? (info.next_code == 'approve' ? '需要审批' : '需要审核') :'') + ' '">
+                                </em>
+                                <em v-if="info.next_code == 'audit'"> 
+                                    <strong  v-text="'审核人：'"></strong>
+                                    <i v-if="info.next_route && info.next_route.length >0" v-text="workOrderMethod.arrayObjectTransfString(info.next_route,'name','、')"></i>
+                                </em>
+                                <em v-if="info.next_code == 'approve'"> 
+                                    <strong v-text="'审批人：'"></strong>
+                                    <i v-if="info.next_route && info.next_route.length >0" v-text="workOrderMethod.arrayObjectTransfString(info.next_route,'name','、')"></i>
+                                </em>
+                            </span>
+                        </div>
+                       
+                         <!-- 审核 -->
+                        <div v-if="duty.code == 'audit'">
+                            <span v-if="duty.apply_items && duty.apply_items.length >0" v-for="info in duty.apply_items">
+                                <em v-text="info.name + ' '  + (info.next_code ? (info.next_code == 'approve' ? '需要审批' : '需要审核') :'') + ' '"></em>
+                                <em> 
+                                    <strong v-text="'审批人：'"></strong>
+                                    <i v-if="" v-text="arrayObjectTransfString(info.next_route,'name','、')"></i>
+                                </em>
+                            </span>
+                            <span v-if="duty.expecte_operation" v-text="'期望该操作持续时间：不超过' + duty.minute + '分钟'"></span>
+                        </div>
+
+                         <!-- 审批 -->
+                        <div v-if="duty.code == 'approve'">
+                            <span v-if="duty.apply_items && duty.apply_items.length >0" v-for="info in duty.apply_items">
+                                <em v-text="info.name"></em>
+                                <span v-if="duty.expecte_operation" v-text="'期望该操作持续时间：不超过' + duty.minute + '分钟'"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</script>
+<!-- 删除 -->
+<pwindow-confirm id="confirmDeleteConfigList" onclick="workOrderMethod.returnPop(event)">
+    <button>
+        <pbutton-backred text="删除" click="workOrderMethod.confirmDeleteConfigList"></pbutton-backred>
+        <pbutton-white text="取消" click="workOrderMethod.cancelDeleteConfigList"></pbutton-white>
+    </button>
+</pwindow-confirm>

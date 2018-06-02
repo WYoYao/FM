@@ -62,10 +62,10 @@
     &>.body{
         width: 700px;
         position: relative;
-        height: calc(100% - 101px);
-        padding-top: 50px;
-        padding-bottom: 20px;
-        margin: 0 auto 0;
+        height: calc(100% - 121px);
+        // padding-top: 50px;
+        // padding-bottom: 20px;
+        margin: 50px auto 0;
         overflow-y: scroll;
         overflow-x: hidden;
         .state{
@@ -130,12 +130,14 @@
     padding:20px;
     width: auto;
     height: calc(100% - 40px);
+    position: relative;
+    min-width: 430px;
     &>div{
         width: 430px;
         float: left;
         height: 100%;
-        &:nth-of-type(1){
-            margin-right: 25px;
+        &:nth-of-type(2){
+            margin-left: 25px;
         }
         >.title{
             line-height: 14px;
@@ -144,6 +146,12 @@
             font-size: 12px;
             div{
                 float: left;
+            }
+            &>div:nth-of-type(1){
+                color: #a1a1a1;
+            }
+            &>div:nth-of-type(2){
+                color: #707070;
             }
         }
         >.boxod{

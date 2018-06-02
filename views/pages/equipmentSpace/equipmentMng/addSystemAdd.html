@@ -1,0 +1,247 @@
+<div class="i_content sys_i_content">
+    <!--second version edit start-->
+    <div class="visibleViewDiv">
+        <div class="verticalView addsystems_verticalView">
+            <!-- 进度轴 Start -->
+            <div class="own verticalAxes addsystems_verticalAxes" id="spaceNavigBar">
+                <div class="circleDiv">
+                    <div class="circle" :class='{sel:item.isSelected}' :style="{top:item.top+'px'}"
+                         v-for='(item,index) in SystemScrollList' @click='toggleSelInsert(item,"SystemScrollList","SystemScroll_",index)'>
+                        <span class="name" v-text='item.title'></span>
+                    </div>
+                </div>
+            </div>
+            <!-- 进度轴 End -->
+        </div>
+    </div>
+    <div class="contentView" id="addsystems_contentView">
+        <div class="contentBox" id="addsystems_contentBox">
+            <div class="moduleItem" id="SystemScroll_base">
+                <div class="header">基础</div>
+                <div class="eachItem">
+                    <div class="name">
+                <span>
+                    <em>*</em>系统本地名称</span>
+                    </div>
+                    <div class="cont">
+                        <ptext-text placeholder="'最多10个字'" blur="as_blur" id="addSystemKey + 'system_local_name'"
+                                    focus='as_focus' bind='true' value='InsertSystemModel.system_local_name'>
+                            <verify errtip="不能为空" verifytype="space">
+                            </verify>
+                            <verify errtip="名称不可超过10个字" verifytype="length" length='10'>
+                            </verify>
+                        </ptext-text>
+                    </div>
+                </div>
+                <div class="eachItem">
+                    <div class="name">
+                <span>
+                    <em>*</em>系统本地编码</span>
+                    </div>
+                    <div class="cont">
+                        <ptext-text id="addSystemKey + 'system_local_id'" placeholder="'最多50个字'" bind='true'
+                                    blur="as_blur"
+                                    focus='as_focus' value='InsertSystemModel.system_local_id'>
+                            <verify errtip="不能为空" verifytype="space"></verify>
+                            <verify errtip="不可超过50字符" verifytype="length" length='50'></verify>
+                        </ptext-text>
+                    </div>
+                </div>
+                <div class="eachItem">
+                    <div class="name">
+                        <span>BIM模型中编码</span>
+                    </div>
+                    <div class="cont">
+                        <!-- <ptext-text placeholder="'最多50个字'" bind='true' blur="as_blur" focus='as_focus' id="addSystemKey + 'BIMID'" value='InsertSystemModel.BIMID'>
+                            <verify errtip="不可超过50字符" verifytype="length" length='50'>
+                            </verify>
+                        </ptext-text> -->
+                        <ptext-text placeholder="'最多50个字'" bind='true' focus='as_focus' blur="as_blur"
+                                    id="addSystemKey + 'BIMID'" value='InsertSystemModel.BIMID'>
+                            <verify errtip="不可超过50字符" verifytype="length" length='50'>
+                            </verify>
+                        </ptext-text>
+                    </div>
+                </div>
+                <div class="eachItem">
+                    <div class="name">
+                <span>
+                    <em>*</em>所属建筑<i>（保存后不可修改）</i></span>
+                    </div>
+                    <div class="cont">
+                        <pcombobox-normal align="left" sel="istm_sel_build_id" bind='true' id="'istm_id_build_id'">
+                            <header placeholder="'请选择建筑'"></header>
+                            <item datasource="InsertSystemBuildArray" text="obj_name"></item>
+                        </pcombobox-normal>
+                    </div>
+                </div>
+                <div class="eachItem">
+                    <div class="name">
+                <span>
+                    <em>*</em>所属专业<i>（保存后不可修改）</i></span>
+                    </div>
+                    <div class="cont">
+                        <pcombobox-normal align="left" sel="istm_sel_domin" bind='true' id="'istm_id_domin'">
+                            <header placeholder="'请选择专业'"></header>
+                            <item datasource="InsertSystemAllEquipCategory" text="name"></item>
+                        </pcombobox-normal>
+                    </div>
+                </div>
+                <div class="eachItem">
+                    <div class="name">
+                <span>
+                    <em>*</em>所属系统类型<i>（保存后不可修改）</i></span>
+                    </div>
+                    <div class="cont">
+                        <pcombobox-normal align="left" sel="istm_sel_system_category" disabled="true" bind='true'
+                                          id="'istm_id_system_category'">
+                            <header placeholder="'请选择系统类型'"></header>
+                            <item datasource="InsertSystemModel.EList" text="name"></item>
+                        </pcombobox-normal>
+                    </div>
+                </div>
+            </div>
+            <div class="moduleItem" :id="'SystemScroll_tag'+index" v-for='(item,index) in SystemPoints'>
+                <div class="moduleItem">
+                    <div class="header" v-text='item.tag'></div>
+                    <div class="eachItem" v-for='(info,i) in item.info_Points'>
+                        <div class="name">
+                            <span v-text='info.info_name'></span>
+                        </div>
+
+                        <!-- 选择适用的控件 Start -->
+                        <div class="cont" v-if='info.cmpt=="ptext_text"'>
+                            <ptext-text bind='true' value='info.str_value'>
+                                <!-- <verify errtip="请输入数字" verifytype="positivenumber">
+                                </verify> -->
+                            </ptext-text>
+                        </div>
+                        <div class="cont" v-if='info.cmpt=="ptext_unit"'>
+                            <ptext-text bind='true' value='info.str_value' text="info.unit">
+                                <!-- <verify errtip="请输入数字" verifytype="positivenumber">
+                                </verify> -->
+                            </ptext-text>
+                        </div>
+                        <div class="cont" v-if='info.cmpt=="ptext_numscope"'>
+                            <div class="tf">
+                                <ptext-text bind='true' value='info.str_arr_value[0]'>
+                                </ptext-text>
+                            </div>
+                            <div class="tf">~</div>
+                            <div class="tf">
+                                <ptext-text bind='true' value='info.str_arr_value[1]'>
+                                </ptext-text>
+                            </div>
+                        </div>
+                        <div class="cont" v-if='info.cmpt=="ptext_unitnumscope"'>
+                            <div class="tf">
+                                <ptext-text bind='true' value='info.str_arr_value[0]' text="info.unit">
+                                </ptext-text>
+                            </div>
+                            <div class="tf">~</div>
+                            <div class="tf">
+                                <ptext-text bind='true' value='info.str_arr_value[1]' text="info.unit">
+                                </ptext-text>
+                            </div>
+                        </div>
+                        <div class="cont" v-if='info.cmpt=="ptext_textarea"'>
+                            <ptext-textarea bind='true' value='info.str_value' style="height: 100px">
+                            </ptext-textarea>
+                        </div>
+                        <div class="cont" v-if='info.cmpt=="ptime_timeymdhm"'>
+                            <ptime-form id="'cbx_Points_id_'+info.info_code" bind='true'>
+                                <panel timetype="yMdhm" startyear="1993" endyear="2020"></panel>
+                            </ptime-form>
+                        </div>
+                        <div class="cont" v-if='info.cmpt=="ptime_timeymdhmscope"'>
+                            <ptime-form id="'cbx_Points_id_'+info.info_code" bind='true'>
+                                <panel timetype="yMdhms" startyear="1993" endyear="2020"></panel>
+                            </ptime-form>
+                        </div>
+                        <div class="cont" v-if='info.cmpt=="ptime_timeymd"'>
+                            <ptime-form id="'cbx_Points_id_'+info.info_code" bind='true'>
+                                <panel timetype="yMd" startyear="1993" endyear="2020"></panel>
+                            </ptime-form>
+                        </div>
+                        <div class="cont" v-if='info.cmpt=="ptime_timeymdscope"'>
+                            <div class="tf">
+                                <ptime-form id="'cbx_Points_id_'+info.info_code+'0'" bind='true'>
+                                    <panel timetype="yMd" startyear="1993" endyear="2020"></panel>
+                                </ptime-form>
+                            </div>
+                            <div class="tf">~</div>
+                            <div class="tf">
+                                <ptime-form id="'cbx_Points_id_'+info.info_code+'1'" bind='true'>
+                                    <panel timetype="yMd" startyear="1993" endyear="2020"></panel>
+                                </ptime-form>
+                            </div>
+                        </div>
+                        <div class="cont" v-if='info.cmpt=="ptime_timehm"'>
+                            <ptime-form id="'cbx_Points_id_'+info.info_code" bind='true'>
+                                <panel timetype="hm" startyear="1993" endyear="2020"></panel>
+                            </ptime-form>
+                        </div>
+                        <div class="cont" v-if='info.cmpt=="ptime_timehmscope"'>
+                            <div class="tf">
+                                <ptime-form id="'cbx_Points_id_'+info.info_code+'0'" bind='true'>
+                                    <panel timetype="hm" startyear="1993" endyear="2020"></panel>
+                                </ptime-form>
+                            </div>
+                            <div class="tf">~</div>
+                            <div class="tf">
+                                <ptime-form id="'cbx_Points_id_'+info.info_code+'1'" bind='true'>
+                                    <panel timetype="hm" startyear="1993" endyear="2020"></panel>
+                                </ptime-form>
+                            </div>
+                        </div>
+                        <div class="cont" v-if='info.cmpt=="pcombobox_normal"'>
+                            <pcombobox-normal id="'cbx_Points_id_'+info.info_code" bind='true'>
+                                <header></header>
+                                <item datasource="info.cmpt_data" text="name"></item>
+                            </pcombobox-normal>
+                        </div>
+                        <div class="cont" v-if='info.cmpt=="pswitch_checkbox"'>
+                            <div class="per-switch-checkbox" v-for='check in info.cmpt_data'
+                                 @click='check.isChecked=!check.isChecked'>
+                                <span class="per-checkbox_input"
+                                      :class="{'per-checkbox-checked':check.isChecked}"></span>
+                                <span class="per-switch_label" v-text='check.name'></span>
+                            </div>
+                        </div>
+                        <div class="cont" v-if='info.cmpt=="pupload_attachmentonly"'>
+                            <pupload-attachment id="'cbx_Points_id_'+info.info_code" number="1"
+                                                bind='true'></pupload-attachment>
+                        </div>
+                        <!-- 选择适用的控件 End -->
+
+
+                        <!-- <div class="cont" v-if='info.type==0'>
+                                <ptext-text bind='true' value='info.str_value'>
+                                </ptext-text>
+                            </div>
+                            <div class="cont" v-if='info.type==1'>
+                                <pcombobox-normal id="'cbx_Points_id_'+info.info_code" bind='true'>
+                                    <header placeholder=""></header>
+                                    <item datasource="info.cmpt_data" text="name"></item>
+                                </pcombobox-normal>
+                            </div>
+                            <div class="cont" v-if='info.type==2'>
+                                <div class="per-switch-checkbox" v-for='check in info.cmpt_data' @click='check.isChecked=!check.isChecked'>
+                                    <span class="per-checkbox_input" :class="{'per-checkbox-checked':check.isChecked}"></span>
+                                    <span class="per-switch_label" v-text='check.name'></span>
+                                </div>
+                            </div>
+                            <div class="cont" v-if='info.type==3'>
+                                <pupload-attachment id="'cbx_Points_id_'+info.info_code" number="4" bind='true'></pupload-attachment>
+                            </div>
+                            <div class="cont" v-if='info.type==4'>
+                                <ptext-text value='info.str_value' bind='true' text="info.unit">
+                                </ptext-text>
+                            </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--second version edit end-->
+</div>

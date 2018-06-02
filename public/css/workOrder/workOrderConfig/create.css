@@ -1,0 +1,758 @@
+#orderConfigCreate{
+
+}
+#orderConfigCreate .config .configTab{
+    padding:0px;
+}
+#orderConfigCreate .config .configTab > .top{
+    width:100%;
+    height:50px;
+    position:relative;
+    border-bottom:1px solid #cacaca;
+}
+#orderConfigCreate .config .configTab > .top >section{
+    /* width:140px; */
+    height:30px;
+}
+#orderConfigCreate .config .configTab > .top >.gobackBtn{
+    position:absolute;
+    top:10px;
+    left:20px;
+}
+#orderConfigCreate .config .configTab > .top >.saveBtn{
+    position:absolute;
+    top:10px;
+    right:20px;
+}
+#orderConfigCreate .config .configTab > .content{
+    width: 100%;
+    height: calc(100% - 60px);
+    padding: 30px 0 0 100px;
+    box-sizing: border-box;
+    overflow-y: scroll;
+
+}
+#orderConfigCreate .config .configTab > .content >.block{
+    width:360px;
+    margin-bottom:30px;
+}
+#orderConfigCreate .config .configTab > .content >.block > h3 {
+    margin-bottom:10px;
+}
+#orderConfigCreate .config .configTab > .content >.block > h3 >span{
+    padding-right:10px;
+
+}
+
+#orderConfigCreate .config .configTab > .content >.block > h3 >em{
+    color:#03aad2;
+}
+#orderConfigCreate .config .configTab > .content >.block .setTime{
+    display:flex;
+    flex-flow:column nowrap;
+}
+#orderConfigCreate .config .configTab > .content >.block .setTime .timeSel{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    margin-bottom: 30px;
+}
+#orderConfigCreate .config .configTab > .content >.block .setTime .timeSel >span{
+    margin-left:10px;
+}
+#startTimeSel{
+    width:110px;
+    margin-left:10px;
+    margin-right:10px;
+}
+#endTimeSel{
+    width:110px;
+    margin-left:10px;
+    margin-right:10px;
+}
+#orderConfigCreate .config .configTab > .content >.block1{
+    width:700px;
+}
+#orderConfigCreate .config .configTab > .content >.block >section >.tip{
+    color:#777;
+}
+
+/* 添加岗位模块 */
+
+
+/* 添加人员岗位模块 */
+
+.createWorkOrderCommon_person_position {
+    width: 100%;
+}
+
+.createWorkOrderCommon_person_position_box {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+    min-height: 50px;
+    box-sizing: border-box;
+    margin-top: 10px;
+    /* padding-left: 38px; */
+}
+.createWorkOrderCommon_delete{
+	min-width: 20px;
+    height: 69px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-right: 10px;
+    box-sizing: border-box;
+}
+.createWorkOrderCommon_delete.system{
+    cursor:default;
+}
+.createWorkOrderCommon_person_position_box_left {
+    min-width: 146px;
+    width: 146px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 70px;
+    border-radius: 2px;
+    background: #f8f8f8;
+    /* padding: 10px; */
+    border: 1px solid #d9e2e8;
+    box-sizing: border-box;
+    color: #7a94ad;
+    text-align: center;
+    line-height: 70px;
+    box-sizing: border-box;
+}
+
+.createWorkOrderCommon_person_position_box_left,
+.createWorkOrderCommon_person_position_box_list {
+    float: left;
+}
+
+.createWorkOrderCommon_person_position_box_list {
+    margin-left: 10px;
+}
+
+.createWorkOrderCommon_person_position_box_list>ul {
+    display: inline-block;
+}
+
+.createWorkOrderCommon_person_position_box_list>ul>li {
+    float: left;
+    width: 200px;
+    height: 70px;
+    border-radius: 2px;
+    padding: 10px;
+    border: 1px solid #d9e2e8;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    position: relative;
+    cursor: pointer;
+}
+.createWorkOrderCommon_person_position_box_list>ul>li:hover{
+    border: 1px solid #02a9d1;
+    background: #f7f9fb;
+}
+.createWorkOrderCommon_person_position_box_list>ul>li.add_more_work{
+    border: 1px dashed #d9e2e8;
+}
+.createWorkOrderCommon_person_position_box_list>ul>li.add_more_work:hover{
+    background: #f8f8f8;
+}
+.createWorkOrderCommon_person_position_box_list>ul>li.redBorder{
+    border: 1px solid red;
+}
+.createWorkOrderCommon_person_position_box_list>span {
+    display: inline-block;
+    width: 200px;
+    height: 50px;
+    border-radius: 2px;
+    padding: 10px;
+    border: 1px dashed #cacaca;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    color: #7a94ad;
+    /* display: flex; */
+    flex-flow: row nowrap;
+    align-items: center;
+}
+.choicePersonPositionMark{
+    cursor: pointer;
+}
+.choicePersonPositionMark.isLock{
+    /* background: #d9e2e8; */
+    opacity: 0.3;
+    border-bottom: 1px solid #ccc;
+}
+.add_more_work {
+    cursor: pointer;
+    position: relative;
+    line-height: 45px;
+    text-align: center;
+}
+
+.add_more_work>span {
+    color: #7a94ad;
+}
+
+.add_more_work>em {
+    font-size: 20px;
+    font-weight: 600;
+    color: #7a94ad;
+    margin-right: 8px;
+    position: relative;
+    top: 3px
+}
+
+.add_more_work>ul {
+    position: absolute;
+    left: -1px;
+    top: 68px;
+    width: 200px;
+    min-height: 32px;
+    border: 1px solid #d9e2e8;
+    display: none;
+    background: #fff;
+    z-index: 5;
+    max-height: 300px;
+    overflow: auto;
+    box-sizing: border-box;
+}
+
+.add_more_work>ul>li {
+    width: 100%;
+    height: 32px;
+    line-height: 32px;
+    padding-left: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
+    display: none;
+}
+.add_more_work>ul>li.show{
+    display: block;
+}
+.add_more_work>ul>li:hover {
+    background: #f8f8f8;
+}
+
+.createWorkOrderCommon_person_position_box_list_top {
+    position: absolute;
+    top: 18px;
+    left: 5%;
+    width: 95%;
+    height: 30px;
+    box-sizing: border-box;
+}
+
+.createWorkOrderCommon_person_position_box_list_top>em {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    max-width: 140px;
+    height: 16px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.createWorkOrderCommon_person_position_box_list_top>span {
+    position: absolute;
+    top: -8px;
+    right: 10px;
+    width:16px;
+    height:16px;
+    background:url(/images/perclose.png) center no-repeat;
+}
+.createWorkOrderCommon_person_position_box_list_top>span:hover{
+    cursor: pointer;
+    background:url(/images/close2.png) center no-repeat;
+}
+.createWorkOrderCommon_person_position_box_list_bottom {
+    position: absolute;
+    top: 44px;
+    left: 10px;
+    font-size: 12px;
+    color: #7a94ad;
+}
+#choicePositionError{
+    display:none;
+    color:#ff6666;
+    margin: 10px 0 0 30px;
+}
+.createWorkOrderCommon_add {
+    width: 148px;
+    height: 68px;
+    border: 1px solid #d9e2e8;
+    border-radius: 4px;
+    background: #f8f8f8;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    color: #7a94ad;
+    margin-top: 10px;
+    cursor: pointer;
+    margin-left: 30px;
+}
+.createWorkOrderCommon_add:hover{
+    background: #efefef;
+}
+.createWorkOrderCommon_add div:nth-child(1) {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.createWorkOrderCommon_add div:nth-child(2) {
+    margin-left: 8px;
+    font-size: 14px;
+}
+
+
+/* 选择岗位树 */
+.choicePositionTree{
+    width:400px;
+    height:500px;
+}
+.choicePositionTree >section{
+    height: 450px;
+    width: 400px;
+    border-bottom: 1px solid #d9e2e8;
+    margin-bottom: 10px;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+.choicePositionTree .organizationTreeBox .organizationTreeBoxName{
+    
+    height:50px;
+    line-height:50px;
+    border-bottom:1px dashed #d9e2e8;
+}
+.choicePositionTree .organizationTreeBox .organizationTreeBoxName:hover{
+    /* cursor:pointer; */
+}
+.choicePositionTree .organizationTreeBox .organizationTreeBoxName span{
+    display: block;
+    max-width: 395px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.choicePositionTree .organizationTreeBox .organizationTreeBoxName span.checked{
+    color:#02a9d1;
+}
+.choicePositionTree .organizationTreeBox .organizationTreeBoxName span.disabled{
+    background:#cacaca;
+    opacity:0.5;
+}
+.choicePositionTree  .choicePositionOperaBtn{
+    text-align: center;
+    /* padding-top: 20px; */
+}
+.choicePositionTree  .choicePositionOperaBtn >div{
+    margin-right:20px;
+}
+#createPersonFloatWindow .per-madal-float_titcon>b{
+    display:block;
+    max-width: 110px;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#operatWindow .operatCommonBox{
+    width: 400px;
+    height: calc(100% - 20px);
+    overflow-y: scroll;
+}
+
+/* 下级路由模块 */
+/* 新建 */
+#operatWindow .operatCommonBox .create{
+    padding:10px;
+}
+#operatWindow .operatCommonBox .create .createOption{
+    margin: 5px 0;
+}
+#operatWindow .operatCommonBox .create .createOption .li{
+    display:flex;
+    flex-flow:row nowrap;
+    align-items: center;
+}
+#operatWindow .operatCommonBox .create .createOption .li span{
+    display:block;
+}
+#operatWindow .operatCommonBox .create .switch{
+    display:flex;
+    flex-flow: row nowrap;
+    align-items:center;
+}
+#operatWindow .operatCommonBox .create .switch >span{
+    margin-right:10px;
+}
+#operatWindow .operatCommonBox .create .block1{
+    margin-bottom:20px;
+}
+#operatWindow .operatCommonBox .create .block1 >span{
+    color:#aaa;
+}
+#operatWindow .operatCommonBox .create .block2 .switch{
+    margin-top: 6px;
+    margin-bottom: 4px;
+}
+#operatWindow .operatCommonBox .create .block2>em{
+    font-size: 14px;
+    color: #ff6666;
+}
+/* 指派 */
+#operatWindow .operatCommonBox .assign .box{
+    padding:10px;
+}
+#operatWindow .operatCommonBox .assign .assingOption .option{
+    margin:5px 0;
+    display:flex;
+    flex-flow:row nowrap;
+    align-items:center;
+}
+#operatWindow .operatCommonBox .assign .assingOption .option >span{
+    margin-right:10px;
+}
+#operatWindow .operatCommonBox .assign .assignTimeSet{
+    margin-top:10px;
+}
+#operatWindow .operatCommonBox .assign .assignTimeSet .time{
+    display:flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+#operatWindow .operatCommonBox .assign .assignTimeSet .time >span{
+    margin: 0 5px;
+}
+#assignTime{
+    width:120px;
+}
+/* 执行 */
+#operatWindow .operatCommonBox  .execute .box{
+    padding:10px;
+}
+#operatWindow .operatCommonBox  .execute .box .option{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    margin-top: 4px;
+}
+#operatWindow .operatCommonBox  .execute .box .option >span{
+    margin-right:10px;
+}
+#operatWindow .operatCommonBox  .execute .box   >span{
+    margin-top:10px;
+}
+/* 申请 */
+#operatWindow .operatCommonBox .apply .applyBlock {
+    padding-left:10px;
+}
+#operatWindow .operatCommonBox .apply .applyBlock .applyAduitList{
+    width:130px;
+    margin:0 14px;
+}
+#operatWindow .operatCommonBox .apply .applyBlock .line{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+/* 审核 */
+#operatWindow .operatCommonBox .audit .auditBlock{
+    padding-left:10px;
+}
+#operatWindow .operatCommonBox .audit .auditBlock .auditBlockList{
+    width:80px;
+    margin:0 20px;
+}
+#operatWindow .operatCommonBox .audit .auditBlock .line{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    /* padding-left: 10px; */
+}
+#operatWindow .operatCommonBox .audit .auditSetTime .title{
+    display: block;
+    width: 100%;
+    height: 30px;
+    border-bottom: 1px solid #d9e2e8;
+    margin-bottom: 10px;
+}
+#operatWindow .operatCommonBox .audit .auditSetTime >div{
+    display:flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+#operatWindow .operatCommonBox .audit .auditSetTime >div #auditTime{
+    width: 140px;
+    margin-left: 10px;
+}
+#auditTimeTxt{
+    width: 120px;
+    margin-left: 8px;
+}
+/* 审批 */
+#operatWindow .operatCommonBox .approve .approveBlock{
+    padding-left:10px;
+}
+#operatWindow .operatCommonBox .approve .approveBlock .approveBlockList{
+    width:80px;
+    margin:0 20px;
+}
+#operatWindow .operatCommonBox .approve .approveBlock .line{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    /* padding-left: 10px; */
+}
+#operatWindow .operatCommonBox .approve .approveSetTime .title{
+    display: block;
+    width: 100%;
+    height: 30px;
+    border-bottom: 1px solid #d9e2e8;
+    margin-bottom: 10px;
+}
+#operatWindow .operatCommonBox .approve .approveSetTime >div{
+    display:flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+#operatWindow .operatCommonBox .approve .approveSetTime >div #approveTime{
+    width: 140px;
+    margin-left: 10px;
+}
+
+
+
+#operatWindow .operatCommonBox .bottom{
+    width: 100%;
+    border-top: 1px solid #d9e2e8;
+    position: absolute;
+    bottom: 10px;
+    transform: translateX(-50%);
+    left: 50%;
+    /* margin-left: -50%; */
+    text-align: center;
+    padding-top: 10px;
+}
+/* 下拉单选组件 */
+#singleSelect{
+    width:124px;
+    position:relative;
+}
+#singleSelect > .title{
+    width: 124px;
+    border: 1px solid #cacaca;
+    box-sizing: border-box;
+    height: 30px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    /* margin-top: 20px; */
+    cursor: pointer;
+    position: relative;
+    top:8px;
+    font-size: 14px;
+    font-weight: normal;
+}
+#singleSelect > .title >span{
+    display: block;
+    color: #637e99;
+    /* height: 28px; */
+    white-space: nowrap;
+    overflow: hidden;
+    width: 148px;
+    text-overflow: ellipsis;
+}
+#singleSelect > .title >i{
+    display: block;
+    font-family: 'perficon';
+    font-size: 14px;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    color:#637e99;
+}
+
+#singleSelect >.list{
+    display:none;
+}
+#singleSelect >.list{
+    width: 126px;
+    min-height: 100px;
+    height: 168px;
+    border: 1px solid #d9e2e8;
+    position: absolute;
+    top: 38px;
+    left: 0;
+    background: #fff;
+    z-index: 10;
+    border-top: none;
+}
+#singleSelect >.list >ul{
+    max-height: 120px;
+    overflow: auto;
+}
+#singleSelect >.list li{
+    height:30px;
+    line-height:30px;
+    width:100%;
+    cursor: pointer;
+    box-sizing: border-box;
+    padding-left:20px;
+    display:flex;
+}
+#singleSelect >.list li >i{
+    display:block;
+    width:140px;
+}
+#singleSelect >.list li >span{
+    display:block;
+    width:20px;
+    background:url("../../../images/permissionChecked.png") no-repeat center;;
+}
+#singleSelect >.list li.disabled{
+    background:#ccc;
+}
+#singleSelect >.list li:hover{
+    background:#f8f8f8;
+}
+#singleSelect >.list .opeart{
+    padding-top: 6px;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    left: 8px;
+    padding-bottom: 6px;
+}
+#singleSelect >.list .opeart >div:nth-child(2){
+    margin-left:10px;
+}
+
+
+
+/* 下拉多选组件 */
+.mutiSelect{
+    width:124px;
+    position:relative;
+}
+.mutiSelect > .title{
+    width: 134px;
+    border: 1px solid #cacaca;
+    box-sizing: border-box;
+    height: 30px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    /* margin-top: 20px; */
+    cursor: pointer;
+    position: relative;
+    top:0px;
+    font-size: 14px;
+    font-weight: normal;
+}
+.mutiSelect > .title >span{
+    display: block;
+    color: #637e99;
+    /* height: 28px; */
+    white-space: nowrap;
+    overflow: hidden;
+    width: 148px;
+    max-width: 98px;
+    margin-left: 10px;
+    text-overflow: ellipsis;
+}
+.mutiSelect > .title >i{
+    display: block;
+    font-family: 'perficon';
+    font-size: 14px;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    color:#637e99;
+}
+
+.mutiSelect >.list{
+    display:none;
+}
+.mutiSelect >.list{
+    width: 132px;
+    min-height: 100px;
+    height: 119px;
+    border: 1px solid #d9e2e8;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    background: #fff;
+    z-index: 10;
+    border-top: none;
+}
+.mutiSelect >.list >ul{
+    max-height: 120px;
+    overflow: auto;
+}
+.mutiSelect >.list li{
+    height: 30px;
+    line-height: 30px;
+    width: 100%;
+    cursor: pointer;
+    box-sizing: border-box;
+    padding-left: 10px;
+    display: flex;
+    border-bottom: 1px solid #d9e2e8;
+}
+.mutiSelect >.list li >i{
+    display: block;
+    width: 140px;
+    height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.mutiSelect >.list li >span{
+    display:block;
+    width:20px;
+    background:url("../../../images/permissionChecked.png") no-repeat center;;
+}
+.mutiSelect >.list li.disabled{
+    background:#ccc;
+}
+.mutiSelect >.list li:hover{
+    background:#f8f8f8;
+}
+.mutiSelect >.list .opeart{
+    padding-top: 6px;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    left: 8px;
+    padding-bottom: 6px;
+}
+.mutiSelect >.list .opeart >div:nth-child(2){
+    margin-left:10px;
+}
+/* 错误提示 */
+#errorTip{
+    margin-bottom: 10px;
+}
+#errorTip > ul >li >span{
+    color:#ff6666;
+}

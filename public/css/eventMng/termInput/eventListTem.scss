@@ -1,0 +1,437 @@
+
+.eventListTemWrap{
+    width: calc(100% - 40px);
+    height: 100%;
+    padding: 0 20px 0;
+    font-size: 14px;
+    .head{
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        border-bottom: 1px solid #dae3e9;
+    }
+    .neck{
+        padding: 0 20px 0;
+        width: calc(100% - 40px);
+        height: 50px;
+        line-height: 50px;
+        background: #eaeef0;
+        &>div{
+            height: 30px;
+            margin-top: 10px;
+        }
+        .left{
+            float: left;
+            width: 140px;
+            margin-right: 10px;
+        }
+        .left2{
+            float: left;
+            width: 140px;
+        }
+        .right{
+            float: right;
+            width: 200px;
+        }
+        .right2{
+            float: right;
+            margin-right: 10px;
+            width: 140px;
+        }
+        .right3{
+            margin-top: 1px;
+            width: 240px;
+        }
+    }
+    .title{
+        padding: 0 20px 0;
+        width: calc(100% - 40px);
+        height: 35px;
+        line-height: 35px;
+        border-bottom: 1px solid #eeeeee;
+        &>div{
+            width: 100%;
+            height: 100%;
+            &>span{
+                float: left;
+                display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-wrap: break-word;
+                white-space: nowrap;
+                margin-right: 1%;
+            }
+        }
+    }
+    .grid{
+        width: 100%;
+        height: calc(100% - 137px);
+        overflow-x: hidden;
+        overflow-y: auto;
+        // position: relative;
+        ul{
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+            .warp{
+                width: 3000px;
+            }
+            li{
+                padding: 0 20px 0;
+                width: calc(100% - 40px);
+                list-style-type: none;
+                height: 36px;
+                line-height: 36px;
+                cursor: pointer;
+                position: relative;
+                &>span{
+                    float: left;
+                    display: block;
+                    height: 36px;
+                    margin-right: 1%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    word-wrap: break-word;
+                    white-space: nowrap;
+                }
+                &:nth-of-type(odd){
+                    background: #f4f6f9;
+                }
+            }
+        }
+    }
+
+    .foot{
+        width: 100%;
+        height: 30px;
+        padding: 10px 0 10px 0;
+        &>div{
+            float: right;
+        }
+    }
+    .all{
+        .s0{
+            width: 9%;
+            padding-right: 8%;
+        }
+        .s1{
+            width: 14%;
+        }
+        .s2{
+            width: 9%;
+            margin-right: 8%;
+            position: relative;
+            div{
+                height: 100%;
+                span{
+                    float: left;
+                }
+                &>span:nth-last-of-type(1){
+                    &>span:nth-of-type(2){
+                        display: none;
+                    }
+                }
+            }
+        }
+        .s3{
+            width: 11%;
+        }
+        .s31{
+            width: 11%;
+        }
+        .s32{
+            width: 14%;
+        }
+        .s4{
+            width: 12%;
+        }
+        .s41{
+            width: 12%;
+        }
+        .s42{
+            width: 15%;
+        }
+        .s5{
+            width: 9%;
+        }
+        .s51{
+            width: 9%;
+        }
+        .s52{
+            width: 13%;
+        }
+        .s6{
+            width: 14%; 
+            margin-right: 0;
+        }
+        .s56{
+            width: 9%;
+        }
+    }
+    .user{
+        .s0{
+            width: 9%;
+            padding-right: 8%;
+        }
+        .s1{
+            width: 14%;
+        }
+        .s2{
+            width: 13%;
+        }
+        .s3{
+            width: 14%;
+        }
+        .s41{
+            width: 17%;
+        }
+        .s51{
+            width: 17%;
+        }
+        
+        .s42{
+            width: 11%;
+        }
+        .s43{
+            width: 17%;
+        }
+        .s52{
+            width: 11%;
+        }
+        .s53{
+            width: 17%;
+        }
+        .s62{
+            width: 14%;
+            margin-right: 0;
+        }
+    }
+    .obj{
+        .s0{
+            width: 10%;
+            padding-right: 9%;
+        }
+        .s1{
+            width: 14%;
+        }
+
+        .s21{
+            width: 12.5%;
+            padding-right: 11.5%;
+        }
+        .s22{
+            width: 10%;
+            padding-right: 9%;
+        }
+        .s21,.s22{
+            position: relative;
+            overflow: hidden;
+            div{
+                height: 100%;
+                span{
+                    float: left;
+                }
+                &>span:nth-last-of-type(1){
+                    &>span:nth-of-type(2){
+                        display: none;
+                    }
+                }
+            }
+        }
+        .s31{
+            width: 14%;
+        }
+        .s32{
+            width: 10%;
+        }
+
+        .s4{
+            width: 9%;
+        }
+        .s41{
+            width: 12%;
+        }
+        .s42{
+            width: 9%;
+        }
+
+
+
+        .s5{
+            width: 9%;
+        }
+        .s51{
+            width: 12%;
+        }
+        .s52{
+            width: 9%;
+        }
+        .s6{
+            width: 14%;
+            margin-right: 0;
+        }
+
+
+        .s56{
+            width: 10%;
+        }
+    }
+    .hq{
+        .s0{
+            width: 13%;
+            padding-right: 12%;
+        }
+        .s11{
+            width: 16%;
+        }
+        .s12{
+            width: 19%;
+        }
+        .s21{
+            width: 16%;
+        }
+        .s22{
+            width:19%;
+        }
+        .s31{
+            width: 15%;
+        }
+        .s32{
+            width: 23%;
+        }
+        .s4{
+            width: 14%;
+            margin-right: 0;
+        }
+        .s5{
+            width: 9%;
+        }
+    }
+
+    .moreObj{
+        position: absolute;
+        top: 10px;
+        padding: 0 10px 0;
+        height: 16px;
+        line-height: 14px;
+        font-size: 10px;
+        border-radius: 40%;
+        background: #EEEEEE;
+        color: #333;
+        left:  27.5%;
+    }
+    .moreObj1{
+        left: 32.5%;
+    }
+    .moreObj2{
+        left: 30%;
+    }
+    .moreObj3{
+        left: 19%;
+    }
+    .moreObj4{
+        left: 23%;
+    }
+    .warn1{
+        .s0{
+            width: 9%;
+        }
+        .s1{
+            width: 8%;
+            padding-right: 7%;
+            overflow: hidden;
+            div{
+                height: 100%;
+                span{
+                    float: left;
+                }
+                &>span:nth-last-of-type(1){
+                    &>span:nth-of-type(2){
+                        display: none;
+                    }
+                }
+            }
+        }
+        .s2{
+            width: 9%;
+        }
+        .s3{
+            width: 9%;
+        }
+        .s4{
+            width: 9%;
+        }
+        .s5{
+            width: 9%;
+        }
+        .s6{
+            width: 9%;
+        }
+        .s7{
+            width: 9%;
+        }
+        .s8{
+            width: 14%;
+            margin-right: 0;
+        }
+    }
+    .warn2,.warn3{
+        .s1{
+            width: 12.5%;
+            padding-right: 11.5%;
+        }
+        .s7{
+            width: 14%;
+        }
+    }
+    .sort{
+        width: 14px;
+        height: 16px;
+        display: inline-block;
+        margin-left: 5px;
+        vertical-align: middle;
+        color: #7a94ad;
+        // float: left;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none; /* for Firefox */
+        em{
+            width: 14px;
+            height: 7px;
+            display: block;
+            font-family: "perficon";
+            text-align: center;
+            line-height: 7px;
+            cursor: pointer;
+            font-size: 12px;
+            opacity: 0.5;
+        }
+        .op{
+            opacity: 1;
+        }
+    }
+    .btn{
+        float: left;
+        width: 80px;
+        height: 100%;
+        line-height: 36px;
+        color: #637e99;
+        img{
+            margin-top: 11px;
+            float: left;
+            margin-right: 3px;
+        }
+    }
+    .btn:hover{
+        color: rgb(84,111,138);
+    }
+}
+
+
+#closeProEventCombo{
+    display: none;
+    position: absolute;
+    .per-combobox-title{
+        display: none;
+    }
+}

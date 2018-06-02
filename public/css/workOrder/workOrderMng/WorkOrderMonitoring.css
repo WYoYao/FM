@@ -7,19 +7,25 @@ html, body {
     margin: 0;
     padding: 0;
 }
-
-#workOrderManage-Monitor {
+/*.workOrderMngWrap {
     width: 100%;
     height: 100%;
+    position: relative;}*/
+#workOrderManage-Monitor {
+    /*width: 100%;*/
+    height: 100%;
+    position: absolute;
+    left: 10px;
+    right: 10px;
 }
-
+#treeTempLoading {
+bottom:50px;}
 .monitor-all {
     width: 100%;
     height: 100%;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    padding: 16px 10px 0px 10px;
     background-color: #e3e6e9;
 }
 
@@ -69,20 +75,19 @@ html, body {
     box-sizing: border-box;
 }
 
-.monitor-content-list-header > div {
-    width: 200px;
-    height: 30px;
-    display: inline-block;
-    margin-right: 6px;
-    vertical-align: top;
-    margin-top: 10px;
-    line-height: normal;
-
-}
+    .monitor-content-list-header > div {
+        width: 200px;
+        height: 30px;
+        display: inline-block;
+        margin-right: 6px;
+        vertical-align: top;
+        margin-top: 10px;
+        line-height: normal;
+    }
 
 .monitor-content-list-body {
     width: 100%;
-    height: calc(100% - 50px);
+    height: calc(100% - 70px);
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -94,13 +99,14 @@ html, body {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-
 }
-.monitor-table{
+
+.monitor-table {
     width: 100%;
     height: 100%;
     font-size: 12px;
 }
+
 .monitor-table-header {
     width: 100%;
     height: 30px;
@@ -115,28 +121,28 @@ html, body {
     border-bottom: 1px solid #EEEEEE;
 }
 
-.monitor-table-header > div {
-    flex-grow: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    flex-basis: 270px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    padding-left: 20px;
-}
+    .monitor-table-header > div {
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        flex-basis: 270px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding-left: 20px;
+    }
 
-.monitor-table-header div.table-header-summary {
-    flex-basis: 600px;;
-    max-width: 600px;
-    /*padding-right: 100px;*/
+    .monitor-table-header div.table-header-summary {
+        flex-basis: 600px;
+        ;
+        max-width: 600px;
+        /*padding-right: 100px;*/
+    }
 
-}
-
-.monitor-table-header div.table-header-id {
-    padding-left: 20px;
-}
+    .monitor-table-header div.table-header-id {
+        padding-left: 20px;
+    }
 
 .monitor-table-body {
     height: calc(100% - 30px);
@@ -146,9 +152,11 @@ html, body {
     box-sizing: border-box;
     /*border-bottom: 1px solid #eee;*/
 }
-.border-on{
+
+.border-on {
     border-bottom: 1px solid #eee;
 }
+
 .monitor-table-body .tr {
     width: 100%;
     height: 36px;
@@ -159,63 +167,71 @@ html, body {
     flex-wrap: nowrap;
     cursor: pointer;
 }
-.monitor-table-body .tr:hover{
-    background-color: #f8f8f8!important;
-}
-.monitor-table-body .tr:nth-child(odd) {
-    background-color: #f5f7fa;
-}
 
-.monitor-table-body .tr:nth-child(even) {
-    background-color: white;
-}
-/*.monitor-table-body .tr:last-of-type{
+    .monitor-table-body .tr:hover {
+        background-color: #f8f8f8!important;
+    }
+
+    .monitor-table-body .tr:nth-child(odd) {
+        background-color: #f5f7fa;
+    }
+
+    .monitor-table-body .tr:nth-child(even) {
+        background-color: white;
+    }
+    /*.monitor-table-body .tr:last-of-type{
     border-bottom: 1px solid #eee;
 }*/
-.monitor-table-body .tr div {
-    flex-grow: 1;
-    flex-basis: 270px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    padding-left: 20px;
-}
+    .monitor-table-body .tr div {
+        flex-grow: 1;
+        flex-basis: 270px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding-left: 20px;
+    }
 
-.monitor-table-body .tr div.table-header-summary {
-    flex-basis: 600px;
-    max-width: 600px;
-    /*padding-right: 100px;*/
-}
+        .monitor-table-body .tr div.table-header-summary {
+            flex-basis: 600px;
+            max-width: 600px;
+            /*padding-right: 100px;*/
+        }
 
-.monitor-table-body .tr div.table-header-id {
-    padding-left: 20px;
-}
+        .monitor-table-body .tr div.table-header-id {
+            padding-left: 20px;
+        }
 
-.monitor-table-noData{
+.monitor-table-noData {
     width: 100%;
     height: 100%;
 }
-.monitor-flash{
+
+.monitor-flash {
     /*display: none;*/
 }
-.flash-no{
+
+.flash-no {
     display: none;
 }
-.image-div{
+
+.image-div {
     text-align: center;
 }
-.image-div>img{
-    width: 110px;
-    height: 90px;
-    margin: 85px 0 15px;
-}
-.image-div>img+p{
-    font-size: 18px;
-}
-.self-state{
+
+    .image-div > img {
+        width: 110px;
+        height: 90px;
+        margin: 85px 0 15px;
+    }
+
+        .image-div > img + p {
+            font-size: 18px;
+        }
+
+.self-state {
     padding: 0 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -224,4 +240,216 @@ html, body {
     background: #f2f2f2;
     margin-left: 10px;
     font-size: 12px;
+}
+
+
+
+/* 高级筛选 */
+.screeningConditions {
+    border: 1px solid #d9e2e8;
+    border-top: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    display:none;
+}
+
+.screenTemp {
+    padding-left: 90px;
+    position: relative;
+}
+
+.screenTempTitle {
+    width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.screenTemp li {
+padding: 0 5px;
+    height: 22px;
+    line-height: 20px;
+    display: inline-block;
+    color: #02a9d1;
+    border: 1px solid #02a9d1;
+    border-radius: 2px;
+    margin: 0 6px;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+}
+
+    .screenTemp li em {
+        font-family: 'perficon';
+        margin-left: 5px;
+        cursor: pointer;
+    }
+
+    .screenTemp li.add {
+        color: #637e99;
+        border: 1px solid #cecece;
+        cursor: pointer;
+    }
+
+        .screenTemp li.add em {
+            margin-right: 5px;
+        }
+
+.screeningModalWrap {
+    width: 420px;
+    height: 500px;
+    padding-bottom: 50px;
+    box-sizing: border-box;
+}
+
+.horizontalTree {
+    height: 100%;
+}
+
+.horizontalLeft {
+    width: 160px;
+    border-right: 1px solid #ececec;
+    box-sizing: border-box;
+    height: 100%;
+    float: left;
+    overflow: auto;
+}
+
+.horizontalRight {
+    width: calc(100% - 160px);
+    height: 100%;
+    float: left;
+    overflow: auto;
+}
+
+    .horizontalRight li {
+        height: 40px;
+        display: block;
+        line-height: 40px;
+        border-bottom: 1px solid #ececec;
+        box-sizing: border-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding-left: 20px;
+        padding-right: 40px;
+        cursor:pointer;
+        position:relative;
+    }
+
+        .horizontalRight li:hover {
+            background: #f8f8f8;
+        }
+
+        .horizontalRight li > em {
+            position: absolute;
+            right: 10px;
+            top: 11px;
+            height: 16px;
+            width: 16px;
+        }
+
+.screeningModalWrap .treeTemp .title {
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #ececec;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    position: relative;
+    padding-left: 30px;
+    padding-right: 40px;
+}
+.screeningModalWrap .horizontalLeft .treeTemp .title {
+    padding-right: 8px;
+
+}
+    .screeningModalWrap .treeTemp .title.cursor {
+      cursor:pointer;
+  }
+    .screeningModalWrap .treeTemp .title:hover {
+        background: #f8f8f8;
+    }
+    .screeningModalWrap .treeTemp .title.active {
+    background:#02a9d1 !important;color:#fff !important;}
+.screeningModalWrap .treeTemp .treeTemp .title {
+    padding-left: 45px;
+}
+.screeningModalWrap .treeTemp .treeTemp .treeTemp .title {
+    padding-left: 60px;
+}
+
+.screeningModalWrap .treeTemp .treeTemp .treeTemp .treeTemp  .title {
+    padding-left: 75px;
+}
+.screeningModalWrap .treeTemp .treeTemp .treeTemp .treeTemp .treeTemp .title {
+    padding-left: 90px;
+}
+.screeningModalWrap .treeTemp .treeTemp .treeTemp .treeTemp .treeTemp .treeTemp.title {
+    padding-left: 105px;
+}
+.screeningModalWrap .treeTemp .treeTemp .treeTemp .treeTemp .treeTemp .treeTemp .treeTemp.title {
+    padding-left: 120px;
+}
+.screeningModalWrap .treeTemp .treeTemp .treeTemp .treeTemp  .treeTemp .treeTemp .treeTemp .treeTemp.title {
+    padding-left: 135px;
+}
+.screeningModalWrap .treeTemp .treeTemp .treeTemp .treeTemp  .treeTemp .treeTemp .treeTemp .treeTemp .treeTemp.title {
+    padding-left: 150px;
+}
+.screeningModalWrap .treeTemp .title > span {
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    /* left: -20px; */
+    margin-left: -26px;
+    top: 11px;
+    line-height: 20px;
+    text-align: center;
+    font-family: 'perficon';
+    cursor:pointer;
+      color: #7a94ad;
+}
+.screeningModalWrap .treeTemp .title.active > span {
+color:#fff !important;}
+.screeningModalWrap .treeTemp .title > b {
+        white-space: nowrap;
+}
+
+.screeningModalWrap .treeTemp .title> em {
+            position: absolute;
+            right: 10px;
+            top: 11px;
+            height: 16px;
+            width: 16px;
+            cursor:pointer;
+
+        }
+.screeningModalWrap .treeButWrap {
+    height: 40px;
+    line-height: 40px;
+    border-top: 1px solid #ececec;
+    text-align: center;
+}
+
+    .screeningModalWrap .treeButWrap > div {
+        display: inline-block;
+        margin: 10px 25px;
+    }
+
+.verticalTree {
+    overflow: auto;
+    height: 100%;
+}
+
+.monitor-content-list-header .timeWrap {
+    width: 300px;}
+.monitor-content-list-header > div.advancedScreeningBut {
+height: 30px;
+    line-height: 30px;
+color:#7a94ad;
+cursor:pointer;
 }

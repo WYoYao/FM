@@ -1,0 +1,19 @@
+<script src="./js/eventMng/workOrderInfo/model.js"></script>
+
+<link rel="stylesheet" href="./css/eventMng/term/workOrderInfo.css">
+
+<div id="workOrderInfo" v-show="onPage === 'workOrderInfo'">
+    
+    <div class="head">
+        <i @click="evMngWorkOrderBack()" class="icon grayBule">I</i>
+        <span @click="evMngWorkOrderBack()" class="grayBule">首页&nbsp;&nbsp;/</span>
+        <span>工单详情</span>
+    </div>
+
+    <div class="body">
+        <% include ../workOrder/planMng/workOrderDetail.html %>
+    </div>
+
+    <div class="bottBoder"></div>
+
+</div>

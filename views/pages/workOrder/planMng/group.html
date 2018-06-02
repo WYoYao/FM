@@ -51,45 +51,20 @@
             <script src="/js/workOrder/planMng/baseInfomation/model.js"></script>
 
             <!--  创建的计划每个事项 Start -->
-
-            <!-- 创建计划标准操作弹窗 -->
-            <%include ./hashtag.html %>
-                <!-- <link rel="stylesheet" href="/css/workOrder/planMng/group/hashtag.css"> -->
-                <script src="/js/workOrder/planMng/hashtag/controller.js"></script>
-                <script src="/js/workOrder/planMng/hashtag/model.js"></script>
-
-                <!-- 创建计划@弹窗 -->
-                <%include ./aite.html %>
-                    <link rel="stylesheet" href="/css/workOrder/planMng/group/aite.css">
-                    <script src="/js/workOrder/planMng/aite/controller.js"></script>
-                    <script src="/js/workOrder/planMng/aite/model.js"></script>
-
-                    <!-- 添加信息点弹窗 -->
-                    <%include ./point.html %>
-                        <link rel="stylesheet" href="/css/workOrder/planMng/group/point.css">
-                        <script src="/js/workOrder/planMng/point/model.js"></script>
-
-                        <!--  添加对象和信息点  -->
-                        <%include ./addinfo.html %>
-                            <link rel="stylesheet" href="/css/workOrder/planMng/group/addinfo.css">
-                            <script src="/js/workOrder/planMng/addinfo/controller.js"></script>
-                            <script src="/js/workOrder/planMng/addinfo/model.js"></script>
-
-                            <!-- 编辑信息点弹窗 -->
-                            <%include ./idepoint.html %>
-                                <link rel="stylesheet" href="/css/workOrder/planMng/group/idepoint.css">
-                                <script src="/js/workOrder/planMng/idepoint/model.js"></script>
-
-                                <!-- 添加工作内容弹窗 -->
-                                <%include ./addcontent.html %>
-                                    <script src="/js/workOrder/planMng/addcontent/controller.js"></script>
-                                    <script src="/js/workOrder/planMng/addcontent/model.js"></script>
-
-                                    <!-- 创建计划@弹窗 -->
-                                    <%include ./matter.html %>
-                                        <!-- <link rel="stylesheet" href="/css/workOrder/planMng/group/matter.css"> -->
-                                        <script src="/js/workOrder/planMng/matter/controller.js"></script>
-                                        <script src="/js/workOrder/planMng/matter/model.js"></script>
+            <script src="../js/eventMng/addwork/controller.js"></script>
+            <link rel="stylesheet" href="/css/workOrder/planMng/group/addinfo.css">
+            <link rel="stylesheet" href="/css/workOrder/planMng/group/aite.css">
+            <link rel="stylesheet" href="/css/workOrder/planMng/group/hashtag.css">
+            <link rel="stylesheet" href="/css/workOrder/planMng/group/addcontent.css">
+            <link rel="stylesheet" href="/css/workOrder/planMng/group/point.css">
+            <link rel="stylesheet" href="/css/workOrder/planMng/group/matter.css">
+            <% include ../../eventMng/matter.html %>
+                <% include ../../eventMng/aite.html %>
+                    <%include ../../eventMng/hashtag.html %>
+                        <%include ../../eventMng/addcontent.html %>
+                            <%include ../../eventMng/addinfo.html %>
+                                <%include ../../eventMng/point.html %>
+                                    <%include ../../eventMng/Multiple.html %>
 
                                         <!--  创建的计划每个事项 End -->
 
@@ -110,13 +85,55 @@
                                                             <%include ./planCreate_next.html %>
 
                                                                 <!-- 工单详情 -->
-                                                                <% include ./workOrderDetail.html %>
+                                                                <% include ./workOrderDetailHead.html %>
 
                                                                     <!-- 计划详情 -->
                                                                     <% include ./planInformation.html %>
 
+                                                                        <pwindow-modal id="modalWindow" title="选择项目" templateid="windowTemp1"></pwindow-modal>
 
                                         </div>
+
+                                        <script type="text/html" id="windowTemp1">
+                                                    <div class="toP">
+                                                        <div class="tc">
+                                                            <div class="ti"@click="submitToProjectAllBtn">
+                                                                <span class="titxt">项目名称</span>
+                                                                <span class="c">
+                                                                    <div class="pcheckbox">
+                                                                        <span class="pcheckbox_input" :class="(IssueProjectList.length==_.filter(IssueProjectList,{selected:true}).length && IssueProjectList.length)?'pcheckbox-checked':''"></span>
+                                                                        <span class="pswitch_label"></span>
+                                                                    </div>
+                                                                </span>
+                                                            </div>
+                                                            <div class="ti" v-for="(item,index) in IssueProjectList" @click="item.selected=!item.selected">
+                                                                <span class="titxt" :title="item.project_name" v-text="item.project_name"></span>
+                                                                <span class="c">
+                                                                    <div class="pcheckbox">
+                                                                        <span class="pcheckbox_input" :class="item.selected?'pcheckbox-checked':''"></span>
+                                                                        <span class="pswitch_label"></span>
+                                                                    </div>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tb">
+                                                            <span class="btn">
+                                                                <pbutton-blue text="下发"></pbutton-blue>
+                                                            </span>
+                                                            <span class="btn">
+                                                                <pbutton-white text="取消"></pbutton-white>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </script>
+
+
+                                        <pwindow-confirm id="createSuccessFul">
+                                            <button>
+                                                <pbutton-blue text="确定" click="toProject()"></pbutton-blue>
+                                                <pbutton-white text="取消" click="$('#confirmWindow').phide()"></pbutton-white>
+                                            </button>
+                                        </pwindow-confirm>
 
 
                                         <% include ../../../template/pageFoot.html %>

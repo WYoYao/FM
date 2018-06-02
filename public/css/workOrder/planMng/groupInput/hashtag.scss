@@ -1,0 +1,244 @@
+@import "./structure";
+
+.hashtag-bubble.click-aite{
+    position: absolute;
+    top: 20px;
+    left: 0;
+    z-index: 10;
+}
+
+.redMark{
+    color: red;
+}
+
+.hashtag-bubble{
+    width: auto;
+    height: 450px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+    background-color: white;
+
+    & > .all-hashtag{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+
+        & > .hashtag-sop{
+            width: 365px;
+            height: 450px;
+            box-sizing: border-box;
+            border: 1px solid #d9d9d9;
+            float: left;
+
+            .sop-header{
+                box-sizing: border-box;
+                width: 100%;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+                background-color: #f2f2f2;
+                border-bottom: 1px solid #e1e1e1;
+
+                .sop-header-btn{
+                    color: #7a94ad;
+                    font-size: 12px;
+                    float: right;
+                    cursor: pointer;
+
+                    & > span{
+                        margin-right: 20px;
+                    }
+                }
+            }
+
+            .sop-body{
+                position: relative;
+                width: 100%;
+                height: calc(100% - 100px);
+                overflow-y: auto;
+                margin: 0;
+                padding: 0;
+
+                .sop-list{
+
+                    @include pcheckbox{
+                        float: right;;
+                    };
+
+                    & > .aite-list{
+                        width: 100%;
+                        height: 44px;
+                        line-height: 44px;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                        border-bottom: 1px solid #e4e4e4;
+                        padding-left: 14px;
+                        padding-right: 14px;
+                        cursor: pointer;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+                }
+
+                .sop-nodata{
+                    width: 100%;
+                    height: 100%;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    position: relative;
+                }
+            }
+
+            .sop-footer{
+                width: 100%;
+                height: 60px;
+                line-height: 60px;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                text-align: center;
+                border-top: 1px solid #d9d9d9;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                line-height: normal;
+            }
+        }
+
+        & > .hashtag-filter{
+            width: 415px;
+            height: 450px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            border: 1px solid #d9d9d9;
+            border-left: none;
+            float: right;
+
+            & > .sop-header {
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                width: 100%;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+                background-color: #f2f2f2;
+                border-bottom: 1px solid #e1e1e1;
+            
+                .sop-header-btn {
+                    color: #7a94ad;
+                    font-size: 12px;
+                    float: right;
+                    cursor: pointer;
+
+                    & > span{
+                        margin-right: 20px;
+                    }
+                }
+            }
+
+            & > .filter-body{
+                width: 100%;
+                height: calc(100% - 40px);
+                overflow-y: auto;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                padding: 20px;
+
+                & > .filter-box{
+                    box-sizing: border-box;
+
+                    .filter-div{
+                        width: 100%;
+                        min-height: 30px;
+                        margin-bottom: 10px;
+
+                        .filter-type{
+                            position: relative;
+                            width: 80px;
+                            height: 100%;
+                            -ms-text-overflow: ellipsis;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-align: left;
+                            display: inline-block;
+                            vertical-align: top;
+                            line-height: 35px;
+                        }
+
+                        .filter-name{
+                            width: calc(100% - 85px);
+                            display: inline-block;
+                            vertical-align: top;
+                            line-height: 35px;
+
+                            .sel-span {
+                                border: 1px solid rgba(20, 175, 212, 1);
+                                color: rgb(20, 175, 212);
+                            }
+
+                            .filter-all{
+                                display: inline-block;
+                                vertical-align: top;
+                                width: 40px;
+
+                                & > span{
+                                    cursor: pointer;
+                                    display: inline-block;
+                                    line-height: normal;
+                                    vertical-align: top;
+                                    -webkit-box-sizing: border-box;
+                                    -moz-box-sizing: border-box;
+                                    box-sizing: border-box;
+                                    padding: 1px 5px;
+                                    /* border: 1px solid rgba(20,175,212,1); */
+                                    margin-top: 5px;
+                                    -webkit-border-radius: 5px;
+                                    -moz-border-radius: 5px;
+                                    border-radius: 2px;
+                                }
+                            }
+
+                            .filter-other{
+                                vertical-align: top;
+                                width: calc(100% - 45px);
+                                float: right;
+
+                                & > span{
+                                    display: inline-block;
+                                    line-height: normal;
+                                    vertical-align: top;
+                                    -webkit-box-sizing: border-box;
+                                    -moz-box-sizing: border-box;
+                                    box-sizing: border-box;
+                                    padding: 1px 5px;
+                                    margin-right: 5px;
+                                    cursor: pointer;
+                                    margin-top: 5px;
+                                    -webkit-border-radius: 5px;
+                                    -moz-border-radius: 5px;
+                                    border-radius: 2px;
+                                    max-width: 84px;
+                                    overflow: hidden;
+                                    white-space: nowrap;
+                                    word-break: keep-all;
+                                    text-overflow: ellipsis;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,350 @@
+<script type="text/html" id="matter">
+<div class="matter section">
+    <div class="name">
+        <input type="text" maxlength="100" v-model="matter.matter_name" placeholder="请输入事项名称" class="input">
+        <div class="percent">
+            {{matter.matter_name.length}}/100
+        </div>
+    </div>
+
+    <div class="obj">
+        <textarea placeholder="例如：@消防水泵" class="textarea" v-model="matter.desc_forepart" maxlength="1000"></textarea>
+        <div class="bottom">
+            <div class="btn pointer" @click.stop="desc_str='@'">@添加对象</div>
+            <div class="percent">{{matter.desc_forepart.length}}/1000</div>
+        </div>
+        <aite :str="desc_str" :isterm="isterm" :cb="getObj" ref="aite" v-if="desc_str"></aite>
+    </div>
+
+    <!-- 图片列表 Start -->
+    <div class="per-upload-picture per-upload_horizontal picture" v-if="_.isArray(matter.desc_photos) && matter.desc_photos.length">
+        <ul class="per-upload-picture-ul">
+            <li class="per-upload-picture-wrap" v-for="(src,index) in matter.desc_photos">
+                <div class="per-upload-picture_x" @click.stop="matter.desc_photos.splice(index,1)">x</div>
+                <img :src="src">
+            </li>
+        </ul>
+    </div>
+    <!-- 图片列表 End -->
+
+    <!-- SOP Start  -->
+    <div class="sop">
+        <textarea placeholder="请选择SOP 此处为选择的SOP名称，例如：#巡检SOP" v-model="matter.desc_aftpart" class="textarea" maxlength="1000"></textarea>
+        <div class="bottom">
+            <div class="btn pointer" @click.stop="desc_sop_c_str='#'">#添加SOP</div>
+        </div>
+        <hashtag :str="desc_sop_c_str" :order_type="2" :desc_objs="matter.desc_objs" :cb="getSOPObj" ref="hashtag" v-if="desc_sop_c_str"></hashtag>
+    </div>
+    <!-- SOP End    -->
+
+    <!-- work Start -->
+    <div class="work">
+        <textarea disabled="true" placeholder="添加工作内容 此处为工作内容的名称，例如：巡检工作" v-model="_.map(matter.desc_works,'work_name').join(' ')" class="textarea"></textarea>
+        <div class="bottom">
+            <div class="btn pointer" @click="addcontent=true">添加工作内容</div>
+        </div>
+        <addcontent v-if="addcontent" :isterm="isterm" :cb="workContent" ref="workContent"></addcontent>
+    </div>
+    <!-- work End   -->
+
+    <!-- 工作事项签字 Start -->
+    <div class="group">
+        <div class="per-switch-checkbox pcheckbox" v-for="(item,index) in GeneralDictByKeyOut" @click="item.selected=!item.selected" :class="item.disabled?'eleDisable':''">
+            <span class="pcheckbox_input" :class="item.selected ? 'pcheckbox-checked' : ''"></span>
+            <span class="pswitch_label" :title="item.name" v-text="item.name"></span>
+        </div>
+        <div class="delete pointer" @click="deletefn" v-if="candelete">
+            <span class="icon">
+                p
+            </span>
+            <span>
+                删除该事项
+            </span>
+        </div>
+    </div>
+
+    <!-- 错误提示 Start -->
+    <div class="matter-error">
+         <div class="error error-test" v-show="views.isSpace">
+             <div>
+                 <em>!</em>
+                 <span class="txt">事项名称不可为空</span>
+             </div>
+         </div>
+         <div class="error error-test"  v-show="views.isRepeat">
+             <div>
+                 <em>!</em>
+                 <span class="txt">同一张工单内的事项名称不可重复</span>
+             </div>
+         </div>
+         <div class="error error-test" v-show="views.isDescForepartSpace">
+             <div>
+                 <em>!</em>
+                 <span class="txt">事项内容不可为空</span>
+             </div>
+         </div>
+         <!-- <template v-for="(item, errIndex) in model.unMatchedSopList"> -->
+         <template v-for="(v,index) in views.verify">
+             <div class="error error-match" v-show="!v.selected">
+                 <div>
+                     <em>!</em>
+                     <span v-text="v.obj_name"></span>与
+                     <span v-text="v.sop_name"></span>的适用对象不匹配，请检查
+                 </div>
+                 <!-- <div class="ignore" > -->
+                 <div class="ignore" @click=v.selected=true>
+                     <span>忽略</span>
+                 </div>
+             </div>
+         </template>
+         <!-- <template v-for="(item, errIndex) in model.invalidObjList"> -->
+         <template v-for="(item, errIndex) in views.sopeds" v-show="!item.selected">
+             <div class="error error-invalid" v-show="!item.selected">
+                 <div>
+                     <em>!</em>添加的
+                     <span v-text="item.sop_name"></span>过期
+                 </div>
+                 <!-- <div class="ignore" > -->
+                 <div class="ignore" @click="item.selected=true">
+                     <span>忽略</span>
+                 </div>
+             </div>
+         </template>
+    </div>
+    <!-- 错误提示 End   -->
+
+    <!-- 工作事项签字 End   -->
+
+</div>
+</script>
+<script>
+
+    /*
+    * sign 符号标识
+    * str  需要替换的字符串
+    * list 里面名称的集合
+    */
+    function replaceTemplate(sign, str, list) {
+
+        // 原有符合标准的对象替换
+        str = str.replace(new RegExp(sign + "(\\S*?)\\s{1}", 'g'), function (c, name) {
+            var index = list.indexOf(name);
+            if (index != -1) {
+                // 删除已经的被替换的内容
+                list.splice(index, 1);
+                return c;
+            }
+            return "";
+        }) + "";
+
+        str = str.replace(new RegExp(sign + '(\\S*?)$'), function (c) {
+            if (list.length) {
+                return list.map(function (str) {
+                    return sign + str + ' ';
+                }).join('');
+            }
+            return '';
+        })
+
+        return str;
+    }
+
+    // 创建监听处理事件
+    function createInputWatch(sign, list) {
+        return function (newValue, oldValue) {
+            var str = newValue;
+            var arr = [], name = [], res = {
+                list: list,
+                value: newValue,
+                str: ""
+            };
+
+            // 获取语句中的所有的对象
+            str = str.replace(new RegExp(sign + "(\\S*?)\\s{1}", 'g'), function (c, name) {
+                arr.push(name);
+                return " ";
+            }) + " ";
+
+            //  直接在中间插如的操作直接过滤
+            for (var index = 0; index < arr.length; index++) {
+                var element = arr[index];
+                if (new RegExp(sign).test(element)) {
+                    res.value = oldValue;
+                    return res;
+                }
+            }
+
+
+            // 更新删除的内容
+            res.list = res.list.filter(function (item, index) {
+                return arr.indexOf(item.obj_name || item.sop_name || item.matter_name) != -1;
+            });
+
+            var search = new RegExp(sign + '(\\S*?)\\s{1}').exec(str)
+
+            if (!_.isNull(search)) {
+                res.str = sign + search[1];
+            }
+            return res;
+        }
+    }
+
+    // 工作事项的类
+    function Matter() {
+        return {
+            // 事项名称
+            matter_name: "",
+            desc_objs: [
+            ],
+            desc_sops: [], // Sop 列表
+            desc_works: [],  // 新建工作内容
+            desc_piclist: [],   // 事项中的图片集合
+            // 对象描述
+            desc_forepart: "",  //  @ 输入框文本
+            desc_aftpart: "",   //  # 输入框文本
+            required_control: [],
+        };
+    }
+
+    Vue.component('matter', {
+        template: '#matter',
+        data: function () {
+
+            return {
+                valite: {
+                    //事项名称为空
+                    matter_name_isnull: false,
+                },
+                GeneralDictByKey: [],
+                order_type: 2,  // 工单类型2 需要传入
+                desc_str: "", // @输入框查询字符串
+                desc_sop_str: "", // # 输入框查询 对象
+                desc_sop_c_str: "", // # 输入框查询 操作事件
+                addcontent: false,
+                matters: new Matter(),
+                str: "",
+            }
+        },
+        props: ["matter", "views", "isterm", "delete", "candelete"],
+        methods: {
+            // 获取对象
+            getObj: function (arr) {
+                var _that = this;
+
+                _that.desc_str = "";
+
+                _that.matter.desc_objs = _that.matter.desc_objs.concat(arr);
+
+                // 去重
+                var obj = {};
+                _that.matter.desc_objs = _that.matter.desc_objs.filter(function (item) {
+                    if (obj.hasOwnProperty(item.obj_name)) return false;
+                    obj[item.obj_name] = true;
+                    return true;
+                })
+
+                // 更新文本信息
+                _that.matter.desc_forepart = replaceTemplate('@', _that.matter.desc_forepart, _that.matter.desc_objs.map(function (obj) {
+                    return obj.obj_name;
+                }));
+            },
+            // 获取SOP
+            getSOPObj: function (arr) {
+                var _that = this;
+                _that.matter.desc_sops = _that.matter.desc_sops.concat(arr);
+                _that.matter.desc_aftpart = _that.matter.desc_sops.map(function (item) {
+                    return (item.hasOwnProperty('sop_name') ? "#" : "@") + (item.sop_name || item.obj_name) + " ";
+                }).join("");
+
+                _that.desc_sop_str = "";
+                _that.desc_sop_c_str = "";
+            },
+            // 工作内容
+            workContent: function (wk) {
+
+                var _that = this;
+
+                if (_.isPlainObject(wk)) {
+                    _that.matter.desc_works.push(wk);
+
+                    _that.matter.desc_works_desc = (_that.matter.desc_works_desc || '') + " " + wk.work_name + " ";
+                }
+
+                this.addcontent = false;
+            },
+            // 删除这个时间
+            deletefn: function () {
+                this.delete(this.matter);
+            }
+        },
+        computed: {
+            GeneralDictByKeyOut: function () {
+                var _that = this;
+                // 只保存 当工作事项完成后人工签字确认 选项
+                return _.filter(_that.GeneralDictByKey, { code: "matter_end_scan" });
+            },
+            GeneralDictByKeyIn: function () {
+                var _that = this;
+                // 只保存 当工作事项完成后人工签字确认 选项
+                return _.filter(_that.GeneralDictByKey, function (item) {
+                    return /^obj_first/.test(item.code);
+                }) || [];
+            },
+            work_names: function () {
+                return _.map(matter.desc_works, 'work_name').join(' ') + ' ';
+            }
+        },
+        watch: {
+            "matter.matter_name": function (newValue, old) {
+                // 有任何输入就把错误提示取消
+                this.valite.matter_name_isnull = false;
+            },
+            // 对象输入监听
+            "matter.desc_forepart": function (newValue, old) {
+                var _that = this;
+
+                var res = createInputWatch('@', _that.matter.desc_objs)(newValue, old);
+
+                _that.matter.desc_forepart = res.value;
+                _that.matter.desc_objs = res.list;
+                _that.desc_str = res.str;
+
+            },
+            //  Sop 输入监听
+            "matter.desc_aftpart": function (newValue, old) {
+                var _that = this;
+
+                var res = createInputWatch('#', _that.matter.desc_sops)(newValue, old);
+
+                _that.matter.desc_aftpart = res.value;
+                _that.matter.desc_sops = res.list;
+                _that.desc_sop_c_str = res.str;
+            },
+            // required_control
+            "GeneralDictByKey": {
+                handler: function (newValue) {
+                    var _that = this;
+                    var obj = _.find(_that.GeneralDictByKey, {
+                        code: "matter_end_scan",
+                        selected: true
+                    });
+
+                    if (_.isPlainObject(obj)) {
+                        _that.matter.required_control = [obj.code];
+                    }
+                },
+                deep: true
+            }
+        },
+        beforeMount: function () {
+            var _that = this;
+
+            controller.queryGeneralDictByKey().then(function (res) {
+
+                // 只保存 当工作事项完成后人工签字确认 选项
+                // _that.GeneralDictByKey = _.filter(res, { code: "matter_end_scan" });
+                _that.GeneralDictByKey = res;
+            });
+        }
+    })
+</script>

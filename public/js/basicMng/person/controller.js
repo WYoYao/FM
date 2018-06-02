@@ -6,7 +6,7 @@ var personController = {
                 url: 'restDeptService/queryDeptPositionTree',
                 data: _data,
                 success: function (res) {
-                    var data = res  ? res: [];
+                    var data = res && res.data ? res.data :{};
                     resolve(data);
                 },
                 error: function (err) {
@@ -44,7 +44,7 @@ var personController = {
                 url: 'restPersonService/queryPersonList',
                 data: _data,
                 success: function (res) {
-                    var data = res  ? res : [];
+                    var data = res && res.data ? res.data : [];
                     resolve(data);
                 },
                 error: function (err) {
@@ -64,7 +64,7 @@ var personController = {
                 url: 'restDeptService/queryDeptTree',
                 data: _data,
                 success: function (res) {
-                    var data = res ? res : [];
+                    var data = res && res.data ? res.data : [];
                     resolve(data);
                 },
                 error: function (err) {
@@ -101,7 +101,7 @@ var personController = {
                 data: _data,
                 success: function (res) {
                     var data = res ? res : [];
-                    resolve(data);
+                    resolve(data.data);
                 },
                 error: function (err) {
                     reject(err);
@@ -118,7 +118,7 @@ var personController = {
                 url: 'restPersonService/queryNoBindingUserList',
                 data: _data,
                 success: function (res) {
-                    var data = res ? res : [];
+                    var data = res && res.data ? res.data : [];
                     resolve(data);
                 },
                 error: function (err) {
@@ -136,7 +136,7 @@ var personController = {
                 url: 'restPersonService/queryFuncPackList',
                 data: _data,
                 success: function (res) {
-                    var data = res ? res : [];
+                    var data = res && res.data ? res.data : [];
                     resolve(data);
                 },
                 error: function (err) {
@@ -155,7 +155,7 @@ var personController = {
                 url: 'restDeptService/queryDeptPositionTreeByType',
                 data: _data,
                 success: function (res) {
-                    var data = res ? res : [];
+                    var data = res && res.data ? res.data : [];
                     resolve(data);
                 },
                 error: function (err) {
@@ -348,7 +348,7 @@ var personController = {
                 url: 'restPersonService/queryPersonLoginInfo',
                 data: _data,
                 success: function (res) {
-                    var data = res ? res : [];
+                    var data = res && res.data ? res.data : [];
                     resolve(data);
                 },
                 error: function (err) {

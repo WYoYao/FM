@@ -307,12 +307,14 @@
 
     .photoList .positionItem ul {
         overflow: hidden;
+        display: flex;
+        flex-flow: row wrap;
     }
 
         .photoList .positionItem ul li {
             width: 140px;
             border-radius: 6px;
-            float: left;
+            /* float: left; */
             margin-right: 40px;
             margin-bottom: 50px;
             box-shadow: 0px 0px 10px 0 rgba(0,0,0,0.14);
@@ -389,8 +391,8 @@
             }
             #permissionPackageList{
                 display:none;
-                position: relative;
-                top: 32px;
+                position: absolute;
+                top: -18px;
                 z-index: 100;
                 background: #fff;
                 box-sizing: border-box;
@@ -452,6 +454,7 @@
             }
             .createBlock .imgNote{
                 color:#cacaca;
+                font-size:12px;
             }
             .personDetailBox .createBlock .content{
                 width: 300px;

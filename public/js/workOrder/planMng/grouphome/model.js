@@ -18,10 +18,13 @@ v.pushComponent({
         // 查询计划列表
         queryPlan: function () {
             var _that = this;
+            loadding.set("queryGroupPlanList")
             return controller
                 .queryGroupPlanList(_that.queryGroupPlanList)
                 .then(function (res) {
                     _that.planList = res;
+                }).finally(function () {
+                    loadding.remove("queryGroupPlanList");
                 });
         },
         // 工单类型选择事件
@@ -44,14 +47,15 @@ v.pushComponent({
          * addWoPlan  对象
          * cb 提交完成后返回的回调函数
          */
-        handler_to_createplan: function (isquote, isedit, isterm, addWoPlan, cb) {
+        handler_to_createplan: function (isquote, isedit, isterm, iscopy, addWoPlan, cb) {
             v.instance.cache = {
                 argu: {
-                    isquote: false,
-                    isedit: false,
-                    isterm: false,
-                    addWoPlan: {},
-                    cb: function () {
+                    isquote: isquote || false,
+                    isedit: isedit || false,
+                    isterm: isterm || false,
+                    iscopy: iscopy || false,
+                    addWoPlan: addWoPlan || {},
+                    cb: cb || function () {
                         v.initPage("grouphome");
                     }
                 },
@@ -66,7 +70,7 @@ v.pushComponent({
                     group_plan_id: id
                 }).then(function (res) {
                     // res[0]
-                    _that.handler_to_createplan(isquote, isedit, isterm, res[0], function () {
+                    _that.handler_to_createplan(isquote, isedit, isterm, iscopy, res[0], function () {
                         v.initPage("grouphome");
                     })
                 })
@@ -83,12 +87,15 @@ v.pushComponent({
 
             controller.destroyWoPlanById({
                 group_plan_id: _that.confirmInvalid
+            }).then(function () {
+                $('#globalnotice').pshow({ text: '作废成功', state: 'success' });
+                _that.queryPlan();
             });
         },
         // 跳转计划详情
         queryGroupPlanById: function (group_plan_id, planType) {
             this.cache = {
-                name: "计划详情",
+                name: "集团计划详情",
                 planType: planType,
                 planId: group_plan_id,
             };
@@ -103,6 +110,7 @@ v.pushComponent({
 
         "queryGroupPlanList": {
             handler: function () {
+
                 this.queryPlan();
             },
             deep: true
@@ -126,8 +134,8 @@ v.pushComponent({
                 _that.$nextTick(resolve);
             }).then(function () {
                 // 绑定下拉菜单
-                $("#id_orderTypes").psel(0, false);
-                $("#id_validTypes").psel(0, false);
+                // $("#id_orderTypes").psel(0, false);
+                // $("#id_validTypes").psel(0, false);
             })
         });
     }

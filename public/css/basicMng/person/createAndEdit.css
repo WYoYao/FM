@@ -146,7 +146,14 @@
     width:188px;
 }
 #functionPermissionBlock .right{
-    
+    position:relative;
+}
+#functionIdTip{
+    display:none;
+    color: #f97c7c;
+    font-size: 12px;
+    position: absolute;
+    top: 40px;
 }
 .saveInformation{
     padding: 12px 0 10px 0;

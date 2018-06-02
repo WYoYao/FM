@@ -20,7 +20,8 @@
             width: calc(100% - 40px);
             background: #eaeef0;
             &>div{
-                width: 150px;
+                float: left;
+                min-width: 150px;
             }
         }
         .title{
@@ -37,6 +38,7 @@
             overflow-x: hidden;
             overflow-y: auto;
             height: calc(100% - 101px);
+            position: relative;
             li{
                 font-size: 14px;
                 list-style-type: none;

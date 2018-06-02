@@ -1,0 +1,353 @@
+<div id="orderConfigCreate"  class="configAll" v-show="curPage == 'create'">
+    <div class="config">
+        <div class="configTab">
+            <div class="top">
+                <section class="gobackBtn">
+                    <pbutton-white bind="true" text="'取消'" @click="workOrderMethod.goBackList()"></pbutton-white>
+                </section>
+                <section class="saveBtn">
+                    <pbutton-blue bind="true"  text="'保存'" @click="workOrderMethod.saveOrderConfigFn()"></pbutton-blue>
+                </section>
+            </div>
+            <div class="content">
+                <div id="errorTip" v-if="errorTipList && errorTipList.length >0">
+                    <ul>
+                        <li v-for="item in errorTipList">
+                            <span v-text="item"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="block">
+                    <h3><span>工单类型名称</span><em>*</em></h3>
+                    <section>
+                        <ptext-text bind="true" id="'orderType'" placeholder="'最多20个字'">
+                            <verify errtip="最多20个字" verifytype="length" length='20'></verify>
+                            <verify errtip="不可为空" verifytype="space"></verify>
+                        </ptext-text>
+                    </section>
+                </div>
+                <div class="block">
+                    <h3><span>工作类型</span><em>*</em></h3>
+                    <section>
+                        <pcombobox-normal bind="true" id="'workType'">
+                            <header placeholder="'请选择工作类型'"></header>
+                            <verify errtip="不可为空" verifytype="space"></verify>
+                            <item datasource="workTypeSelect" text="name" id="code"></item>
+                        </pcombobox-normal>
+                    </section>
+                </div>
+
+                <div class="block">
+                    <h3><span>时间类型</span><em>*</em></h3>
+                    <section>
+                        <pcombobox-normal bind="true" id="'timeType'" sel="workOrderMethod.changeTimeType(model)">
+                            <header placeholder="'请选择时间类型'"></header>
+                            <verify errtip="不可为空" verifytype="space"></verify>
+                            <item datasource="timeTypeSelect" text="name" id="code"></item>
+                        </pcombobox-normal>
+                    </section>
+                </div>
+
+                <div class="block">
+                    <h3><span>报修是否可以转此类工单</span><em>*</em></h3>
+                    <section>
+                        <pswitch-slide  id="tranOrderSwitch" ></pswitch-slide>
+                    </section>
+                </div>
+                <div class="block block1">
+                    <h3><span>请设置此类工单相关要求</span></h3>
+                    <div class="setTime">
+                        <div class="timeSel">
+                            <pswitch-checkbox  id="startTimeCheck" click="workOrderMethod.choiceStartTimeFn"></pswitch-checkbox>
+                            <h4>
+                                到达工单要求开始时间
+                            </h4>
+                            <pcombobox-normal id="'startTimeSel'" bind="true">
+                                    <header placeholder="'请选择'"></header>
+                                    <item datasource="choiceTimeSectionList" text="name" id="code"></item>
+                            </pcombobox-normal>
+                            <ptext-text id="startTimeTxt" placeholder="请输入" text="分钟">
+                                <verify errtip="不可为空"  verifytype="space"></verify>
+                                <verify errtip="请输入正整数"  verifytype="pisPositiveInt"></verify>
+                            </ptext-text>
+                            <span>需有执行人接单</span>
+                        </div>
+                        <div class="timeSel">
+                            <pswitch-checkbox  id="endTimeCheck" click="workOrderMethod.choiceEndTimeFn"></pswitch-checkbox>
+                            <h4>
+                                到达工单要求结束时间
+                            </h4>
+                            <pcombobox-normal id="'endTimeSel'" bind="true">
+                                <header placeholder="'请选择'"></header>
+                                <item datasource="choiceTimeSectionList" text="name" id="code"></item>
+                            </pcombobox-normal>
+                            <ptext-text id="endTimeTxt" placeholder="请输入" text="分钟">
+                                <verify errtip="不可为空"  verifytype="space"></verify>
+                                <verify errtip="请输入正整数"  verifytype="pisPositiveInt"></verify>
+                            </ptext-text>
+                            <span>需执行结束</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="block">
+                    <h3><span>请选择涉及此类工单的岗位，并为每个岗位设定职责：</span><em>*</em></h3>
+                    <section>
+                        <div class="tip">工单类型名称、工作类型、时间类型不能为空</div>
+                        <div class="tip">至少要有“申请结束”</div>
+                    </section>
+                </div>
+
+                <div class="box">
+                    <div class="createWorkOrderCommon_person_position">
+                        <div class="createWorkOrderCommon_person_position_box" v-for="(items,itIndex) in operateOptionList">
+                            <div @click="deletePositionFn(items,itIndex)" class="createWorkOrderCommon_delete" :class="{'system':items.type == 'system'}">
+                                <img  v-if="items.type !='system'"  src="../../../images/delete.png" alt="">
+                            </div>
+                            <div class="createWorkOrderCommon_person_position_box_left" :id="items.id" :title="items.name" v-text="items.name">岗位B</div>
+                            <div class="createWorkOrderCommon_person_position_box_list">
+                                <ul class="more_work_add">
+                                    <li :class={"redBorder":center.redBorder} v-for="(center,index1) in items.duty" @click="clickDutyShowModal($event,items,center,center.name,center.code,itIndex,index1)">
+                                        <div class="createWorkOrderCommon_person_position_box_list_top">
+                                            <em :title="center.name" v-text="center.name" :code="center.code"></em>
+                                            <span  v-if="items.type !='system'"   @click.stop="removeDutyData(operateOptionList,itIndex,items.duty,index1,center.code)">
+                                                <!-- <img src="../../../images/close.png" alt=""> -->
+                                            </span>
+                                        </div>
+                                        <div class="createWorkOrderCommon_person_position_box_list_bottom"
+                                             v-if="center.code == 'create' || center.code == 'assign' || center.code == 'apply' || center.code == 'audit' || center.code == 'approve'">
+                                            <img src="../../../images/set_btn.png" alt="">
+                                            </span>
+                                        </div>
+                                    </li>
+                                    <li class="add_more_work" id="add_more_work" v-if="dutyListIsShow(items.operatList)">
+                                        <em>+</em>
+                                        <span>添加更多职责</span>
+                                        <!-- <div>{{items.right}}</div> -->
+                                        <ul class="more_work_list">
+                                            <li :title="right.name" v-for="(right,index2) in items.operatList" v-text="right.name" :name="right.name"
+                                                :code="right.code" :class="{show:right._show}" @click="addMoreDuty(operateOptionList,itIndex,items.operatList,index2)"></li>
+    
+    
+                                        </ul>
+                                    </li>
+    
+                                </ul>
+                                <!-- <span></span> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="createWorkOrderCommon_add" @click="addPosition()">
+                        <div>+</div>
+                        <div>请选择岗位</div>
+                    </div>
+                    <div id="choicePositionError">请选择岗位及操作模块</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 选择岗位名称弹框 -->
+<pwindow-modal id="positionWindow" title="选择岗位" templateid="positionWindowTemp" onclick="workOrderMethod.returnPop(event)"></pwindow-modal>
+
+<!-- 操作侧弹框 -->
+<pwindow-float id="operatWindow" title="" isshade="false" templateid="operatWindowTemp" onclick="workOrderMethod.returnPop(event)">
+
+    <animate maxpx="0" minpx="-400" orientation="right"></animate>
+</pwindow-float>
+
+
+<!-- 操作侧弹框模板 -->
+<script type="text/html" id="operatWindowTemp">
+    <div class="operatCommonBox">
+        <div v-if="currStepDutyCode == 'create'"  class="create">
+            <!-- 新建 -->
+            <div class="block1">
+                <span>请选择新建工单下级</span>
+                <div>
+                    <section class="createOption" v-for="model in workOrderModel.createModuleList">
+                        <div class="li">
+                            <pswitch-radio bind="true" name="'create'" state="model.state" @click="workOrderMethod.createSelectRadio(model)"></pswitch-radio>
+                            <span v-text="model.name"></span>
+                        </div>
+                        
+                    </section>
+                </div>
+                <div class="switch">
+                    <span>到达工单要求开始时间才允许执行</span>
+                    <pswitch-slide id="create_switch"></pswitch-slide>
+                </div>
+            </div>
+            
+            <div class="block1 block2">
+                <span>专业控制设置</span>
+                <div class="switch">
+                    <span>请选择是否启用专业控制</span>
+                    <pswitch-slide id="execute_major_switch"></pswitch-slide>
+                </div>
+                <em>启动后，只有符合专业要求的人员才可接单及处理专业相关事项内容</em>
+            </div>
+            
+        </div>
+        <div v-if="currStepDutyCode == 'assign'"  class="assign">
+            <!-- 指派 -->
+            <div class="box">
+                <div class="assingOption">
+                    <span>指派设置</span>
+                    <section class="option">
+                        <span>是否需要按照排班表过滤每次可转交人员范围</span>
+                        <pswitch-slide id="assign_layout_switch"></pswitch-slide>
+                    </section>
+                    <section class="option">
+                        <span>是否需要按照专业要求过滤每次可转交人员范围</span>
+                        <pswitch-slide id="assign_major_switch"></pswitch-slide>
+                    </section>
+                </div>
+                <div class="assignTimeSet">
+                    <span>设定相关要求</span>
+                    <section class="time">
+                        <pswitch-checkbox bind="true" id="'assignTimeSwitch'" state="assignCheckbox"></pswitch-checkbox>
+                        <span>期望该操作持续时间不超过</span>
+                        <ptext-text id="assignTime" placeholder="请输入" text="分钟">
+                            <verify errtip="不可为空"  verifytype="space"></verify>
+                            <verify errtip="请输入正整数"  verifytype="pisPositiveInt"></verify>
+                        </ptext-text>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <div v-if="currStepDutyCode == 'execute'"  class="execute">
+            <!-- 执行 -->
+            <!-- <div class="box">
+                <span>专业控制设置</span>
+                <section class="option">
+                    <span>请选择是否启用专业控制</span>
+                    <pswitch-slide id="execute_major_switch"></pswitch-slide>
+                </section>
+            </div> -->
+        </div>
+        <div v-if="currStepDutyCode == 'apply'"  class="apply">
+            <!-- 申请 -->
+            <div class="applyBlock">
+                <section class="line" v-for="(model,index) in applyModuleList">
+                    <pswitch-checkbox bind="true" id="'apply_major_switch'" state="model.checked">
+
+                    </pswitch-checkbox>
+                    <h4 v-text="model.name"></h4>
+                    
+                    <div class="applyAduitList">
+                        <pcombobox-normal bind="true" id="'applyAduit' + index" :obj="JSON.stringify({_item:model,_index:index})" sel="workOrderMethod.choiceApplyNextRouteSel(model,event)">
+                            <header placeholder="model.aduitList[0].next_name" click="workOrderMethod.clickMutiselectTitFn"></header>
+                            <item datasource="model.aduitList" text="next_name" id="next_code"></item>
+                        </pcombobox-normal>
+                    </div>
+                    <section :id="'applyPosition' + index" class="mutiSelect applyAduit">
+                        <div class="title mutiSelectTitle"  :class="'applyAduit' + index"   @click="workOrderMethod.openApplyPosition">
+                            <span :title="model.selectPositionName" v-text="model.selectPositionName || ''"></span>
+                            <i>v</i>
+                        </div>
+                        <div class="list mutiSelectList">
+                            <ul class="mutiSelectListUl">
+                                <li v-for="item in model.next_route" v-if="item.isCurr" @click="workOrderMethod.checkedApplyPosition(index,item)">
+                                    <i :title="item.name" v-text="item.name"></i>
+                                    <span v-if="item.isShow"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                   
+                </section>
+            </div>
+        </div>
+        <div v-if="currStepDutyCode == 'audit'" class="audit">
+            <!-- 审核 -->
+            <div class="auditBlock">
+                <section class="line" v-for="(model,index) in auditModuleList">
+                    <pswitch-checkbox bind="true" id="'audit_major_switch'" state="model.checked">
+
+                    </pswitch-checkbox>
+                    <h4 v-text="model.name"></h4>
+                    
+                    <div class="auditBlockList">
+                        选择审批人
+                    </div>
+                    <div :id="'applyPosition' + index" class="mutiSelect">
+                        <div class="title mutiSelectTitle"   @click="workOrderMethod.openApplyPosition">
+                            <span :title="model.selectPositionName"  v-text="model.selectPositionName || '请选择审批岗位'"></span>
+                            <i>v</i>
+                        </div>
+                        <div class="list mutiSelectList" :aaa = "JSON.stringify(model.next_route)">
+                            <ul class="mutiSelectListUl">
+                                <li v-for="item in model.next_route" @click="workOrderMethod.checkedAuditPosition(index,item)">
+                                    <i :title="item.name" v-text="item.name"></i>
+                                    <span v-if="item.isShow"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </section>
+                <section class="auditSetTime">
+                    <span class="title">设定相关要求</span>
+                    <div>
+                        <pswitch-checkbox bind="true" id="'auditTimeSwitch'" state="auditNextTimeState">
+
+                        </pswitch-checkbox>
+                        <span>期望该操作持续时间不超过</span>
+                        <ptext-text id="auditTimeTxt" placeholder="请输入" text="分钟">
+                            <verify errtip="不可为空"  verifytype="space"></verify>
+                            <verify errtip="请输入正整数"  verifytype="pisPositiveInt"></verify>
+                        </ptext-text>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div v-if="currStepDutyCode == 'approve'"  class="approve">
+            <!-- 审批 -->
+            <div  class="approveBlock">
+                <section class="line" v-for="(model,index) in approveModuleList">
+                    <pswitch-checkbox bind="true" id="'approve_major_switch'" state="model.checked">
+    
+                    </pswitch-checkbox>
+                    <h4 v-text="model.name"></h4>
+                </section>
+                <section class="approveSetTime">
+                    <span class="title">设定相关要求</span>
+                    <div class="time">
+                        <pswitch-checkbox bind="true" id="'approvaNextTimeSwitch'" state="approvaNextTimeState">
+    
+                        </pswitch-checkbox>
+                        <span>期望该操作持续时间不超过</span>
+                        <ptext-text id="approveTime" placeholder="请输入" text="分钟">
+                            <verify errtip="不可为空"  verifytype="space"></verify>
+                            <verify errtip="请输入正整数"  verifytype="pisPositiveInt"></verify>
+                        </ptext-text>
+                    </div>
+                </section>
+            </div>
+           
+        </div>
+        <div class="bottom">
+            <pbutton-blue bind="true" text="'确定'" 
+                @click="workOrderMethod.confirmSetItemBlock(currStepDutyCode)">
+            </pbutton-blue>
+        </div>
+    </div>
+    
+
+
+</script>
+<!-- 选择岗位模板 -->
+<script type="text/html" id="positionWindowTemp">
+    <div class="choicePositionTree">
+        <section>
+            <div class="centerDepartmentUl" v-for="(item, index) in choicePositionList">
+                <organizationtree :model="item" :choice="workOrderMethod.selectPositionTree"></organizationtree>
+            </div>
+        </section> 
+        <div class="choicePositionOperaBtn">
+            <pbutton-blue text="确定" id="confirmSelectOptionBtn" click="workOrderMethod.confirmSelectOptionFn"></pbutton-blue>
+            <pbutton-white text="取消" click="workOrderMethod.cancelSelectOptionFn"></pbutton-white>
+        </div> 
+    </div>
+</script>

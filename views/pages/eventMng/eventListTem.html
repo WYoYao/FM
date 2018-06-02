@@ -1,0 +1,194 @@
+<div class="eventListTemWrap">
+
+    <div class="head">
+        <a v-show="eventRate === 0">待处理</a>
+        <a v-show="eventRate === 1">处理中</a>
+        <a v-show="eventRate === 2">已关闭</a>
+        事件
+        <a v-text="proEvListData.len.totalCount || 0"></a>
+        条，客户报修
+        <a v-text="proEvListData.len.customerRepairCount || 0"></a>
+        条，工程报修
+        <a v-text="proEvListData.len.projectRepairCount || 0"></a>
+        条，总部指派
+        <a v-text="proEvListData.len.projectRepairCount || 0"></a>
+        条，数据异常
+        <a v-text="proEvListData.len.dataAnomalyCount || 0"></a>
+        条
+    </div>
+
+    <div class="neck">
+
+        <div class="left" v-show="proEvListPower.isCanSelState">
+            <pcombobox-normal id="'eventRateCombo'" sel="selEventState" bind="true">
+                <header placeholder="'待处理'"></header>
+                <item datasource="allEventRate" text="name" id="code"></item>
+            </pcombobox-normal>
+        </div>
+
+        <div class="left2">
+            <pcombobox-normal id="'eventType'" sel="selEventType" bind="true">
+                <header placeholder="'全部'"></header>
+                <item datasource="allEventType" text="name" id="code"></item>
+            </pcombobox-normal>
+        </div>
+
+        <div class="right">
+            <psearch-delay id="'proEvListKey'" bind="true" change="searchThisEvent" placeholder="'搜索关键字'"></psearch-delay>
+        </div>
+
+        <div class="right2 right3" v-show="eventRate === 2">
+            <!-- <pcombobox-normal id="'closeTimeCombo'" sel="selCloseTime" bind="true">
+                <header placeholder="'关闭时间'"></header>
+                <item datasource="[]" text="name" id="code"></item>
+            </pcombobox-normal> -->
+            <ptime-calendar id="closeTimePtime" orientation="down" sel="selCloseEvTime">
+                <panel timetype="dwMy" align="right" double="true" startyear="2003" endyear="2099"></panel>
+            </ptime-calendar>
+        </div>
+
+        <div class="right2" v-show="eventRate === 2">
+            <pcombobox-normal id="'closeReasonCombo'" sel="selCloseReason" bind="true">
+                <header placeholder="'关闭原因'"></header>
+                <item datasource="eventCloseReason" text="name" id="code"></item>
+            </pcombobox-normal>
+        </div>
+
+    </div>
+
+    <div class="title">
+        
+        <!-- 全部事件类型 -->
+        <div class="all" v-if="eventTypeSel === 0"> 
+            <span class="s0">事件描述</span>
+            <span class="s2">关联对象</span>
+            <span :class="(!proEvListPower.closeEvent && eventRate === 0) || eventRate === 1 ? 's32' : 's31'">
+                <span>问题类型</span>
+                <span class="sort" unselectable="on" @click="proEvListSort(event,'problemType')"><em mgsim="" class="t">t</em><em mgsim="" class=" b">b</em></span>
+            </span>
+
+            <span class="s1">处理部门</span>
+
+            <span :class="(!proEvListPower.closeEvent && eventRate === 0) || eventRate === 1 ? 's42' : 's41'" v-text="eventRate === 2 ? '解决人' : '提交人'"></span>
+
+            <span :class="(!proEvListPower.closeEvent && eventRate === 0) || eventRate === 1 ? 's52' : 's51'" v-text="eventRate === 0 ? '提交时间' : '关闭原因'" v-show="eventRate != 1"></span>
+
+            <!-- 剔除掉未处理且无操作权限时的操作列 -->
+            <span class="s6" v-text="eventRate === 0 ? '操作' : '关闭时间'" v-show="eventRate === 2 || (proEvListPower.closeEvent && eventRate === 0)"></span>
+
+            <span class="s56" v-show="eventRate === 1">处理进度</span>
+        </div>
+
+
+        <!-- 客户报修事件类型 -->
+        <div class="user" v-if="eventTypeSel === 1"> 
+            <span class="s0">事件描述</span>
+            <span class="s1">报修位置</span>
+            <span class="s2">
+                <span>问题类型</span>
+                <span class="sort" unselectable="on" @click="proEvListSort(event,'problemType')"><em mgsim="" class="t">t</em><em mgsim="" class=" b">b</em></span>
+            </span>
+            <span class="s3" v-text="eventRate === 2 ? '解决人' : '联系人'"></span>
+
+            <span v-show="eventRate != 0" class="s41" v-text="eventRate === 2 ? '关闭原因' : '处理进度'"></span>
+            <span v-show="eventRate != 0" class="s51" v-text="eventRate === 2 ? '关闭时间' : '处理部门'"></span>
+            <span v-show="eventRate === 0" :class="!proEvListPower.closeEvent ? 's43' : 's42'">
+                <span>开始服务时间</span>
+                <span class="sort" unselectable="on" @click="proEvListSort(event,'startTime')"><em mgsim="" class="t">t</em><em mgsim="" class=" b">b</em></span>
+            </span>
+            <span v-show="eventRate === 0" :class="!proEvListPower.closeEvent ? 's53' : 's52'">处理部门</span>
+            <span v-show="eventRate === 0 && proEvListPower.closeEvent" class="s62">操作</span>
+
+        </div>
+
+
+        <!-- 工程报修事件类型 -->
+        <div class="obj" v-if="eventTypeSel === 2"> 
+
+            <span class="s0">事件描述</span>
+            <span :class="eventRate === 1 ? 's21' : 's22'">关联对象</span>
+            <span :class="(eventRate === 1 || (eventRate === 0 && !proEvListPower.closeEvent)) ? 's31' : 's32'">
+                <span>问题类型</span>
+                <span class="sort" unselectable="on" @click="proEvListSort(event,'problemType')"><em mgsim="" class="t">t</em><em mgsim="" class=" b">b</em></span>
+            </span>
+            <span class="s1">处理部门</span>
+            <span :class="eventRate === 0 && !proEvListPower.closeEvent ? 's41' : 's42'" v-text="eventRate === 2 ? '解决人' : '联系人'"></span>
+
+            <span :class="eventRate === 0 && !proEvListPower.closeEvent ? 's51' : 's52'" v-text="eventRate === 0 ? '报修时间' : '关闭原因'" v-show="eventRate != 1"></span>
+            <span class="s6" v-text="eventRate === 0 ? '操作' : '关闭时间'" v-show="eventRate === 2 || (eventRate === 0 && proEvListPower.closeEvent)"></span>
+
+            <span class="s56" v-show="eventRate === 1">处理进度</span>
+
+        </div>
+
+
+        <!-- 总部指派事件类型 -->
+        <div class="hq" v-if="eventTypeSel === 3"> 
+            <span class="s0">事件描述</span>
+            <span class="s5">处理部门</span>
+            <span :class="eventRate === 0 && proEvListPower.closeEvent ? 's11' : 's12'" v-text="eventRate === 2 ? '解决人' : '联系人'"></span>
+
+            <span :class="eventRate === 0 && proEvListPower.closeEvent ? 's21' : 's22'" v-if="eventRate === 0">
+                <span>开始服务时间</span>
+                <span class="sort" unselectable="on" @click="proEvListSort(event,'startTime')"><em mgsim="t" class="">t</em><em mgsim="" class=" b">b</em></span>
+            </span>
+            <span :class="eventRate === 0 && proEvListPower.closeEvent ? 's21' : 's22'" v-if="eventRate === 1">处理进度</span>
+            <span :class="eventRate === 0 && proEvListPower.closeEvent ? 's21' : 's22'" v-if="eventRate === 2">关闭原因</span>
+
+            <span :class="eventRate === 0 && proEvListPower.closeEvent ? 's31' : 's32'" v-if="eventRate === 2">关闭时间</span>
+            <span :class="eventRate === 0 && proEvListPower.closeEvent ? 's31' : 's32'" v-if="eventRate !== 2">
+                <span>要求完成时间</span>
+                <span class="sort" unselectable="on" @click="proEvListSort(event,'endTime')"><em mgsim="t" class="">t</em><em mgsim="" class=" b">b</em></span>
+            </span>
+
+            <span class="s4" v-show="eventRate === 0 && proEvListPower.closeEvent">操作</span>
+        </div>
+
+
+        <!-- 数据异常事件类型 -->
+        <div class="warn1" v-if="eventTypeSel === 4 && eventRate === 0">
+            <span class="s0">报修位置</span>
+            <span class="s1">关联对象</span>
+            <span class="s2">信息点</span>
+            <span class="s3">实际参数</span>
+            <span class="s4">异常范围</span>
+            <span class="s5">处理部门</span>
+            <span class="s6">联系人</span>
+            <span class="s7">提交时间</span>
+            <span class="s8">操作</span>
+        </div>
+
+        <div class="warn1 warn2" v-if="eventTypeSel === 4 && eventRate === 1">
+            <span class="s0">报修位置</span>
+            <span class="s1">关联对象</span>
+            <span class="s2">信息点</span>
+            <span class="s3">实际参数</span>
+            <span class="s4">异常范围</span>
+            <span class="s5">处理部门</span>
+            <span class="s6">联系人</span>
+            <span class="s7">处理进度</span>
+        </div>
+
+        <div class="warn1 warn3" v-if="eventTypeSel === 4 && eventRate === 2">
+            <span class="s0">报修位置</span>
+            <span class="s1">关联对象</span>
+            <span class="s2">信息点</span>
+            <span class="s3">实际参数</span>
+            <span class="s4">处理部门</span>
+            <span class="s5">解决人</span>
+            <span class="s6">关闭原因</span>
+            <span class="s7">关闭时间</span>
+        </div>
+
+
+    </div>
+
+    <div class="grid" :style="{'height':proEvListPower.isELTHasPage ? 'calc(100% - 187px)' : 'calc(100% - 137px)'}">
+        <ploading-part id="eventListPart"></ploading-part>
+        <pscroll-small templateid="eventListGridTemplate"></pscroll-small>
+    </div>
+
+    <div class="foot" v-show="proEvListPower.isELTHasPage">
+        <div><ppage-full bind="true" id="'eventListPages'" sel="selEventListPage"></ppage-full></div>
+    </div>
+</div>

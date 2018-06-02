@@ -1,8 +1,8 @@
 //  开发环境下绑定的用户信息
 var USER = {
-    "user_id": "RY1505218031651",
-    "customer_id": "",
-    "project_id": "Pj1301020001"
+    // "user_id": "RY1505218031651",
+    // "customer_id": "",
+    // "project_id": "Pj1301020001"
 }
 
 /**

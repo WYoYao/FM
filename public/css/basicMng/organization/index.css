@@ -109,6 +109,7 @@ input:disabled, textarea:diabled {
 .organizationBox .centerDepartment >.top > .operat{
     display: flex;
     flex-flow: row nowrap;
+    transform: translateY(-7px);
 }
 .organizationBox .centerDepartment >.top > .operat >.edit{
     margin-right:20px;
@@ -119,8 +120,6 @@ input:disabled, textarea:diabled {
 }
 .organizationBox .centerDepartment .centerDepartmentUl .organizationTreeBoxName{
     width:100%;
-    height:50px;
-    line-height:50px;
     box-sizing: content-box;
     border: 1px solid transparent;
     border-bottom:1px dashed #d9e2e8;
@@ -136,6 +135,8 @@ input:disabled, textarea:diabled {
     height: 100%;
     box-sizing: border-box;
     background: #fff;
+    height: 50px;
+    line-height: 50px;
 }
 /* 项目通用部门 */
 
@@ -163,14 +164,13 @@ input:disabled, textarea:diabled {
 .organizationBox .projectCommon >.top > .operat{
     display: flex;
     flex-flow: row nowrap;
+    transform: translateY(-7px);
 }
 .organizationBox .projectCommon >.projectCommonUl{
     border:1px solid #d9e2e8;
 }
 .organizationBox .projectCommon .projectCommonUl .organizationTreeBoxName{
     width:100%;
-    height:50px;
-    line-height:50px;
     border: 1px solid transparent;
     border-bottom:1px dashed #d9e2e8;
     position: relative;
@@ -183,6 +183,8 @@ input:disabled, textarea:diabled {
     /* transform: translate(-1px,-2px); */
     height: 96%;
     background: #fff;
+    height: 50px;
+    line-height: 50px;
 }
 
 .organizationBox .otherDepartment{
@@ -220,7 +222,8 @@ input:disabled, textarea:diabled {
     box-sizing: border-box;
 }
 .operation{
-    margin-bottom: 10px
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 .operation>div{
     display: inline-block;
@@ -242,11 +245,11 @@ input:disabled, textarea:diabled {
 .imgOp{
     width: 18px;
     vertical-align: text-top;
-    margin-right: 5px;
+    margin-right: 4px;
 }
 /* 快速添加中心部门人员 */
 .essentialInformation{
-    border-left: 4px solid #02a9d1;
+    border-left: 4px solid #02a8d1c5;
     padding-left: 10px;
     height: 16px;
     line-height: 16px;
@@ -257,6 +260,8 @@ input:disabled, textarea:diabled {
 .itemFastAdd{
     vertical-align: middle;
     padding: 12px 0;
+    max-width:400px;
+    position: relative;
 }
 .itemFastAdd>span{
     vertical-align: middle;
@@ -360,6 +365,7 @@ input:disabled, textarea:diabled {
     width: 184px;
     display: inline-block;
     vertical-align: middle;
+    position: relative;
 }
 #searchAccountInfo > input{
     font-size: 14px;
@@ -462,6 +468,8 @@ input:disabled, textarea:diabled {
 .centermodel{
     vertical-align: middle;
     position: absolute;
+    height: 50px;
+    line-height: 50px;
     left: 0;
     top: 0;
     display: block;
@@ -469,7 +477,6 @@ input:disabled, textarea:diabled {
     background: #f8f8f8;
     width: 100%;
     text-indent: 24px;
-    border-top: 1px solid transparent;
     border-left: 1px solid transparent;
     z-index: 5;
 }
@@ -491,10 +498,11 @@ input:disabled, textarea:diabled {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(79,79,79,0.15);
     display: flex;
     align-items: center;
     justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 20;
 }
 #projectMotai>div{
     width: 400px;
@@ -570,4 +578,97 @@ input:disabled, textarea:diabled {
     box-sizing: border-box;
     cursor: pointer;
     vertical-align: middle;
+}
+.conJurisdictionlist{
+    display: none; 
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    background: #fff;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+}
+.detailStr{
+    color: #333;
+    max-width: 186px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.personRelatedOperat{
+    float: left;
+    margin: 0 10px;
+    cursor: pointer;
+}
+.personRelatedOperat section{
+    margin-right: 16px;
+    display: inline-block;
+}
+#fastAdd {
+    width:400px;
+}
+#fastAdd .per-madal-float_titcon b{
+    display: inline-block;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.peopleList{
+    display: none;
+}
+.peopleList .person{
+    display: inline-block;
+    padding: 5px 6px;
+    border-radius: 2px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    max-width: 100px;
+    cursor: pointer;
+    min-width: 60px;
+    line-height: 16px;
+    text-align: center;
+    height: 26px;
+    box-sizing: border-box;
+    background: #F1F3F5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.projectList4{
+    background: #eee;
+    display: inline-block;
+    padding: 6px;
+    margin: 5px;
+}
+.imgBox {
+    width: 128px;
+    height: 128px;
+    /* margin: auto; */
+    border: 1px solid #eee;
+    position: relative;
+    border-radius: 4px;
+}
+.imgBox >img {
+    display: block;
+    max-width: 128px;
+    max-height: 128px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.project_names{
+    width: 270px;
+    margin-left: 18px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+#searchAccountInfo_ {
+    width: 184px;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
 }

@@ -1,0 +1,67 @@
+<script src="../js/eventMng/closeEvent/controller.js"></script>
+<script src="../js/eventMng/closeEvent/model.js"></script>
+<script src="../js/eventMng/closeEvent/event.js"></script>
+<link rel="stylesheet" href="../css/eventMng/term/closeEvent.css">
+
+<!-- 关闭重复事件弹窗Start -->
+<pwindow-modal id="selRepeatEventW" title="选择重复报修事件" templateid="selRepeatEventWTemplate"></pwindow-modal>
+<script type="text/html" id="selRepeatEventWTemplate">
+
+    <ploading-part id="evRepeatLoading"></ploading-part>
+
+    <div id="repeatEvent">
+        <div class="top" v-show="isSelCloseEv">
+            <psearch-promptly change=""  placeholder="搜索关键字" id="repeatEventSearch">
+                <tip advisesource="" advisetext=""  suggestsource="" suggesttext=""></tip>
+            </psearch-promptly>
+        </div>
+        <div class="title">
+            <span class="t1">事件描述</span>
+            <span class="t2">关联对象</span>
+            <span class="t3">事件类型</span>
+        </div>
+        <ul class="grid">
+            <pscroll-small templateid="RepeatEventListTemplate"></pscroll-small>
+            <ploading-part id="RepeatEventListLoad"></ploading-part>
+        </ul>
+        <div class="btn btn1" v-show="isSelCloseEv">
+            <pbutton-blue text="'确定'" bind="true" @click="selRepeatEventFin(true)"></pbutton-blue>
+        </div>
+        <div class="btn btn2" v-show="isSelCloseEv">
+            <pbutton-white text="'取消'" bind="true" @click="selRepeatEventFin(false)"></pbutton-white>
+        </div>
+    </div>
+
+</script>
+<!-- 关闭重复事件弹窗End -->
+
+
+<!-- 关闭其他原因弹窗Start -->
+<pwindow-modal id="closeEvOthRsnW" title="其他原因" templateid="closeEvOthRsnWTemplate"></pwindow-modal>
+<script type="text/html" id="closeEvOthRsnWTemplate">
+    <div id="closeEvOthRsn">
+        <div class="text">
+            <ptext-textarea placeholder="请输入文本" id="closeEvOthText">
+                <verify errtip="不可为空" length="120" friendlyip="" verifytype="space"></verify>
+            </ptext-textarea>
+        </div>
+        <div class="btn btn1">
+            <pbutton-blue text="'确定'" bind="true" @click="closeEvOthRsnFin(true)"></pbutton-blue>
+        </div>
+        <div class="btn btn2">
+            <pbutton-white text="'取消'" bind="true" @click="closeEvOthRsnFin(false)"></pbutton-white>
+        </div>
+    </div>
+</script>
+<!-- 关闭其他原因弹窗End -->
+
+<!-- 重复事件列表模板Start 关闭重复事件弹窗selRepeatEventW中调用-->
+<script type="text/html" id="RepeatEventListTemplate">
+    <li v-for="model in repeateEvListData">
+        <span class="per-radio_input t4" :class="{'per-radio-checked':model.sel}" style="background-color: rgb(255, 255, 255);" @click="selRepeatProEv(model)"></span>
+        <span class="t1" v-text="model.eventDescribe">事件描述</span>
+        <span class="t2" v-text="model.associationObject">关联对象</span>
+        <span class="t3" v-text="model.eventType">事件类型</span>
+    </li>
+</script>
+<!-- 重复事件列表模板End -->
