@@ -54,11 +54,14 @@ v.pushComponent({
         WoTypeListAll: [],
         // 下发的参数
         toProjectArgu: {
+            "plan_freq_type":"1",
+            "instantiated_object_flag":"1",
+
             "group_plan_id": "",              //集团计划id，必须
             "project_ids": [],              //项目计划id集合，必须
-            "plan_start_type": "1",            //计划开始类型,1-发布成功后第二天生效，2-指定时间 ,必须
-            "plan_start_time": "",            //计划开始时间,yyyyMMdd+"000000"
-            "plan_end_time": ""               //计划结束时间,yyyyMMdd+"235959"，空值时代表一直有效
+            "plan_start_type": "2",            //计划开始类型,1-发布成功后第二天生效，2-指定时间 ,必须
+            "plan_start_time": new Date(+new Date()+(24*60*60000)).format('yyyyMMdd000000'),            //计划开始时间,yyyyMMdd+"000000"
+            "plan_end_time": new Date(+new Date((new Date().getFullYear()+1)+"/01/01 00:00:00")-(24*60*60000)).format('yyyyMMdd235959')               //计划结束时间,yyyyMMdd+"235959"，空值时代表一直有效
         },
         getIssueProjectListArgu: {
             group_plan_id: "JTJH6a93466d7bb7465c8f893d2ba3e83b7e"
@@ -366,17 +369,27 @@ v.pushComponent({
                     loadding.set("addGroupPlan");
                     createPlan_controller.addGroupPlan(argu).then(
                         function (res) {
+
+                            $("#createSuccessFul").pshow({
+                                title:"发布成功！",
+                                subtitle:"是否将该计划下发到项目上？",
+                            });
+
                             // 跟新下发的方法
                             window.toProject = function () {
                                 _that.toProjectArgu.group_plan_id = res.group_plan_id;
+                                // 保存计划频率设置
+                                _that.toProjectArgu.plan_freq_type=argu.plan_freq_type;
+                                // 保存是否实例化全部对象
+                                _that.toProjectArgu.instantiated_object_flag=argu.instantiated_object_flag;
+                                // 展示选中的项目框
+                                _that.createToProject();
                             }
 
                             cb();
                         }
                     ).finally(function () {
                         loadding.remove("addGroupPlan");
-
-
                         $("#confirmWindow").pshow({ title: '发布成功！', subtitle: '是否将该计划下发到项目上？' });
                     });
                 }
@@ -387,7 +400,6 @@ v.pushComponent({
             var _that = this;
 
             $("#modalWindow").pshow();
-
             createPlan_controller.getIssueProjectList(_that.getIssueProjectListArgu).then(function (res) {
                 _that.IssueProjectList = res;
             })
@@ -406,18 +418,137 @@ v.pushComponent({
         submitToProject: function () {
             var _that = this;
             _that.toProjectArgu.project_ids = _.map(_.filter(_that.IssueProjectList, { selected: true }), "project_id");
+            // 如果选中的有值才提交
+            if(_that.toProjectArgu.project_ids.length){
 
+                if(_that.toProjectArgu.plan_freq_type=="2"){
+                    $('#globalnotice').pshow({ text: '下发失败，请修改计划频率', state: 'failure' });
+                    return;
+                }
+
+                if(_that.toProjectArgu.instantiated_object_flag!=1){
+                    $('#globalnotice').pshow({ text: '下发失败，请修改计划频率', state: 'failure' });
+                    return;
+                }
+
+                $("#globalWindow").pshow();
+                var now =new Date(+new Date()+(24*60*60*1000));
+                $("#xfstartTimesPtimeid").psel({
+                    y:now.getFullYear(),
+                    M:now.getMonth()+1,
+                    d:now.getDate(),
+                });
+                $("#xfendTimesPtimeid").psel({
+                    y:now.getFullYear(),
+                    M:now.getMonth()+1,
+                    d:now.getDate(),
+                })
+
+                // createPlan_controller.issueGroupPlanToWoPlan(_that.toProjectArgu).then(function () {
+                //     $('#globalnotice').pshow({ text: '下发成功', state: 'success' });
+                // }).catch(function () {
+                //     $('#globalnotice').pshow({ text: '下发失败', state: 'failure' });
+                // })
+            };  
+        },
+        // 下发的年份选择时间
+        xfyearClick:function(item){
+            var _that=this;
+            _that.toProjectArgu.plan_start_time=item.plan_start_time;
+            _that.toProjectArgu.plan_end_time=item.plan_end_time;
+        },
+        // 起 下拉菜单事件
+        xfstartTimesClick:function(item){
+            var _that=this;
+            _that.toProjectArgu.plan_start_type=item.code;
+            _that.toProjectArgu.plan_start_time=item.value;
+
+            this.$nextTick(function () {
+                var now =new Date(+new Date()+(24*60*60*1000));
+                $("#xfstartTimesPtimeid").psel({
+                    y:now.getFullYear(),
+                    M:now.getMonth()+1,
+                    d:now.getDate(),
+                });
+            })
+        },
+        // 止 下拉菜单事件
+        xfendTimesClick:function(item){
+            var _that=this;
+            _that.toProjectArgu.plan_end_time=item.value;
+            this.$nextTick(function () {
+                var now =new Date(+new Date()+(24*60*60*1000));
+                $("#xfendTimesPtimeid").psel({
+                    y:now.getFullYear(),
+                    M:now.getMonth()+1,
+                    d:now.getDate(),
+                })
+            })
+
+        },
+        // 自定义开始时间控件点击事件
+        xfstartTimesPtime:function(item){
+            this.toProjectArgu.plan_start_time=item.pEventAttr.startTime.replace(/\-/g,"")+"000000";
+        },
+        // 自定义结束时间控件点击事件
+        xfendTimesPtime:function(item){
+            this.toProjectArgu.plan_end_time=item.pEventAttr.startTime.replace(/\-/g,"")+"235959";
+        },
+        // 提交下发按钮
+        submitClick:function(){
+            var _that=this;
             createPlan_controller.issueGroupPlanToWoPlan(_that.toProjectArgu).then(function () {
                 $('#globalnotice').pshow({ text: '下发成功', state: 'success' });
             }).catch(function () {
                 $('#globalnotice').pshow({ text: '下发失败', state: 'failure' });
             })
-
         }
     },
     computed: {
         base: function () {
             return this.$refs.baseinfomation;
+        },
+        // 下发选择的年份
+        xfyear:function(){
+            return _.range(2).map(function (item,index) {
+
+                var obj={
+                    name:index+new Date().getFullYear()+'年',
+                }
+                // 今年的选项
+                if(index==0){
+                    //第二天
+                    obj.plan_start_time=new Date(+new Date()+(24*60*60000)).format('yyyyMMdd000000');
+                }else{
+                    obj.plan_start_time=new Date(new Date().getFullYear()+"/01/01 00:00:00").format('yyyyMMdd000000');
+                }
+                obj.plan_end_time=new Date(new Date((new Date().getFullYear()+1+index)+"/01/01 00:00:00")-(24*60*60000)).format('yyyyMMdd235959');
+                return obj;
+            })
+        },
+        // 下发开始时间选项
+        xfstartTimes:function(){
+            return [{
+                name:"下发成功后第二天生效",
+                code:"1",
+                value:new Date(+new Date()+(24*60*60000)).format('yyyyMMdd000000'),
+            },{
+                name:"自定义",
+                code:"2",
+                value:new Date(+new Date()+(24*60*60000)).format('yyyyMMdd000000'),
+            }];
+        },
+        // 下发结束时间选项
+        xfendTimes:function(){
+            return [{
+                name:"一直有效",
+                code:"1",
+                value:'',
+            },{
+                name:"自定义",
+                code:"2",
+                value:new Date(+new Date()+(24*60*60000)).format('yyyyMMdd000000'),
+            }];
         }
     },
     watch: {
@@ -504,26 +635,5 @@ v.pushComponent({
         _that.matters = argu.addWoPlan.draft_matters || [new Matter()];
 
         window.createPlanCallback = argu.cb;
-        debugger;
-        // 查询用户的权限
-        // controller.queryWoTypeListByPersonIdControlCode().then(function (list) {
-        //     _that.WoTypeList = list;
-        // })
-
-        //  查询工单状态类
-        // var WorkOrderTypePromise = controller.queryWoTypeList().then(function (res) {
-        //     //  返回对应Object 集合
-        //     _that.WorkOrderType = res.reduce(function (con, item) {
-        //         con[item.code] = item.name;
-        //         return con;
-        //     }, {});
-
-        // }).catch(function () {
-
-        //     _that.WorkOrderType = {};
-        // })
-
-
-
     }
 })

@@ -20,7 +20,7 @@ v.pushComponent({
             if (_.isPlainObject(item)) _that.queryWoListArgu.order_state = item.code;
 
             $("#workOrderListLoad").pshow();
-            controller.queryWoListByPlanId({ plan_id: _that.queryWoListArgu.planId, order_state: _that.queryWoListArgu.order_state }).then(function (data) {
+            controller.queryWoListByPlanId({ plan_id: _that.queryWoListArgu.planId, order_state: _that.queryWoListArgu.order_state,project_id: _that.queryWoListArgu.project_id}).then(function (data) {
                 _that.workOrderListData = JSON.parse(JSON.stringify(data.Content));
 
                 $("#workOrderListLoad").phide();
@@ -55,7 +55,8 @@ v.pushComponent({
 
         _that.queryWoListArgu = {
             order_state: _that.cache.order_state,
-            // planId: _that.cache.planId,
+            planId: _that.cache.planId,
+            project_id:project_id,
         };
 
         _that.selWorkOrderState();

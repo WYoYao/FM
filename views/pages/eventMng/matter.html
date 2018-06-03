@@ -341,9 +341,14 @@
 
             controller.queryGeneralDictByKey().then(function (res) {
 
+
+
                 // 只保存 当工作事项完成后人工签字确认 选项
                 // _that.GeneralDictByKey = _.filter(res, { code: "matter_end_scan" });
-                _that.GeneralDictByKey = res;
+                _that.GeneralDictByKey = res.map(function (item) {
+                    item.selected=_that.matter.required_control.indexOf(item.code)!=-1;
+                    return item;
+                });
             });
         }
     })

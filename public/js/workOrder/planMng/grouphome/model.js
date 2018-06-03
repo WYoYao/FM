@@ -70,7 +70,7 @@ v.pushComponent({
                     group_plan_id: id
                 }).then(function (res) {
                     // res[0]
-                    _that.handler_to_createplan(isquote, isedit, isterm, iscopy, res[0], function () {
+                    _that.handler_to_createplan(isquote, isedit, isterm, iscopy, res, function () {
                         v.initPage("grouphome");
                     })
                 })

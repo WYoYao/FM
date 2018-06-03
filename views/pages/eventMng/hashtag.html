@@ -350,7 +350,13 @@
                     _that.queryClass('queryRecommendSop', {
                         fit_obj_ids: arr,
                         order_type: _that.order_type,
-                    }, "SopList")
+                    }, "SopList",function (list) {
+                        if(_that.str.length>1){
+                            return _that.SopList;
+                        }
+
+                        return _that.str.length>1?_that.SopList:list;
+                    })
 
                 }
             },

@@ -102,10 +102,11 @@ v.pushComponent({
             })
         },
         // 查询工单管理
-        queryOrderManage: function (planId, order_state) {
+        queryOrderManage: function (planId, order_state,project_id) {
             this.cache = {
                 order_state: order_state,
                 planId: planId,
+                project_id:project_id,
                 name: "工单列表",
             };
             v.initPage("workOrderList");

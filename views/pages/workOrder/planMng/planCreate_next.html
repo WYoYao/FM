@@ -6,7 +6,7 @@
                     <pbutton-white bind='true' text="'取消'" click="createPlanCallback()"></pbutton-white>
                 </div>
 
-                <div class="modify_position_person_btn" @click="onPage=false">上一步</div>
+                <div class="modify_position_person_btn" @click="PreView=false">上一步</div>
 
                 <div class=" see_planDetail_page_save ">
                     <div>
@@ -24,7 +24,7 @@
                     <div class="see_planDetail_grid_top_tit_con see_planDetail_grid_top_tit_con1 ">
                         <div>
                             <span>工单类型：</span>
-                            <i v-text="(_.find(base.WorkOrderType,{code:base.addWoPlan.order_type}) || {}).plan_name"></i>
+                            <i v-text="(_.find(base.WorkOrderType,{plan_id:base.addWoPlan.order_type}) || {}).plan_name"></i>
                         </div>
                         <div>
                             <span>工单紧急程度：</span>

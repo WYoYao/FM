@@ -111,10 +111,10 @@
 
                             <div class="body_name" v-text="item.project_name" :title="item.project_name" @click="openPlanDetail(item)"></div>
                             <div class="body_name" v-text="item.is_update_group_plan == 1 ? '已更新' : '未更新'" :title="item.is_update_group_plan == 1 ? '已更新' : '未更新'"></div>
-                            <div class="body_name pointer" @click.stop="queryOrderManage(item.plan_id,'')" v-text="item.create_wo_total" :title="item.create_wo_total"></div>
+                            <div class="body_name pointer" @click.stop="queryOrderManage(item.plan_id,'',item.project_id)" v-text="item.create_wo_total" :title="item.create_wo_total"></div>
                             <div class="body_name" v-text="item.uncreate_wo_total" :title="item.uncreate_wo_total"></div>
-                            <div class="body_name pointer" @click.stop="queryOrderManage(item.plan_id,'5')" v-text="item.executing_wo_total" :title="item.executing_wo_total"></div>
-                            <div class="body_name pointer" @click.stop="queryOrderManage(item.plan_id,'8')" v-text="item.finished_wo_total" :title="item.finished_wo_total"></div>
+                            <div class="body_name pointer" @click.stop="queryOrderManage(item.plan_id,'5',item.project_id)" v-text="item.executing_wo_total" :title="item.executing_wo_total"></div>
+                            <div class="body_name pointer" @click.stop="queryOrderManage(item.plan_id,'8',item.project_id)" v-text="item.finished_wo_total" :title="item.finished_wo_total"></div>
 
                             <ul class="row">
                                 <li v-for="row in item.grid" class="item">

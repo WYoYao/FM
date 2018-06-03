@@ -91,6 +91,7 @@
                                                                     <% include ./planInformation.html %>
 
                                                                         <pwindow-modal id="modalWindow" title="选择项目" templateid="windowTemp1"></pwindow-modal>
+                                                                        <pwindow-global id="globalWindow" templateid="ct"></pwindow-global>
 
                                         </div>
 
@@ -117,12 +118,56 @@
                                                             </div>
                                                         </div>
                                                         <div class="tb">
-                                                            <span class="btn">
+                                                            <span class="btn" @click.capture="$('#modalWindow').phide();submitToProject();">
                                                                 <pbutton-blue text="下发"></pbutton-blue>
                                                             </span>
-                                                            <span class="btn">
+                                                            <span class="btn" @click.capture="$('#modalWindow').phide();">
                                                                 <pbutton-white text="取消"></pbutton-white>
                                                             </span>
+                                                        </div>
+                                                    </div>
+                                                </script>
+
+                                                <script type="text/html" id="ct">
+                                                    <div class="ctt">
+                                                        <div class="tn">
+                                                            请设置计划生效时间
+                                                        </div>
+                                                        <div class="ct">
+                                                            <div v-if="toProjectArgu.plan_freq_type==3">
+                                                                <pcombobox-normal sel="xfyearClick" align="left" orientation="down" bind="true">
+                                                                    <header  placeholder="(_.find(xfyear,{plan_end_time:toProjectArgu.plan_end_time}) || {name:new Date().getFullYear()+'年'}).name"></header>
+                                                                    <item datasource="xfyear" text="name" ></item>
+                                                                </pcombobox-normal>
+                                                            </div>
+                                                            <div v-if="toProjectArgu.plan_freq_type==1">起
+                                                                <pcombobox-normal sel="xfstartTimesClick" align="left" orientation="down" bind="true">
+                                                                    <header  placeholder="(_.find(xfstartTimes,{code:toProjectArgu.plan_start_type}) || {name:'下发成功后第二天生效'}).name"></header>
+                                                                    <item datasource="xfstartTimes" text="name" ></item>
+                                                                </pcombobox-normal>
+                                                            </div>
+                                                            <div v-if="toProjectArgu.plan_freq_type==1 && toProjectArgu.plan_start_type==2">
+                                                                    &nbsp;     &nbsp;     &nbsp;
+                                                                <ptime-form id="xfstartTimesPtimeid" sel="xfstartTimesPtime">
+                                                                    <panel timetype="yMd" startyear="2018" endyear="2025"></panel>
+                                                                 </ptime-form>
+                                                            </div>
+                                                            <div v-if="toProjectArgu.plan_freq_type==1">止
+                                                                <pcombobox-normal sel="xfendTimesClick" id="'xxx'" align="left" orientation="down" bind="true">
+                                                                        <header  placeholder="!toProjectArgu.plan_end_time.length?'一直有效':'自定义'"></header>
+                                                                    <item datasource="xfendTimes" text="name" ></item>
+                                                                </pcombobox-normal>
+                                                            </div>
+                                                            <div v-if="toProjectArgu.plan_freq_type==1 && toProjectArgu.plan_end_time.length">
+                                                                    &nbsp;     &nbsp;     &nbsp;
+                                                                <ptime-form id="xfendTimesPtimeid" sel="xfendTimesPtime">
+                                                                    <panel timetype="yMd" startyear="2018" endyear="2025"></panel>
+                                                                 </ptime-form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="cb">
+                                                            <pbutton-blue text="确定" @click="submitClick();$('#globalWindow').phide()"></pbutton-blue>
+                                                            <pbutton-white text="取消" @click="$('#globalWindow').phide()"></pbutton-white>
                                                         </div>
                                                     </div>
                                                 </script>
@@ -130,8 +175,8 @@
 
                                         <pwindow-confirm id="createSuccessFul">
                                             <button>
-                                                <pbutton-blue text="确定" click="toProject()"></pbutton-blue>
-                                                <pbutton-white text="取消" click="$('#confirmWindow').phide()"></pbutton-white>
+                                                <pbutton-blue text="确定" click="toProject();$('#createSuccessFul').phide()"></pbutton-blue>
+                                                <pbutton-white text="取消" click="$('#createSuccessFul').phide()"></pbutton-white>
                                             </button>
                                         </pwindow-confirm>
 

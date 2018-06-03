@@ -54,7 +54,8 @@ body {
       height: 50px;
       line-height: 50px;
       padding: 0 20px;
-      border-bottom: 1px solid #d9e2e8; }
+      border-bottom: 1px solid #d9e2e8;
+      cursor: pointer; }
       #app .toP .tc .ti .titxt {
         float: left;
         line-height: 50px;
@@ -102,6 +103,30 @@ body {
     #app .toP .tb .btn {
       display: inline-block;
       margin: 0px 10px; }
+#app .ctt {
+  width: 500px;
+  height: 360px; }
+  #app .ctt .tn {
+    height: 100px;
+    text-align: center;
+    font-size: 24px;
+    line-height: 150px; }
+  #app .ctt .ct {
+    height: 200px; }
+    #app .ctt .ct > div {
+      height: 50px;
+      line-height: 50px;
+      text-align: center; }
+      #app .ctt .ct > div > div {
+        width: 190px;
+        vertical-align: middle;
+        display: inline-block; }
+  #app .ctt .cb {
+    height: 90px;
+    text-align: center; }
+    #app .ctt .cb > div {
+      margin: 0 10px;
+      display: inline-block; }
 #app .group_home {
   position: relative;
   background: #f8f8f8; }

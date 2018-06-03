@@ -22,6 +22,7 @@
                 line-height: 50px;
                 padding: 0 20px;
                 border-bottom: 1px solid $blue-border-color;
+                cursor: pointer;
 
                 .titxt{
                     float: left;
@@ -46,6 +47,45 @@
             }
 
         }
+    }
+
+    .ctt{
+        width: 500px;
+        height: 360px;
+
+        .tn{
+            height: 100px;
+            text-align: center;
+            font-size: 24px;
+            line-height: 150px;
+        }
+        .ct{
+            height: 200px;
+
+            & > div{
+                height: 50px;
+                line-height: 50px;
+                text-align: center;
+
+                & > div{
+                    width: 190px;
+                    vertical-align: middle;
+                    display: inline-block;
+                }
+            }
+        }
+
+        .cb{
+            height: 90px;
+            text-align: center;
+
+            & > div{
+                margin: 0 10px;
+                display: inline-block;
+            }
+        }
+
+
     }
 
     .group_home{

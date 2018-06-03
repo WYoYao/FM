@@ -816,6 +816,7 @@ Vue.component('baseinfomation', {
         // // 是否项目版
         // if (_.isBoolean(_that.isterm)) _that.isterm = _that.isterm;
         // 加载工单状态类型
+        if(loadding)loadding.set("WorkOrderTypePromise")
         var WorkOrderTypePromise = controller.queryWoTypeListByPersonIdControlCode().then(function (res) {
 
             res.forEach(function (item) {
@@ -829,6 +830,8 @@ Vue.component('baseinfomation', {
         }).catch(function () {
 
             _that.WorkOrderType = [];
+        }).finally(function () {
+            if(loadding)loadding.remove("WorkOrderTypePromise");
         })
 
         //  选项加载完毕 附加默认值

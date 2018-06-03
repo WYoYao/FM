@@ -222,3 +222,413 @@ Cannot read property 'personalManagement' of undefined
 [2018-06-02 19:55:55.855] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err："后台返回异常"
 [2018-06-02 19:55:55.859] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err："后台返回异常"
 [2018-06-02 20:40:57.728] [ERROR] log_file - 获取workorder/restGroupPlanService/getIssueProjectList的数据err："参数group_plan_id不能为空!"
+[2018-06-03 13:28:52.627] [ERROR] log_file - 加载Array错误：Error: connect ETIMEDOUT 192.168.100.30:9000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:28:52.630] [ERROR] log_file - 加载pconst错误：Error: connect ETIMEDOUT 192.168.100.30:9000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:28:52.632] [ERROR] log_file - 加载String错误：Error: connect ETIMEDOUT 192.168.100.30:9000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:28:52.633] [ERROR] log_file - 加载Number错误：Error: connect ETIMEDOUT 192.168.100.30:9000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:28:52.635] [ERROR] log_file - 加载Math错误：Error: connect ETIMEDOUT 192.168.100.30:9000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:28:52.636] [ERROR] log_file - 加载Date错误：Error: connect ETIMEDOUT 192.168.100.30:9000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:28:52.637] [ERROR] log_file - 加载ptool错误：Error: connect ETIMEDOUT 192.168.100.30:9000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:28:52.638] [ERROR] log_file - 加载psecret错误：Error: connect ETIMEDOUT 192.168.100.30:9000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:32:25.821] [ERROR] log_file - ReferenceError: pconst is not defined
+    at /Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/common/publicRouter.js:24:29
+    at callbacks (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/lib/router/index.js:164:37)
+    at param (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/lib/router/index.js:138:11)
+    at pass (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/lib/router/index.js:145:5)
+    at Router._dispatch (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/lib/router/index.js:173:5)
+    at Object.router [as handle] (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/lib/router/index.js:33:10)
+    at next (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/node_modules/connect/lib/proto.js:190:15)
+    at Object.session [as handle] (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express-session/index.js:397:7)
+    at next (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/node_modules/connect/lib/proto.js:190:15)
+    at Object.cookieParser [as handle] (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/node_modules/connect/lib/middleware/cookieParser.js:60:5)
+[2018-06-03 13:35:54.005] [ERROR] log_file - 加载Array错误：Error: connect ETIMEDOUT 192.168.100.30:9000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:35:54.008] [ERROR] log_file - 加载String错误：Error: connect ETIMEDOUT 192.168.100.30:9000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:35:54.009] [ERROR] log_file - 加载Number错误：Error: connect ETIMEDOUT 192.168.100.30:9000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:35:54.011] [ERROR] log_file - 加载Math错误：Error: connect ETIMEDOUT 192.168.100.30:9000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:35:54.012] [ERROR] log_file - 加载Date错误：Error: connect ETIMEDOUT 192.168.100.30:9000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:35:54.014] [ERROR] log_file - 加载ptool错误：Error: connect ETIMEDOUT 192.168.100.30:9000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:35:54.015] [ERROR] log_file - 加载psecret错误：Error: connect ETIMEDOUT 192.168.100.30:9000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:35:54.016] [ERROR] log_file - 加载pconst错误：Error: connect ETIMEDOUT 192.168.100.30:9000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:35:57.278] [ERROR] log_file - ReferenceError: pconst is not defined
+    at /Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/common/publicRouter.js:24:29
+    at callbacks (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/lib/router/index.js:164:37)
+    at param (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/lib/router/index.js:138:11)
+    at pass (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/lib/router/index.js:145:5)
+    at Router._dispatch (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/lib/router/index.js:173:5)
+    at Object.router [as handle] (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/lib/router/index.js:33:10)
+    at next (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/node_modules/connect/lib/proto.js:190:15)
+    at Immediate.<anonymous> (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express-session/index.js:432:7)
+    at runCallback (timers.js:798:20)
+    at tryOnImmediate (timers.js:752:5)
+[2018-06-03 13:38:47.429] [ERROR] log_file - (node:36112) [DEP0016] DeprecationWarning: 'GLOBAL' is deprecated, use 'global'
+[2018-06-03 13:38:47.430] [ERROR] log_file - (node:36112) [DEP0016] DeprecationWarning: 'root' is deprecated, use 'global'
+[2018-06-03 13:41:56.484] [ERROR] log_file - TypeError: Cipher data must be a string or a buffer
+    at Decipher.update (crypto.js:170:26)
+    at tool.decipher (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/common/tool.js:350:24)
+    at /Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/common/publicRouter.js:32:36
+    at callbacks (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/lib/router/index.js:164:37)
+    at param (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/lib/router/index.js:138:11)
+    at pass (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/lib/router/index.js:145:5)
+    at Router._dispatch (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/lib/router/index.js:173:5)
+    at Object.router [as handle] (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/lib/router/index.js:33:10)
+    at next (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express/node_modules/connect/lib/proto.js:190:15)
+    at Immediate.<anonymous> (/Users/wangying/Documents/20180602/pweb_productList/pweb_saas/node_modules/public_nodejs/express-session/index.js:432:7)
+[2018-06-03 13:57:38.047] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:57:38.059] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 13:59:55.881] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 14:00:00.731] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 14:00:01.431] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 14:00:01.981] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 14:16:51.476] [ERROR] log_file - 获取workorder/restGroupPlanService/destroyGroupPlanById的数据err："参数group_plan_id不能为空!"
+[2018-06-03 14:45:12.639] [ERROR] log_file - 获取workorder/restGroupPlanService/issueGroupPlanToWoPlan的数据err："参数group_plan_id不能为空!"
+[2018-06-03 14:49:29.821] [ERROR] log_file - 获取workorder/restGroupPlanService/issueGroupPlanToWoPlan的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 14:49:50.684] [ERROR] log_file - 获取workorder/restGroupPlanService/getIssueProjectList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 14:49:53.099] [ERROR] log_file - 获取workorder/restGroupPlanService/issueGroupPlanToWoPlan的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 14:50:25.211] [ERROR] log_file - 获取workorder/restGroupPlanService/getIssueProjectList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 14:51:00.171] [ERROR] log_file - 获取workorder/restGroupPlanService/issueGroupPlanToWoPlan的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 14:51:35.771] [ERROR] log_file - 获取workorder/restGroupPlanService/getIssueProjectList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 14:51:35.781] [ERROR] log_file - 获取workorder/restGroupPlanService/issueGroupPlanToWoPlan的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 14:51:38.211] [ERROR] log_file - 获取workorder/restGroupPlanService/getIssueProjectList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 14:51:41.310] [ERROR] log_file - 获取workorder/restGroupPlanService/issueGroupPlanToWoPlan的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 18:48:32.060] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:48:32.067] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:48:46.443] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:48:46.480] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:48:52.710] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:48:52.736] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:22.539] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:22.545] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:27.383] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:27.414] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:30.812] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:31.021] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:41.615] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:41.793] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:45.908] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:46.098] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:49.418] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:49.611] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:52.840] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:52.875] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:55.794] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:55.979] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:59.160] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:57:59.344] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:58:03.025] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 18:58:03.057] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:08:51.951] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 19:08:51.963] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 19:11:09.790] [ERROR] log_file - 获取workorder/restGroupPlanService/getIssueProjectList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:15:12.999] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 19:15:13.010] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 19:15:31.280] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 19:15:31.304] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 19:15:51.030] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 19:15:51.049] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 19:15:57.806] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 19:15:57.978] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 19:24:06.511] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:24:06.524] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:24:13.026] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:24:13.208] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:36:08.549] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 19:36:08.555] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 19:39:46.257] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:39:46.263] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:39:59.009] [ERROR] log_file - 获取workorder/restGroupPlanService/getIssueProjectList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:46:36.294] [ERROR] log_file - 获取workorder/restGroupPlanService/destroyGroupPlanById的数据err："参数group_plan_id不能为空!"
+[2018-06-03 19:47:45.569] [ERROR] log_file - 获取sop/restObjectService/querySystemClass的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:47:50.137] [ERROR] log_file - 获取sop/restObjectService/queryEquipClass的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:47:52.960] [ERROR] log_file - 获取sop/restObjectService/querySpaceClass的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:47:55.557] [ERROR] log_file - 获取sop/restObjectService/querySystemClass的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:47:57.810] [ERROR] log_file - 获取sop/restObjectService/queryEquipClass的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:47:59.927] [ERROR] log_file - 获取sop/restObjectService/querySystemClass的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:48:02.221] [ERROR] log_file - 获取sop/restObjectService/queryEquipClass的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:48:04.564] [ERROR] log_file - 获取sop/restObjectService/querySpaceClass的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:48:06.040] [ERROR] log_file - 获取sop/restObjectService/querySystemClass的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:48:07.956] [ERROR] log_file - 获取sop/restObjectService/queryEquipClass的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:48:09.957] [ERROR] log_file - 获取sop/restObjectService/querySpaceClass的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:48:21.197] [ERROR] log_file - 获取sop/restObjectService/queryEquipClass的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:50:53.055] [ERROR] log_file - 获取workorder/restGroupPlanService/destroyGroupPlanById的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 19:51:29.476] [ERROR] log_file - 获取workorder/restGroupPlanService/getIssueProjectList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 19:54:05.118] [ERROR] log_file - 获取workorder/restGroupPlanService/getIssueProjectList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:54:20.976] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanById的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:54:27.711] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:54:27.893] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:54:32.173] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:54:32.202] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:56:39.656] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 19:56:39.662] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 20:15:47.548] [ERROR] log_file - 获取restSopService/verifyObjectAndSop的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 20:15:52.939] [ERROR] log_file - 获取restSopService/verifyObjectAndSop的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 21:19:39.584] [ERROR] log_file - 获取restGeneralDictService/queryGeneralDictByKey的数据err：Error: getaddrinfo ENOTFOUND 7c1fd6e1.ngrok.io 7c1fd6e1.ngrok.io:80
+    at errnoException (dns.js:50:10)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+[2018-06-03 21:28:34.325] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 21:28:34.330] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 21:29:15.209] [ERROR] log_file - 获取restGeneralDictService/queryWoTypeList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 21:29:15.231] [ERROR] log_file - 获取workorder/restGroupPlanService/queryGroupPlanList的数据err：Error: connect ETIMEDOUT 52.15.62.13:80
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-03 21:42:17.348] [ERROR] log_file - 获取workorder/restGroupPlanService/getWoMattersPreview的数据err："<html><body><h1>502 Bad Gateway</h1>\nThe server returned an invalid or incomplete response.\n</body></html>\n"
+[2018-06-03 21:43:59.923] [ERROR] log_file - 获取workorder/restWoPlanService/updateWoPlan的数据err："failure"
+[2018-06-03 21:49:14.791] [ERROR] log_file - 获取restWoPlanService/queryWoListByPlanId的数据err："缺少必填项"
