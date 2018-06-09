@@ -25,7 +25,10 @@ function editItem(event) {
     if (instance.editFloatName == 'floor') {
         spaceInfoController.editDetailCopy = JSON.parse(JSON.stringify(instance.floorDetail));//备份 
         ftype == 'floor_type' && (true, $('#editFloorType').psel(parseInt(instance.floorDetail.floor_type) - 1));//如果是楼层类型
+        $("#editCodeType").precover("请选择楼层编码");
+        ftype == 'floor_identity' && (true, $('#editCodeType').psel(instance.floorDetail.floor_identity));//如果是楼层编码
     }
+    
     if (instance.editFloatName == 'space') {
         spaceInfoController.editDetailCopy = JSON.parse(JSON.stringify(instance.spaceDetail));//备份 
     }
@@ -146,10 +149,13 @@ function addFloorShow(event, param) {//添加楼层页面显示
     spaceInfoController.addFloorSign = param;
     $("#addFloorDiv").show();
     $("#addFloorDiv [floortype='typeDrop']").precover();//恢复默认  
+   $("#addFloorDiv [floortype='typeCode']").precover("请选择楼层编码");//恢复默认  
     var allInput = $("#addFloorDiv [widtye='inputText']");
     for (var i = 0; i < allInput.length; i++) {//恢复默认 
         $(allInput[i]).precover();
     }
+    spaceInfoController.queryFloorIdentity();//获取楼层编码
+
 }
 function saveAddFloor() {
     var instance = spaceInfoModel.instance();
@@ -194,6 +200,13 @@ function floorTypeSel(event) {//请选择楼层性质
     var thisIndex = event.pEventAttr.index;
     instance.floorDetail.floor_type = parseInt(thisIndex) + 1;
 }
+function floorCodeSel(item,event) {//请选择楼层编码
+    //console.log(item.name)
+    var instance = spaceInfoModel.instance();
+    // var thisIndex = event.pEventAttr.index;
+   instance.floorDetail.floor_identity = item.code;
+}
+
 function addFloorHide(event) {
     $("#addFloorDiv").hide();
 }
@@ -661,3 +674,13 @@ $(function(){
         $("#uploadEquipment1").pshow();
     });
 });
+
+var  codeFunSel=function (arr,code){
+    arr=arr||[];
+    for(var i=0;i<arr.length;i++){
+        var a=arr[i]||{};
+        if(a.code==code){
+            return a.name;
+        }
+    }
+};

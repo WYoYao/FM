@@ -1,17 +1,17 @@
 <script type="text/html" id="Multiple">
-<div pc="" class="per-combobox-basic" @click.stop="">
-    <div cheader="" class="per-combobox-title" title="getSelecetedNames || placeholder" @click="open=!open">
+<div pc="" class="per-combobox-basic" @click.stop="" @mouseleave="open=false">
+    <div cheader="" class="per-combobox-title" :title="getSelecetedNames || placeholder" @click="open=!open">
         <span cheadertext="" class="per-combobox_name" v-text="getSelecetedNames || placeholder"></span>
         <span class="per-combobox_icon">v</span>
     </div>
     <div class="per-combobox-wrap _combobox_bottom _combobox_left" :style="isOpen">
         <div class="_combobox_flex">
             <div class="per-combobox-con" style="display: inline-block;">
-                <div class="per-scrollbar" style="max-width: 298px; max-height: 90px;">
+                <div class="per-scrollbar" style="max-width: 298px; max-height: 90px;overflow-y:auto">
                     <div class="per-scrollbar_wrap">
                         <div class="per-scrollbar_actual">
                             <ul>
-                                <li level="1" class="per-combobox_item" :class='seleceted.indexOf(item)!=-1?"per-pitch":""' :title="item[attr]" v-for="(item,index) in datasource" @click="handlerClick(item),open=false,submit()">
+                                <li level="1" class="per-combobox_item" :class='seleceted.indexOf(item)!=-1?"per-pitch":""' :title="item[attr]" v-for="(item,index) in datasource" @click="handlerClick(item),submit()">
                                     <b v-text="item[attr]"></b>
                                     <i class="per-combobox_item_iconR">Z</i>
                                 </li>

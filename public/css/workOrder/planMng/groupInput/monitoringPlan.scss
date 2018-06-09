@@ -70,14 +70,28 @@
                 background: $blue-block-color;
                 font-size: 16px;
                 box-sizing: border-box;
+                position: relative;
                 @include clear;
-
+                .name{
+                    display: block;
+                    position: absolute;
+                    top: calc(50% - 8px);
+                    height: 16px;
+                    left: 20px;
+                    width: 130px;
+                    line-height: 16px;
+                }
                 .total_count{
                     padding: 5px;
                     color: $blue-font-color;
                     font-size: 12px;
-                    position: relative;
+                    height: 14px;
+                    top: calc(50% - 12px);
+                    left: 160px;
+                    max-width: 260px;
+                    position: absolute;
                     background: #E9EFF0;
+                    line-height: 14px;
                     .hoverList{
                         display: none;
                         width: 100%;
@@ -89,7 +103,7 @@
                             width: 100%;
                             height: 30px;
                             line-height: 30px;
-                            font-size: 16px;
+                            font-size: 14px;
                             color: white;
                             text-align: center;
                         }

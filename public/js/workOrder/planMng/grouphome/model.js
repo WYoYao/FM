@@ -101,6 +101,18 @@ v.pushComponent({
             };
             // 跳转到的计划的详情页面
             v.initPage("planInformation");
+        },
+        handler_tP: function (item) {
+            var _that = this;
+            // 跟新下发的方法
+            _that.toProjectArgu.group_plan_id = item.group_plan_id;
+            _that.getIssueProjectListArgu.group_plan_id = item.group_plan_id;
+            // 保存计划频率设置
+            _that.toProjectArgu.plan_freq_type = item.plan_freq_type;
+            // 保存是否实例化全部对象
+            _that.toProjectArgu.instantiated_object_flag = item.instantiated_object_flag || "1";
+            // 展示选中的项目框
+            _that.createToProject();
         }
     },
     computed: {

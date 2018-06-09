@@ -7,11 +7,11 @@ v.pushComponent({
             {name:"误报",code:0},
             {name:"重复报修",code:1},
             {name:"其他",code:2},
-            {name:"工单已完成",code:3}
+            // {name:"工单已完成",code:3}
         ],
         eventListProjectId:"",    // 查询该项目的事件
         proEvListPower:{          // 该页所有控制类数据
-            closeEvent:true,      // 关闭事件权限
+            closeEvent:false,      // 操作或者关闭事件权限
             isCanSelState:true,   // 是否能够选择事件状态
             isELTHasPage:false,   // 是否分页
         },   
@@ -43,25 +43,31 @@ v.pushComponent({
             $("#eventListPages").psel(1,false);
             this.eventTypeSel = Number($("#eventType").psel().id);
             this.getProEvListData();
+            this.getProEvListLen();
         },
         // 搜索事件
         searchThisEvent : function(){
             $("#eventListPages").psel(1,false);
-            $("#proEvListKey").pval().key.length > 0 ? this.getProEvListData() : void 0;
+            $("#proEvListKey").pval().key.length >= 0 ? this.getProEvListData() : void 0;
+            
         },
         // 选择关闭事件原因
         selCloseReason : function(){
             $("#eventListPages").psel(1,false);
             this.getProEvListData();
+            this.getProEvListLen();
         },
         // 选择关闭事件时间
         selCloseEvTime : function(){
             $("#eventListPages").psel(1,false);
             this.getProEvListData();
+            this.getProEvListLen();
         },
         // 分页器
         selEventListPage:function(){
             this.getProEvListData();
+            this.getProEvListLen();
+            $("#closeProEventCombo").hide();
         },
 
 
@@ -109,18 +115,23 @@ v.pushComponent({
         // 获取项目事件列表数据
         getProEvListData : function(){
             var that = this;
-            $("#eventListPart").pshow();
-
+            $("#globalloading").pshow();
+            // $('#globalloading').pshow();
             EMA.PE(that.getProEvListDataParam(),function(data){
                 that.proEvListData.data = data[0] ? (data[0].contents || []) : [];
-                $("#eventListPages").pcount(data[0] ? Math.ceil(data[0].total || 1)/v.instance.evPageLen : 1);
-                that.proEvListData.num = data[0] ? data[0].toal || 0 : 0;
+                $("#eventListPages").pcount(data[0] ? Math.ceil((data[0].total || 1)/(v.instance.evPageLen)) : 1);
+                that.proEvListData.num = data[0] ? data[0].total || 0 : 0;
                 that.compuetEvsObj();
+                that.$nextTick(function(){
+                    $("#globalloading").phide();
+                })
             },function(){
                 that.proEvListData.data = [];
                 that.proEvListData.num = 0;
+                $("#globalloading").phide();
             },function(){
-                $("#eventListPart").phide();
+                
+                // $('#globalloading').phide();
             });
             
         },

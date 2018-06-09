@@ -53,6 +53,9 @@
                                    
                                             <div class="obj-fragment-div">
                                                 <span class="aite-btn" @click.stop="content_str='@'" :class="content_str ? 'eleDisable' : ''">@对象</span>
+                                                <span class="aite-btn" v-if="content_str" style="margin-left:10px;position:relative;color:initial;">
+                                                    <aite :str="content_str" ref="aite" :desc_objs="desc_work.content_objs" :isterm="isterm" :cb="get_content_Obj" v-if="content_str"></aite>
+                                                </span>
                                                 <span class="counter" :class="{'errorNumber':false}">
                                                     <b v-text="desc_work.content.length">0</b>/200</span>
                                             </div>
@@ -62,9 +65,9 @@
                                                     <img src="../images/del.png" alt="删除图标" @click.captrue="desc_work.content_objs.splice(index,1);desc_work.confirm_result.splice(index,1)">
                                                 </div>
                                             </div>
-                                            <div class="" v-if="content_str">
-                                                <aite :str="content_str" ref="aite" :isterm="isterm" :cb="get_content_Obj" v-if="content_str"></aite>
-                                            </div>
+                                            <!-- <div class="" v-if="content_str">
+                                                <aite :str="content_str" ref="aite" :desc_objs="desc_work.content_objs" :isterm="isterm" :cb="get_content_Obj" v-if="content_str"></aite>
+                                            </div> -->
                                         </div>
 
                                     </div>
@@ -334,7 +337,7 @@
                     </div>
                 </div>
             </div>
-            <div class="alert-close">
+            <div class="alert-close" @click.stop="cb()">
                 <img src="/images/alert_close_btn.png" />
             </div>
         </div>
@@ -577,14 +580,14 @@
                 }
 
                 // 作业简称不能为空
-                if (!dw.content.length) {
-                    $('#globalnotice').pshow({ text: '标准操作要求不能为空', state: "failure", });
+                if (!dw.content_objs.length) {
+                    $('#globalnotice').pshow({ text: '对象选择不能为空', state: "failure", });
                     return;
                 }
 
-                // 作业简称不能为空
-                if (!dw.content.length) {
-                    $('#globalnotice').pshow({ text: '标准操作要求不能为空', state: "failure", });
+                // 标准作业操作内容
+                if (!dw.newcontent.length) {
+                    $('#globalnotice').pshow({ text: '标准作业操作内容不能为空', state: "failure", });
                     return;
                 }
 

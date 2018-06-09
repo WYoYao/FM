@@ -90,6 +90,26 @@
                 <span class="sure" @click="sureEdit($event,'floor_type')">Z</span>
             </div>
         </div>
+        <div class="detailItem" ftype="floor_identity">
+            <div class="contShow" v-bind:class="{ canEdit: detailEditSign }">
+                <span class="name">楼层编码：</span><span class="cont">{{!!floorDetail.floor_identity?floorDetail.floor_identity:'--'}}</span> 
+                 <% if(tool_type=="Web"){ %>
+                <span class="edit" onclick="editItem(event)"><em>e</em>编辑</span>
+                <% } %>
+            </div>
+            <div class="editShow">
+                <span class="name">楼层编码：</span>
+                <div class="editInput">
+                    <pcombobox-normal align="left" id="'editCodeType'"  bind="true"  sel="floorCodeSel">
+                        <header placeholder="'请选择楼层编码'"></header>
+                        <item datasource="floorCodeArr" text="name"></item>
+                    </pcombobox-normal>
+                </div>
+                <span class="cancel" @click="cancelEdit($event)">x</span>
+                <span class="sure" @click="sureEdit($event,'floor_identity')">Z</span>
+            </div>
+        </div>
+        
         <div class="detailItem" ftype="floor_func_type">
             <div class="contShow" v-bind:class="{ canEdit: detailEditSign }">
                 <span class="name">楼层功能：</span><span class="cont">{{!!floorDetail.floor_func_type?floorDetail.floor_func_type:'--'}}</span>

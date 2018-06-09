@@ -3,7 +3,7 @@
         <div class="see_planDetail_page">
             <div class="see_planDetail_page_top">
                 <div class="see_planDetail_page_back">
-                    <pbutton-white bind='true' text="'取消'" click="createPlanCallback()"></pbutton-white>
+                    <pbutton-white bind='true' text="'取消'" @click="cancelWindows()"></pbutton-white>
                 </div>
 
                 <div class="modify_position_person_btn" @click="PreView=false">上一步</div>
@@ -23,6 +23,10 @@
                     </div>
                     <div class="see_planDetail_grid_top_tit_con see_planDetail_grid_top_tit_con1 ">
                         <div>
+                            <span>计划名称：</span>
+                            <i v-text="base.addWoPlan.plan_name"></i>
+                        </div>
+                        <div>
                             <span>工单类型：</span>
                             <i v-text="(_.find(base.WorkOrderType,{plan_id:base.addWoPlan.order_type}) || {}).plan_name"></i>
                         </div>
@@ -30,21 +34,20 @@
                             <span>工单紧急程度：</span>
                             <i v-text="(_.find(base.urgencyType,{code:base.addWoPlan.urgency}) || {}).name"></i>
                         </div>
-                    </div>
-                    <div class="see_planDetail_grid_top_tit_con see_planDetail_grid_top_tit_con2 ">
                         <div>
-                            <span>
-                                工单提前发送时间：
-                            </span>
+                            <span>工单提前发送时间：</span>
                             <i>提前
                                 <em v-text="base.addWoPlan.ahead_create_time"></em>小时</i>
                         </div>
                         <div>
-                            <span>计划生效时间：</span>
-                            <i v-text="(_.find(base.plan_start_type,{code:base.addWoPlan.plan_start_type}) || {}).name">
-                            </i>&nbsp;——&nbsp;
-                            <i v-text="(_.find(base.plan_end_time_type,{code:base.addWoPlan.plan_end_type}) || {}).name"></i>
+                            <span>是否实例化全部对象：</span>
+                            <i v-text="base.addWoPlan.instantiated_object_flag==1?'是':'否'"></i>
                         </div>
+                        <div>
+                            <span>建议执行人数：</span>
+                            <i v-text="base.addWoPlan.suggest_executor_num"></i>
+                        </div>
+
                     </div>
                     <div class="see_planDetail_grid_top_tit_con see_planDetail_grid_top_tit_con3 ">
                         <h4>计划频率：</h4>
@@ -55,11 +58,26 @@
 
                             (
                             <span v-for="(item,index) in base.addWoPlan.freq_times">
-                                <i v-text="'第'+ index+1 +'次'"></i>
+                                <i v-text="'第'+ (index+1) +'次'"></i>
                                 <i v-text="fill(item.start_time.time_month,2) + '.'+ fill(item.start_time.time_day,2) + ' '+ fill(item.start_time.time_hour,2)+ ':'+ fill(item.start_time.time_minute,2)"></i>
                                 <em>至</em>
                                 <i v-text="fill(item.end_time.time_month,2) + '.'+ fill(item.end_time.time_day,2) + ' '+ fill(item.end_time.time_hour,2)+ ':'+ fill(item.end_time.time_minute,2)"></i>
                             </span>)
+                        </div>
+                    </div>
+                    <div class="see_planDetail_grid_top_tit_con see_planDetail_grid_top_tit_con2 " v-show="isterm">
+
+                        <div>
+                            <span>计划生效时间：</span>
+                            <i v-text="(_.find(base.plan_start_type,{code:base.addWoPlan.plan_start_type}) || {}).name">
+                            </i>&nbsp;——&nbsp;
+                            <i v-text="(_.find(base.plan_end_time_type,{code:base.addWoPlan.plan_end_type}) || {}).name"></i>
+                        </div>
+                    </div>
+                    <div class="see_planDetail_grid_top_tit_con see_planDetail_grid_top_tit_con1" v-if="base.addWoPlan.pit_positions.length">
+                        <div v-for="(item,index) in base.addWoPlan.pit_positions">
+                            <span>位置{{index+1}}：</span>
+                            <i :title="item.pit_position_ask_names.join(',')" v-text="item.pit_position_ask_names.join(',')"></i>
                         </div>
                     </div>
                     <div class="see_planDetail_grid_line ">
@@ -81,23 +99,20 @@
                             <div class="see_planDetail_grid_tab_left">
                                 <div class="see_planDetail_grid_matter_info" v-if="index2==0">
                                     <h4>事件概述：</h4>
-                                    <p v-text="matter_steps.description"></p>
-                                    <!-- <p v-text="matter_steps.content + matter_steps.work_name"></p> -->
+                                    <p v-text="matters.description"></p>
                                 </div>
 
                                 <div class="see_planDetail_grid_list" v-for="(steps,index3) in matter_steps.step_content">
                                     <ul>
                                         <!-- 判断如果内容是常规内容并且数量大于0 -->
                                         <li class="see_planDetail_grid_list_operat2">
-                                            <h4 v-text="(index2+1).toString() + '-' + (index3+1).toString()"></h4>
+                                            <h4 v-text="(index1+1).toString() + '-' + (index2+1).toString()"></h4>
                                             <div>
-                                                <span v-if="_.isArray(steps.obj_required_control) && steps.obj_required_control.indexOf('obj_first_photo')!=-1">
-                                                    到达指定位置拍照
-                                                </span>
-                                                <span v-if="_.isArray(steps.obj_required_control) && steps.obj_required_control.indexOf('obj_first_sign')!=-1">
-                                                    到达指定位置扫码
-                                                </span>
                                                 <ul>
+                                                    <li v-if="_.isArray(steps.content_objs) && steps.content_objs.length">
+                                                        <h5>对象选择：</h5>
+                                                        <p v-text="_.map(steps.content_objs,'obj_name').join(',')"></p>
+                                                    </li>
                                                     <li v-if="steps.pre_conform">
                                                         <h5>强制确认操作前提：</h5>
                                                         <p v-text="steps.pre_conform"></p>
@@ -106,7 +121,7 @@
                                                         <h5>标准作业操作内容：</h5>
                                                         <p v-text="steps.newcontent"></p>
                                                     </li>
-                                                    <li v-if="steps.notice && steps.notice != '--'">
+                                                    <li v-if="steps.notice">
                                                         <h5>注意事项：</h5>
                                                         <p v-text="steps.notice"></p>
                                                     </li>
@@ -122,7 +137,7 @@
                                                                         <i v-for="(names,naIndex) in parents.parent_names" v-text="parents.parent_names.length == naIndex + 1?names : names + '-'"></i>)
                                                                     </span>
                                                                 </div>
-                                                                <div class="choiceObjectBtn" v-if="isterm">
+                                                                <div class="choiceObjectBtn" v-if="isterm && base.addWoPlan.instantiated_object_flag!=1">
                                                                     <div :type="confirm_result.obj_type">
                                                                         <section style="position: relative;" v-show="confirm_result.obj_type == 'system_class' || confirm_result.obj_type == 'equip_class'">
                                                                             <pbutton-blue bind="true" text="'选择具体系统设备'" @click.stop="ObjectByClassId=confirm_result;queryObjectByClass(confirm_result.obj_id,confirm_result.obj_type)"></pbutton-blue>
@@ -159,6 +174,14 @@
                                                                 </ul>
                                                             </div>
                                                         </div>
+                                                    </li>
+                                                    <li>
+                                                        <span v-if="_.isArray(steps.obj_required_control) && steps.obj_required_control.indexOf('obj_first_photo')!=-1">
+                                                            到达指定位置拍照
+                                                        </span>
+                                                        <span v-if="_.isArray(steps.obj_required_control) && steps.obj_required_control.indexOf('obj_first_sign')!=-1">
+                                                            到达指定位置扫码
+                                                        </span>
                                                     </li>
                                                 </ul>
                                                 <!-- <p v-if="steps.step_type == '6'" v-text="steps.content"></p> -->

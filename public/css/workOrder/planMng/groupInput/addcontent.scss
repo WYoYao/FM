@@ -95,39 +95,7 @@
                 overflow-y: auto;
                 overflow-y: overlay;
 
-                .block{
-                    display: inline-block;
-                    height: 30px;
-                    line-height: 30px;
-                    position: relative;
-                    margin: 0 20px 15px 0;
-                    vertical-align: top;
-                    -ms-text-overflow: ellipsis;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    border-radius: 15px;
-                    padding: 0 15px;
-                    background-color: #f3f3f3;
-
-                    & > span{
-                        box-sizing: border-box;
-                        display: inline-block;
-                        height: 30px;
-                        line-height: 30px;
-                        -ms-text-overflow: ellipsis;
-                        text-overflow: ellipsis;
-                        overflow: hidden;
-                        white-space: nowrap;
-                        vertical-align: middle;
-                        cursor: pointer;
-                    }
-
-                    & > img{
-                        vertical-align: middle;
-                        cursor: pointer;
-                    }
-                }
+                @include cirtext;
 
             }
 
@@ -265,7 +233,9 @@
                 cursor: pointer;
                 position: relative;
 
-                @include pcheckbox;
+                @include pcheckbox{
+                    margin-right: 10px;
+                };
 
                 .aite-btn{
                     color: #7a94ad;

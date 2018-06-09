@@ -782,7 +782,9 @@ var organizationMounted = function () {
         if(result && (result.length > 0)){
             var orgTreeCenterDepart = organizationMethods.organizationTreeInit(result, '', '', 1);
         }else{
-            var orgTreeCenterDepart = organizationMethods.organizationTreeInit(organizationModel.listByCenterDepartment, '', '', 1);
+            $("#message").pshow({ text: "网络故障请稍后重试！", state: "failure" });
+            return;
+            // var orgTreeCenterDepart = organizationMethods.organizationTreeInit(organizationModel.listByCenterDepartment, '', '', 1);
         }
         organizationModel.listByCenterDepartment = JSON.parse(JSON.stringify(orgTreeCenterDepart));
         var centerId = organizationModel.listByCenterDepartment[0].obj_id;
@@ -798,7 +800,9 @@ var organizationMounted = function () {
         if(result && (result.length > 0)){
             var orgTreeProjectCommon = organizationMethods.organizationTreeInit(result, '', '', 1);
         }else{
-            var orgTreeProjectCommon = organizationMethods.organizationTreeInit(organizationModel.listByProjectCommon, '', '', 1);
+            $("#message").pshow({ text: "网络故障请稍后重试！", state: "failure" });
+            return;
+            // var orgTreeProjectCommon = organizationMethods.organizationTreeInit(organizationModel.listByProjectCommon, '', '', 1);
         }
         organizationModel.listByProjectCommon = JSON.parse(JSON.stringify(orgTreeProjectCommon));
         windowEvent.windowInit();

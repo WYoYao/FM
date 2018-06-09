@@ -7,18 +7,18 @@ v.pushComponent({
         planData:[],
         // 时间数据
         dateData:{
-            lastMonth:{
-                name:"",
-                width:0
-            },
-            thisMonth:{
-                name:"",
-                width:0
-            },
-            nextMonth:{
-                name:"",
-                width:0
-            },
+            // lastMonth:{
+            //     name:"",
+            //     width:0
+            // },
+            // thisMonth:{
+            //     name:"",
+            //     width:0
+            // },
+            // nextMonth:{
+            //     name:"",
+            //     width:0
+            // },
             day:[],
             width:0
         },
@@ -30,75 +30,63 @@ v.pushComponent({
             total:0,
             unUse:0
         },
+        planManageState:{}
         
     },
     methods: {
         // 选择显示的计划频率
         changePlanFreq : function(item){
+            if(item.sel){return}
             this.allFreq.forEach(function(model){
                 model.sel = false;
             })
             item.sel = true;
             this.refreshRenderPMGrid(false);
         },
-        // 构建时间数据
+        // 状态存储
+        planManageSt : function(name){
+            var el = document.getElementById(name);
+            if(this.planManageState[name] == undefined){this.planManageState[name] = ""}
+            if(this.planManageState[name] == $(el).psel().id){ return }
+            this.planManageState[name] = $(el).psel().id;
+            this.refreshRenderPMGrid(false);
+        },
+        
         planManageCreateTime : function(){
-            // 构建当前中心月对象
             var date = new Date(this.centerMonth);
-            // 获取上个月及这个月的天数
-            var days = getThisAndLastMonthDays(this.centerMonth);
-            // 计算月份数据
-            // 获取需要显示的3个月份
+            // 获取这个月的月份以及天数
             var month = date.getMonth();
-            month = [
-                month == 0 ? 12 : month,
-                month == 0 ? 1 : month + 1,
-                month == 0 ? 2 : month == 11 ? 1 : month + 2
-            ]
-            // 获取当前所能显示的最小以及最大时间，在函数最后进行补充
-            var a = String(month[0]).length == 1 ? "0" + month[0] : month[0];
-            var b = String(month[2]).length == 1 ? "0" + month[2] : month[2];
-            this.dateData.startTime = "" + (month[1] == 1 ? (date.getFullYear() - 1) : date.getFullYear()) + a;
-            this.dateData.endTime = "" + (month[1] == 12 ? (date.getFullYear() + 1) : date.getFullYear()) + b;
+            month = month == 0 ? 1 : month + 1;
+            var day = getThisAndLastMonthDays(this.centerMonth,true);
+            var a = ('00' + month).substr(-2,2);
+            this.dateData.startTime = "" + (month == 1 ? (date.getFullYear() - 1) : date.getFullYear()) + a;
+            this.dateData.endTime = "" + (month == 12 ? (date.getFullYear() + 1) : date.getFullYear()) + a;
+
             var monthList = [{a:1,b:"一月"},{a:2,b:"二月"},{a:3,b:"三月"},{a:4,b:"四月"},{a:5,b:"五月"},{a:6,b:"六月"},{a:7,b:"七月"},{a:8,b:"八月"},{a:9,b:"九月"},{a:10,b:"十月"},{a:11,b:"十一月"},{a:12,b:"十二月"}]
-            month = month.map(function(item){
-                monthList.forEach(function(model){
-                    model.a != item ? void 0 : item = model.b;
-                })
-                return item
-            })
-            // 这个月的天数
-            var thisMonthDay = days.this;
+            monthList.forEach(function(model){
+                (model.a == month) && (month = model.b);
+            });
             // 计算格子宽度
-            var width = window.document.getElementById('getCellWidth').offsetWidth - (thisMonthDay + 3);
-            var cell = width/(thisMonthDay + 4);
-            // 计算3个月份宽度
-            var a = cell*2 + 1;
-            var b = cell*thisMonthDay + thisMonthDay - 1;
-            var c = a - 0.5;
-            this.dateData.lastMonth = {name:month[0],width:a};
-            this.dateData.thisMonth = {name:month[1],width:b};
-            this.dateData.nextMonth = {name:month[2],width:c};
+            var cell = (window.document.getElementById('getCellWidth').offsetWidth - (day - 1))/day;
             // 计算天的数据
             this.dateData.day = [];
-            this.dateData.day.push(days.last-1,days.last);
-            for(var i = 1 ;i < days.this + 1;i++){
+            for(var i = 1 ;i < day+1;i++){
                 this.dateData.day.push(i);
             }
-            this.dateData.day.push(1,2);
-            this.dateData.width = cell;
             // 完善当前所能显示的最小以及最大时间存入时间数据
             var a = this.dateData.day[0];
             var b = this.dateData.day.pop();
             this.dateData.day.push(b);
-            a = String(a).length == 1 ? "0" + a : a;
-            b = String(b).length == 1 ? "0" + b : b;
-            this.dateData.startTime += a + "000000";
-            this.dateData.endTime += b + "235959";
+            this.dateData.startTime += ('00' + a).substr(-2,2) + "000000";
+            this.dateData.endTime += ('00' + b).substr(-2,2) + "235959";
+            this.dateData.month = month;
+            this.dateData.cell = cell;
         },
+
         // 首页时间插件被选择
         planTypeTimeSel : function(){
             // 更新中心月份数据，调用页面渲染函数
+            if($("#planTypeTime").psel().startTime == this.centerMonth){return}
             this.centerMonth = $("#planTypeTime").psel().startTime;
             this.refreshRenderPMGrid(true);
         },
@@ -111,10 +99,7 @@ v.pushComponent({
         },
         // 查看已经废弃的计划
         lookDiscardGroupPlan : function(){
-            this.cache = {
-                orderType : $("#planTypeCombo").psel().id,
-                name:"已作废计划列表",
-            }
+            this.cache = {orderType : $("#planTypeCombo").psel().id,name:"已作废计划列表",}
             v.initPage('dumpedPlan');
         },
         // 跳转到集团计划
@@ -143,36 +128,57 @@ v.pushComponent({
             };
             v.initPage("createPlan");
         },
+        // 页面滚动
+        planMngScroll : function(ev){
+            return
+            if(ev.pEventAttr.currScrollTop >= ev.pEventAttr.maxScrollTop - 30){
+                if(this.planData.length/this.pageSize + 1)
+                this.refreshRenderPMGrid(false,ev.pEventAttr.currScrollTop);
+            }
+        },
         // 重新渲染表格
-        // type为true时同时刷新时间部分和计划部分,否则只刷新计划部分
-        refreshRenderPMGrid : function(type){
+        // type为true时同时刷新时间部分和计划部分,否则只刷新计划部分,isscroll如果不传则重置计划信息
+        refreshRenderPMGrid : function(type,isscroll){
             var that = this;
             if(type){this.planManageCreateTime()}
+            !isscroll ? this.planData = [] : void 0;
             var param = this.createPlanOrderParam();
             var a = param.freq_cycle == 'd' ? PMA.DO : PMA.PO;
             $("#planManagePartLoading").pshow();
             a(param,function(data){
                 data = data || [];
-                that.planData = dataControll(JSON.parse(JSON.stringify(data)));
-            },function(){
-                that.planData = [];
+                if(data.length == 0){
+                    $("#globalnotice").pshow({ text: "没有更多计划了", state: "success" });
+                    return
+                }else{
+                    data = dataControll(JSON.parse(JSON.stringify(data)));
+                    that.planData = that.planData.concat(data);
+                    that.$nextTick(function(){
+                        $("#countHT .grid .per-scrollbar").css('max-height',that.residueHeight - 131 + 'px');
+                        $("#countHT .grid .per-scrollbar>div").css('height','auto');
+                        $("#planManagePartLoading").phide();
+                        isscroll ? $("#planMngScroll").psetScroll(isscroll,"vertical") : void 0;
+                    })
+                }
             },function(){
                 $("#planManagePartLoading").phide();
+            },function(){
             })
-
         },
         // 统一获取向后台获取计划工单数据时的参数
         createPlanOrderParam : function(){
             var param = {
-                plan_name : $("#planKeyword").pval().key,
+                plan_name  : $("#planKeyword").pval().key,
                 start_time : this.dateData.startTime,
-                end_time : this.dateData.endTime,
+                end_time   : this.dateData.endTime,
+                pageSize   : this.pageSize,
+                page       : this.planData.length/this.pageSize + 1,
             }
-            param.plan_from = $("#planSourceCombo").psel().id ? $("#planSourceCombo").psel().id : "";
-            param.order_type = $("#planTypeCombo").psel().id ? $("#planTypeCombo").psel().id : "";
             this.allFreq.forEach(function(item){
                 if(item.sel){param.freq_cycle = item.id}
             })
+            param.plan_from = $("#planSourceCombo").psel().id ? $("#planSourceCombo").psel().id : "";
+            param.order_type = $("#planTypeCombo").psel().id ? $("#planTypeCombo").psel().id : "";
             return param;
         },
     },
@@ -180,11 +186,8 @@ v.pushComponent({
 
     },
     beforeMount : function(){
-
         var that = this;
-
         if(this.centerMonth === null ){ this.centerMonth = new Date().getTime(); } 
-
         // 如果工单状态为空说明为第一次加载，则获取所有工单状态和所有工单类型
         if(this.allOrderState.length === 0){
             // 获取工单状态数组

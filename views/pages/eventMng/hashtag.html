@@ -4,21 +4,20 @@
         <div class="hashtag-sop">
             <div class="sop-header">
                 <span>选择标准操作</span>
-                <div class="sop-header-btn sopHeaderBtns">
+                <div class="sop-header-btn sopHeaderBtns" v-if="!hasdescobjs">
                     <span v-show="!filter"  @click="filter=true">筛选</span>
                     <span v-show="filter" @click="filter=false">收起</span>
                 </div>
             </div>
             <div class="sop-body">
                 <div class="sop-list" v-show="SopList.length">
-                    <div class="aite-list" v-for="(model,index) in SopList" @click="model.selected=!model.selected" :index="'index'" :title="'model.sop_name'">
+                    <div class="aite-list" v-for="(model,index) in SopList" :index="'index'" :title="model.sop_name">
                         <div>
-                         
-                            <span>
+                            <span class="sr" @click="showDeatil=true;sop_id=model.sop_id;version=model.version;">
                                 <em v-for="charObj in model.sop_name_arr" v-text="charObj.char" :class="charObj.mark ? 'redMark' : ''"></em>
                             </span>
 
-                            <div :id="model.sop_id" class="pcheckbox">
+                            <div :id="model.sop_id" class="pcheckbox" @click="model.selected=!model.selected">
                                 <span class="pcheckbox_input" :class="model.selected ? 'pcheckbox-checked' : ''"></span>
                                 <span class="pswitch_label"></span>
                             </div>
@@ -51,14 +50,14 @@
                 <div class="filter-box">
                     <div class="filter-div" v-show="criteria.brands.length">
                         <div class="filter-type">
-                            <span>品牌:</span>
+                            <span>型号:</span>
                         </div>
                         <div class="filter-name">
                             <div class="filter-all" @click="selectedAll(criteria.brands)">
                                 <span class="all_brands sel-all" :class="va(criteria.brands)?'sel-span':''">全部</span>
                             </div>
                             <div class="filter-other">
-                                <span v-for="(item,index) in criteria.brands" v-text="item.name" :title="item.name" @click="item.selected=!item.selected" :class="(item.selected ) ? 'sel-span' : ''"></span>
+                                <span v-for="(item,index) in criteria.brands" v-text="item.name || item.equip_model_name" :title="item.name || item.equip_model_name" @click="item.selected=!item.selected" :class="(item.selected ) ? 'sel-span' : ''"></span>
                             </div>
 
                         </div>
@@ -105,11 +104,11 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
+    <sopdetail v-if="showDeatil" :sop_id="'SOP92c715a5a6344dafa95e537762b50665'" :cb="cancelDeatil" :version="'V0.1'"></sopdetail>
 </div>
 </script>
 
@@ -119,7 +118,9 @@
         data: function () {
 
             return {
-
+                sop_id: "",
+                version: "",
+                showDeatil: false,
                 // 查询字符创
                 searchStr: "",
                 // 定时查询的实例
@@ -146,8 +147,11 @@
 
             }
         },
-        props: ['str', 'cb', 'desc_objs', "order_type"],
+        props: ['str', 'cb', 'desc_objs', "order_type", "desc_sops"],
         methods: {
+            cancelDeatil: function () {
+                this.showDeatil = false;
+            },
             // 插叙相关接口
             /**
              * key 对应controller的键值
@@ -191,6 +195,7 @@
                         }
 
                         return arr.map(function (params) {
+
                             params.selected = false;
                             return params;
                         })
@@ -202,14 +207,20 @@
                         labels: addSelected(data.criteria.labels),
                         order_type: addSelected(data.criteria.order_type),
                     };
+
+                    var arr_sop_id = _.map(_that.desc_sops, 'sop_id');
+
                     _that.SopList = data.res.map(function (item) {
                         var arr = [],
                             reg = new RegExp(_that.searchStr, 'g'),
                             res = reg.exec(item.sop_name);
 
-                        while (res) {
-                            arr = arr.concat(_.range(+res.index, res.index + _that.searchStr.length))
-                            res = reg.exec(item.sop_name);
+                        if (_that.searchStr.length) {
+
+                            while (res) {
+                                arr = arr.concat(_.range(+res.index, res.index + _that.searchStr.length))
+                                res = reg.exec(item.sop_name);
+                            }
                         }
 
                         item.sop_name_arr = item.sop_name.split("").map(function (char, index) {
@@ -219,6 +230,8 @@
                                 char: char,
                             }
                         })
+
+                        item.selected = arr_sop_id.indexOf(item.sop_id) != -1;
 
                         return item;
                     })
@@ -235,7 +248,8 @@
                 if (newValue == oldValue) return;
 
                 // 验证格式 格式不对不进行搜索
-                if (!/^\#\S+/g.test(newValue)) {
+
+                if (_that.hasdescobjs) {
                     _that.onBlock = 'index';
                     return;
                 } else {
@@ -244,7 +258,7 @@
 
                 _that.searchStr = newValue.replace(/#/, "");
 
-                if (!_that.searchStr.length) return;
+                // if (!_that.searchStr.length) return;
 
                 if (!_.isNull(_that.timer)) {
                     clearTimeout(_that.timer);
@@ -279,17 +293,17 @@
             submitSelect: function () {
                 var _that = this;
 
-                var brands = _.filter(_that.criteria.brands, { selected: true }).map(function (item) { return item.name });
-                var fit_objs = _.filter(_that.criteria.fit_objs, { selected: true }).map(function (item) { return item.obj_name });
+                var equip_model_ids = _.filter(_that.criteria.brands, { selected: true }).map(function (item) { return item.equip_model_id });
+                var fit_objs = _.filter(_that.criteria.fit_objs, { selected: true }).map(function (item) { return item.obj_id });
                 var labels = _.filter(_that.criteria.labels, { selected: true }).map(function (item) { return item.name });
-                var order_type = _.filter(_that.criteria.order_type, { selected: true }).map(function (item) { return item.name });
+                var order_type = _.filter(_that.criteria.order_type, { selected: true }).map(function (item) { return item.code });
 
 
                 var argu = {
                     sop_name: _that.searchStr,
                 }
                 // 有对应的属性直接附加
-                if (brands.length) argu.brands = brands;
+                if (equip_model_ids.length) argu.equip_model_ids = equip_model_ids;
                 if (fit_objs.length) argu.fit_objs = fit_objs;
                 if (labels.length) argu.labels = labels;
                 if (order_type.length) argu.order_type = order_type;
@@ -298,8 +312,24 @@
             },
             // 提交事件，保存对应的事件
             submit: function () {
+
                 var _that = this;
-                if (_.isFunction(_that.cb)) _that.cb(_.filter(_that.SopList, { selected: true }));
+                var arr = _.filter(_that.SopList, { selected: true });
+                if (_.isArray(arr) && arr.length) {
+                    var obj_types = _.map(arr, 'obj_type');
+
+                    // 通过修改相同引用地址的方式修改父级中被取消的对象
+                    _that.desc_sops.filter(function (item, index) {
+                        // 相同的类型且在里面被取消的内容
+                        return (obj_types.indexOf(item.obj_type) != -1) && _.filter(arr, { obj_id: item.obj_id }.length);
+                    }).forEach(function (item) {
+                        // 从原来的方法中剔除已经被取消的内容
+                        _that.desc_sops.splice(_that.desc_sops.indexOf(item), 1);
+                    });
+                }
+
+                var _that = this;
+                if (_.isFunction(_that.cb)) _that.cb(arr);
             },
             // 桌面点击时间
             documentClick: function () {
@@ -320,6 +350,9 @@
                     info.selected = info == item;
                 })
             },
+            hasdescobjs: function () {
+                return !!this.desc_objs.length;
+            }
         },
         watch: {
             str: function (newValue, oldValue) {
@@ -350,12 +383,31 @@
                     _that.queryClass('queryRecommendSop', {
                         fit_obj_ids: arr,
                         order_type: _that.order_type,
-                    }, "SopList",function (list) {
-                        if(_that.str.length>1){
+                    }, "SopList", function (list) {
+                        if (_that.str.length > 1) {
                             return _that.SopList;
                         }
 
-                        return _that.str.length>1?_that.SopList:list;
+                        var arr_sop_id = _.map(_that.desc_sops, 'sop_id');
+
+                        list = list.map(function (params) {
+
+                            params.selected = arr_sop_id.indexOf(params.sop_id) != -1;
+                            return params;
+                        })
+
+                        list.forEach(function (item) {
+                            item.sop_name_arr = item.sop_name.split("").map(function (char, index) {
+
+                                return {
+                                    mark: false,
+                                    char: char,
+                                }
+                            })
+                        })
+
+
+                        return _that.str.length > 1 ? _that.SopList : list;
                     })
 
                 }

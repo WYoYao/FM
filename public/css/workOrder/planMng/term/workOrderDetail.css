@@ -110,8 +110,9 @@
       #workOrderDetail > .box .grid > .content {
         width: 100%;
         border-top: 1px solid #d9e2e8;
-        border-bottom: 1px solid #d9e2e8;
-        margin-top: -1px; }
+        margin-top: -2px; }
+        #workOrderDetail > .box .grid > .content:nth-of-type(1) {
+          margin-top: 0; }
         #workOrderDetail > .box .grid > .content .title {
           width: 100%;
           height: 40px;
@@ -129,12 +130,11 @@
             width: 25%; }
         #workOrderDetail > .box .grid > .content .step {
           border-bottom: 1px solid #d9e2e8; }
-          #workOrderDetail > .box .grid > .content .step:nth-last-of-type(1) {
-            border-bottom: none; }
           #workOrderDetail > .box .grid > .content .step .div {
             width: 100%;
             display: flex;
-            flex-flow: row nowrap; }
+            flex-flow: row nowrap;
+            align-items: stretch; }
             #workOrderDetail > .box .grid > .content .step .div > .left {
               width: 75%;
               border-right: 1px solid #d9e2e8; }
@@ -196,41 +196,26 @@
                 margin-bottom: -1px; }
             #workOrderDetail > .box .grid > .content .step .div > .right {
               width: 25%;
-              padding-bottom: 25px; }
-              #workOrderDetail > .box .grid > .content .step .div > .right .rig_box {
-                padding-top: 20px;
-                padding-left: 20px; }
-              #workOrderDetail > .box .grid > .content .step .div > .right .rig_box > ul > li > h4 {
-                display: flex;
-                flex-flow: wrap row; }
-              #workOrderDetail > .box .grid > .content .step .div > .right .rig_box > ul > li > h4 > span {
-                float: left;
-                width: 10%; }
-              #workOrderDetail > .box .grid > .content .step .div > .right .rig_box > ul > li > h4 > div {
-                float: left;
-                width: 80%; }
-              #workOrderDetail > .box .grid > .content .step .div > .right .rig_box > ul > li > h4 > span > ul {
-                clear: both; }
-              #workOrderDetail > .box .grid > .content .step .div > .right .rig_box > ul > li > h4 > span > ul > li {
-                float: left;
-                height: 20px; }
-              #workOrderDetail > .box .grid > .content .step .div > .right .rig_box > ul > li > h4 > i {
-                color: #aaa; }
-              #workOrderDetail > .box .grid > .content .step .div > .right .rig_box_list > li {
-                margin-bottom: 20px; }
-              #workOrderDetail > .box .grid > .content .step .div > .right .rig_box_list > li > ul {
-                margin-left: 24px;
-                margin-top: 10px; }
-              #workOrderDetail > .box .grid > .content .step .div > .right .rig_box_list > li > div {
-                width: 80%;
-                height: 200px;
-                border: 1px solid #d9e2e8;
-                margin-top: 10px; }
-              #workOrderDetail > .box .grid > .content .step .div > .right .rig_box_operatPerson {
-                display: flex;
-                flex-flow: row nowrap;
-                color: #aaa;
-                padding-left: 20px; }
+              margin-left: -1px;
+              border-left: 1px solid #d9e2e8; }
+              #workOrderDetail > .box .grid > .content .step .div > .right > .box {
+                width: calc(100% - 40px);
+                height: auto;
+                padding: 20px 20px;
+                position: relative; }
+                #workOrderDetail > .box .grid > .content .step .div > .right > .box > div {
+                  line-height: 24px;
+                  height: auto;
+                  width: calc(100% - 50px);
+                  float: right; }
+                #workOrderDetail > .box .grid > .content .step .div > .right > .box .num {
+                  float: left;
+                  width: 30px; }
+                #workOrderDetail > .box .grid > .content .step .div > .right > .box .infos > div > div {
+                  float: left; }
+              #workOrderDetail > .box .grid > .content .step .div > .right .operatPerson {
+                padding: 20px 20px;
+                color: #999999; }
           #workOrderDetail > .box .grid > .content .step .sign {
             width: 100%;
             border-bottom: 1px solid #d9e2e8;

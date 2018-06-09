@@ -2040,6 +2040,12 @@ var dataModelMap = {
             "type": "string",
             "isToSpecial": false
         }, {
+            "note": "楼层编码",
+            "name": "floor_identity",
+            "mapName": "",
+            "type": "string",
+            "isToSpecial": false
+        }, {
             "note": "楼层面积",
             "name": "area",
             "mapName": "",
@@ -2099,6 +2105,12 @@ var dataModelMap = {
         }, {
             "note": "楼层性质，1. 普通楼层 2. 中庭 3. 室外 4. 其他",
             "name": "floor_type",
+            "mapName": "",
+            "type": "string",
+            "isToSpecial": false
+        }, {
+            "note": "楼层编码",
+            "name": "floor_identity",
             "mapName": "",
             "type": "string",
             "isToSpecial": false
@@ -2736,7 +2748,50 @@ var dataModelMap = {
             }
         ]
     },
-
+    'workorder/restWorkOrderService/queryWorkOrderList': {
+        "type": "array",
+        "note": "工单管理列表",
+        "proArr": [ 
+            {
+                "name": "order_id",
+                "type": "string",
+                "note": "order_id"
+            },
+            {
+                "name": "order_type",
+                "type": "string",
+                "note": "order_type"
+            },
+            {
+                "name": "order_type_name",
+                "type": "string",
+                "note": "order_type_name"
+            },
+            {
+                "name": "order_state",
+                "type": "string",
+                "note": "order_state"
+            },
+            {
+                "name": "order_state_name",
+                "type": "string",
+                "note": "order_state_name"
+            },
+            {
+                "name": "summary",
+                "type": "string",
+                "note": "summary"
+            },
+            
+            {
+                "name": "create_time",
+                "type": "date",
+                "format": 'y.M.d h:m',
+                "note": "create_time"
+            }
+        ]
+    },
+    
 
 };
 module.exports = dataModelMap;

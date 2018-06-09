@@ -64,9 +64,9 @@ v.pushComponent({
             "work_type_name": "",             //工作类型名称	
             "execute_type": "temp",           //时间类型	temp-临时、plan-计划
             "urgency": "低",                  //紧急程度，高、中、低
-            "execute_count": "",              // 建议执行人数
+            // "execute_count": "",              // 建议执行人数
             // 新建工单后是否抢单
-            robbing_flag: false,
+            robbing_flag: false,              //当前标记增加是否显示返送人员列表
             pit_positions: [],
             "start_time_type": "1",           //开始时间类型,1-发单后立即开始，2-自定义开始时间
             "ask_start_time": "",             //要求开始时间,yyyyMMddhhmmss
@@ -94,6 +94,7 @@ v.pushComponent({
             "end_minute": "",
             "input_mode": "1",                   //输入方式，1-自由输入，2-结构化输入,必须
             "order_from_id": "***",              //工单来源id，报修转工单时，这里是报修单id
+            "suggest_executor_num": ""
         },
         WoTypeList: [],                          // 工单集合
         shouldStartEnums: [{ name: "无", code: "" }, { name: "发单后立即开始", code: "1" }, { name: "自定义开始时间", code: "2" }],
@@ -110,7 +111,11 @@ v.pushComponent({
         //  发布工单的参数
         argu: {
             next_person_ids: [],
+            draft_matters: [],
+            sendPersonName: "请添加人员",
+            error: true
         },
+        GeneralDictByKey: []
     },
     methods: {
         // 开始时间类型选择事件
@@ -144,8 +149,10 @@ v.pushComponent({
             _that.addwork.work_type_name = item.work_type_name;
             _that.addwork.work_type_name = item.work_type_name;
             //  计算大小的时间
-            _that.addwork.start_minute = item.time_limit.startTime.selected ? (item.time_limit.startTime.around == "front" ? -1 : 1) * item.time_limit.startTime.minute : 0;
-            _that.addwork.end_minute = item.time_limit.endTime.selected ? (item.time_limit.endTime.around == "front" ? -1 : 1) * item.time_limit.endTime.minute : 0;
+            if (_.isPlainObject(item.time_limit)) {
+                _that.addwork.start_minute = item.time_limit.startTime && item.time_limit.startTime.selected ? (item.time_limit.startTime.around == "front" ? -1 : 1) * item.time_limit.startTime.minute : 0;
+                _that.addwork.end_minute = item.time_limit.endTime && item.time_limit.endTime.selected ? (item.time_limit.endTime.around == "front" ? -1 : 1) * item.time_limit.endTime.minute : 0;
+            }
 
             //  保存新建订单后的状态
             if (_.isArray(item.post_and_duty)) {
@@ -239,6 +246,9 @@ v.pushComponent({
         },
         // 计算执行人数
         comExecutreNumber: function (num) {
+            if (num == "") {
+                return num;
+            }
             num = parseInt(num);
             // 如果非数字则返回上一次的值
             if (_.isNaN(num)) {
@@ -271,11 +281,11 @@ v.pushComponent({
             var _that = this;
 
             // 开发的时候使用
-            console.log("SuccessFul");
-            console.log(_that.matters);
-            _that.getPreview(_that.matters);
-            _that.onPage = "Preview";
-            return;
+            // console.log("SuccessFul");
+            // console.log(_that.matters);
+            // _that.getPreview(_that.matters);
+            // _that.onPage = "Preview";
+            // return;
 
             // 获取基本信息
             console.log(_that.addwork);
@@ -321,20 +331,40 @@ v.pushComponent({
             });
 
             //  验证多个关系是否不匹配
-            // 并行发送请求多个事项同时验证
+
+            //判断sop是否有值
             Promise.all(_that.matters.map(function (item) {
 
-                // 对象与SOP 匹配验证
-                return controller.verifyObjectAndSop({
-                    objs: item.desc_objs.map(function (item) {
-                        return {
-                            obj_id: item.obj_id,
-                            obj_name: item.obj_name,
-                        }
-                    }),
-                    sop_ids: _.map(item.desc_sops, "sop_id")
-                })
+                if (item.desc_objs.length && item.desc_sops.length) {
 
+                    // 对象与SOP 匹配验证
+                    return controller.verifyObjectAndSop({
+                        objs: item.desc_objs.map(function (item) {
+                            return {
+                                obj_id: item.obj_id,
+                                obj_name: item.obj_name,
+                            }
+                        }),
+                        sop_ids: _.map(item.desc_sops, "sop_id")
+                    })
+                } else {
+                    return new Promise(function (resolve) {
+                        setTimeout(function () {
+                            resolve([]);
+                        }, 0);
+                    })
+                }
+
+                // // 对象与SOP 匹配验证
+                // return controller.verifyObjectAndSop({
+                //     objs: item.desc_objs.map(function (item) {
+                //         return {
+                //             obj_id: item.obj_id,
+                //             obj_name: item.obj_name,
+                //         }
+                //     }),
+                //     sop_ids: _.map(item.desc_sops, "sop_id")
+                // })
             })).then(function (res) {
                 // 把原来的错误的状态替换的新的错误信息中
                 res.forEach(function (item, index) {
@@ -396,34 +426,30 @@ v.pushComponent({
 
                         if (bool) {
 
-                            console.log("SuccessFul");
-                            console.log(_that.matters);
-                            _that.getWoMattersPreview(_that.matters);
-                            controller.queryPersonListByPositionIds().then(function (res) {
+                            // console.log("SuccessFul");
+                            // console.log(_that.matters);
+                            _that.getPreview(_that.matters);
 
-                                console.log(res);
-                            })
-
-                            controller.queryPersonListByPositionIds().then(function (res) {
-                                _that.persons = res;
-                                console.log(res);
-                            })
+                            // controller.queryPersonListByPositionIds().then(function (res) {
+                            //     _that.persons = res;
+                            //     console.log(res);
+                            // })
 
                             _that.onPage = "Preview";
 
 
-                            // createPlan_controller.getWoMattersPreview({
-                            //     order_type: _that.$refs.baseinfomation.addWoPlan.order_type,
+                            // controller.getWoMattersWorkOrderPreview({
+                            //     // order_type: _that.$refs.baseinfomation.addWoPlan.order_type,
                             //     draft_matters: _that.matters,
                             // }).then(function (res) {
                             //     console.log("可以执行保存了");
                             //     // 保存预览时候数据
-                            //     _that.WoMattersPreview = res[0];
+                            //     _that.WoMattersPreview = res.matters;
 
                             //     _that.PreView = true;
 
                             //     // 保存matters
-                            //     _that.req.draft_matters = JSON.parse(JSON.stringify(_that.matters));
+                            //     _that.argu.draft_matters = JSON.parse(JSON.stringify(_that.matters));
                             // })
                         }
                     })
@@ -431,17 +457,122 @@ v.pushComponent({
             })
 
         },
-        getPersions: function (list) {
+        getPersions: function (list) {//选择人员列表确定
             var _that = this;
             _that.argu.next_person_ids = list;
-        },
-        cc: function () {
             _that.showPersonTree = false;
         },
+        fillpit_positions: function (robbing_flag, suggest_executor_num) {
+
+            var fn = arguments.callee;
+
+            suggest_executor_num = +suggest_executor_num;
+
+            // 如果是抢单的话的
+            if (robbing_flag) {
+
+                if (_.isNumber(suggest_executor_num) && suggest_executor_num > 0 && suggest_executor_num < 10) {
+                    // this.addwork.suggest_executor_num = this.comExecutreNumber(suggest_executor_num);
+                    this.addwork.suggest_executor_num = suggest_executor_num;
+
+
+                    this.addwork.pit_positions = fill(this.addwork.pit_positions, suggest_executor_num, pit_positions)
+                } else {
+                    // var input = $("#peoplenumber").find("input");
+                    // // 如果拥有焦点事件的情况下
+                    // if (document.hasFocus() && document.activeElement === input[0]) {
+                    //     input.one("blur", fn.bind(this, robbing_flag, suggest_executor_num));
+                    // } else {
+                    //     $("#peoplenumber").pshowTextTip("抢单状态下建议执行人数只允许输入个位数");
+                    // }
+
+                    this.addwork.pit_positions = [];
+                }
+
+                /**
+                 * 填充数组到指定长度
+                 * @param {需要填充的数组} arr 
+                 * @param {需要填充到的长度} len 
+                 * @param {用于填充的对象或生成对象的方法} createObj 
+                 */
+                function fill(arr, len, createObj) {
+
+                    var l = arr.length;
+                    // 长度相同直接返回
+                    if (l == len) return arr;
+                    // 本身更长直接截取
+                    if (l > len) return arr.slice(0, len);
+                    // 需要填充
+                    if (l < len) {
+                        // 返回对应的填充对象
+                        return arr.concat(_.range(len - l).map(function () {
+                            return _.isFunction(createObj) ? createObj() : createObj;
+                        }))
+                    }
+
+                    return arr;
+                }
+            } else {
+                // 如果不是抢单的情况下 重置判断接口
+                $("#execute_count_id").precover();
+                // if ($("#peoplenumber").pverifi()) {
+                //     $("#peoplenumber").precover();
+                // }
+
+                this.addWoPlan.pit_positions = [];
+            }
+        },
+        cc: function () {//选择人员取消
+            var _that = this;
+            _that.showPersonTree = false;
+        },
+        //事件转工单发布
         submit: function () {
+            var _that = this;
             console.log(_that.argu);
             console.log(_that.addwork);
-        }
+            var comObj = {
+                executie_mode: "",
+                next_person_ids: [],
+                person_id: "",
+                work_order: {
+                    wo_body: {}
+                }
+            };
+            comObj.work_order.wo_body = $.extend({}, _that.argu, _that.addwork);
+            comObj.work_order.wo_body.project_id = v.instance.project_id;
+            comObj.work_order.wo_body.matters = comObj.work_order.wo_body.preview;
+            delete comObj.work_order.wo_body.preview;
+
+            comObj.executie_mode = v.instance.addwork.execute_type;
+            var personArr = [];
+            v.instance.persons.forEach(function (item) {
+                item.persons.forEach(function (info) {
+                    if (info.selected) {
+                        personArr.push(info.person_id);
+                    }
+                })
+            })
+            comObj.next_person_ids = JSON.parse(JSON.stringify(personArr));
+            comObj.person_id = v.instance.userInfo.person_id;
+            console.log(comObj);
+            $('#globalloading').pshow();
+            controller.publishEventTranOrder(comObj).then(function (data) {
+                console.log(data);
+                if (typeof data == 'object') {
+                    $('#globalnotice').pshow({ text: '发布成功', state: 'success' });
+                    v.initPage('eventList');
+                    v.instance.proEvListPower.isELTHasPage = true;
+                    v.instance.getProEvListLenAndData();
+                }
+                $('#globalloading').phide();
+            }, function () {
+                $('#globalnotice').pshow({ text: '发布失败，请重试', state: 'failure' });
+                $('#globalloading').phide();
+            });
+
+        },
+
     },
     filters: {
 
@@ -455,11 +586,20 @@ v.pushComponent({
         _that.addwork.creator_id = _that.userInfo.person_id;
         _that.addwork.creator_name = _that.userInfo.name;
 
-
         // 查询位置需要的专业
         controller.GeneralDict().then(function (res) {
             _that.WoTypeListAll = res;
         })
+
+        // 查询工作事项完成后操作
+        controller.queryGeneralDictByKey().then(function (res) {
+
+            // 只保存 当工作事项完成后人工签字确认 选项
+            // _that.GeneralDictByKey = _.filter(res, { code: "matter_end_scan" });
+            _that.GeneralDictByKey = res.map(function (item) {
+                return item;
+            });
+        });
 
         // 如果事件有图片的情况下 附加到第一个事项中
         if (_.isArray(event.pictures)) {
@@ -475,12 +615,47 @@ v.pushComponent({
 
             var item = _.find(obj.project_persons, { project_id: v.instance.project_id });
             // 查询某个岗位拥有某控制模块的工单类型
-            return controller.queryWoTypeListByPersonIdControlCode({ position_id: item.position_id });
+            // return controller.queryWoTypeListByPersonIdControlCode({ position_id: item.position_id });
+            return controller.queryWoTypeListByPersonIdControlCode({});
         }).then(function (list) {
             _that.WoTypeList = list;
         })
+
+
+        // persons
+
     },
     watch: {
+        //发送人姓名
+        "argu.next_person_ids": function (newValue, oldValue) {
+            var that = this;
+            var arr = [];
+            if (newValue.length == 0) {
+                that.argu.sendPersonName = '请添加人员';
+                that.argu.error = true;
+            }
+            if (newValue.length > 0) {
+                that.argu.sendPersonName = newValue.length == '1' ? (newValue[0].name).toString() : '';
+                that.argu.error = false;
+            }
+            if (newValue.length > 1) {
+                newValue.forEach(function (item) {
+                    arr.push(item.name);
+                })
+                that.argu.sendPersonName = arr.join('、');
+                that.argu.error = false;
+            }
+
+
+        },
+        "addwork.suggest_executor_num": function (num, old) {
+
+            this.fillpit_positions(this.addwork.robbing_flag, num);
+        },
+        "addwork.robbing_flag": function (newValue, oldValue) {
+
+            this.fillpit_positions(newValue, this.addwork.suggest_executor_num);
+        },
         'addwork.ask_start_time': function (date) {
             var date = new Date(date);
             $("#ask_start_time").psel({
@@ -501,23 +676,23 @@ v.pushComponent({
                 m: date.format("mm"),
             }, false)
         },
-        "addwork.robbing_flag": function (newValue, oldValue) {
-            if (newValue) {
-                this.addwork.execute_count = this.comExecutreNumber(this.addwork.execute_count);
-                // 生成对应的坑位
-                this.addwork.pit_positions = _.range(this.addwork.execute_count).map(function () {
-                    return new pit_positions();
-                })
-            } else {
-                this.addwork.pit_positions = [];
-            }
+        // "addwork.robbing_flag": function (newValue, oldValue) {
+        //     if (newValue) {
+        //         this.addwork.execute_count = this.comExecutreNumber(this.addwork.execute_count);
+        //         // 生成对应的坑位
+        //         this.addwork.pit_positions = _.range(this.addwork.execute_count).map(function () {
+        //             return new pit_positions();
+        //         })
+        //     } else {
+        //         this.addwork.pit_positions = [];
+        //     }
 
-            this.addwork.order_state = newValue ? 2 : 5
-        },
-        'addwork.execute_count': function (num, old) {
+        //     this.addwork.order_state = newValue ? 2 : 5
+        // },
+        'addwork.suggest_executor_num': function (num, old) {
             // 如果是抢单的话的
             if (this.addwork.robbing_flag) {
-                this.addwork.execute_count = this.comExecutreNumber(this.addwork.execute_count);
+                this.addwork.suggest_executor_num = this.comExecutreNumber(this.addwork.suggest_executor_num);
 
                 this.addwork.pit_positions = fill(this.addwork.pit_positions, num, pit_positions)
 

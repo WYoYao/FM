@@ -29,7 +29,7 @@
     
         <div class="list-body">
             <!--无级别 只有复选-->
-            <div class="only-checkbox" v-show="page!='auto'">
+            <div class="only-checkbox" v-show="page!='auto' && InfoPoints.length">
                 <div class="aite-list" v-for="(info,index) in InfoPoints" @click="info.selected =! info.selected">
                     <div :title="info.name">
                         <span v-text="info.name"></span>

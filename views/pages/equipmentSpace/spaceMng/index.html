@@ -218,6 +218,15 @@
                             </div>
                         </div>
                         <div class="addItem">
+                            <div class="name"><span>楼层编码：</span></div>
+                            <div class="cont">
+                                <pcombobox-normal align="left" sel="floorCodeSel" bind="true" floortype="typeCode">
+                                    <header placeholder="'请选择楼层编码'"></header>
+                                    <item datasource="floorCodeArr" text="name"></item>
+                                </pcombobox-normal>
+                            </div>
+                        </div>
+                        <div class="addItem">
                             <div class="name"><span>楼层功能：</span></div>
                             <div class="cont funcCont">
                                 <ptext-textarea placeholder="'输入释义'" length="50" bind="true" value="floorDetail.floor_func_type">

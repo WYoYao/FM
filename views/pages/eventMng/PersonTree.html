@@ -71,6 +71,7 @@
             },
             // 点击确定的事件
             submit: function () {
+                var _that = this;
                 // 执行回调
                 if (_.isFunction(this.cb)) {
                     this.cb(_that.datasource.reduce(function (con, item) {

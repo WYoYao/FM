@@ -1,6 +1,6 @@
 .hashtag-bubble.click-aite {
   position: absolute;
-  top: 20px;
+  top: 0;
   left: 0;
   z-index: 10; }
 
@@ -99,6 +99,10 @@
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap; }
+          .hashtag-bubble > .all-hashtag > .hashtag-sop .sop-body .sop-list > .aite-list .sr {
+            float: left;
+            width: 310px;
+            cursor: pointer; }
         .hashtag-bubble > .all-hashtag > .hashtag-sop .sop-body .sop-nodata {
           width: 100%;
           height: 100%;

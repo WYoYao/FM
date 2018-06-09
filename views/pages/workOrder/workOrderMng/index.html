@@ -60,10 +60,10 @@
     </script>
 <script type="x/template" id="treeTempComponent">
     <div class="treeTemp">
-            <div class="title" @click="sel(model,$event)" :pdisabled="model.disable" :class="{'active':model.active=='1','cursor':!(model.content && model.content.length)}">
+            <div class="title" @click="sel(model,$event)"  :class="{'active':model.active=='1','cursor':!(model.content && model.content.length)}">
                 <span class="arrow" @click="arrow(model,$event)"  v-show="model.content && model.content.length>0" >b</span>
-                <b v-text="model.obj_name">name</b>
-                <em class="per-checkbox_input" @click="check(model,$event)"  :class="model.selected=='1'?'per-checkbox-checked':''" v-show="!model.hasCheck"></em>
+                <b v-text="model.obj_name" :pdisabled="model.disable">name</b>
+                <em class="per-checkbox_input" @click="check(model,$event)"  :class="model.selected=='1'?'per-checkbox-checked':''" v-show="!model.hasCheck" :pdisabled="model.disable"></em>
             </div>
             <div class="con"><tree-component v-for="model in model.content" :model='model'  :check="check" :arrow="arrow" :sel="sel"></tree-component></div>
     </div>
@@ -109,9 +109,9 @@
         </div>
         <span :class="{'red':stop_order_content.length=='200'}" class="stopWorkOrder_con_operate_span">(<i v-text="stop_order_content.length">0</i>/200)</span>
     </div>
-    <div id="stopPromptMessage">请填写中止原因</div>
+    <!--<div id="stopPromptMessage">请填写中止原因</div>-->
     <div class="stopWorkOrder_con_btn">
-        <pbutton-blue bind="true" id="'stop_order_btn_yes'" text="'确定'" @click="workOrderMngMethod.stopOrderSetYes()"></pbutton-blue>
+        <pbutton-blue bind="true" id="'stop_order_btn_yes'" text="'确定'" click="workOrderMngMethod.stopOrderSetYes()" disabled="false"></pbutton-blue>
             <pbutton-white id="stop_order_no" text="取消" click="workOrderMngMethod.stopOrderSetHide()"></pbutton-white>
     </div>
 </script>

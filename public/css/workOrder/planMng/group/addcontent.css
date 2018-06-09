@@ -251,6 +251,7 @@ body {
                         vertical-align: middle;
                         cursor: pointer; }
                       .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div.operate .textareadiv .block > img {
+                        padding-left: 5px;
                         vertical-align: middle;
                         cursor: pointer; }
                   .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div.operate .counter {
@@ -355,6 +356,7 @@ body {
                     cursor: pointer;
                     position: relative; }
                     .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .content-prev .prev-body .slide-div .obj-info-btn .pcheckbox {
+                      margin-right: 10px;
                       overflow: hidden;
                       color: #637e99;
                       line-height: 16px;
@@ -533,6 +535,7 @@ body {
                         vertical-align: middle;
                         cursor: pointer; }
                       .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div.operate .textareadiv .block > img {
+                        padding-left: 5px;
                         vertical-align: middle;
                         cursor: pointer; }
                   .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div.operate .counter {
@@ -637,6 +640,7 @@ body {
                     cursor: pointer;
                     position: relative; }
                     .alert-all .alert-shade .alert-box .alert-content .alert-container .alert-body .import-box .standard-content .prev-body .slide-div .obj-info-btn .pcheckbox {
+                      margin-right: 10px;
                       overflow: hidden;
                       color: #637e99;
                       line-height: 16px;

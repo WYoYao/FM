@@ -25,14 +25,16 @@ controller.prototype.scheduleManage = function (req, res, next) {
 }
 
 controller.prototype.group = function (req, res, next) {
+    var _this = this;
     return function (req, res, next) {
-        res.render('./pages/workOrder/planMng/group', { host: commonLibUrl });
+        res.render('./pages/workOrder/planMng/group', { host: commonLibUrl, user: req.session[_this.tool.userSessionName] });
     };
 }
 
 controller.prototype.term = function (req, res, next) {
+    var _this = this;
     return function (req, res, next) {
-        res.render('./pages/workOrder/planMng/term', { host: commonLibUrl });
+        res.render('./pages/workOrder/planMng/term', { host: commonLibUrl, user: req.session[_this.tool.userSessionName] });
     };
 }
 
@@ -59,14 +61,16 @@ controller.prototype.workorderType = function (req, res, next) {
 
 
 controller.prototype.events = function (req, res, next) {
+    var _this = this;
     return function (req, res, next) {
-        res.render('./pages/eventMng/term', { host: commonLibUrl });
+        res.render('./pages/eventMng/term', { host: commonLibUrl ,user: req.session[_this.tool.userSessionName]});
     };
 }
 
 controller.prototype.eventgroup = function (req, res, next) {
+    var _this = this;
     return function (req, res, next) {
-        res.render('./pages/eventMng/group', { host: commonLibUrl });
+        res.render('./pages/eventMng/group', { host: commonLibUrl ,user: req.session[_this.tool.userSessionName] });
     };
 }
 
@@ -121,29 +125,16 @@ controller.prototype.userInfo = function () {
         var userId = puser.userId;
         if (!userId) return _this.responseTool.sendDecline(res, '无效的用户');
         //工单管理如果没有person_id,传入userId。
-        puser.person_id= puser.person_id|| puser.userId;
+        puser.person_id = puser.person_id || puser.userId;
+        puser.projects = null;
+        puser.authorizations = null;
+        puser.authors = null;
+        puser.authorObj = null;
+        delete puser.projects;
+        delete puser.authorizations;
+        delete puser.authors;
+        delete puser.authorObj;
         res.send(puser);
-
-        // _this.realRestClient.sendPost({
-        //     criteria: { puser: { userId: userId, loginDevice: 'PC' } },
-        //     fn: 'getPersonByUserIdService',
-        //     call: function (err, result) {
-        //         if (err) return console.error('根据ID获取用户信息时错误：' + (err.stack || JSON.stringify(err))),
-        //             _this.responseTool.sendDecline(res, '数据端错误');
-        //         var user = (result || [])[0] || {};
-        //         var newUser = _this.tool.parserUser(user);
-        //         var oldLoginTime = req.session[_this.tool.userSessionName][_this.tool.loginTimeName];
-        //         newUser[_this.tool.loginTimeName] = oldLoginTime;
-        //         req.session[_this.tool.userSessionName] = newUser;
-
-        //         var sendUser = JSON.parse(JSON.stringify(newUser));
-        //         sendUser.projects = null;
-        //         sendUser.authorizations = null;
-        //         delete sendUser.projects;
-        //         delete sendUser.authorizations;
-        //         res.send(sendUser);
-        //     }
-        // });
     };
 };
 

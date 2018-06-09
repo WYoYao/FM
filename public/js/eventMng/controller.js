@@ -1,58 +1,3 @@
-function createAjax(arr){
-    return arr.link.reduce(function(obj,link){
-        if(obj[link.name]){
-            console.error(link.name + "链接已存在，请修改createEventModuleController");
-            return
-        }
-        obj[link.name] = function(argu,success,err,complete){
-            if(link.faker){
-                console.log(JSON.stringify(Object.assign({},link.argu,argu,arr.argu)));
-                success(link.data());
-                complete()
-            }else{
-                console.log(JSON.stringify(Object.assign({},link.argu,argu,arr.argu)));
-                pajax.post({
-                    url: link.url,
-                    data: Object.assign({},link.argu,argu,arr.argu),
-                    success: success,
-                    error: function(){
-                        $("#globalnotice").pshow({text: "网络错误",state: "failure"});
-                        err();
-                    },
-                    complete: complete,
-                    configServiceName:link.severName,
-                });
-            }
-        }
-        return obj
-    },{})
-}
-
-function cteatePromise(arr){
-    return arr.link.reduce(function(obj,link){
-        if(obj[link.name]){
-            console.error(link.name + "链接已存在，请修改createEventModuleController");
-            return
-        }
-        obj[link.name] = function(argu){
-            return new Promise(function(resolve,reject){
-                pajax.post({
-                    url: link.url,
-                    data: Object.assign({},link.argu,argu,arr.argu),
-                    success: resolve,
-                    error: function(err){
-                        $("#globalnotice").pshow({text: "网络错误",state: "failure"})
-                        reject();
-                    },
-                    configServiceName:link.severName,
-                });
-            })
-        }
-        return obj
-    },{})
-}
-
-
 /*  EML结构
 {
     link:[
@@ -60,7 +5,66 @@ function cteatePromise(arr){
     ],argu:{该模块公用参数}
 }
 */
-var createEventModuleController = function(){
+function createEventModuleController(){
+    var  createAjax = function(arr){
+        return arr.link.reduce(function(obj,link){
+            if(obj[link.name]){
+                return
+            }
+            obj[link.name] = function(argu,success,err,complete){
+                if(link.faker){
+                    success(link.data());
+                    complete()
+                }else{
+                    var data = {
+                        url: link.url,
+                        data: Object.assign({},link.argu,argu,arr.argu),
+                        success: success,
+                        error: function(){
+                            $("#globalnotice").pshow({text: "网络错误",state: "failure"});
+                            err();
+                        },
+                        complete: complete,
+                        
+                    };  
+                    link.severName ? data.configServiceName = link.severName : console.log("使用默认服务器");
+                    if(argu.attachments && (argu.attachments.length > 0)){
+                        pajax.updateWithFile(data);
+                    }else{
+                        pajax.post(data);
+                    }
+                }
+            }
+            return obj
+        },{})
+    };
+    
+    var cteatePromise = function(arr){
+        return arr.link.reduce(function(obj,link){
+            if(obj[link.name]){
+                console.error(link.name + "链接已存在，请修改createEventModuleController");
+                return
+            }
+            obj[link.name] = function(argu){
+                return new Promise(function(resolve,reject){
+                    var data = {
+                        url: link.url,
+                        data: Object.assign({},link.argu,argu,arr.argu),
+                        success: resolve,
+                        error: function(err){
+                            $("#globalnotice").pshow({text: "网络错误",state: "failure"})
+                            reject();
+                        },
+                        configServiceName:link.severName,
+                    };
+                    link.severName ? data.configServiceName = link.severName : console.log("使用默认服务器");
+                    pajax.post(data);
+                })
+            }
+            return obj
+        },{})
+    };
+
     var EML = {
         link:[
             // 查询项目事件列表
@@ -68,6 +72,7 @@ var createEventModuleController = function(){
                 name:"PE",
                 url:"listProjectEventsService",
                 faker:false,
+                severName:"jsonStringServerUrl",
                 data:function(){
                     var obj =  {
                         total : Math.floor(Math.random()*1000),
@@ -116,12 +121,20 @@ var createEventModuleController = function(){
             {
                 name:"PL",
                 url:"countProjectEventsService",
+                severName:"jsonStringServerUrl",
+            },
+            //查询问题类型
+            {
+                name:"QT",
+                url:"queryProblemTypesService",
+                severName:"jsonStringServerUrl",
             },
             // 查询项目事件详情
             {
                 name:"EI",
                 url:"getProjectEventDetailByIdService",
                 faker:false,
+                severName:"jsonStringServerUrl",
                 data : function(){
                     var a = ["待处理","工单待接单","工单运行中","已关闭"];
                     var b = ["客户报修","工程报修","总部指派","数据异常"];
@@ -212,22 +225,26 @@ var createEventModuleController = function(){
             {
                 name:"CP",
                 url:"changProjectEventStateByIdService",
+                severName:"jsonStringServerUrl",
             },
             // 获取重复项目事件列表
             {
                 name:"RE",
-                url:"listProjectEventsTwoStateService"
+                url:"listProjectEventsTwoStateService",
+                severName:"jsonStringServerUrl",
             },
             // 获取集团事件各状态数量
             {
                 name:"GL",
-                url:"countGroupEventsService"
+                url:"countGroupEventsService",
+                severName:"jsonStringServerUrl",
             },
             // 查询集团事件首页信息
             {
                 name:"GI",
                 url:"countProjectGroupEventsService",
                 faker:false,
+                severName:"jsonStringServerUrl",
                 data : function(){
                     var a = _.range(_.random(5,50));
                     return {
@@ -264,6 +281,7 @@ var createEventModuleController = function(){
                 name:"GD",
                 url:"listGroupEventsService",
                 faker:false,
+                severName:"jsonStringServerUrl",
                 data:function(){
                     var x = _.random(1,500);
                     var a = _.range(x);
@@ -289,6 +307,7 @@ var createEventModuleController = function(){
             {
                 name:"GE",
                 url:"getGroupEventByIdService",
+                severName:"jsonStringServerUrl",
                 faker:false,
                 data : function(){
                     var a = _.random(1,50);
@@ -323,6 +342,7 @@ var createEventModuleController = function(){
             {
                 name:"GP",
                 url:"listPartitionProjectTreeService",
+                severName:"jsonStringServerUrl",
                 faker:false,
                 data:function(){
                     return  [
@@ -394,7 +414,8 @@ var createEventModuleController = function(){
             // 获取部门树
             {
                 name:"OT",
-                url:"queryDeptTreeForGroupEvent",
+                url:"restDeptService/queryDeptTreeForGroupEvent",
+                // severName:"jsonStringServerUrl",
                 faker:false,
                 data : function(){
                     return  [
@@ -431,16 +452,19 @@ var createEventModuleController = function(){
             {
                 name:"DG",
                 url:"deleteGroupEventService",
+                severName:"jsonStringServerUrl",
             } ,
             // 修改集团事件状态
             {
                 name:"CG",
                 url:"changeGroupEventStateService",
+                severName:"jsonStringServerUrl",
             },
             // 查询该事件绑定的未完成的项目事件
             {
                 name:"NB",
                 url:"listNoFinishProjectEventsService",
+                severName:"jsonStringServerUrl",
                 faker:false,
                 data : function(){
                     var a = _.range(_.random(0,2));
@@ -456,6 +480,7 @@ var createEventModuleController = function(){
             {
                 name:"NG",
                 url:"saveGroupEventService",
+                severName:"jsonStringServerUrl",
                 faker:false,
                 data:function(){
                     return {
@@ -469,6 +494,7 @@ var createEventModuleController = function(){
             {
                 name:"AG",
                 url:"assignProjectEventsService",
+                severName:"jsonStringServerUrl",
                 faker:false,
                 data : function(){
                     return {
@@ -482,6 +508,7 @@ var createEventModuleController = function(){
             {
                 name:"CI",
                 url:"reviseProjectEventByIdService",
+                severName:"jsonStringServerUrl",
                 faker:false,
                 data:function(){
                     return  {
@@ -492,15 +519,16 @@ var createEventModuleController = function(){
                 },
             }
         ],
-        argu:{
-            "puser":{                   //登录人信息,必须
-                "userId":"64e57cc2-f6eb-4bfd-bf06-7a202c9488da",         //登录ID
-                "loginDevice":"PC"      //登录设备  取值范围是iPhone/Android/PC
-            },
-            "person_id":"123",
-            "user_id":"64e57cc2-f6eb-4bfd-bf06-7a202c9488da"
-        }
+        // argu:{
+        //     "puser":{                   //登录人信息,必须
+        //         "userId":"64e57cc2-f6eb-4bfd-bf06-7a202c9488da",         //登录ID
+        //         "loginDevice":"PC"      //登录设备  取值范围是iPhone/Android/PC
+        //     },
+        //     "person_id":"123",
+        //     "user_id":"64e57cc2-f6eb-4bfd-bf06-7a202c9488da"
+        // }
     }
+
     window.EMA ? console.error("事件模块AJAX集合EMA被占用，请修改createEventModuleController方法") : window.EMA = createAjax(EML);
     window.EMP ? console.error("事件模块Promise集合EMP被占用，请修改createEventModuleController方法") : window.EMP = cteatePromise(EML);
 }

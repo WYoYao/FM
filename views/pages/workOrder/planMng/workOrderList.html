@@ -13,7 +13,7 @@
                 <div class="search">
 
                     <pcombobox-normal sel="selWorkOrderState" bind="true" id="'workOrderListState'">
-                        <header placeholder="( _.find(workOrderStateAndAll,{code:queryWoListArgu.order_state}) || {}).name" prefix="工单状态："></header>
+                        <header placeholder="( _.find(workOrderStateAndAll,{code:queryWoListArgu.order_state}) || {name:'请选择'}).name" prefix="工单状态："></header>
                         <item datasource="workOrderStateAndAll" text="name" id="code"></item>
                     </pcombobox-normal>
 
@@ -26,7 +26,7 @@
 
                 <!-- <div class="table"> -->
                 <div class="t_header">
-                    <div class="item">工单类型</div>
+                    <div class="item">工单编号</div>
                     <div class="item">创建时间</div>
                     <div class="item">工作事项</div>
                     <!-- <div class="item">时间类型</div> -->
@@ -35,6 +35,7 @@
                 <div class="t_body">
 
                     <ploading-part id="workOrderListLoad"></ploading-part>
+                    <pnotice-nodata :style="{ 'z-index': 1}" v-show="!workOrderListData.length" text="暂无数据" subtitle="哎呀，什么都没有找到！"></pnotice-nodata>
                     <pscroll-small templateid="workOrderListTem"></pscroll-small>
 
                 </div>
@@ -46,7 +47,7 @@
 
 <script type="text/html" id="workOrderListTem">
     <div class="info" v-for="(item,index) in workOrderListData" @click="openWorkOrderDetail(item.order_id,'workOrderDetailHead','工单详情')">
-        <div class="item" :title="item.summary" v-text="item.summary"></div>
+        <div class="item" :title="item.summary" v-text="item.order_id"></div>
         <div class="item" :title="timeFormat(item.create_time,'0')" v-text="timeFormat(item.create_time,'0')"></div>
         <div class="item" :title="item.summary" v-text="item.summary"></div>
         <!-- <div class="item" :title="'时间类型'+index" v-text="'时间类型'+index"></div> -->

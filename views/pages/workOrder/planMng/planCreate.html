@@ -3,7 +3,7 @@
         <div class="planCreate_page">
             <div class="planCreate_page_top">
                 <div class="planCreate_page_back">
-                    <pbutton-white text="取消" @click="cache.argu.cb()"></pbutton-white>
+                    <pbutton-white text="取消" @click="cancelWindows()"></pbutton-white>
                 </div>
                 <div class="planCreate_page_save">
                     <pbutton-blue text="下一步" @click="commit()"></pbutton-blue>
@@ -14,7 +14,7 @@
                     :isterm="isterm" ref='baseinfomation'>
                 </baseinfomation>
                 <div class="planCreate_page_con_rig">
-
+                    <div class="planCreate_page_con_rig_shadow" v-show="isquote && isterm"></div>
                     <!-- 工作事项 Start -->
                     <div class="myWork-create-right">
                         <div class="right-content">
@@ -30,7 +30,8 @@
                                 <!-- 每一个事项 Start -->
                                 <!-- <div class="matter-kind" v-for="(model, index0) in allMatters"> -->
                                 <template v-for="(item,index) in matters" v-if='onPage=="createPlan"'>
-                                    <matter :matter="item" :isterm="isterm" :views="mattersViews[index]" :ref="'matter' + index">
+                                    <matter :matter="item" :isterm="isterm" :generaldictbykey="_.cloneDeep(GeneralDictByKey)" :workorder="$refs.baseinfomation?$refs.baseinfomation.argu().order_type:''"
+                                        :views="mattersViews[index]" :candelete="true" :delete="deleteMatter" :ref="'matter' + index">
                                         <matter/>
                                 </template>
 

@@ -1,4 +1,6 @@
 <% include ../../../template/pageHead.html %>
+
+    <script src="../js/workOrder/planMng/polyfill.js"></script>
     <script src="../js/workOrder/planMng/lodash.min.js"></script>
     <script src="../js/workOrder/planMng/public.js"></script>
 
@@ -23,7 +25,7 @@
     <script src="../js/workOrder/planMng/createPlan/model.js"></script>
 
     <!-- 创建计划预览 -->
-    <link rel="stylesheet" href="../css/workOrder/planMng/group/createPlan/planCreate_next.css">
+    <link rel="stylesheet" href="../css/workOrder/planMng/createPlan/planCreate_next.css">
     <link rel="stylesheet" href="../css/workOrder/planMng/group/createPlan/myWorkOrderCreate.css">
     <script src="../js/workOrder/planMng/createPlanLook/event.js"></script>
     <script src="../js/workOrder/planMng/createPlanLook/model.js"></script>
@@ -58,6 +60,7 @@
             <link rel="stylesheet" href="/css/workOrder/planMng/group/addcontent.css">
             <link rel="stylesheet" href="/css/workOrder/planMng/group/point.css">
             <link rel="stylesheet" href="/css/workOrder/planMng/group/matter.css">
+            <link rel="stylesheet" href="/css/workOrder/planMng/group/sopdetail.css">
             <% include ../../eventMng/matter.html %>
                 <% include ../../eventMng/aite.html %>
                     <%include ../../eventMng/hashtag.html %>
@@ -65,40 +68,53 @@
                             <%include ../../eventMng/addinfo.html %>
                                 <%include ../../eventMng/point.html %>
                                     <%include ../../eventMng/Multiple.html %>
+                                        <%include ../../eventMng/sopdetail.html %>
 
-                                        <!--  创建的计划每个事项 End -->
+                                            <!--  创建的计划每个事项 End -->
 
-                                        <ploading-part id='globalloading' text="加载中..."></ploading-part>
-                                        <pnotice-message id='globalnotice'></pnotice-message>
+                                            <ploading-part id='globalloading' text="加载中..."></ploading-part>
+                                            <pnotice-message id='globalnotice'></pnotice-message>
 
-                                        <div id="app">
-                                            <!-- 工单列表 -->
-                                            <%include ./workOrderList.html %>
+                                            <div id="app">
+                                                <div pc="" class="per-loading-overall" id="gloadLoadng" _pt="ploading-global" _id="bfcifddbbdcdffiggdh" style="display: block;">
+                                                    <div class="loading-con">
+                                                        <div class="per-loading-overall_pic"></div>
+                                                        <div class="per-loading-overall_text"></div>
+                                                    </div>
+                                                </div>
+                                                <!-- 计划信息版本记录侧弹窗，为planInformation.html下级文件 -->
+                                                <% include ./planHistoryInfo.html %>
 
-                                                <!-- 项目计划监控 -->
-                                                <%include ./grouphome.html %>
-                                                    <!-- 项目计划监控 -->
-                                                    <%include ./monitoringPlan.html %>
-                                                        <!-- 创建计划  -->
-                                                        <%include ./planCreate.html %>
-                                                            <!-- 预览计划 -->
-                                                            <%include ./planCreate_next.html %>
+                                                    <div class="content">
+                                                        <!-- 集团计划首页 -->
+                                                        <%include ./grouphome.html %>
 
-                                                                <!-- 工单详情 -->
-                                                                <% include ./workOrderDetailHead.html %>
+                                                            <!-- 工单列表 -->
+                                                            <%include ./workOrderList.html %>
 
-                                                                    <!-- 计划详情 -->
-                                                                    <% include ./planInformation.html %>
+                                                                <!-- 项目计划监控 -->
+                                                                <%include ./monitoringPlan.html %>
+                                                                    <!-- 创建计划  -->
+                                                                    <%include ./planCreate.html %>
+                                                                        <!-- 预览计划 -->
+                                                                        <%include ./planCreate_next.html %>
 
-                                                                        <pwindow-modal id="modalWindow" title="选择项目" templateid="windowTemp1"></pwindow-modal>
-                                                                        <pwindow-global id="globalWindow" templateid="ct"></pwindow-global>
+                                                                            <!-- 工单详情 -->
+                                                                            <% include ./workOrderDetailHead.html %>
 
-                                        </div>
+                                                                                <!-- 计划详情 -->
+                                                                                <% include ./planInformation.html %>
+                                                    </div>
 
-                                        <script type="text/html" id="windowTemp1">
+                                                    <pwindow-modal id="modalWindow" title="选择项目" templateid="windowTemp1"></pwindow-modal>
+                                                    <pwindow-global id="globalWindow" templateid="ct"></pwindow-global>
+
+                                            </div>
+
+                                            <script type="text/html" id="windowTemp1">
                                                     <div class="toP">
                                                         <div class="tc">
-                                                            <div class="ti"@click="submitToProjectAllBtn">
+                                                            <div class="ti"@click="submitToProjectAllBtn" v-show="IssueProjectList.length">
                                                                 <span class="titxt">项目名称</span>
                                                                 <span class="c">
                                                                     <div class="pcheckbox">
@@ -116,6 +132,8 @@
                                                                     </div>
                                                                 </span>
                                                             </div>
+                                                            <ploading-part id="IssueProjectListLoading" text="拼命加载中..."></ploading-part>
+                                                            <pnotice-nodata text="暂无数据" v-show="IssueProjectList.length==0"></pnotice-nodata>
                                                         </div>
                                                         <div class="tb">
                                                             <span class="btn" @click.capture="$('#modalWindow').phide();submitToProject();">
@@ -128,7 +146,7 @@
                                                     </div>
                                                 </script>
 
-                                                <script type="text/html" id="ct">
+                                            <script type="text/html" id="ct">
                                                     <div class="ctt">
                                                         <div class="tn">
                                                             请设置计划生效时间
@@ -164,6 +182,9 @@
                                                                     <panel timetype="yMd" startyear="2018" endyear="2025"></panel>
                                                                  </ptime-form>
                                                             </div>
+                                                            <div class="err red" v-show="toProjectArgu.plan_end_time != '' && toProjectArgu.plan_start_time >= toProjectArgu.plan_end_time">
+                                                                计划生效开始时间不得大于等于结束时间
+                                                            </div>
                                                         </div>
                                                         <div class="cb">
                                                             <pbutton-blue text="确定" @click="submitClick();$('#globalWindow').phide()"></pbutton-blue>
@@ -173,12 +194,18 @@
                                                 </script>
 
 
-                                        <pwindow-confirm id="createSuccessFul">
-                                            <button>
-                                                <pbutton-blue text="确定" click="toProject();$('#createSuccessFul').phide()"></pbutton-blue>
-                                                <pbutton-white text="取消" click="$('#createSuccessFul').phide()"></pbutton-white>
-                                            </button>
-                                        </pwindow-confirm>
+                                            <pwindow-confirm id="createSuccessFul">
+                                                <button>
+                                                    <pbutton-blue text="确定" click="toProject();$('#createSuccessFul').phide()"></pbutton-blue>
+                                                    <pbutton-white text="取消" click="$('#createSuccessFul').phide()"></pbutton-white>
+                                                </button>
+                                            </pwindow-confirm>
 
+                                            <pwindow-confirm id="planCreateWindow">
+                                                <button>
+                                                    <pbutton-blue text="确定" click="v.instance.cancelWindowsConfirm"></pbutton-blue>
+                                                    <pbutton-white text="取消" click="v.instance.cancelWindowsCancel"></pbutton-white>
+                                                </button>
+                                            </pwindow-confirm>
 
-                                        <% include ../../../template/pageFoot.html %>
+                                            <% include ../../../template/pageFoot.html %>

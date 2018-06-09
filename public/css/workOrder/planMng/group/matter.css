@@ -3,19 +3,6 @@
   padding: 0;
   user-select: none; }
 
-body {
-  background: #f8f8f8;
-  padding: 12px 10px 0;
-  width: calc(100% - 20px);
-  height: calc(100% - 12px);
-  overflow: hidden; }
-
-#app {
-  width: 100%;
-  height: 100%;
-  border-radius: 6px;
-  background: white; }
-
 .pointer {
   cursor: pointer; }
 
@@ -48,7 +35,7 @@ body {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0; }
 
-.box-shadow, #app {
+.box-shadow {
   box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.12); }
 
 .pointer {
@@ -90,7 +77,7 @@ body {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0; }
 
-.box-shadow, #app {
+.box-shadow {
   box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.12); }
 
 .matter.section {
@@ -130,6 +117,11 @@ body {
       .matter.section > .obj > .bottom > .btn {
         float: left;
         color: #637e99; }
+      .matter.section > .obj > .bottom > .r {
+        color: initial;
+        position: relative;
+        margin-top: 6px;
+        margin-left: 6px; }
       .matter.section > .obj > .bottom > .percent {
         float: right;
         line-height: 30px;
@@ -156,6 +148,11 @@ body {
       .matter.section > .sop > .bottom > .btn {
         float: left;
         color: #637e99; }
+      .matter.section > .sop > .bottom > .r {
+        color: initial;
+        position: relative;
+        margin-top: 6px;
+        margin-left: 6px; }
       .matter.section > .sop > .bottom > .percent {
         float: right;
         line-height: 30px;
@@ -179,12 +176,46 @@ body {
       .matter.section > .work > .bottom > .btn {
         float: left;
         color: #637e99; }
+      .matter.section > .work > .bottom > .r {
+        color: initial;
+        position: relative;
+        margin-top: 6px;
+        margin-left: 6px; }
       .matter.section > .work > .bottom > .percent {
         float: right;
         line-height: 30px;
         font-size: 12px;
         color: #637e99;
         text-align: right; }
+    .matter.section > .work .block {
+      display: inline-block;
+      height: 30px;
+      line-height: 30px;
+      position: relative;
+      margin: 0 20px 15px 0;
+      vertical-align: top;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      border-radius: 15px;
+      padding: 0 15px;
+      background-color: #f3f3f3; }
+      .matter.section > .work .block > span {
+        box-sizing: border-box;
+        display: inline-block;
+        height: 30px;
+        line-height: 30px;
+        -ms-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer; }
+      .matter.section > .work .block > img {
+        padding-left: 5px;
+        vertical-align: middle;
+        cursor: pointer; }
   .matter.section > .group {
     height: 30px;
     line-height: 30px;

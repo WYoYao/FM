@@ -50,7 +50,7 @@
                     </div>
                     <div class="ev">
                         <div><img src="../images/objFix.png" alt=""></div>
-                        <div>工程保修</div>
+                        <div>工程报修</div>
                         <div class="MT" v-text="groupEvIndexData.waitingHandleEvents.projectRepairCount"></div>
                     </div>
                     <div class="ev">
@@ -74,7 +74,7 @@
                     </div>
                     <div class="ev">
                         <div><img src="../images/objFix.png" alt=""></div>
-                        <div>工程保修</div>
+                        <div>工程报修</div>
                         <div class="MT" v-text="groupEvIndexData.handlingEvents.projectRepairCount"></div>
                     </div>
                     <div class="ev">
@@ -207,10 +207,10 @@
 
             <div class="text">
                 <ptext-textarea placeholder="请填写事件描述" id="createGroupEventText">
-                    <verify errtip="不可超过100字" length="100" friendlyip="" verifytype="space"></verify>
+                    <!--<verify errtip="不可超过100字" length="100" friendlyip="" verifytype="space"></verify>-->
+                    <verify errtip="不可超过100字" length="100" friendlyip="" verifytype="length"></verify>
                 </ptext-textarea>
             </div>
-
             <div class="img">
                 <pupload-img number="4" arrange="horizontal" id="createGroupEventImg"></pupload-img>
             </div>
@@ -225,9 +225,9 @@
             </div>
 
             <div class="time" v-show="createEv.start === 1">
-                <div>要求完成时间</div>
+                <div>要求开始时间</div>
                 <div>
-                    <ptime-form id="groupEventStartTime">
+                    <ptime-form id="groupEventStartTime" >
                         <panel timetype="yMdhm" startyear="2003" endyear="2018"></panel>
                     </ptime-form>
                 </div>

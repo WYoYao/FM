@@ -1,7 +1,20 @@
 controller.push([
+    {
+        name: "querySopDetailById",
+        url: "restSopService/querySopDetailById",
+    },
+    {
+        name: "getWoMattersWorkOrderPreview",
+        url: "workorder/restWorkOrderService/getWoMattersPreview",
+        configServiceName: "baseServiceUrl",
+    },
     {//新建工单-查询岗位下的人员列表
         name: "queryPersonListByPositionIds",
         url: "restPersonService/queryPersonListByPositionIds",
+        argu: {
+            "filter_scheduling": false,
+            "limit_domain": false
+        },
         cb: function () {
             return _.range(20).map(index => {
                 return {
@@ -381,7 +394,7 @@ controller.push([
         //     })
         // },
         convert: function (list) {
-            list = addSelected([list]);
+            list = addSelected(list);
             list = list.map(function (item) {
                 item.content = item.content.map(function (info) {
 
@@ -552,6 +565,14 @@ controller.push([
     },
     {
         //  根据关键字查詢
+        name: "searchObjectClass",
+        url: "saas/restObjectService/searchObjectClass",
+        configServiceName: "baseServiceUrl",
+        argu: {},
+        convert: addSelected
+    },
+    {
+        //  根据关键字查詢
         name: "searchObject",
         url: "restObjectService/searchObject",
         argu: {},
@@ -646,6 +667,13 @@ controller.push([
         argu: {},
         convert: addSelected
     },
+    {   //事件转工单发布
+        name: "publishEventTranOrder",
+        url: "workorder/restWoPlanService/saveWorkOrderForEventPC",
+        configServiceName: "baseServiceUrl",
+        argu: {},
+        convert: addSelected
+    }
 ]
     // 开发时使用后面需要删除
     // .map(item => {

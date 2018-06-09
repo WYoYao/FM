@@ -20,11 +20,6 @@ function queryListParameter() {
 }
 
 var workOrderMngModel = { //工单管理模块数据模型
-    //------------------------------------------ydx__start------------------------------------------
-    pages: ["workOrderList", "see_orderDetail"], //所有页面导航
-    curPage: 'workOrderList', //当前页面
-    orderDetailData: {}, //工单详情数据
-    orderOperatList: [], //工单操作列表
     personPositionList: [], //人员岗位列表
     userInfo:{},//存储用户信息
     order_id:'',//工单id
@@ -32,8 +27,6 @@ var workOrderMngModel = { //工单管理模块数据模型
     stop_order_content:'',//终止工单输入内容
 
     //工单详情调用需model中新建以下属性
-    orderDetailData:{},//工单详情数据
-    orderOperatList:[],//操作列表
     planObjExampleArr: [],//选择对象存储
 
     //vue绑定的数据data
@@ -99,7 +92,6 @@ var workOrderMngMethod = { //工单管理模块方法
     },
     //打开工单详情
     openOrderDetail_workOrderManage: function(item) {
-        console.log(item);
         controller.getUserInfo();
         workOrderMngModel.order_id = item.order_id;
 
@@ -117,14 +109,10 @@ var workOrderMngMethod = { //工单管理模块方法
         }
     },
     goBackOrderList: function() { //返回工单列表
-        workOrderMngModel.orderDetailData = [];
-        workOrderMngModel.orderOperatList = [];
-        workOrderMngModel.curPage = workOrderMngModel.pages[0];
-
         workOrderEvent.goBack();
 
     },
-   //by liuchang--start
+    //by liuchang--start
     /*通过工单ID获取执行人信息*/
     showEvaluateModal: function () {
         $("#evaluateModal").pshow();
@@ -168,7 +156,6 @@ var workOrderMngMethod = { //工单管理模块方法
                 }
             }
         }
-        console.log(executor_comments);
        if(executor_comments.length==0) {
            $("#evaluateModal").phide();
            return;
@@ -180,19 +167,11 @@ var workOrderMngMethod = { //工单管理模块方法
                    executor_comments:executor_comments
                });
        }
-
-
-
     },
     // by liuchang-end
     createAssignSetHide: function() { //指派隐藏
 
         $("#createAssignSet").hide();
-    },
-    timeFormatting: function(str) { //时间格式化
-        var str = str || '';
-        var nstr = str.substr(0, 4) + "-" + str.substr(4, 2) + "-" + str.substr(6, 2) + " " + str.substr(8, 2) + ":" + str.substr(10, 2) + ":" + str.substr(12, 2);
-        return nstr;
     },
     clickAssignSet: function() { //指派设置
         controller.getPersonPositionList();
@@ -285,7 +264,9 @@ var workOrderMngMethod = { //工单管理模块方法
         $("#createAssignSet").hide();
     },
     /*中止工单*/
-    stopOrderSetYes:function(){
+    stopOrderSetYes:function(obj,event){
+        console.log(event);
+        $(event.target).pdisable(true);//禁用确定按钮
         var content = workOrderMngModel.stop_order_content;
         var _data = {
             order_id: workOrderMngModel.order_id,
@@ -293,7 +274,6 @@ var workOrderMngMethod = { //工单管理模块方法
             content: content
         };
         controller.stopOrderSet(_data);
-
     },
     /*停止工单显示*/
     stopOrder_con_show:function(){
@@ -307,8 +287,6 @@ var workOrderMngMethod = { //工单管理模块方法
         $("#stopOrder").phide();
     },
 
-
-    //------------------------------------------ydx__end------------------------------------------
 
 
 
@@ -363,7 +341,7 @@ var workOrderMngMethod = { //工单管理模块方法
     treeSel: function (item, e) {
         item.content = item.content || [];
         if (workOrderMngModel.filterTypeSel == "participants" || workOrderMngModel.filterTypeSel == "executor"||workOrderMngModel.filterTypeSel == "spaceType") { return; }
-        if (item.content.length > 0) return;//只有叶子节点可以点击
+        if (workOrderMngModel.filterTypeSel != "equip"&&item.content.length > 0) return;//只有叶子节点可以点击
         workOrderEvent.activeAttrTree(workOrderMngModel.treeDate, 'content', 'active', '0');
         item.active = "1";
         workOrderMngModel.treeLeafDateArr = [];
@@ -376,12 +354,28 @@ var workOrderMngMethod = { //工单管理模块方法
                 workOrderMngModel.treeLeafDateArr = item.content_arr;
                 break;
             case "equip"://设备
-                var parameterObj = {
-                    build_id: '',          //建筑id
-                    space_id: item.obj_id,          //空间id
-                    domain_code:'',       //专业编码
-                    system_id: ''      //系统id
+            var type=item.obj_type;
+            var parameterObj = {
+                build_id:'',          //建筑id
+                space_id:'' ,          //空间id
+                domain_code:'',       //专业编码
+                system_id: ''      //系统id
+            }
+                switch(type){
+                    case 'build':
+                    parameterObj.build_id=item.obj_id;
+                    parameterObj.space_id='';
+                    break;
+                    case 'floor'://设备不可以挂载在楼层的
+                   
+                    return;
+                    case 'space':
+                    parameterObj.space_id=item.obj_id;
+                    parameterObj.build_id='';
+                    break;
                 }
+
+               
                 var settedArr = ["hasCheck", "disable","active"];
 
                 //获取设备TODO
@@ -428,7 +422,7 @@ var workOrderMngMethod = { //工单管理模块方法
     },
     //筛选条件树结构三角
     treeArrow: function (item,e) {
-        e.stopPropagation()
+        e.stopPropagation();
         var target = $(e.currentTarget);
         var next = target.parent().next();
         if (next.is(":visible")) {
@@ -437,7 +431,7 @@ var workOrderMngMethod = { //工单管理模块方法
         } else {
             next.slideDown();
             target.text("b")
-        };
+        }
     }
 };
 var workOrderMngLogic = {
@@ -478,11 +472,13 @@ var workOrderMngLogic = {
         var onDay = 86400000;
         var startTime = currday - (currWeek * onDay);
         var endTime = currday + ((7 - currWeek-1) * onDay);
-        $("#divCalendar").psel({ startTime: startTime, endTime: endTime },false);
-
+        $("#workOrderCalendar").psel({ startTime: startTime, endTime: endTime },false);
+        //时间控件锁定会 执行点击事件的
+        $("#workOrderCalendar").plock({ startTime: startTime, endTime: endTime },false);
+        
         workOrderMngModel.queryListParameter.start_time = new Date(startTime).format("yMd000000");
         workOrderMngModel.queryListParameter.end_time =  new Date(endTime).format("yMd000000");
-         controller.queryGeneralDictByKey();//查询工单类型
+        controller.queryGeneralDictByKey();//查询工单类型
         controller.queryWorkOrderState();//查询工单状态
         controller.queryAllWorkOrder(workOrderMngModel.queryListParameter);//查询所有工单
 

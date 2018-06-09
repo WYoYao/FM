@@ -85,7 +85,7 @@ Vue.component('matter', {
             }
 
             this.addcontent = false;
-        }
+        },
     },
     computed: {
 
@@ -108,6 +108,7 @@ Vue.component('matter', {
         },
         "matter.matter_name": function (newValue, old) {
             // 有任何输入就把错误提示取消
+            debugger
             this.valite.matter_name_isnull = false;
         },
         // 对象输入监听
@@ -229,7 +230,7 @@ Vue.component('matter', {
                 _that.matter.required_control = _.map(_.filter(_that.GeneralDictByKey, { selected: true }), 'code')
             },
             deep: true
-        }
+        },
     },
     beforeMount: function () {
         var _that = this;

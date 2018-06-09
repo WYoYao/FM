@@ -68,7 +68,7 @@
                     line-height: 29px;
                     width: 100%;
                     color: $black-font-color;
-
+                    border-bottom: 1px solid #D9E2E8;
                     @extend .flex-row;
 
                     .item{
@@ -87,11 +87,13 @@
                     .info{
                         cursor: pointer;
                         @extend .flex-row;
-
+                        &:nth-of-type(odd){
+                            background: #F4F6F9;
+                        }
                         .item{
                             @extend ._item;
                             color: $blacker-font-color;
-                            line-height: 30px;
+                            line-height: 36px;
                             @extend ._font_over;
 
                             .ide{

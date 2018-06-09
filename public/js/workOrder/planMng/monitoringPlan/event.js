@@ -8,8 +8,8 @@ function groupDataControll(data) {
         for (var i = 0; i < len; i++) { arr.push([]) };
         plan.work_order_date.forEach(function (day) {
             for (var i = 0; i < len; i++) {
-                if (day.work_order[i]) {
-                    arr[i].push(day.work_order[i]);
+                if (day.work_orders[i]) {
+                    arr[i].push(day.work_orders[i]);
                 }
             }
         })
@@ -21,13 +21,13 @@ function groupDataControll(data) {
     function orderDataFilter(plan) {
         var that = v._instance;
         var orderGather = plan.work_orders.map(function (order) {
-            if ((+that.timeData.startTime < +order.ask_start_time && +order.ask_start_time < +that.timeData.endTime) || (+that.timeData.startTime < +order.ask_end_time && +order.ask_end_time < +that.timeData.endTime)) {
-                order.ask_start_time = +order.ask_start_time > +that.timeData.startTime ? +order.ask_start_time : +that.timeData.startTime;
-                order.ask_end_time = +order.ask_end_time > +that.timeData.endTime ? +that.timeData.endTime : +order.ask_end_time;
+            if ((that.timeData.startTime < order.ask_start_time && order.ask_start_time < that.timeData.endTime) || (that.timeData.startTime < order.ask_end_time && order.ask_end_time < that.timeData.endTime)) {
+                order.ask_start_time = order.ask_start_time > that.timeData.startTime ? order.ask_start_time : that.timeData.startTime;
+                order.ask_end_time = order.ask_end_time > that.timeData.endTime ? that.timeData.endTime : order.ask_end_time;
                 return order
             }
         })
-        plan.work_orders = orderGather;
+        plan.work_order = orderGather;
         return plan;
     }
     // 非日计划类型工单数据转行数据
@@ -37,7 +37,7 @@ function groupDataControll(data) {
         var rowData = [];
         // 上一次工单结束时间
         var lastEndTime = 0;
-        plan.work_orders.forEach(function (order) {
+        plan.work_order.forEach(function (order) {
             if (order) {
                 if (order.ask_start_time <= lastEndTime) {
                     // 如果工单开始时间小于等于上一条工单的结束时间,行数加一
@@ -77,7 +77,7 @@ function groupDataControll(data) {
             for (var i = 0; i < plan.row; i++) {
                 plan.grid.push([]);
                 for (var a = 0; a < days; a++) {
-                    plan.grid[i].push({ type: 'none', id: null, width: 1 });
+                    plan.grid[i].push({ type: null, id: null, width: 1 });
                 }
             }
             plan.rowData.forEach(function (row, index) {
@@ -87,9 +87,17 @@ function groupDataControll(data) {
                         var l = getDaysIndex(order.ask_start_time);
                         var r = getDaysIndex(order.ask_end_time);
                         if (l == r) {
-                            plan.grid[index][l] = { type: (order.order_state || ""), id: (order.order_id || null), width: 1 };
+                            plan.grid[index][l] = { 
+                                type: order.order_state || (order.is_next_order ? '' : null),
+                                id: (order.order_id || null), 
+                                width: 1 
+                            };
                         } else {
-                            plan.grid[index][l] = { type: (order.order_state || ""), id: (order.order_id || null), width: (r - l) };
+                            plan.grid[index][l] = { 
+                                type: order.order_state || (order.is_next_order ? '' : null),
+                                id: (order.order_id || null), 
+                                width: (r - l) 
+                            };
                         }
                     }
                 })
@@ -109,7 +117,8 @@ function groupDataControll(data) {
         return data;
     }
     function getDaysIndex(num) {
-        return Number(num.toString().substring(6, 8)) - 1
+        if(!num){return 0}
+        return Number((num).toString().substring(6, 8)) - 1;
     }
 
     var arr = data.map(function (plan) {

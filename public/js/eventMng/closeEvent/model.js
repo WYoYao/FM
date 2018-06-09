@@ -11,20 +11,21 @@ v.pushComponent({
         // 选择关闭事件方式
         selCloseProEvWay : function(sel,type){
             this.evCloseFromList = type === 'list' ? true : false;
+            v.instance.proEvListPower.isELTHasPage = true;
             switch(sel.code){
                 case 0:
                     this.closeEvWrong();
-                break
+                    break
                 case 1:
                     type === 'list' ? this.stopModelEvPropagation(true) : void 0;
                     this.getRepeateEvList();
                     this.isSelCloseEv = true;
                     $("#selRepeatEventW").pshow();
-                break
+                    break
                 case 2:
                     type === 'list' ? this.stopModelEvPropagation(true) : void 0;
                     $("#closeEvOthRsnW").pshow();
-                break
+                    break
             }
         },
         // 关闭重复事件确认
@@ -32,13 +33,15 @@ v.pushComponent({
             if(type){
                 var param = {
                     eventId : this.closedEvId,
-                    eventState: 2,
-                    closeType : 1,
-                    repeatedEventId : []
+                    eventState: "2",
+                    closeType : "1",
+                    repeatedEventId : [],
+                    person_id:this.userInfo.person_id
                 };
                 this.repeateEvListData.forEach(function(item){
-                    item.sel ? param.repeatedEventId.push(item) : void 0;
+                    item.sel ? param.repeatedEventId.push(item.eventId) : void 0;
                 })
+                param.repeatedEventId = param.repeatedEventId.toString();
                 if(param.repeatedEventId.length === 0){
                     $("#globalnotice").pshow({text: "请选择事件",state: "failure"});
                     return 
@@ -56,6 +59,7 @@ v.pushComponent({
                     eventState: "2",
                     closeType : "2",
                     closeRemark: $("#closeEvOthText").pval(),
+                    person_id:this.userInfo.person_id
                 };
                 var fn = this.evCloseFromList ? v.instance.getProEvListData : v.instance.getProEvInfo;
                 this.closeProEv(param,fn);
@@ -64,7 +68,7 @@ v.pushComponent({
         },
         // 关闭误报事件
         closeEvWrong : function(){
-            var param = {eventId:this.closedEvId,closeType:"0",eventState:"2"};
+            var param = {eventId:this.closedEvId,closeType:"0",eventState:"2",person_id:this.userInfo.person_id};
             var fn = this.evCloseFromList ? v.instance.getProEvListData : v.instance.getProEvInfo;
             this.closeProEv(param,fn);
         },
@@ -91,6 +95,7 @@ v.pushComponent({
         // 关闭项目事件
         closeProEv : function(param,fn){
             EMA.CP(param,function(){
+                $("#globalnotice").pshow({ text: '提交成功', state: "success" });
                 fn();
             },function(){
 

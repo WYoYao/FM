@@ -36,7 +36,11 @@
         background: #f4f6f9; }
       #repeatEvent .grid li span {
         float: left;
-        display: block; }
+        display: block; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
       #repeatEvent .grid li .t4 {
         position: absolute;
         left: 17px;

@@ -18,20 +18,21 @@
     position: relative;
     width: 28px;
     height: 28px;
-    border: 1px solid #cecece;
+    border: 1px solid #637e99;
+    border-radius: 2px;
 }
 .see_orderDetail_page_back .goBack .icon{
     display: block;
     width: 28px;
     height: 28px;
-    line-height: 30px;
+    line-height: 28px;
     text-align: center;
-    font-size: 14px;
+    font-size: 16px;
     box-sizing: border-box;
     font-family: "perficon";
     font-weight: normal;
     border-radius: 50%;
-    color: #CACACA;
+    color: #637e99;
 
 }
 .see_orderDetail_page_back .showMessage{
@@ -178,9 +179,10 @@
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
-    padding-top: 80px;
+    /*padding-top: 80px;*/
     box-sizing: border-box;
     padding-bottom: 30px;
+    padding-top: 40px;
 }
 #stop_order_no{
     margin-left: 20px;

@@ -19,6 +19,8 @@ v.pushComponent({
         notCitePlanList: [],
         // 工单状态集合
         WorkOrderStateList: [],
+        // 集团计划名称
+        group_plan_name: ""
     },
 
     methods: {
@@ -96,17 +98,17 @@ v.pushComponent({
             var p = param.freq_cycle === 'd' ? PMA.GDO : PMA.GPO;
             $("#moniPlanLoading").pshow();
             p(param, function (data) {
-                _that.monitoringGrid = groupDataControll(data && data.length || []);
+                _that.monitoringGrid = groupDataControll(_.isArray(data) ? data : []);
             }, function () { }, function () {
                 $("#moniPlanLoading").phide();
             })
         },
         // 查询工单管理
-        queryOrderManage: function (planId, order_state,project_id) {
+        queryOrderManage: function (planId, order_state, project_id) {
             this.cache = {
                 order_state: order_state,
                 planId: planId,
-                project_id:project_id,
+                project_id: project_id,
                 name: "工单列表",
             };
             v.initPage("workOrderList");
@@ -121,6 +123,8 @@ v.pushComponent({
     beforeMount: function () {
         var _that = this,
             req = JSON.parse(JSON.stringify(_that.cache));
+
+        _that.group_plan_name = req.group_plan_name;
 
         // 默认频率
         (_.find(_that.fiveFreq, { id: req.freq_cycle }) || {}).sel = true;

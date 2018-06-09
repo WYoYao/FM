@@ -4,21 +4,28 @@ $(function () {
     workOrderMngLogic.init();
 
 
-   //时间控件锁定会 执行点击事件的
-   // $("#divCalendar").plock({ startTime: startTime, endTime: endTime },false);
 
     //普通事件，组件
     var nScrollHight = 0; //滚动距离总长
     var nScrollTop = 0;   //滚动到的当前位置
     $(".monitor-table-body").scroll(function () {
         var nDivHight = $(".monitor-table-body").height();
+        var clientH=$(".monitor-table-body>div")[0].clientHeight;
         nScrollHight = $(this)[0].scrollHeight;
         nScrollTop = $(this)[0].scrollTop;
+        $("#workOrderCalendar").pslideUp();
+        $("#work-type").pslideUp();
+        $("#work-state").pslideUp();
+        if(clientH<nDivHight)return; 
         if (nScrollTop + nDivHight >= nScrollHight) {
             workOrderMngModel.pageNum += 1;        
             workOrderMngModel.queryListParameter.page=workOrderMngModel.pageNum;
             controller.queryAllWorkOrder(workOrderMngModel.queryListParameter,true);//查询所有工单
         }      
+    });
+
+    $(".per-combobox-basic .per-combobox-title").click(function(){
+        $("#workOrderCalendar").pslideUp();
     });
 });
 
@@ -51,7 +58,7 @@ var workOrderEvent = {
         if (show) {
             target.text("高级筛选");
             model.queryListParameter.page=1;
-          //  $(".monitor-table-body").scrollTop(0);
+          // $(".monitor-table-body").scrollTop(0);
                workOrderEvent.queryListClick();
       
             $(".monitor-content-list-body").css({
@@ -87,7 +94,7 @@ var workOrderEvent = {
     },
     //时间
     selEventsTime: function () {
-       var time = $("#divCalendar").psel();
+       var time = $("#workOrderCalendar").psel();
         var startTime = new Date(time.startTime).format("yMd000000");
         var endTime = new Date(time.realEndTime).format("yMd000000");
         workOrderMngModel.queryListParameter.page=1;
@@ -328,7 +335,15 @@ var workOrderEvent = {
                 var a = arr[i] || {};
                 a[selected] = "0";
                 a[settedArr[0]] = true;
-                a[settedArr[1]] = false;
+                if (workOrderMngModel.filterTypeSel == "equip"){
+                    if(a.obj_type=='floor'){
+                        a[settedArr[1]] = true;
+                    }else{
+                        a[settedArr[1]] = false;
+                    }                  
+                }else{
+                    a[settedArr[1]] = false;
+                }
                 a[settedArr[2]] = '0';
                 if (workOrderMngModel.filterTypeSel == "spaceType" || workOrderMngModel.filterTypeSel == "participants" || workOrderMngModel.filterTypeSel == "executor") {
                     a[settedArr[0]] = false;
@@ -425,11 +440,11 @@ var workOrderEvent = {
 };
 
 
-
-window.common = {//全局方法
-    openOrderDetail: function (order_id, type, fn) {
-        workOrderMngMethod.openOrderDetail(order_id, type, fn);
-    }
-};
+//wyy注释
+// window.common = {//全局方法
+//     openOrderDetail: function (order_id, type, fn) {
+//         workOrderMngMethod.openOrderDetail(order_id, type, fn);
+//     }
+// };
 
 

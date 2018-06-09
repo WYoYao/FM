@@ -93,13 +93,16 @@ String.prototype.ZInteger = function () {
 
     return (this.pisPositiveInt() || +this == 0)
 }
+String.prototype.Digits = function () {
 
+    return this.ZInteger && this.length == 1;
+}
 
 //  开发环境下绑定的用户信息
 var USER = {
-    "user_id": "RY1505218031651",
-    "customer_id": "",
-    "project_id": "Pj1301020001",
+    // "user_id": "RY1505218031651",
+    // "customer_id": "",
+    // "project_id": "Pj1301020001",
 }
 
 //  给最节点添加 selected 属性
@@ -371,14 +374,14 @@ var loadding = new SetLoading(
         var data = this.init[name],
             beforeMount = this.beforeMount[name] || function () { };
 
-        if (argu) data = Object.assign(data, argu);
+        if (argu) data = Object.assign({}, data, argu);
 
         // onPage 切换到当前页面
         data.onPage = name;
 
         // 循环修改Vue 实例中的内容
         Object.keys(data).reduce(function (con, key, index) {
-            con[key] = _.isPlainObject(data[key]) ? JSON.parse(JSON.stringify(data[key])) : data[key];
+            con[key] = _.isObject(data[key]) ? _.cloneDeep(data[key]) : data[key];
             return con;
         }, this._instance);
 
@@ -455,7 +458,8 @@ $(function () {
     v.createVue();
     // 生成事件模块的AJAX集合EMA与Promise合集EMP
     createEventModuleController();
-    v.init.hasOwnProperty('eventManage') ? v.initPage('eventManage') : v.initPage('eventList');
+    // 生成计划模块的AJAX集合PMA与Promise合集PMP
+    createPlanModuleController();
 
     var url = window.location.href;
     var reg = /pt\=(.+)&?/;
@@ -478,5 +482,5 @@ $(function () {
         complete: function () {
         }
     });
-
+    v.init.hasOwnProperty('eventManage') ? v.initPage('eventManage') : v.initPage('eventList');
 })

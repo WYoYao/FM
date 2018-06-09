@@ -94,11 +94,6 @@
                             border: 1px solid #7a94ad;
                             cursor: pointer;
                             z-index: 2;
-
-                            &:hover{
-                                // border-color: #02aad1;
-                                // color: #02aad1;
-                            }
                         }
                 }
                 
@@ -161,8 +156,11 @@
             &>.content{
                 width: 100%;
                 border-top: 1px solid #d9e2e8;
-                border-bottom: 1px solid #d9e2e8;
-                margin-top: -1px;
+                // border-bottom: 1px solid #d9e2e8;
+                margin-top: -2px;
+                &:nth-of-type(1){
+                    margin-top: 0;
+                }
                 .title{
                     width: 100%;
                     height: 40px;
@@ -184,13 +182,11 @@
                 }
                 .step{
                     border-bottom: 1px solid #d9e2e8;
-                    &:nth-last-of-type(1){
-                        border-bottom: none;
-                    }
                     .div{
                         width: 100%;
                         display: flex;
                         flex-flow: row nowrap;
+                        align-items: stretch;
                         &>.left{
                             width: 75%;
                             border-right: 1px solid #d9e2e8;
@@ -271,54 +267,39 @@
                         }
                         &>.right{
                             width: 25%;
-                            padding-bottom: 25px;
-                            .rig_box{
-                                padding-top:20px ;
-                                padding-left: 20px;
+                            margin-left: -1px;
+                            border-left: 1px solid #d9e2e8;
+                            &>.box{
+                                width: calc(100% - 40px);
+                                height: auto;
+                                padding: 20px 20px;
+                                position: relative;
+                                &>div{
+                                    line-height: 24px;
+                                    height: auto;
+                                    width: calc(100% - 35px);
+                                    float: right;
+                                }
+                                .num{
+                                    float: left;
+                                    width: 30px;
+                                }
+                                .infos{
+                                    &>div>div{
+                                        float: left;
+                                    }
+                                }
+                                .photo{
+                                    width: 100%;
+                                    img{
+                                        width: 100%;
+                                        height: auto;
+                                    }
+                                }
                             }
-                            .rig_box > ul >li >h4{
-                                display: flex;
-                                flex-flow: wrap row;
-                            }
-
-                            .rig_box > ul >li >h4 >span{
-                                float: left;
-                                width: 10%;
-                            }
-                            .rig_box > ul >li >h4 >div{
-                                float: left;
-                                width: 80%;
-                            }
-                            .rig_box > ul >li >h4 >span >ul{
-                                clear: both;
-
-                            }
-                            .rig_box > ul >li >h4 >span >ul >li{
-                                float: left;
-                                height: 20px;
-
-                            }
-                            .rig_box > ul >li >h4 >i{
-                                color: #aaa;
-                            }
-                            .rig_box_list >li{
-                                margin-bottom: 20px;
-                            }
-                            .rig_box_list >li >ul{
-                                margin-left: 24px;
-                                margin-top: 10px;
-                            }
-                            .rig_box_list >li >div{
-                                width: 80%;
-                                height: 200px;
-                                border: 1px solid #d9e2e8;
-                                margin-top: 10px;
-                            }
-                            .rig_box_operatPerson{
-                                display: flex;
-                                flex-flow: row nowrap;
-                                color: #aaa;
-                                padding-left: 20px;
+                            .operatPerson{
+                                padding: 20px 20px;
+                                color: #999999;
                             }
                         }
                     }
@@ -391,114 +372,6 @@
                     }
                 }
             }
-
-
-
-
-
-
-                // .see_check{
-                //     width: 100%;
-                // }
-                // .see_check >ul{
-                //     border: 1px solid #d9e2e8;
-                //     border-top: none;
-                //     padding: 10px;
-                // }
-                // // .see_check >ul:nth-last-of-type(1){
-                // //     border-bottom: none;
-                // // }
-                // .see_check >ul >li{
-                //     width: 100%;
-                // }
-                // .see_check_header{
-                //     height: 40px;
-                //     background: #f8f8f8;
-                //     border: 1px solid #d9e2e8;
-                //     border-bottom: none;
-                // }
-                // .see_check_header{
-                //     display: flex;
-                //     flex-flow: row nowrap;
-                //     align-items: center;
-                // }
-                // .see_check_header >div{
-                //     text-align:center;
-                // }
-                // .see_check_header >div:nth-child(1){
-                //     width: 80%;
-                // }
-                // .see_check_header >div:nth-child(2){
-                //     width: 20%;
-                // }
-                // .see_check_content{
-                //     min-height: 100px;
-                //     border: 1px solid #d9e2e8;
-                //     width: 100%;
-                //     padding: 20px;
-                //     box-sizing: border-box;
-                // }
-                // .see_check_content .checkStatus  >div:nth-child(1).mark{
-                //     color: red;
-                // }
-
-
-
-
-                // .operat_person_list{
-                //     border-bottom: #d9e2e8;
-                //     // margin-bottom: 20px;
-                // }
-                // .operat_person_list >ul{
-                //     width: 100%;
-                //     height: 40px;
-                //     border: 1px solid #d9e2e8;
-                //     border-bottom: none;
-                //     border-right: none;
-                //     display: flex;
-                //     flex-flow: row nowrap;
-                //     align-items: center;
-                //     box-sizing: border-box;
-                // }
-                // .operat_person_list >ul:last-child{
-                //     border-bottom: 1px solid #d9e2e8;
-                //     margin: 10px 0 10px 0 !important;
-                // }
-                // .operat_person_list >ul >li{
-                //     height: 40px;
-                //     border-right: #d9e2e8;
-                //     display: flex;
-                //     flex-flow: row nowrap;
-                //     align-items: center;
-                // }
-                // .operat_person_list >ul >li>span{
-                //     display: inline-block;
-                //     width: 60%;
-                //     box-sizing: border-box;
-                //     height: 40px;
-                //     line-height: 40px;
-                //     padding-left: 20px;
-                // }
-                // .operat_person_list >ul >li >i{
-                //     display: inline-block;
-                //     width: 40%;
-                //     background: #f8f8f8;
-                //     height: 38px;
-                //     line-height: 38px;
-                //     box-sizing: border-box;
-                //     border-right: 1px solid #d9e2e8;
-                //     padding-left: 20px;
-                // }
-                // .operat_person_list >ul >li:nth-child(1){
-                //     width: 30%;
-                // }
-                // .operat_person_list >ul >li:nth-child(2){
-                //     width: 30%;
-                // }
-                // .operat_person_list >ul >li:nth-child(3){
-                //     width: 40%;
-                //     border-right: none;
-                // }
         }
         
     }

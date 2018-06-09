@@ -4,12 +4,14 @@
 
 
 <!-- 事件详情侧弹窗Start -->
-
 <pwindow-float id="eventInfoFloat" isshade="true" title="事件详情" templateid="eventInfoTemplate">
     <button>
-        <pbutton-blue text="指派" v-show="EvInfoType === 'group'" icon="U" click="openAssignW"  isborder="false"></pbutton-blue>
-        <pbutton-blue v-show="groupEvInfoData.full.groupEventState === '0' && EvInfoType === 'group'" text="关闭" icon="x" click="closeGroupEv"  isborder="false"></pbutton-blue>
-        <pbutton-blue v-show="groupEvInfoData.full.groupEventState != '0' && EvInfoType === 'group'" text="删除" icon="x" click="deleteGroupEv"  isborder="false"></pbutton-blue>
+        <pbutton-blue text="指派" v-show="groupEvInfoData.full.groupEventState != '2' && EvInfoType === 'group'" icon="U" @click="openAssignW(groupEvInfoData.easy)"
+            isborder="false"></pbutton-blue>
+        <pbutton-blue v-show="groupEvInfoData.full.groupEventState == '1' && EvInfoType === 'group'" text="关闭" icon="x" @click="closeGroupEv(groupEvInfoData.easy)"
+            isborder="false"></pbutton-blue>
+        <pbutton-blue v-show="groupEvInfoData.full.groupEventState == '0' && EvInfoType === 'group'" text="删除" icon="x" @click="deleteGroupEv(groupEvInfoData.easy)"
+            isborder="false"></pbutton-blue>
         <pbutton-blue bind="true" text="'转工单'" icon="'`'" @click="eventToWorkOrder(proEvInfoData.full.eventId)" isborder="false"
             v-show="proEvInfoData.full.eventState == '0' && proEvListPower.closeEvent && EvInfoType === 'project'" disabled="proEvInPower.isEdit"></pbutton-blue>
         <img id="eventInfoWCloseImg" :class="{'couldClick':!proEvInPower.isEdit}" src="../images/scrap_blue_btn.png" alt="" @click="openProEvInfoCloseSel('#closeEventInfoCombo')"
@@ -61,14 +63,14 @@
                     </div>
                     <div class="box">
                         <span>状态</span>
-                        <span :class="proEvInfoData.full.eventState == '0' ? 'orange' : proEvInfoData.full.eventState == '3' ? 'grayBule' : 'moreBlue'">
+                        <span :class="proEvInfoData.full.eventState == '0' ? 'orange' : proEvInfoData.full.eventState == '2' ? 'grayBule' : 'moreBlue'">
                             <span v-text="allEvSte[proEvInfoData.full.eventState]"></span>
-                            <span class="evInfoBtn" v-show="proEvInfoData.full.eventState == '1' || proEvInfoData.full.eventState == '2'">
+                            <span class="evInfoBtn" v-show="proEvInfoData.full.eventState == '1'">
                                 <pbutton-blue text="'查看工单'" bind="true" @click="evInfoToWorkOrder(proEvInfoData.full.workOrderId)" icon="'S'" isborder="false"></pbutton-blue>
                             </span>
                         </span>
                     </div>
-                    <div class="box" v-if="proEvInfoData.full.eventState == '3'">
+                    <div class="box" v-if="proEvInfoData.full.eventState == '2'">
                         <span>原因</span>
                         <span>
                             <span v-text="allcleRon[proEvInfoData.full.closeType]"></span>
@@ -91,12 +93,12 @@
                 <div class="body">
     
                     <div></div>
-    
-                    <div class="crtEdit" v-show="(!proEvInPower.isEdit) && (proEvInfoData.full.eventState == '0')">
-                        <pbutton-blue isborder="false" text="'问题修正'" bind="true" @click="editProEvInfo()"></button-blue>
-                    </div> 
-
-                    <div class="crtEdit" v-show="(!proEvInPower.isEdit) && (proEvInfoData.full.eventState != '0')">
+                    <% if (user.authorObj.problemCorrection) { %>
+                        <div class="crtEdit" v-show="(!proEvInPower.isEdit) && (proEvInfoData.full.eventState == '0') && (typeof groupEvIndexData == 'undefined')">
+                            <pbutton-blue isborder="false" text="'问题修正'" bind="true" @click="editProEvInfo()"></button-blue>
+                        </div> 
+                    <% }%>
+                    <div class="crtEdit" v-show="(!proEvInPower.isEdit) && (proEvInfoData.full.eventState != '0') && (typeof groupEvIndexData == 'undefined')">
                         <pbutton-blue isborder="false" text="'重新编辑'" bind="true" @click="editProEvInfo()"></button-blue>
                     </div> 
     
@@ -106,14 +108,14 @@
                                 <div>问题类型</div>
                                 <div>
                                     <pcombobox-normal id="'editEvTypeCombo'" sel="" bind="true">
-                                        <header placeholder="'客户报修'"></header>
-                                        <item datasource="someEventType" text="name" id="code"></item>
+                                        <header placeholder="'请选择'"></header>
+                                        <item datasource="someEventType" text="problemType" id="code"></item>
                                     </pcombobox-normal>
                                 </div>
                             </div>
                             <div class="input">
                                 <textarea type="text" v-model="proEvStr"></textarea>
-                                <aite :str="proEvDesc_str" :isterm="true" :cb="ProEvgetObjs" ref="aite" v-if="proEvDesc_str"></aite>
+                                <aite :str="proEvDesc_str" :desc_objs="proEvObjs" :isterm="true" :cb="ProEvgetObjs" ref="aite" v-if="proEvDesc_str"></aite>
                             </div>
                             <span class="grayBule hint" @click="v.instance.proEvStr+='@'">@对象</span>
                              
@@ -171,12 +173,16 @@
                             <span>问题类型</span>
                             <span v-text="proEvInfoData.full.originalData.originalProblemType"></span>
                         </div>
-    
+                            <!-- 1. proEvInfoData.full.originalData.originalRepairPosition-->
                         <div class="box" v-if="proEvInfoData.full.originalData && proEvInfoData.full.originalData.originalRepairPosition">
                             <span>报修位置</span>
-                            <span v-text="proEvInfoData.full.reviseData.originalRepairPositionName || proEvInfoData.full.reviseData.originalRepairPositionString"></span>
+                            <span v-text="proEvInfoData.full.originalData.originalRepairPositionName"></span>
                         </div>
-    
+                        <!-- 2. proEvInfoData.full.originalData.originalRepairPositionString-->
+                        <div class="box" v-if="proEvInfoData.full.originalData && proEvInfoData.full.originalData.originalRepairPositionString">
+                            <span>报修位置</span>
+                            <span v-text="proEvInfoData.full.originalData.originalRepairPositionString"></span>
+                        </div>
                         <div class="box" v-if="proEvInfoData.full.originalData && proEvInfoData.full.originalData.originalEventDescribe">
                             <span>事件描述</span>
                             <span v-text="proEvInfoData.full.originalData.originalEventDescribe"></span>
@@ -239,7 +245,7 @@
                             <span>照片</span>
                             <div class="pic">
                                 <div v-for="item in proEvInfoData.full.pictures">
-                                    <img :src="item">
+                                    <img :src="'/' + pconst.requestType.pdownload + '/' + psecret.create(item)">
                                 </div>
                             </span>
                         </div>
@@ -294,7 +300,7 @@
                         <img src="../images/nono.png" alt="">
                         <span>查看详情</span>
                     </div>
-                    <div v-if="item.eventState == '1'" @click="evInfoToWorkOrder(item.workOrderId)">
+                    <div v-if="item.eventState == '1'"  @click="evInfoToWorkOrder(item.workOrderId)">
                         <i class="icon">S</i>
                         <span>查看工单</span>
                     </div>
@@ -316,7 +322,9 @@
             <div class="box clear">
                 <span>照片</span>
                 <div class="clear pic">
-                    <div v-for="item in groupEvInfoData.full.pictures"><img :src="item"></div>
+                    <div v-for="item in groupEvInfoData.full.pictures">
+                        <img :src="'/' + pconst.requestType.pdownload + '/' + psecret.create(item)">
+                    </div>
                 </div>
             </div>
 

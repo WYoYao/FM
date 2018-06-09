@@ -1566,7 +1566,6 @@ textarea::-webkit-input-placeholder {
     top: 15px;
     left: 110px;
     z-index: 20;
-    display: none;
 }
 
 .aite-btn, .info-btn, .sel-btn {

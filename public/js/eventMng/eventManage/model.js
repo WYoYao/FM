@@ -84,6 +84,7 @@ v.pushComponent({
             this.eventListProjectId = model.projectId;
             this.EvMngCtrPage.list = 1;
             this.getProEvListData();
+            this.getProEvListLen();
         },
 
 
@@ -141,7 +142,7 @@ v.pushComponent({
             var that = this;
             $("#groupEvAssignProLoading").pshow();
             EMA.OT({keyword:$("#groupEvDeptKey").pval().key},function(data){
-                that.groupEvOrgainTree = JSON.parse(JSON.stringify(data)) || [];
+                that.groupEvOrgainTree = JSON.parse(JSON.stringify(data.data)) || [];
             },function(){
                 that.groupEvOrgainTree = [];
             },function(){
@@ -198,9 +199,10 @@ v.pushComponent({
             var that = this;
             if(type){
                 var param = {
+                    person_id : v.instance.userInfo.person_id,   
                     groupEventId : this.groupEvOpeId,
                     projectIds : $("#evProListTree").psel().map(function(item){
-                        return item.partitionProjectId;
+                        return item.partition_project_id;                        ;
                     }),
                     deptIds : $("#evOrgainTree").psel().map(function(item){
                         return item.obj_id;
@@ -254,9 +256,9 @@ v.pushComponent({
         },
         // 关闭集团事件确认
         closeGroupEvFin : function(type){
-            var that = this;       
+            var that = this;    
             if(type){
-                EMA.CG({groupEventId:that.groupEvOpeId,groupEventState:2},function(data){
+                EMA.CG({person_id:v.instance.userInfo.person_id,groupEventId:that.groupEvOpeId,groupEventState:2+""},function(data){
                     $("#globalnotice").pshow({text: "关闭成功",state: "success"});
                     $("#groupEvCloseW").phide();
                     $("#eventInfoFloat").css("display") === 'block' && that.getGroupEvInfo();
@@ -298,6 +300,7 @@ v.pushComponent({
             var d = t.getDay();
             var h = t.getHours();
             var m = t.getMinutes();
+            $("#createGroupEventText").phideTextTip();
             $("#createGroupEventText").pval("");
             $("#createGroupEventImg").precover();
             $("#createGroupEventStart").psel(0);
@@ -314,13 +317,27 @@ v.pushComponent({
                     if(!$("#createGroupEvFixStart").pverifi()){return};
                 }
                 var param = {
+                    "person_id":v.instance.userInfo.person_id,
                     "groupEventDescribe":$("#createGroupEventText").pval(),     			  //事件描述
-                    "pictures":$("#createGroupEventImg").pval() ? $("#createGroupEventImg").pval() : [],       			  //照片ID数组
-                    "requireTimeType":this.createEv.start,    				  //要求开始时间类型,0-指派后立即开始,1-指定时间
+                    // "pictures":[],       			  //照片ID数组
+                    "requireTimeType":String(this.createEv.start),    				  //要求开始时间类型,0-指派后立即开始,1-指定时间
                 };
+                var files = $("#createGroupEventImg").pval();
+                if(files.length > 0){
+                    var attachments = files.map(function(currentValue){
+                        return {
+                            path: currentValue.url,
+                            fileName: currentValue.name,
+                            toPro: "pictures",
+                            fileSuffix: currentValue.suffix,
+                            fileType: 1
+                        }
+                    });
+                    param.attachments = attachments;
+                }
                 this.createEv.start === 1 ? param.startTime = new Date($("#groupEventStartTime").psel().startTime.replace(/-/g,"/")).format("yyyyMMddhhmmss") : void 0;
-                this.createEv.end === 0 ? param.requireFixedTime = $("createGroupEvFixStart").pval() : 
-                param.requireFixedTime = new Date($("#createGroupEventEndTime").psel().startTime.replace(/-/g,"/")).format("yyyyMMddhhmmss") ;
+                this.createEv.end === 0 ? param.requireFixedTime = $("#createGroupEvFixStart").pval() : 
+                param.endTime = new Date($("#createGroupEventEndTime").psel().startTime.replace(/-/g,"/")).format("yyyyMMddhhmmss") ;
                 $("#eventMngPart").pshow()
                 EMA.NG(param,function(){
                     $("#globalnotice").pshow({text: "新建成功",state: "success"});
@@ -354,6 +371,9 @@ v.pushComponent({
     beforeMount : function(){
         this.getEvProListData();// 获取事件管理首页数据
         this.getGroupEvList(); // 获取集团事件列表数据
+        this.getGroupEvNum(); // 获取集团事件数量
+        // this.proEvInPower.isEdit = true; // 设置为不可编辑状态
+        this.proEvListPower.closeEvent = false;
         $("#eventManageTab").psel(this.EvMngCtrPage.wrap,false);
         // 计算右侧项目格子宽度
         this.$nextTick(function(){

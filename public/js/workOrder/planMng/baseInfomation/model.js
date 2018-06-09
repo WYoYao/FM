@@ -46,19 +46,19 @@ function Cycle(type) {
         "cycle": type,             //周期,y/m/w/d
         "time_week": "1",
         "time_season": "1",
-        "time_month": "1",
-        "time_day": "1",          //周一，1号，“0612”,6月12日
-        "time_hour": "0",        //10时
-        "time_minute": "0"       //15分
+        "time_month": "01",
+        "time_day": "01",          //周一，1号，“0612”,6月12日
+        "time_hour": "00",        //10时
+        "time_minute": "00"       //15分
     };
     this.end_time = {
         "cycle": type,
         "time_week": "1",
         "time_season": "1",
-        "time_month": "1",
-        "time_day": "1",
-        "time_hour": "0",
-        "time_minute": "0"
+        "time_month": "01",
+        "time_day": "01",
+        "time_hour": "00",
+        "time_minute": "00"
     }
 
 }
@@ -165,16 +165,16 @@ function AddWoPlan() {
         "plan_name": "",                //工单计划名称 ,必须
         "order_type": "",               //工单类型编码 ,必须
         "urgency": "低",                  //紧急程度,高、中、低 ,必须
-        "ahead_create_time": 24,           //提前创建工单时间 ,必须
+        "ahead_create_time": "",           //提前创建工单时间 ,必须
         "freq_cycle": "m",                 //计划频率-周期,y/m/w/d ,必须
         "freq_num": 1,                     //计划频率-次数 ,必须
-        "freq_times": [                    //计划频率-时间 ,必须
+        "freq_times": [new Cycle('m')                   //计划频率-时间 ,必须
         ],
-        "instantiated_object_flag": 1,
+        "instantiated_object_flag": "2",
         "freq_limit": {},
         "freq_time_span": new freq_time_span(),
         "plan_freq_type": "1",
-        "plan_start_type": "1",             //计划开始类型,1-发布成功后立即，2-指定时间 ,必须
+        "plan_start_type": "1",             //计划开始类型,1-发布后第二天生效，2-指定时间 ,必须
         "plan_start_time": "",             //计划开始时间,yyyyMMddhhmmss
         "plan_end_type": "1",
         "plan_end_time": "",               //计划结束时间,yyyyMMddhhmmss，空值时代表一直有效
@@ -183,8 +183,8 @@ function AddWoPlan() {
         "published_matters": [],            //工单事项数组,预览后的matters  ,必须      
         "pit_positions": [],
         "robbing_flag": false,
-        "suggest_executor_num": 1,
-
+        "suggest_executor_num": "",
+        "executie_mode": "assign",
     }
 }
 // 常用实体类 End
@@ -198,7 +198,7 @@ var getPowerPoint = function (minute) {
     return {
         time_season: minute * 60 * 24 * 30 * 3, //季
         time_month: minute * 60 * 24 * 30,  //月
-        time_week: minute * 60 * 24 * 7,   //周
+        time_week: minute * 60 * 24 * 1,   //周
         time_day: minute * 60 * 24,    //日
         time_hour: minute * 60,   //时
         time_minute: minute, //分
@@ -258,6 +258,10 @@ Vue.component('baseinfomation', {
     data: function () {
 
         return {
+            ignoreTimeOverlaps: [],
+            // 是否有重复的内容
+            TimeOverlaps: [],
+            // 前后比较的内容
             compare: [],
             //是否是编辑计划
             isedit: false,
@@ -266,19 +270,19 @@ Vue.component('baseinfomation', {
             // 紧急程度枚举
             urgencyType: [{ "name": "高", "code": "高" }, { "name": "中", "code": "中" }, { "name": "低", "code": "低" }],
             // 日 周 月 季 年 枚举
-            freq_cycleType: [{ name: "日", code: "d" }, { name: "周", code: "w" }, { name: "月", code: "m" }, { name: "季", code: "q" }, { name: "年", code: "y" },],
+            freq_cycleType: [{ name: "小时", code: "h" }, { name: "日", code: "d" }, { name: "周", code: "w" }, { name: "月", code: "m" }, { name: "季", code: "q" }, { name: "年", code: "y" },],
             // 精确设置
-            sendTypes: [{ name: "精确设置", code: "1" }, { name: "模糊设置", code: "2" }, { name: "相对设置", code: "3" }],
+            sendTypesEnumAll: [{ name: "精确设置", code: "1" }, { name: "模糊设置", code: "2" }, { name: "相对设置", code: "3" }],
             // 计划开始类型
-            plan_start_type: [{ name: "发布成功后立即", code: "1" }, { name: "指定时间", code: "2" }],
+            plan_start_type: [{ name: "发布成功后第二天生效", code: "1" }, { name: "自定义", code: "2" }],
             // 计划结束时间
-            plan_end_time_type: [{ name: "一直有效", code: "1" }, { name: "指定时间", code: "2" }],
+            plan_end_time_type: [{ name: "一直有效", code: "1" }, { name: "自定义", code: "2" }],
             // weekType 每周所有枚举
             weekType: [{ name: "周一", code: 1 }, { name: "周二", code: 2 }, { name: "周三", code: 3 }, { name: "周四", code: 4 }, { name: "周五", code: 5 }, { name: "周六", code: 6 }, { name: "周日", code: 7 },],
             // 季度枚举
             seasonType: [{ name: "第一个月", code: 1 }, { name: "第二个月", code: 2 }, { name: "第三个月", code: 3 },],
             // 是否全部实例化对象枚举
-            instantiatedTypes: [{ name: "是", code: 1 }, { name: "否", code: 0 }],
+            instantiatedTypes: [{ name: "是", code: '1' }, { name: "否", code: '0' }],
             // 添加计划所用实例 AddWoPlan
             addWoPlan: new AddWoPlan(),
             // addWoPlan: {
@@ -297,6 +301,7 @@ Vue.component('baseinfomation', {
             WoTypeList: [],
             // 查询岗位
             queryPersonListByPositionIdsArgu: {},
+            is2to1: false,
         }
     },
     // 是否是引用计划  项目中引用计划 部分基本信息不可编辑
@@ -357,8 +362,8 @@ Vue.component('baseinfomation', {
 
                     // 循环给对应的Dom 赋值
                     _that.addWoPlan.freq_times.forEach(function (item, index) {
-                        startTimes.eq(index).psel({ y: 2018, M: item.start_time.time_day, d: item.start_time.time_day, h: item.start_time.time_hour, m: item.start_time.time_minute });
-                        endTimes.eq(index).psel({ y: 2018, M: item.end_time.time_day, d: item.end_time.time_day, h: item.end_time.time_hour, m: item.end_time.time_minute });
+                        startTimes.eq(index).psel({ y: 2018, M: item.start_time.time_month, d: item.start_time.time_day, h: item.start_time.time_hour, m: item.start_time.time_minute });
+                        endTimes.eq(index).psel({ y: 2018, M: item.end_time.time_month, d: item.end_time.time_day, h: item.end_time.time_hour, m: item.end_time.time_minute });
 
                         // 周和季度默认选中下拉框
                         if (item.start_time.cycle == "q") {
@@ -379,6 +384,7 @@ Vue.component('baseinfomation', {
         com: function (item) {
 
             function zero(str) {
+                if (!str) return "00";
                 return ('00' + str.toString()).slice(-2);
             }
 
@@ -408,7 +414,7 @@ Vue.component('baseinfomation', {
                     break;
             }
 
-            return +start > +end;
+            return +start >= +end;
         },
         // 数据验证
         canUse: function () {
@@ -450,11 +456,33 @@ Vue.component('baseinfomation', {
             // 验证精确设置
             if (_that.addWoPlan.plan_freq_type == 1) {
 
-                if (_that.compare.filter(function (bool) {
+                // 比较开始时间和结束的时间的大小
+                _that.compare = _that.addWoPlan.freq_times.map(function (item) {
+                    return _that.com(item);
+                });
+
+                _that.TimeOverlaps = new Tool().createtimeOverlap('start', 'end')(
+                    _that.addWoPlan.freq_times
+                        .map(function (item) {
+                            return item.Cycle2Item();
+                        }).map(function (item) {
+                            return {
+                                start: + (item.start_time.time_day + item.start_time.time_hour + item.start_time.time_minute),
+                                end: + (item.end_time.time_day + item.end_time.time_hour + item.end_time.time_minute),
+                            }
+                        })
+                );
+                // 将忽略列表上面的内容附加到对应覆盖选项上面
+                _that.ignoreTimeOverlaps.forEach(function (bool, index) {
+                    _that.TimeOverlaps[index].isOverlap = _that.TimeOverlaps[index].isOverlap ? !bool : false;
+                })
+
+                // 有不同次数的时间已经重复了
+                if (_.filter(_that.TimeOverlaps, { isOverlap: true }).length || _that.compare.filter(function (bool) {
                     return bool
-                }).length) {
-                    return;
-                }
+                }).length) return;
+
+
             } else if (_that.addWoPlan.plan_freq_type == 2) {
                 if (!$("#num_id").pverifi()) {
                     return;
@@ -480,7 +508,7 @@ Vue.component('baseinfomation', {
                 for (var index = 0; index < Start.length; index++) {
                     var start = Start[index];
 
-                    for (let i = 0; i < End.length; i++) {
+                    for (var i = 0; i < End.length; i++) {
                         var end = End[i];
 
                         if (i == index) continue;
@@ -496,7 +524,7 @@ Vue.component('baseinfomation', {
 
                         if (!((start - end) >= compare) && ((start - end) > 0)) {
                             $("#globalnotice").pshow({
-                                text: '第' + ++i + '次开始时间与第' + ++index + '次结束时间间隔小于' + _that.limit.num + (_.find(_that.freq_cycleType, { code: _that.limit.unit }) || {}).name,
+                                text: '第' + ++i + '次结束时间与第' + ++index + '次开始时间间隔小于' + _that.limit.num + (_.find(_that.freq_cycleType, { code: _that.limit.unit }) || {}).name,
                                 state: "failure"
                             });
                             return;
@@ -507,7 +535,7 @@ Vue.component('baseinfomation', {
             }
 
             if (_that.isterm && _that.addWoPlan.plan_start_type == 2) {
-                if (!_.isString(_that.addWoPlan.plan_start_time) || !_that.addWoPlan.plan_start_time.length || !_.isString(_that.addWoPlan.plan_end_time) || !_that.addWoPlan.plan_end_time.length) {
+                if (!_.isString(_that.addWoPlan.plan_start_time) || !_that.addWoPlan.plan_start_time.length || !_.isString(_that.addWoPlan.plan_end_time) || (_that.addWoPlan.plan_end_time != '' ? !_that.addWoPlan.plan_end_time.length : false)) {
                     $("#globalnotice").pshow({
                         text: '计划生效时间不能为空',
                         state: "failure"
@@ -520,8 +548,6 @@ Vue.component('baseinfomation', {
             if (_that.addWoPlan.plan_freq_type == "3" && _that.isterm) {
 
             }
-
-
 
             return true;
         },
@@ -536,51 +562,51 @@ Vue.component('baseinfomation', {
             })
 
             //   相对设置转换成为精确设置
-            if (addWoPlan.plan_freq_type == "3" && _that.isterm) {
+            // if (addWoPlan.plan_freq_type == "3" && _that.isterm) {
 
-                // 转换生成对应的 精确时间点
-                var convertFn = function (addWoPlan) {
-                    // 周期设置为年
-                    addWoPlan.freq_cycle = "y";
+            //     // 转换生成对应的 精确时间点
+            //     var convertFn = function (addWoPlan) {
+            //         // 周期设置为年
+            //         addWoPlan.freq_cycle = "y";
 
-                    var dayTime = 24 * 60 * 60 * 1000;
+            //         var dayTime = 24 * 60 * 60 * 1000;
 
-                    // 时间范围
-                    var range = Math.floor(
-                        (yyyyMMdd2Date(addWoPlan.plan_end_time) - yyyyMMdd2Date(addWoPlan.plan_start_time)) / dayTime / addWoPlan.freq_time_span.num
-                    );
+            //         // 时间范围
+            //         var range = Math.floor(
+            //             (yyyyMMdd2Date(addWoPlan.plan_end_time) - yyyyMMdd2Date(addWoPlan.plan_start_time)) / dayTime / addWoPlan.freq_time_span.num
+            //         );
 
-                    var startTime = addWoPlan.plan_start_time,
-                        endTime = addWoPlan.plan_end_time,
-                        num = parseInt(addWoPlan.freq_time_span.num),
-                        hour = parseInt(addWoPlan.freq_time_span.time_hour),
-                        minute = parseInt(addWoPlan.freq_time_span.time_minute),
-                        continuer = parseInt(addWoPlan.freq_time_span.continue);
+            //         var startTime = addWoPlan.plan_start_time,
+            //             endTime = addWoPlan.plan_end_time,
+            //             num = parseInt(addWoPlan.freq_time_span.num),
+            //             hour = parseInt(addWoPlan.freq_time_span.time_hour),
+            //             minute = parseInt(addWoPlan.freq_time_span.time_minute),
+            //             continuer = parseInt(addWoPlan.freq_time_span.continue);
 
-                    //  生成对应的精确数组
-                    addWoPlan.freq_times = _.range(range).map(function (index) {
+            //         //  生成对应的精确数组
+            //         addWoPlan.freq_times = _.range(range).map(function (index) {
 
-                        return {
-                            start_time: {
-                                cycle: "y",
-                                time_day: addDate(yyyyMMdd2Date(startTime), index * num).format('yyyyMMdd'),          //y("0612"-6月12日)，q("312"-第三个月12号，)，m("01"-1号)，w("1"-1号，周一)，d("")
-                                time_hour: hour,                    //10时
-                                time_minute: minute,                //15分
-                            },
-                            end_time: {
-                                cycle: "y",
-                                time_day: addDate(yyyyMMdd2Date(startTime), index * num, hour + continuer).format('yyyyMMdd'),          //y("0612"-6月12日)，q("312"-第三个月12号，)，m("01"-1号)，w("1"-1号，周一)，d("")
-                                time_hour: addDate(yyyyMMdd2Date(startTime), index * num, hour + continuer).getHours().toString(),        //10时
-                                time_minute: minute,                //15分
-                            }
-                        }
-                    })
+            //             return {
+            //                 start_time: {
+            //                     cycle: "y",
+            //                     time_day: addDate(yyyyMMdd2Date(startTime), index * num).format('yyyyMMdd'),          //y("0612"-6月12日)，q("312"-第三个月12号，)，m("01"-1号)，w("1"-1号，周一)，d("")
+            //                     time_hour: hour,                    //10时
+            //                     time_minute: minute,                //15分
+            //                 },
+            //                 end_time: {
+            //                     cycle: "y",
+            //                     time_day: addDate(yyyyMMdd2Date(startTime), index * num, hour + continuer).format('yyyyMMdd'),          //y("0612"-6月12日)，q("312"-第三个月12号，)，m("01"-1号)，w("1"-1号，周一)，d("")
+            //                     time_hour: addDate(yyyyMMdd2Date(startTime), index * num, hour + continuer).getHours().toString(),        //10时
+            //                     time_minute: minute,                //15分
+            //                 }
+            //             }
+            //         })
 
-                    return addWoPlan;
-                };
+            //         return addWoPlan;
+            //     };
 
-                addWoPlan = convertFn(addWoPlan);
-            }
+            //     addWoPlan = convertFn(addWoPlan);
+            // }
 
             return addWoPlan;
         },
@@ -628,6 +654,69 @@ Vue.component('baseinfomation', {
             this.addWoPlan.pit_positions[index].pit_position_ask_names = _.map(list, 'name');
             this.addWoPlan.pit_positions[index].pit_position_asks = _.map(list, 'code');
         },
+        handlerClick: function (index) {
+            this.ignoreTimeOverlaps = this.ignoreTimeOverlaps.map(function (bool, i) {
+                return index == i ? true : bool;
+            })
+        },
+        fillpit_positions: function (robbing_flag, suggest_executor_num) {
+
+            var fn = arguments.callee;
+
+            suggest_executor_num = +suggest_executor_num;
+
+            // 如果是抢单的话的
+            if (robbing_flag) {
+
+                if (_.isNumber(suggest_executor_num) && suggest_executor_num > 0 && suggest_executor_num < 10) {
+                    this.addWoPlan.suggest_executor_num = this.comExecutreNumber(suggest_executor_num);
+
+                    this.addWoPlan.pit_positions = fill(this.addWoPlan.pit_positions, suggest_executor_num, pit_positions)
+                } else {
+                    // var input = $("#peoplenumber").find("input");
+                    // // 如果拥有焦点事件的情况下
+                    // if (document.hasFocus() && document.activeElement === input[0]) {
+                    //     input.one("blur", fn.bind(this, robbing_flag, suggest_executor_num));
+                    // } else {
+                    //     $("#peoplenumber").pshowTextTip("抢单状态下建议执行人数只允许输入个位数");
+                    // }
+
+                    this.addWoPlan.pit_positions = [];
+                }
+
+                /**
+                 * 填充数组到指定长度
+                 * @param {需要填充的数组} arr 
+                 * @param {需要填充到的长度} len 
+                 * @param {用于填充的对象或生成对象的方法} createObj 
+                 */
+                function fill(arr, len, createObj) {
+
+                    var l = arr.length;
+                    // 长度相同直接返回
+                    if (l == len) return arr;
+                    // 本身更长直接截取
+                    if (l > len) return arr.slice(0, len);
+                    // 需要填充
+                    if (l < len) {
+                        // 返回对应的填充对象
+                        return arr.concat(_.range(len - l).map(function () {
+                            return _.isFunction(createObj) ? createObj() : createObj;
+                        }))
+                    }
+
+                    return arr;
+                }
+            } else {
+                // 如果不是抢单的情况下 重置判断接口
+                $("#peoplenumber").precover();
+                // if ($("#peoplenumber").pverifi()) {
+                //     $("#peoplenumber").precover();
+                // }
+
+                this.addWoPlan.pit_positions = [];
+            }
+        }
     },
     computed: {
         // compare: function () {
@@ -636,6 +725,11 @@ Vue.component('baseinfomation', {
         //         return _that.com(item);
         //     })
         // },
+        sendTypes: function () {
+            return this.isterm ? this.sendTypesEnumAll.filter(function (item) {
+                return item.code != 2;
+            }) : this.sendTypesEnumAll;
+        },
         cycleTypes: function () {
             var index = _.findIndex(this.freq_cycleType, { code: this.addWoPlan.freq_cycle })
             return this.freq_cycleType.slice(0, index);
@@ -654,74 +748,42 @@ Vue.component('baseinfomation', {
         }
     },
     watch: {
-        "addWoPlan.suggest_executor_num": function (num, old) {
-            // 如果是抢单的话的
-            if (this.addWoPlan.robbing_flag) {
-                this.addWoPlan.suggest_executor_num = this.comExecutreNumber(this.addWoPlan.suggest_executor_num);
+        // 监听时间重叠数组 生成对应忽略列表
+        "TimeOverlaps": function (list) {
+            this.ignoreTimeOverlaps = new Tool().fill(this.ignoreTimeOverlaps, list.length, false);
+        },
+        "addWoPlan.plan_end_time": function (num, old) {
+            if (_.isString(num) && num.length) {
 
-                this.addWoPlan.pit_positions = fill(this.addWoPlan.pit_positions, num, pit_positions)
+                var date = yyyyMMdd2Date(num);
 
-                /**
-                 * 填充数组到指定长度
-                 * @param {需要填充的数组} arr 
-                 * @param {需要填充到的长度} len 
-                 * @param {用于填充的对象或生成对象的方法} createObj 
-                 */
-                function fill(arr, len, createObj) {
-
-                    var l = arr.length;
-                    // 长度相同直接返回
-                    if (l == len) return arr;
-                    // 本身更长直接截取
-                    if (l > len) return arr.slice(0, len);
-                    // 需要填充
-                    if (l < len) {
-                        // 返回对应的填充对象
-                        return arr.concat(_.range(len - l).map(function () {
-                            return _.isFunction(createObj) ? createObj() : createObj;
-                        }))
-                    }
-
-                    return arr;
-                }
-            } else {
-                this.addWoPlan.pit_positions = [];
+                $("#plan_endTime").psel({
+                    y: date.getFullYear(),
+                    M: date.getMonth() + 1,
+                    d: date.getDate()
+                })
             }
         },
-        "addWoPlan.robbing_flag": function (newValue, oldValue) {
-            if (newValue) {
-                this.addWoPlan.suggest_executor_num = this.comExecutreNumber(this.addWoPlan.suggest_executor_num);
-                // 生成对应的坑位
-                this.addWoPlan.pit_positions = fill(this.addWoPlan.pit_positions, this.addWoPlan.suggest_executor_num, pit_positions)
+        "addWoPlan.plan_start_time": function (num, old) {
 
-                /**
-                 * 填充数组到指定长度
-                 * @param {需要填充的数组} arr 
-                 * @param {需要填充到的长度} len 
-                 * @param {用于填充的对象或生成对象的方法} createObj 
-                 */
-                function fill(arr, len, createObj) {
+            if (_.isString(num) && num.length) {
 
-                    var l = arr.length;
-                    // 长度相同直接返回
-                    if (l == len) return arr;
-                    // 本身更长直接截取
-                    if (l > len) return arr.slice(0, len);
-                    // 需要填充
-                    if (l < len) {
-                        // 返回对应的填充对象
-                        return arr.concat(_.range(len - l).map(function () {
-                            return _.isFunction(createObj) ? createObj() : createObj;
-                        }))
-                    }
+                var date = yyyyMMdd2Date(num);
 
-                    return arr;
-                }
-            } else {
-                this.addWoPlan.pit_positions = [];
+                $("#plan_start_time_id").psel({
+                    y: date.getFullYear(),
+                    M: date.getMonth() + 1,
+                    d: date.getDate()
+                })
             }
+        },
+        "addWoPlan.suggest_executor_num": function (num, old) {
 
-            // this.addWoPlan.order_state = newValue ? 2 : 5
+            this.fillpit_positions(this.addWoPlan.robbing_flag, num);
+        },
+        "addWoPlan.robbing_flag": function (newValue, oldValue) {
+
+            this.fillpit_positions(newValue, this.addWoPlan.suggest_executor_num);
         },
         "addWoPlan.plan_start_type": function (value, old) {
             var _that = this;
@@ -760,7 +822,7 @@ Vue.component('baseinfomation', {
 
                 _that.addWoPlan.freq_times = [];
             } else if (value == "3") {
-
+                _that.addWoPlan.plan_end_time = new Date().format("yyyy1231000000");
                 _that.addWoPlan.freq_time_span = new freq_time_span();
             }
         },
@@ -780,10 +842,10 @@ Vue.component('baseinfomation', {
         },
         "addWoPlan.freq_times": {
             handler: function (item) {
-                var _that = this;
-                _that.compare = _that.addWoPlan.freq_times.map(function (item) {
-                    return _that.com(item);
-                })
+                // var _that = this;
+                // _that.compare = _that.addWoPlan.freq_times.map(function (item) {
+                //     return _that.com(item);
+                // })
             },
             deep: true
         },
@@ -816,7 +878,7 @@ Vue.component('baseinfomation', {
         // // 是否项目版
         // if (_.isBoolean(_that.isterm)) _that.isterm = _that.isterm;
         // 加载工单状态类型
-        if(loadding)loadding.set("WorkOrderTypePromise")
+        if (loadding) loadding.set("WorkOrderTypePromise")
         var WorkOrderTypePromise = controller.queryWoTypeListByPersonIdControlCode().then(function (res) {
 
             res.forEach(function (item) {
@@ -831,7 +893,7 @@ Vue.component('baseinfomation', {
 
             _that.WorkOrderType = [];
         }).finally(function () {
-            if(loadding)loadding.remove("WorkOrderTypePromise");
+            if (loadding) loadding.remove("WorkOrderTypePromise");
         })
 
         //  选项加载完毕 附加默认值
@@ -851,6 +913,9 @@ Vue.component('baseinfomation', {
 
                     //  绑定基础信息
                     _that.addWoPlan = Object.assign(new AddWoPlan(), addwoplan())
+                    // 判断生成 结束类型
+                    _that.addWoPlan.plan_end_type = (_.isString(_that.addWoPlan.plan_end_time) && _that.addWoPlan.plan_end_time.length) ? '2' : '1';
+
                     _that.$nextTick(resolve);
 
                 }).then(function () {
@@ -862,6 +927,14 @@ Vue.component('baseinfomation', {
 
                     _that.addWoPlan.freq_num = addwoplan().freq_num;
                     _that.addWoPlan.freq_cycle = addwoplan().freq_cycle;
+
+                    if (_that.addWoPlan.plan_start_type == 2) {
+                        _that.addWoPlan.plan_start_time = addwoplan().plan_start_time;
+                    }
+
+                    if (_that.addWoPlan.plan_end_type == 2) {
+                        _that.addWoPlan.plan_end_time = addwoplan().plan_end_time;
+                    }
 
                     return new Promise(function (resolve) {
                         _that.$nextTick(resolve)
@@ -891,8 +964,16 @@ Vue.component('baseinfomation', {
                         if (_that.isterm) {
                             // 模糊設置修改为精确设置
                             _that.addWoPlan.plan_freq_type = "1";
+                            _that.is2to1 = true;
                             // 生成对应的精确设置
-                            _that.addfreq_times(_that.addWoPlan.freq_cycle, _that.addWoPlan.freq_num, _that.addWoPlan.plan_freq_type);
+                            _that.$nextTick(function () {
+                                _that.addWoPlan.freq_cycle = addwoplan().freq_cycle;
+                                _that.$nextTick(function () {
+                                    _that.addWoPlan.freq_num = addwoplan().freq_num;
+                                    _that.addfreq_times(_that.addWoPlan.freq_cycle, _that.addWoPlan.freq_num, _that.addWoPlan.plan_freq_type);
+                                })
+                                _that.addfreq_times(_that.addWoPlan.freq_cycle, _that.addWoPlan.freq_num, _that.addWoPlan.plan_freq_type);
+                            })
 
                             _that.limit = _that.addWoPlan.freq_limit;
 
@@ -911,7 +992,10 @@ Vue.component('baseinfomation', {
             } else {
 
                 // 新建情况
-                _that.addWoPlan = new AddWoPlan()
+                _that.addWoPlan = new AddWoPlan();
+                _that.$nextTick(function () {
+                    _that.bind_fres_times();
+                })
             }
         })
 
@@ -1012,6 +1096,8 @@ Vue.component('baseinfomation', {
                                     // _that.addWoPlan.do_after_start_time = info.arrival_time_allow_execute;
                                     // _that.addWoPlan.limit_domain = info.limit_domain;
 
+                                    _that.addWoPlan.executie_mode = info.executie_mode;
+
                                     //保存 查询岗位的参数
                                     _that.queryPersonListByPositionIdsArgu.position_ids = _.map(info.next_route, 'position_id');
                                     _that.queryPersonListByPositionIdsArgu.filter_scheduling = false;
@@ -1053,9 +1139,9 @@ Vue.component('baseinfomation', {
                             freq_num: {
                                 freq_num: "code",
                             },
-                            // plan_start_type: {
-                            //     plan_start_type: "code",
-                            // },
+                            plan_start_type: {
+                                plan_start_type: "code",
+                            },
                             plan_end_type: {
                                 plan_end_type: "code",
                             },

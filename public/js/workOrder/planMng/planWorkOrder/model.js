@@ -18,7 +18,7 @@ v.pushComponent({
 
     // 获取计划工单
     PMA.PWO({plan_id:this.cache.orderPlanId,order_state:$("#workOrderStateSel").psel().id},function(data){
-      that.planWorkOrderData = JSON.parse(JSON.stringify(data));
+      that.planWorkOrderData = JSON.parse(JSON.stringify(data || []));
     },function(err){
       that.planWorkOrderData = [];
     },function(){

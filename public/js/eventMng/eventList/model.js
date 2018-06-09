@@ -12,8 +12,12 @@ v.pushComponent({
         selEventRate : function(){
             this.clearProEvListSort();
             this.eventRate = Number($("#eventListTab").psel());
-            this.proEvListPower.isELTHasPage = this.eventRate === 2 ? true : false;
+            // this.proEvListPower.isELTHasPage = this.eventRate === 2 ? true : false;
+            //开启分页
+            this.proEvListPower.isELTHasPage = true;
+            
             this.getProEvListLenAndData();
+            $("#closeProEventCombo").hide();
         },
     },
     filters: {
@@ -23,15 +27,14 @@ v.pushComponent({
         this.proEvListPower = {
             closeEvent:true,      // 关闭事件权限
             isCanSelState:false,   // 是否能够选择事件状态
-            isELTHasPage:false,   // 是否分页
+            isELTHasPage:true,   // 是否分页
         };
-        this.eventListProjectId = "abs";
         this.$nextTick(function(){
             $("#eventListTab").psel(0);
         })
         // here
         // 获取项目Id后存入eventListProjectId
-        this.eventListProjectId = "Pj1505000004";
+        this.eventListProjectId = v.instance.project_id;
     },
     watch: {
 

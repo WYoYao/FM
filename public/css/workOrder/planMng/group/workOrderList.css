@@ -98,7 +98,8 @@ body {
           height: 29px;
           line-height: 29px;
           width: 100%;
-          color: #000000; }
+          color: #000000;
+          border-bottom: 1px solid #D9E2E8; }
         #app .work_order_list .main .content .contenter .t_body {
           height: calc(100% - 80px);
           width: 100%;
@@ -108,9 +109,11 @@ body {
           border-bottom: 1px solid #d9e2e8; }
           #app .work_order_list .main .content .contenter .t_body .info {
             cursor: pointer; }
+            #app .work_order_list .main .content .contenter .t_body .info:nth-of-type(odd) {
+              background: #F4F6F9; }
             #app .work_order_list .main .content .contenter .t_body .info .item {
               color: #333333;
-              line-height: 30px; }
+              line-height: 36px; }
               #app .work_order_list .main .content .contenter .t_body .info .item .ide {
                 cursor: pointer; }
           #app .work_order_list .main .content .contenter .t_body > :nth-child(2n+1) {

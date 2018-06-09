@@ -2,7 +2,7 @@
 
 .hashtag-bubble.click-aite{
     position: absolute;
-    top: 20px;
+    top: 0;
     left: 0;
     z-index: 10;
 }
@@ -83,6 +83,12 @@
                         overflow: hidden;
                         text-overflow: ellipsis;
                         white-space: nowrap;
+
+                        .sr{
+                           float: left;
+                           width: 310px;
+                            cursor: pointer; 
+                        }
                     }
                 }
 

@@ -95,11 +95,14 @@
 .see_planDetail_grid_top_tit_con{
     padding-left: 10px;
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     margin-top: 14px;
 }
-.see_planDetail_grid_top_tit_con1 >div:nth-child(1){
-    width: 330px;
+.see_planDetail_grid_top_tit_con1 >div{
+    width: calc(100% / 6);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .see_planDetail_grid_top_tit_con2 >div:nth-child(1){
     width: 330px;

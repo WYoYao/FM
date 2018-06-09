@@ -1,93 +1,4 @@
-"use strict";
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * 创建Controller 的请求类可以添加
- */
-var Controller = function () {
-    function Controller(arr, user) {
-        _classCallCheck(this, Controller);
-
-        // 保存每次提交的时候需要的参数
-        this.user = _.isPlainObject(user) ? user : {};
-
-        return this.push.call(this, arr);
-    }
-
-    Controller.prototype.push = function push(arr) {
-        var _this = this;
-
-        if (!_.isArray(arr)) throw new TypeError('Arugments must be an Array');
-
-        var _loop = function _loop() {
-            if (_isArray) {
-                if (_i >= _iterator.length) return "break";
-                _ref = _iterator[_i++];
-            } else {
-                _i = _iterator.next();
-                if (_i.done) return "break";
-                _ref = _i.value;
-            }
-
-            var _ref2 = _ref,
-                name = _ref2.name,
-                url = _ref2.url,
-                argu = _ref2.argu,
-                cb = _ref2.cb,
-                convert = _ref2.convert,
-                configServiceName = _ref2.configServiceName;
-
-
-            if (_.has(_this, name)) {
-                console.log(name + "\u4E0E\u73B0\u6709\u7684\u5C5E\u6027\u91CD\u590D,\u5DF2\u5408\u5E76\u3002");
-            };
-
-            _this[name] = function () {
-                var argus = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-
-                if (false) {
-
-                    // 调用假数据方法进行查询
-                    return new Promise(function (resolve, reject) {
-                        setTimeout(function () {
-
-                            resolve(_.isFunction(convert) ? convert(cb(argus)) : cb(argus));
-                        }, _.random(1000, 2000));
-                    });
-                } else {
-
-                    // 真实发请求
-                    return new Promise(function (resolve, rejcet) {
-                        pajax.post({
-                            url: url,
-                            data: Object.assign({}, argu, argus, _this.user),
-                            configServiceName: configServiceName,
-                            success: function success(res) {
-                                res = _.has(res, "data") ? res.data : res;
-                                resolve(_.isFunction(convert) ? convert(res) : res);
-                            },
-                            error: rejcet
-                        });
-                    });
-                }
-            };
-        };
-
-        for (var _iterator = arr, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
-            var _ref;
-
-            var _ret = _loop();
-
-            if (_ret === "break") break;
-        }
-        return this;
-    };
-
-    return Controller;
-}();
-
+'use strict'; function _classCallCheck(a, b) { if (!(a instanceof b)) throw new TypeError('Cannot call a class as a function') } var Tool = function () { function a() { _classCallCheck(this, a) } return a.prototype.createtimeOverlap = function createtimeOverlap(b, c) { var d = function e() { _classCallCheck(this, e), this.OverlapIndexs = new Set, this.isOverlap = !1 }; return function (e) { if (!Array.isArray(e)) throw new TypeError('argu must be an Array'); var f = [], g = [], h = e.map(function (t) { return Number.isSafeInteger(t[b]) && f.push(t[b]), Number.isSafeInteger(t[c]) && g.push(t[c]), { start: t[b], end: t[c] } }); if (f.length < e.length) throw new TypeError(b + ' must be SafeInteger'); if (g.length < e.length) throw new TypeError(c + ' must be SafeInteger'); for (var j = _.range(h.length).map(function () { return new d }), k = e.entries(), m = Array.isArray(k), n = 0, k = m ? k : k[Symbol.iterator](); ;) { var o; if (m) { if (n >= k.length) break; o = k[n++] } else { if (n = k.next(), n.done) break; o = n.value } for (var _ref2 = o, t = _ref2[0], _ref2$ = _ref2[1], _ref2$$start = _ref2$.start, u = void 0 === _ref2$$start ? 0 : _ref2$$start, _ref2$$end = _ref2$.end, v = void 0 === _ref2$$end ? 0 : _ref2$$end, p = e.slice(t + 1).entries(), q = Array.isArray(p), r = 0, p = q ? p : p[Symbol.iterator](); ;) { var s; if (q) { if (r >= p.length) break; s = p[r++] } else { if (r = p.next(), r.done) break; s = r.value } var _ref4 = s, w = _ref4[0], _ref4$ = _ref4[1], x = _ref4$.start, y = _ref4$.end; (x <= u && u <= y || x <= v && v <= y) && (j[t].OverlapIndexs.add(t + 1 + w), j[t + 1 + w].OverlapIndexs.add(t), j[t].isOverlap = !0, j[t + 1 + w].isOverlap = !0) } } return j } }, a.prototype.fill = function fill(b, c, d) { var e = b.length, f = [].concat(b); return e == c ? f : e > c ? f.slice(0, c) : e < c ? f.concat(_.range(c - e).map(function () { return _.isFunction(d) ? d() : d })) : f }, a }(), Controller = function () { function a(b, c) { return _classCallCheck(this, a), this.user = _.isPlainObject(c) ? c : {}, this.push.call(this, b) } return a.prototype.push = function push(b) { var g = this; if (!_.isArray(b)) throw new TypeError('Arugments must be an Array'); for (var _loop = function () { if (d) { if (e >= c.length) return 'break'; f = c[e++] } else { if (e = c.next(), e.done) return 'break'; f = e.value } var _ref6 = f, h = _ref6.name, j = _ref6.url, k = _ref6.argu, m = _ref6.cb, n = _ref6.convert, o = _ref6.configServiceName; _.has(g, h) && console.log(h + '\u4E0E\u73B0\u6709\u7684\u5C5E\u6027\u91CD\u590D,\u5DF2\u5408\u5E76\u3002'), g[h] = function () { var p = 0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : {}; return new Promise(function (q, r) { pajax.post({ url: j, data: Object.assign({}, k, p, g.user), configServiceName: o, success: function success(s) { s = _.has(s, 'data') ? s.data : s, q(_.isFunction(n) ? n(s) : s) }, error: r }) }) } }, c = b, d = Array.isArray(c), e = 0, c = d ? c : c[Symbol.iterator](); ;) { var f, _ret = _loop(); if ('break' === _ret) break } return this }, a }();
 
 //  开发环境下绑定的用户信息
 var USER = {
@@ -128,6 +39,11 @@ String.prototype.pisdayhour = function () {
 String.prototype.ZInteger = function () {
 
     return (this.pisPositiveInt() || +this == 0)
+}
+
+String.prototype.Digits = function () {
+
+    return this.ZInteger && this.length == 1;
 }
 
 /**
@@ -462,8 +378,15 @@ v.pushComponent({
         },
         project_id: "",
         userInfo: {},
+        pageSize:10,
     },
     methods: {
+        doornotdo : function(ev,a){
+            debugger
+            if(a){
+                ev.stopPropagation();
+            }
+        },
         // 解决日历控件和下拉框控件下拉框隐藏问题
         fakerClick: function (event) {
             if (event) {
@@ -617,7 +540,7 @@ v.pushComponent({
 $(function () {
 
     v.createVue();
-
+    $("#gloadLoadng").phide();
     var url = window.location.href;
     var reg = /pt\=(.+)&?/;
     if (reg.test(url)) {

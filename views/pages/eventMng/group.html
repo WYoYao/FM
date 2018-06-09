@@ -18,22 +18,29 @@
     <link rel="stylesheet" href="/css/workOrder/planMng/term/public.css">
     <script src="./js/workOrder/planMng/term/controller.js"></script>
     <!-- 工单详情End -->
+    <link rel="stylesheet" href="/css/workOrder/planMng/term/workOrderDetail.css">
 
+    
     <ploading-part id='globalloading' text="加载中..."></ploading-part>
+
+    
 
     <div id="app">
 
-        <!-- 关闭事件弹窗 -->
-        <% include ./closeEvent.html %>
+        <div class="content">
+                <!-- 关闭事件弹窗 -->
+            <% include ./closeEvent.html %>
 
             <!-- 工单详情 -->
             <% include ./workOrderInfo.html %>
 
-                <!-- 项目事件详情弹窗 -->
-                <% include ./eventInfo.html %>
+            <!-- 项目事件详情弹窗 -->
+            <% include ./eventInfo.html %>
 
-                    <!-- 事件管理 -->
-                    <% include ./eventManage.html %>
+            <!-- 事件管理 -->
+            <% include ./eventManage.html %>
+            
+        </div>
 
     </div>
 

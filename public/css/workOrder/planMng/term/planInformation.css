@@ -30,11 +30,13 @@
         border-left: 1px solid #d9e2e8;
         margin-left: 20px;
         position: relative; }
-        #planInformation > .head .operate > div > img {
-          background: white;
+        #planInformation > .head .operate > div > .icon {
+          font-size: 16px;
           position: absolute;
+          background: #fff;
           width: 16px;
-          height: 16px; }
+          height: 16px;
+          z-index: 1; }
       #planInformation > .head .operate > div:nth-last-of-type(1) {
         border-left: none; }
       #planInformation > .head .operate div {

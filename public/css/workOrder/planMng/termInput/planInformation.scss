@@ -33,11 +33,19 @@
                 border-left:1px solid #d9e2e8;
                 margin-left: 20px;
                 position: relative;
-                &>img{
-                    background: white;
+                // &>img{
+                //     background: white;
+                //     position: absolute;
+                //     width: 16px;
+                //     height: 16px;
+                // }
+                &>.icon{
+                    font-size: 16px;
                     position: absolute;
+                    background: #fff;
                     width: 16px;
                     height: 16px;
+                    z-index: 1;
                 }
             }
             &>div:nth-last-of-type(1){

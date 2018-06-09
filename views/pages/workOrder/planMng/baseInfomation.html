@@ -11,7 +11,7 @@
             <em v-if="isquote" v-text="addWoPlan.plan_name"></em>
         </h4>
         <div id="plan_name" v-if="!isquote">
-            <ptext-text id="'plan_name_text'" bind="true" value="addWoPlan.plan_name">
+            <ptext-text id="'plan_name_text'" placeholder="'请输入计划名称'" bind="true" value="addWoPlan.plan_name">
                 <verify errtip="计划名称不能为空" verifytype="space"></verify>
                 <verify errtip="集团计划名称不可超过50个字" length="50" verifytype="length"></verify>
             </ptext-text>
@@ -25,8 +25,7 @@
         </h4>
         <div v-if="!isquote">
             <pcombobox-normal bind="true" id="'cbx_id_order_type'" sel="cbx_sel_order_type">
-                <!-- <header placeholder="(_.find(WorkOrderType,{code:3}) || {}).name"></header> -->
-                <header placeholder="(_.find(WorkOrderType,{plan_id:addWoPlan.order_type}) || {}).plan_name"></header>
+                <header placeholder="(_.find(WorkOrderType,{plan_id:addWoPlan.order_type}) || {plan_name:'请选择工单类型'}).plan_name"></header>
                 <item datasource="WorkOrderType" text="plan_name"></item>
                 <verify errtip="工单类型不能为空" verifytype="space"></verify>
             </pcombobox-normal>
@@ -53,10 +52,9 @@
             <em v-if="isquote" v-text="addWoPlan.ahead_create_time+'小时'"></em>
         </h4>
         <div class="aheadCreateTime" v-if="!isquote">
-            <!-- <span>提前：</span> -->
             <ptext-text id="'aheadCreateTime'" value="addWoPlan.ahead_create_time" text="'提前：'" bind="true" placeholder="'请在此输入时间'" align="left">
                 <verify errtip="时间不能为空" verifytype="space"></verify>
-                <verify errtip="只能为整数" verifytype="Integer"></verify>
+                <!-- <verify errtip="只能为整数" verifytype="Integer"></verify> -->
                 <verify errtip="提前时间只能为0-24小时" verifytype="pisdayhour"></verify>
             </ptext-text>
             <strong>小时</strong>
@@ -64,26 +62,33 @@
     </div>
     <div class="planCreate_page_con_left_sendTime">
         <h4>
+            <span v-if="addWoPlan.robbing_flag || addWoPlan.executie_mode=='execute'">*</span>
             <i class="nomust">建议执行人数：</i>
             <em v-if="isquote" v-text="addWoPlan.suggest_executor_num+'人'"></em>
         </h4>
-        <div class="aheadCreateTime" v-if="!isquote">
-            <!-- <span>提前：</span> -->
+        <!-- 非抢单的时候不用必填 -->
+        <div class="aheadCreateTime" v-if="!isquote && !(addWoPlan.executie_mode=='execute' ||  addWoPlan.robbing_flag)">
             <ptext-text bind="true" value="addWoPlan.suggest_executor_num" id="'peoplenumber'" text="'人'" placeholder="'建议执行人数'" align="right">
-                <verify errtip="只能为自然数" verifytype="ZInteger"></verify>
+                <verify errtip="只能为1位数" verifytype="Digits"></verify>
             </ptext-text>
-            <!-- <strong>小时</strong> -->
+        </div>
+        <!-- 抢单时候不能为空 -->
+        <div class="aheadCreateTime" v-if="!isquote && (addWoPlan.executie_mode=='execute' ||  addWoPlan.robbing_flag)">
+            <ptext-text bind="true" value="addWoPlan.suggest_executor_num" id="'peoplenumber'" text="'人'" placeholder="'建议执行人数'" align="right">
+                <verify errtip="不能为空" verifytype="space"></verify>
+                <verify errtip="只能为1位数" verifytype="Digits"></verify>
+            </ptext-text>
         </div>
     </div>
 
     <div class="planCreate_page_con_left_sendTime" v-if="addWoPlan.robbing_flag" v-for="(item,index) in addWoPlan.pit_positions">
         <h4>
             <i class="nomust">位置{{index + 1}}</i>
-            <i v-if="isterm && addWoPlan.robbing_flag" v-text="item.pit_position_ask_names.join()"></i>
+            <i v-if="isterm && addWoPlan.robbing_flag && isedit" v-text="item.pit_position_ask_names.join()"></i>
         </h4>
         <div class="aheadCreateTime" v-if="!isquote">
-            <multiple :ref=" 'multiple'+index" :arr="getSelected(wotypelistall,item.pit_position_asks, 'code')" :datasource="wotypelistall"
-                        :attr=" 'name'" :placeholder=" '请选择'" :cb="getPositon.bind(this,index)" />
+            <multiple :ref="'multiple'+index" :arr="getSelected(wotypelistall,item.pit_position_asks, 'code')" :datasource="wotypelistall"
+                        :attr="'name'" :placeholder=" '请选择'" :cb="getPositon.bind(this,index)" />
         </div>
     </div>
 
@@ -93,54 +98,47 @@
         <h4>
             <!-- <span>*</span> -->
             <i class="nomust">是否实例化全部对象：</i>
-            <!-- <em v-text='(_.find(instantiatedTypes,{code:+addWoPlan.instantiated_object_flag}) || {}).name'></em> -->
-            <em v-if="addWoPlan.instantiated_object_flag" v-text='(_.find(instantiatedTypes,{code:+addWoPlan.instantiated_object_flag}) || {}).name'></em>
+            <em v-if="addWoPlan.instantiated_object_flag!=2 && isterm" v-text='(_.find(instantiatedTypes,{code:addWoPlan.instantiated_object_flag}) || {}).name'></em>
         </h4>
-        <div v-if="!(addWoPlan.instantiated_object_flag && isterm)">
+        <!-- <div v-if="!(addWoPlan.instantiated_object_flag && isterm)"> -->
+        <div v-if="!(addWoPlan.instantiated_object_flag!=2 && isterm)">
             <pcombobox-normal bind="true" sel="cbx_sel_instantiated_object_flag">
-                <header placeholder="(_.find(instantiatedTypes,{code:+addWoPlan.instantiated_object_flag}) || {}).name"></header>
+                <header placeholder="(_.find(instantiatedTypes,{code:addWoPlan.instantiated_object_flag}) || {name:'请选择是否实例化全部对象'}).name"></header>
                 <item datasource="instantiatedTypes" text="name"></item>
             </pcombobox-normal>
         </div>
     </div>
-    <div class="planCreate_page_con_left_order_level" v-if="!isterm">
+
+    <div class="planCreate_page_con_left_order_level">
         <h4>
             <span>*</span>
             <i>计划频率：</i>
+            <em v-if="isquote" v-text='(_.find(sendTypes,{code:addWoPlan.plan_freq_type}) || {}).name'></em>
             <em v-if="isquote" v-text='addWoPlan.freq_num + "次/"+ (_.find(freq_cycleType,{code:addWoPlan.freq_cycle}) || {}).name'></em>
         </h4>
         <div id="orderUrgency" v-if="!isquote">
-            <pcombobox-normal bind="true" id="'cbx_id_plan_freq_type'" sel="cbx_sel_plan_freq_type">
+            <pcombobox-normal bind="true" id="'cbx_id_plan_freq_type'" sel="cbx_sel_plan_freq_type" disabled="(!isterm && isedit) || (isterm && isquote && isedit)">
                 <header placeholder="(_.find(sendTypes,{code:addWoPlan.plan_freq_type}) || {}).name"></header>
                 <item datasource="sendTypes" text="name"></item>
             </pcombobox-normal>
         </div>
     </div>
+
     <div class="planCreate_page_con_left_planRate" v-show="addWoPlan.plan_freq_type!='3'">
 
         <div v-if="!isquote">
             <span>每</span>
             <span v-if="isedit" v-text="(_.find(freq_cycleType,{code:addWoPlan.freq_cycle}) || {}).name"></span>
-            <pcombobox-normal v-if="!isedit" id="'cbx_id_freq_cycle'" bind="true" sel="cbx_sel_freq_cycle">
+            <pcombobox-normal v-if="!isedit" id="'cbx_id_freq_cycle'" bind="true" sel="cbx_sel_freq_cycle" >
                 <header placeholder="(_.find(freq_cycleType,{code:addWoPlan.freq_cycle}) || {}).name"></header>
                 <item datasource="freq_cycleType" text="name"></item>
             </pcombobox-normal>
 
 
-            <pcombobox-normal bind="true" sel="cbx_sel_freq_num">
+            <pcombobox-normal bind="true" sel="cbx_sel_freq_num" >
                 <header placeholder="(_.find(getCount(addWoPlan.freq_cycle),{code:addWoPlan.freq_num}) || {}).name"></header>
                 <item datasource="getCount(addWoPlan.freq_cycle)" text="name"></item>
             </pcombobox-normal>
-
-
-            <!-- <ptext-text bind="true" value="addWoPlan.freq_num" id="'planRateRig'">
-                <verify errtip="不能为空" verifytype="space"></verify>
-                <verify errtip="只能为正整数" verifytype="pisPositiveInt"></verify>
-            </ptext-text> -->
-            <!-- <pcombobox-normal :id="'planRateRig'" bind="true">
-                                <header placeholder="'请选择'"></header>
-                                <item datasource="[]" text="name"></item>
-                            </pcombobox-normal> -->
             <p>次</p>
         </div>
         <span id="planRace_error" class="per-input-basic">
@@ -159,18 +157,19 @@
                 <li v-for="(item,index) in addWoPlan.freq_times">
                     <span>第<i v-text="index+1"></i>次要求开始时间和结束时间</span>                         
                     
-                    <span v-if="isquote" v-text="fill(item.start_time.time_month,2) + '.'+ fill(item.start_time.time_day,2) + ' '+ fill(item.start_time.time_hour,2)+ ':'+ fill(item.start_time.time_minute,2)+'~'+fill(item.end_time.time_month,2) + '.'+ fill(item.end_time.time_day,2) + ' '+ fill(item.end_time.time_hour,2)+ ':'+ fill(item.end_time.time_minute,2)">
+                    <span v-if="isquote && !is2to1" v-text="fill(item.start_time.time_month,2) + '.'+ fill(item.start_time.time_day,2) + ' '+ fill(item.start_time.time_hour,2)+ ':'+ fill(item.start_time.time_minute,2)+'~'+fill(item.end_time.time_month,2) + '.'+ fill(item.end_time.time_day,2) + ' '+ fill(item.end_time.time_hour,2)+ ':'+ fill(item.end_time.time_minute,2)">
                     </span>
-                    <section v-if="!isquote">
-                        <ptime-form bind='true' :index="index" :class="'StartTime'" sel="TimeStartSel">
+                    <section v-if="!isquote || is2to1">
+                        <ptime-form bind='true' :index="index" :class="'StartTime'" sel="TimeStartSel" >
                             <panel startyear="2013" endyear="2022" timeType="Mdhm"></panel>
                         </ptime-form>
                         <i>至</i>
-                        <ptime-form bind='true' :index="index" :class="'EndTime'" sel="TimeEndSel">
+                        <ptime-form bind='true' :index="index" :class="'EndTime'" sel="TimeEndSel" >
                             <panel startyear="2013" endyear="2022" timeType="Mdhm"></panel>
                         </ptime-form>
                     </section>
-                    <span class="rc" v-show="compare[index]">开始时间小于结束时间</span>
+                    <span class="rc" v-show="compare[index]">开始时间大于等于结束时间</span>                     
+                    <span class="rc" v-show="(TimeOverlaps[index] && TimeOverlaps[index].isOverlap) && !ignoreTimeOverlaps[index]">时间设置有重复，可能出现工单重复发送！<em class="bc" @click="handlerClick(index)">忽略</em></span>
                 </li>
             </ul>
             <!-- 季 -->
@@ -179,11 +178,11 @@
                     <span>第
                         <i v-text="index+1"></i>次要求开始时间和结束时间</span>
                         
-                    <span v-if="isquote" v-text="(_.find(seasonType,{code:+item.start_time.time_season}) || {}).name + ' '+ fill(item.start_time.time_day,2) + ' '+ fill(item.start_time.time_hour,2)+ ':'+ fill(item.start_time.time_minute,2)+'~'+(_.find(seasonType,{code:+item.end_time.time_season}) || {}).name + ' '+ fill(item.end_time.time_day,2) + ' '+ fill(item.end_time.time_hour,2)+ ':'+ fill(item.end_time.time_minute,2)">
+                    <span v-if="isquote && !is2to1" v-text="(_.find(seasonType,{code:+item.start_time.time_season}) || {}).name + ' '+ fill(item.start_time.time_day,2) + ' '+ fill(item.start_time.time_hour,2)+ ':'+ fill(item.start_time.time_minute,2)+'~'+(_.find(seasonType,{code:+item.end_time.time_season}) || {}).name + ' '+ fill(item.end_time.time_day,2) + ' '+ fill(item.end_time.time_hour,2)+ ':'+ fill(item.end_time.time_minute,2)">
                     </span>
-                    <section v-if="!isquote">
+                    <section v-if="!isquote || is2to1">
                         <span>
-                            <pcombobox-normal :index="index" :class="'StartSeason'" sel="StartSeasonSel" bind="true">
+                            <pcombobox-normal :index="index" :class="'StartSeason'" sel="StartSeasonSel" bind="true" >
                                 <header placeholder="'第一个月'"></header>
                                 <item datasource="seasonType" text="name"></item>
                             </pcombobox-normal>
@@ -193,7 +192,7 @@
                         </span>
                         <i>至</i>
                         <span>
-                            <pcombobox-normal :index="index" :class="'EndSeason'" sel="EndSeasonSel" bind="true">
+                            <pcombobox-normal :index="index" :class="'EndSeason'" sel="EndSeasonSel" bind="true" >
                                 <header placeholder="'第一个月'"></header>
                                 <item datasource="seasonType" text="name"></item>
                             </pcombobox-normal>
@@ -202,60 +201,60 @@
                             </ptime-form>
                         </span>
                     </section>
-                    <span class="rc" v-show="compare[index]">开始时间小于结束时间</span>
+                    <span class="rc" v-show="compare[index]">开始时间大于等于结束时间</span>                     
+                    <span class="rc" v-show="(TimeOverlaps[index] && TimeOverlaps[index].isOverlap) && !ignoreTimeOverlaps[index]">时间设置有重复，可能出现工单重复发送！<em class="bc" @click="handlerClick(index)">忽略</em></span>
                 </li>
             </ul>
             <!-- 月 -->
             <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_month" :class="addWoPlan.freq_cycle=='m'?'indexl':''" v-show="addWoPlan.freq_cycle=='m'">
                 <li v-for="(item,index) in addWoPlan.freq_times">
-                    <span>第
-                        <i v-text="index+1"></i>次要求开始时间和结束时间</span>
+                    <span>第<i v-text="index+1"></i>次要求开始时间和结束时间</span>
                         
-                    <span v-if="isquote" v-text="fill(item.start_time.time_day,2) + ' '+ fill(item.start_time.time_hour,2)+ ':'+ fill(item.start_time.time_minute,2)+'~'+ fill(item.end_time.time_day,2) + ' '+ fill(item.end_time.time_hour,2)+ ':'+ fill(item.end_time.time_minute,2)">
+                    <span v-if="isquote && !is2to1" v-text="fill(item.start_time.time_day,2) + ' '+ fill(item.start_time.time_hour,2)+ ':'+ fill(item.start_time.time_minute,2)+'~'+ fill(item.end_time.time_day,2) + ' '+ fill(item.end_time.time_hour,2)+ ':'+ fill(item.end_time.time_minute,2)">
                     </span>
-                    <section v-if="!isquote">
-                        <ptime-form bind='true' :index="index" :class="'StartTime'" sel="TimeStartSel">
+                    <section v-if="!isquote || is2to1">
+                        <ptime-form bind='true' :index="index" :class="'StartTime'" sel="TimeStartSel" >
                             <panel startyear="2013" endyear="2022" timeType="dhm"></panel>
                         </ptime-form>     
                         <i>至</i>
-                        <ptime-form bind='true' :index="index" :class="'EndTime'" sel="TimeEndSel">
+                        <ptime-form bind='true' :index="index" :class="'EndTime'" sel="TimeEndSel" >
                             <panel startyear="2013" endyear="2022" timeType="dhm"></panel>
                         </ptime-form>
                     </section>
-                    <span class="rc" v-show="compare[index]">开始时间小于结束时间</span>
+                    <span class="rc" v-show="compare[index]">开始时间大于等于结束时间</span>                     
+                    <span class="rc" v-show="(TimeOverlaps[index] && TimeOverlaps[index].isOverlap) && !ignoreTimeOverlaps[index]">时间设置有重复，可能出现工单重复发送！<em class="bc" @click="handlerClick(index)">忽略</em></span>
                 </li>
             </ul>
             <!-- 周 -->
             <ul class="planCreate_page_con_left_planRateList planCreate_page_con_left_planRateList_week" :class="addWoPlan.freq_cycle=='w'?'indexl':''" v-show="addWoPlan.freq_cycle=='w'">
                 <li v-for="(item,index) in addWoPlan.freq_times">
-                    <span>第
-                        <i v-text="index+1"></i>次要求开始时间和结束时间</span>
-                    <span v-if="isquote" v-text="(_.find(weekType,{code:+item.start_time.time_week}) || {}).name + ' '+ fill(item.start_time.time_hour,2)+ ':'+ fill(item.start_time.time_minute,2)+'~'+(_.find(weekType,{code:+item.end_time.time_week}) || {}).name + ' '+ fill(item.end_time.time_hour,2)+ ':'+ fill(item.end_time.time_minute,2)">
-                    </span>
-                    <section v-if="!isquote">
+                    <span>第<i v-text="index+1"></i>次要求开始时间和结束时间</span>
+                    <span v-if="isquote && !is2to1" v-text="(_.find(weekType,{code:+item.start_time.time_week}) || {}).name + ' '+ fill(item.start_time.time_hour,2)+ ':'+ fill(item.start_time.time_minute,2)+'~'+(_.find(weekType,{code:+item.end_time.time_week}) || {}).name + ' '+ fill(item.end_time.time_hour,2)+ ':'+ fill(item.end_time.time_minute,2)"></span>
+                    <section v-if="!isquote || is2to1">
                         <span>
-                            <pcombobox-normal :index="index" :class="'StartWeek'" sel="StartWeekSel" bind="true">
+                            <pcombobox-normal :index="index" :class="'StartWeek'" sel="StartWeekSel" bind="true" >
                                 <header placeholder="'周一'"></header>
                                 <item datasource="weekType" text="name"></item>
                             </pcombobox-normal>
-                            <ptime-form bind='true' :index="index" :class="'StartTime'" sel="TimeStartSel">
+                            <ptime-form bind='true' :index="index" :class="'StartTime'" sel="TimeStartSel" >
                                 <panel startyear="2013" endyear="2022" timeType="hm"></panel>
                             </ptime-form>
 
                         </span>
                         <i>至</i>
                         <span>
-                            <pcombobox-normal sel="EndWeekSel" :index="index" :class="'EndWeek'" bind="true">
+                            <pcombobox-normal sel="EndWeekSel" :index="index" :class="'EndWeek'" bind="true" >
                                 <header placeholder="'周一'"></header>
                                 <item datasource="weekType" text="name"></item>
                             </pcombobox-normal>
-                            <ptime-form bind='true' :index="index" :class="'EndTime'" sel="TimeEndSel">
+                            <ptime-form bind='true' :index="index" :class="'EndTime'" sel="TimeEndSel" >
                                 <panel startyear="2013" endyear="2022" timeType="hm"></panel>
                             </ptime-form>
 
                         </span>
                     </section>
-                    <span class="rc" v-show="compare[index]">开始时间小于结束时间</span>
+                    <span class="rc" v-show="compare[index]">开始时间大于等于结束时间</span>                     
+                    <span class="rc" v-show="(TimeOverlaps[index] && TimeOverlaps[index].isOverlap) && !ignoreTimeOverlaps[index]">时间设置有重复，可能出现工单重复发送！<em class="bc" @click="handlerClick(index)">忽略</em></span>
                 </li>
             </ul>
             <!-- 日 -->
@@ -263,37 +262,37 @@
                 <li v-for="(item,index) in addWoPlan.freq_times">
                     <span>第
                         <i v-text="index+1"></i>次要求开始时间和结束时间</span>
-                         <span v-if="isquote" v-text="fill(item.start_time.time_hour,2)+ ':'+ fill(item.start_time.time_minute,2)+'~'+fill(item.end_time.time_hour,2)+ ':'+ fill(item.end_time.time_minute,2)">
+                         <span v-if="isquote && !is2to1" v-text="fill(item.start_time.time_hour,2)+ ':'+ fill(item.start_time.time_minute,2)+'~'+fill(item.end_time.time_hour,2)+ ':'+ fill(item.end_time.time_minute,2)">
                     </span>
-                    <section v-if="!isquote">
-                        <ptime-form bind='true' :index="index" :class="'StartTime'" sel="TimeStartSel">
+                    <section v-if="!isquote || is2to1">
+                        <ptime-form bind='true' :index="index" :class="'StartTime'" sel="TimeStartSel" >
                             <panel startyear="2013" endyear="2022" timeType="hm"></panel>
                         </ptime-form>
                         <i>至</i>
-                        <ptime-form bind='true' :index="index" :class="'EndTime'" sel="TimeEndSel">
+                        <ptime-form bind='true' :index="index" :class="'EndTime'" sel="TimeEndSel" >
                             <panel startyear="2013" endyear="2022" timeType="hm"></panel>
                         </ptime-form>
                     </section>
-                    <span class="rc" v-show="compare[index]">开始时间小于结束时间</span>
+                    <span class="rc" v-show="compare[index]">开始时间大于等于结束时间</span>                     
+                    <span class="rc" v-show="(TimeOverlaps[index] && TimeOverlaps[index].isOverlap) && !ignoreTimeOverlaps[index]">时间设置有重复，可能出现工单重复发送！<em class="bc" @click="handlerClick(index)">忽略</em></span>
                 </li>
             </ul>
         </div>
         <div class="freq_limit" v-if="addWoPlan.plan_freq_type == '2'">
             <span class="freq_limit_s">任两次间隔大于</span>
             <div class="freq_limit_c">
-                <ptext-text bind="true" id="'num_id'" value="addWoPlan.freq_limit.num" align="right">
+                <ptext-text bind="true" id="'num_id'" value="addWoPlan.freq_limit.num" align="right" >
                     <verify errtip="次数不能为空" verifytype="space"></verify>
-                    <verify errtip="只能为整数" verifytype="Integer"></verify>
+                    <verify errtip="只能为整数" verifytype="ZInteger"></verify>
                 </ptext-text>
             </div>
             <div class="freq_limit_u">
-                <pcombobox-normal bind="true" id="'cycleTypes_id'" sel="cycleTypes_sel">
+                <pcombobox-normal bind="true" id="'cycleTypes_id'" sel="cycleTypes_sel" >
                     <header placeholder="(_.find(cycleTypes, { code: addWoPlan.freq_limit.unit }) || {}).name"></header>
                     <item datasource="cycleTypes" text="name"></item>
                 </pcombobox-normal>
             </div>
         </div>
-
     </div>
 
         <!-- 相对设置 Start  -->  
@@ -302,7 +301,7 @@
             <ul class="xd">
                 <li class="item">
                     <div class="b day" v-if="!(isterm && isquote)">
-                        <ptext-text bind="true" id="'relatetiveID'" placeholder="'请输入'" value="addWoPlan.freq_time_span.num" text="(_.find(freq_cycleType,{code:addWoPlan.freq_time_span.unit}) || {name:'天'} ).name">
+                        <ptext-text bind="true"  id="'relatetiveID'" placeholder="'请输入'" value="addWoPlan.freq_time_span.num" text="(_.find(freq_cycleType,{code:addWoPlan.freq_time_span.unit}) || {name:'天'} ).name">
                                 <verify errtip="不可为空"  verifytype="space"></verify>
                                 <verify errtip="只能为正整数" verifytype="pisPositiveInt"></verify>
                         </ptext-text>
@@ -322,7 +321,7 @@
                         {{addWoPlan.freq_time_span.time_hour}}时{{addWoPlan.freq_time_span.time_minute}}分
                     </div>
                     <div class="b tl f" v-if="!(isterm && isquote)">
-                        <ptime-form bind='true' id="'ptiemStartTime'" sel="ptiemStartTime">
+                        <ptime-form bind='true' id="'ptiemStartTime'" sel="ptiemStartTime" >
                             <panel startyear="2013" endyear="2022" timeType="hm"></panel>
                         </ptime-form>
                     </div>
@@ -335,7 +334,7 @@
                         {{addWoPlan.freq_time_span.continue}}小时
                     </div>
                     <div class="b day" v-if="!(isterm && isquote)">
-                        <ptext-text bind="true" align="right" id="'conterner'" value="addWoPlan.freq_time_span.continue" text="'小时'">
+                        <ptext-text bind="true" align="right" id="'conterner'" value="addWoPlan.freq_time_span.continue" text="'小时'" >
                                 <verify errtip="持续时间不能为空" verifytype="space"></verify>
                                 <verify errtip="只能为正整数" verifytype="pisPositiveInt"></verify>
                         </ptext-text>
@@ -347,10 +346,6 @@
 
     </div>
     <!-- 相对设置 End    -->
-
-
-
-
     <div class="planCreate_page_con_left_effectTime" v-show="isterm && addWoPlan.plan_freq_type != 3">
         <h4>计划生效时间：</h4>
         <div>
@@ -361,7 +356,7 @@
             </pcombobox-normal>
         </div>
         <span class="plan_Time_choice" v-if="addWoPlan.plan_start_type==2">
-            <ptime-form sel="TimeStartTypeTimeSel">
+            <ptime-form id="plan_start_time_id" sel="TimeStartTypeTimeSel">
                 <panel startyear="2013" endyear="2022" timeType="yMd"></panel>
             </ptime-form>
         </span>
@@ -401,7 +396,6 @@
     <div  v-show="isterm && addWoPlan.plan_freq_type == 3" class="planCreate_page_con_left_effectTime">
         <h4>计划生效时间：</h4>
         <div>
-            <!-- <span>选择年份</span> -->
             <pcombobox-normal bind="true" sel="cbx_sel_end_time">
                 <header placeholder="(_.find(years,{end:addWoPlan.plan_end_time})||{}).name"></header>
                 <item datasource="years" text="name"></item>

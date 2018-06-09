@@ -11,70 +11,74 @@ v.pushComponent({
   },
   methods: {
     // 废弃计划
-    deletePlan: function () {
-      var param = this.cache.planType == 'group' ? { group_plan_id: this.cache.planId } : { plan_id: this.cache.planId };
-      var a = this.cache.planType == 'group' ? PMA.DGP : PMA.DOP;
-      a(param,function (data) {
-          $("#globalnotice").pshow({text: "删除成功",state: "success"})
-          v.instance.gobackLastPath(v.instance.paths.path);
-        }, function (err) {
-          $("#globalnotice").pshow({text: "删除失败",state: "failure"})
-        }, function () { })
+    deletePlan : function(){
+      var x = this.cache.planType == 'group' ? true : false;
+      var param = x ? { group_plan_id: this.cache.planId } : { plan_id: this.cache.planId };
+      var a = x ? PMA.DGP : PMA.DOP;
+      a(param, function (data) {
+        $("#globalnotice").pshow({ text: "作废成功", state: "success" });
+        v.instance.gobackLastPath(v.instance.paths.path);
+        // 刷新集团事件列表
+        x && v.initPage('grouphome');
+      }, function (err) {
+        $("#globalnotice").pshow({ text: "作废失败", state: "failure" });
+      }, function () {
+        $('#deletePlanSure').phide();
+       })
     },
+
     // 查看计划历史工单信息
     lookHistoryOrderInfo: function () {
       this.cache = {
-        name: "计划历史工单",
+        name: "过去发出的工单记录",
         orderPlanId: this.cache.planId
       }
       v.initPage('planWorkOrder');
     },
     // 修改计划
-    changePlan : function(){
+    changePlan: function () {
       var that = this;
       var CC = JSON.parse(JSON.stringify(this.cache));
       this.cache = {
         argu: {
-          isquote: false,
+          isquote: that.planInfo.plan_from == 1 ? true : false,
           isedit: true,
           isterm: that.cache.planType === 'order' ? true : false,
-          iscopy:false,
+          iscopy: false,
           addWoPlan: that.planInfo,
-          cb : CC.planType === 'order' ? function(){
-            var x = v.instance.cache.argu.addWoPlan;
-            v.instance.cache = {name:"计划详情",planType:'order',planId:x.plan_id};
+          cb: CC.planType === 'order' ? function () {
+            v.instance.cache = { name: "计划详情", planType: 'order', planId: CC.planId };
             v.initPage('planInformation');
-          } : function(){
-            var x = v.instance.cache.argu.addWoPlan;
-            v.instance.cache = {name:"计划详情",planType:'group',planId:x.plan_id};
+          } : function () {
+            v.instance.cache = { name: "集团计划详情", planType: 'group', planId: CC.planId };
             v.initPage('planInformation');
           }
         },
       }
       v.initPage("createPlan");
     },
-    // 复制计划
+    // 复制计划,只有集团计划调用
     copyPlan: function () {
+      var id = v.instance.planInfo.group_plan_id;
       this.cache = {
         argu: {
           isquote: false,
           isedit: true,
           isterm: false,
-          iscopy:true,
+          iscopy: true,
           addWoPlan: this.planInfo,
           cb: function () {
-            var x = v.instance.cache.argu.addWoPlan;
-            v.instance.cache = { name: "计划详情", planType: "group", planId: x.plan_id };
+            v.instance.cache = { name: "集团计划详情", planType: "group", planId: id };
             v.initPage('planInformation');
           }
         },
       }
       v.initPage("createPlan");
     },
-    // 跳转到项目计划监控
+    // 跳转到项目计划监控,只有集团计划
     GoProPlan: function () {
       var a = this.cache.planId;
-      this.cache = { group_plan_id: a, name: "项目计划监控",freq_cycle:this.planInfo.freq_cycle};
+      this.cache = { group_plan_id: a, name: "项目计划监控", freq_cycle: this.planInfo.freq_cycle,group_plan_name:this.planInfo.group_plan_name };
       v.initPage('monitoringPlan');
     },
     // 查看计划版本记录
@@ -84,17 +88,13 @@ v.pushComponent({
     // 查看项目计划中的工单
     lookAllOrder: function () {
       var a = this.cache.planId;
-      this.cache = { planId: a, name: "工单列表" };
+      this.cache = { planId: a, name: "工单列表", project_id: this.cache.project_id };
       v.initPage('workOrderList');
     },
     // 查看项目所有计划
     lookAllPlan: function () {
-      // here
-      var a = psecret.create(JSON.stringify({project_name:this.cache.project_name,project_id:this.cache.project_id}));
-      window.open('http://localhost:9092/frame/PlanManagement?ot=' + a);
-      // var a = $("iframe")[0];
-      // var a = this.cache.planId;
-      // this.cache = {planId:a,name:"工单列表"}
+      var a = psecret.create(JSON.stringify({ project_name: this.cache.project_name, project_id: this.cache.project_id }));
+      window.open(window.location.ancestorOrigins[0] + '/frame/PlanManagement?ot=' + a);
     },
     //与当前时间做比较，判断计划生效时间
     comparePlanEffect: function (str) {
@@ -117,12 +117,36 @@ v.pushComponent({
   beforeMount: function () {
 
     var that = this;
-    var a = (that.cache.planType === 'order' || that.cache.planType === 'orderD' || that.cache.planType === 'project') ? PMA.OPI : PMA.GPI;
-    var param = (that.cache.planType === 'order' || that.cache.planType === 'orderD' || that.cache.planType === 'project') 
-    ? {plan_id:that.cache.planId} : {group_plan_id:that.cache.planId};
+    var x = (that.cache.planType === 'order' || that.cache.planType === 'orderD' || that.cache.planType === 'project');
+    var a = x ? PMA.OPI : PMA.GPI;
+    var param = x ? { plan_id: that.cache.planId } : { group_plan_id: that.cache.planId };
     $("#planInformationLoad").pshow();
-    a(param,function(data){
+    a(param, function (data) {
       that.planInfo = JSON.parse(JSON.stringify(data || {}));
+      // 如果为集团计划则获取计划类型
+      if (!x) {
+        that.orderTypes.forEach(function (item) {
+          (item.code == that.planInfo.order_type) && (that.planInfo.order_type_name = item.name);
+        })
+      }
+      
+      if (that.planInfo.pit_positions && that.planInfo.pit_positions.length > 0) {
+        var arr = [];
+        that.planInfo.pit_positions.forEach(function (item, index) {
+            if (item.pit_position_ask_names) {
+                if (item.pit_position_ask_names.length == 1) {
+                    arr.push({ name: (item.pit_position_ask_names).toString() })
+                }
+                if (item.pit_position_ask_names.length > 1) {
+                    arr.push({ name: (item.pit_position_ask_names.join('、')).toString() });
+                }
+
+            }
+        })
+        if (arr.length > 0) {
+            that.planInfo.place = JSON.parse(JSON.stringify(arr));
+        }
+      }
     }, function () { }, function () {
       $("#planInformationLoad").phide();
     })
@@ -130,10 +154,29 @@ v.pushComponent({
     // 如果当前计划为工单计划或已作废工单计划，则获取计划历史信息
     if (that.cache.planType === 'order' || that.cache.planType === 'orderD') {
       $("#planChangeHistoryLoading").pshow();
-      PMA.PCH( { plan_id: that.cache.planId }, function (data) {
-        data = JSON.parse(JSON.stringify(data || []))
+      PMA.PCH({ plan_id: that.cache.planId }, function (data) {
+        data = JSON.parse(JSON.stringify(data || []));
         that.historyRecordList = data.length > 2 ? data.splice(0, 2) : data;
-      }, function () {}, function () {
+        that.historyRecordList.forEach(function(model){
+          if (model.pit_positions && model.pit_positions.length > 0) {
+            var arr = [];
+            model.pit_positions.forEach(function (item, index) {
+                if (item.pit_position_ask_names) {
+                    if (item.pit_position_ask_names.length == 1) {
+                        arr.push({ name: (item.pit_position_ask_names).toString() })
+                    }
+                    if (item.pit_position_ask_names.length > 1) {
+                        arr.push({ name: (item.pit_position_ask_names.join('、')).toString() });
+                    }
+    
+                }
+            })
+            if (arr.length > 0) {
+              model.place = JSON.parse(JSON.stringify(arr));
+            }
+          }
+        })
+      }, function () { }, function () {
         $("#planChangeHistoryLoading").phide();
       })
     }

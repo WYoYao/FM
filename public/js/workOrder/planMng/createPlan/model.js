@@ -15,6 +15,8 @@ var convertEnum = {
 v.pushComponent({
     name: "createPlan",
     data: {
+        // 具体操作内容
+        GeneralDictByKey: [],
         // 工单状态类型
         WorkOrderType: [],
         //  基础信息
@@ -54,14 +56,14 @@ v.pushComponent({
         WoTypeListAll: [],
         // 下发的参数
         toProjectArgu: {
-            "plan_freq_type":"1",
-            "instantiated_object_flag":"1",
+            "plan_freq_type": "1",
+            "instantiated_object_flag": "1",
 
             "group_plan_id": "",              //集团计划id，必须
             "project_ids": [],              //项目计划id集合，必须
             "plan_start_type": "2",            //计划开始类型,1-发布成功后第二天生效，2-指定时间 ,必须
-            "plan_start_time": new Date(+new Date()+(24*60*60000)).format('yyyyMMdd000000'),            //计划开始时间,yyyyMMdd+"000000"
-            "plan_end_time": new Date(+new Date((new Date().getFullYear()+1)+"/01/01 00:00:00")-(24*60*60000)).format('yyyyMMdd235959')               //计划结束时间,yyyyMMdd+"235959"，空值时代表一直有效
+            "plan_start_time": new Date(+new Date() + (24 * 60 * 60000)).format('yyyyMMdd000000'),            //计划开始时间,yyyyMMdd+"000000"
+            "plan_end_time": new Date(+new Date((new Date().getFullYear() + 1) + "/01/01 00:00:00") - (24 * 60 * 60000)).format('yyyyMMdd235959')               //计划结束时间,yyyyMMdd+"235959"，空值时代表一直有效
         },
         getIssueProjectListArgu: {
             group_plan_id: "JTJH6a93466d7bb7465c8f893d2ba3e83b7e"
@@ -76,8 +78,6 @@ v.pushComponent({
         //  提交信息
         commit: function () {
             var _that = this;
-            // console.log(_that.$refs.baseinfomation.argu());
-            // console.log(_that.matters);
 
             _that.req = {};
 
@@ -88,17 +88,13 @@ v.pushComponent({
 
             _that.req = Object.assign({}, _that.req, _that.$refs.baseinfomation.argu())
 
-            // matters 验证
-
-            if (_.filter(_that.mattersViews, { isRepeat: true }).length) return;
-            // 验证名称非空
-            _that.mattersViews.forEach(function (item, index) {
-                item.isSpace = !_that.matters[index].matter_name.length;
-                item.isDescForepartSpace = !_that.matters[index].desc_forepart.length;
-            })
-            // 验证内容为空
-            if (_.filter(_that.mattersViews, { isSpace: true }).length) return;
-            if (_.filter(_that.mattersViews, { isDescForepartSpace: true }).length) return;
+            if (!_that.matters.length) {
+                $("#globalnotice").pshow({
+                    text: '工作事项不能为空',
+                    state: "failure"
+                });
+                return;
+            }
 
             // 重名的验证
             _that.mattersViews = _that.mattersViews.map(function (item) {
@@ -106,6 +102,37 @@ v.pushComponent({
                 return item;
             });
 
+            // matters 验证
+            if (_.filter(_that.mattersViews, { isRepeat: true }).length) return;
+
+            // 验证名称非空
+            _that.mattersViews.forEach(function (item, index) {
+                item.isSpace = !_that.matters[index].matter_name.length;
+                item.isDescForepartSpace = !_that.matters[index].desc_forepart.length && !_that.matters[index].desc_aftpart.length && !_that.matters[index].desc_works.length;
+            })
+
+            // 验证内容为空
+            if (_.filter(_that.mattersViews, { isSpace: true }).length) return;
+            if (_.filter(_that.mattersViews, { isDescForepartSpace: true }).length) return;
+
+            // 验证重复
+            if (_.filter(_that.mattersViews, { isRepeat: true }).length) return;
+
+
+
+            // 验证名称是否重复
+            // controller.queryGroupPlanList({
+            //     order_type: "",
+            //     valid: ""
+            // }).then(function (res) {
+            //     if (_.filter(res, { group_plan_name: _that.req.plan_name }).length) {
+
+            //     }
+            // });
+
+
+            // 默认验证通过
+            var bool = true;
             //  验证多个关系是否不匹配
             // 并行发送请求多个事项同时验证
             Promise.all(_that.matters.map(function (item) {
@@ -142,92 +169,102 @@ v.pushComponent({
 
                     _that.mattersViews[index].verify = item;
                 });
+
+
+                bool = !_that.mattersViews.map(function (item) {
+                    return _.filter(item.verify, { selected: false }).length
+                }).reduce(function (con, num) {
+                    return con + num;
+                }, 0);
+
                 // 验证替换后的错误信息是否全部被忽略
-                if (
-                    !_that.mattersViews.map(function (item) {
-                        return _.filter(item.verify, { selected: false }).length
-                    }).reduce(function (con, num) {
-                        return con + num;
-                    }, 0)
-                ) {
-                    console.log("已经全部被忽略,可以提交预览");
-                    //  验证是否被销毁
-                    // _that.matters
-                    createPlan_controller.querySopListForSel().then(function (data) {
 
-                        var res = data.res;
-                        // 验证所有的 SOP 都在直接提交
-                        var bool = _that.matters.reduce(function (con, item, index) {
+                console.log("已经全部被忽略,可以提交预览");
+                //  验证是否被销毁
+                // _that.matters
+                createPlan_controller.querySopListForSel().then(function (data) {
 
-                            if (!con) return false;
-                            //  循环每个matter 的 desc_sop 判断是否存在当前SOP列表中
-                            return item.desc_sops.reduce(function (con, info) {
+                    var res = data.content;
+                    var con = true;
+                    // 验证所有的 SOP 都在直接提交
+                    _that.matters.forEach(function (item, index) {
 
-                                var bak = con;
 
-                                var bol = !!_.filter(res, { sop_id: info.sop_id }).length;
+                        //  循环每个matter 的 desc_sop 判断是否存在当前SOP列表中
+                        item.desc_sops.forEach(function (info) {
 
-                                // 再从忽略列表中查找
-                                if (!bol) {
+                            var bak = con;
 
-                                    if (!!_.filter(_that.mattersViews[index].sopeds, { sop_id: info.sop_id }).length) {
+                            var bol = !!_.filter(res, { sop_id: info.sop_id }).length;
 
-                                        // 在原来的列表中
-                                        var bol = !!_.filter(_that.mattersViews[index].sopeds, { sop_id: info.sop_id, selected: true }).length;
-                                    } else {
+                            // 再从忽略列表中查找
+                            if (!bol) {
 
-                                        // 不在原来的列表中
-                                        // 已经保存了添加到报废列表中
-                                        if (!bol) {
-                                            var bak = JSON.parse(JSON.stringify(info));
-                                            bak.selected = false;
-                                            _that.mattersViews[index].sopeds.push(bak);
-                                        }
+                                if (!!_.filter(_that.mattersViews[index].sopeds, { sop_id: info.sop_id }).length) {
+
+                                    // 在原来的列表中
+                                    var bol = !!_.filter(_that.mattersViews[index].sopeds, { sop_id: info.sop_id, selected: true }).length;
+                                } else {
+
+                                    // 不在原来的列表中
+                                    // 已经保存了添加到报废列表中
+                                    if (!bol) {
+                                        var bak = JSON.parse(JSON.stringify(info));
+                                        bak.selected = false;
+                                        _that.mattersViews[index].sopeds.push(bak);
                                     }
                                 }
-                                if (!bak) return false;
-                                return bol;
-                            }, con)
-                        }, true);
+                            }
+                            if (!bak) {
+                                con = false
+                            }
+                        })
 
-                        if (bool) {
-                            loadding.set("Preview");
-                            var getWoMattersPreviewPromise = _that.isterm ?
-                                createPlan_controller.getWoMattersPreview({
-                                    // order_type: _that.$refs.baseinfomation.addWoPlan.order_type,
-                                    draft_matters: _that.matters,
-                                })
-                                :
-                                createPlan_controller.getWoMattersPreviewGroup({
-                                    draft_matters: _that.matters,
-                                });
+                    });
 
-                            getWoMattersPreviewPromise.then(function (res) {
-                                console.log("可以执行保存了");
-                                // 保存预览时候数据
-                                _that.WoMattersPreview = !_that.isterm ? res.published_matters : res;
+                    if (con && bool) {
 
-                                _that.PreView = true;
+                        _that.matters = _that.matters.map(function (matter) {
+                            matter.description = (matter.desc_forepart ? matter.desc_forepart : '') + (matter.desc_aftpart ? matter.desc_aftpart : '') + (matter.desc_works_desc ? matter.desc_works_desc : '');
+                            return matter;
+                        })
 
-                                // 保存matters
-                                _that.req.draft_matters = JSON.parse(JSON.stringify(_that.matters));
-
-                                if (_that.isterm) {
-                                    // 如果是项目版
-                                    _that.req.required_tools = res.required_tools;
-                                    _that.req.summary = res.summary;
-                                    _that.req.domain_list = res.domain_list;
-                                    _that.req.published_matters = res.published_matters;
-                                }
-
-                            }).finally(function () {
-                                loadding.remove("Preview");
+                        loadding.set("Preview");
+                        var getWoMattersPreviewPromise = _that.isterm ?
+                            createPlan_controller.getWoMattersPreview({
+                                // order_type: _that.$refs.baseinfomation.addWoPlan.order_type,
+                                draft_matters: _that.matters,
                             })
-                        }
-                    })
-                }
-            })
+                            :
+                            createPlan_controller.getWoMattersPreviewGroup({
+                                draft_matters: _that.matters,
+                            });
 
+                        getWoMattersPreviewPromise.then(function (res) {
+                            console.log("可以执行保存了");
+                            // 保存预览时候数据
+                            _that.WoMattersPreview = res.published_matters;
+
+                            _that.PreView = true;
+
+                            // 保存matters
+                            _that.req.draft_matters = JSON.parse(JSON.stringify(_that.matters));
+
+                            if (_that.isterm) {
+                                // 如果是项目版
+                                _that.req.required_tools = res.required_tools;
+                                _that.req.summary = res.summary;
+                                _that.req.domain_list = res.domain_list;
+                                _that.req.published_matters = res.published_matters;
+                            }
+
+                        }).finally(function () {
+                            loadding.remove("Preview");
+                        })
+                    }
+                })
+
+            })
         },
         //  查询大类下的对象实例
         queryObjectByClass: function (obj_id, obj_type) {
@@ -272,6 +309,7 @@ v.pushComponent({
 
             argu.instantiated_object_flag = argu.instantiated_object_flag.toString();
             argu.ahead_create_time = +argu.ahead_create_time;
+            argu.suggest_executor_num = +argu.suggest_executor_num;
 
             argu.draft_matters = _.map(argu.draft_matters, function (item) {
                 /**
@@ -300,11 +338,14 @@ v.pushComponent({
 
             if (_that.isterm) {
                 // 项目版处理
+
                 argu = Object.assign({}, {
-                    plan_from: _that.isquote ? 1 : 2, // 是否引用
+                    plan_from: _that.isquote ? "1" : "2", // 是否引用
                     group_plan_id: _that.isquote ? _that.cache.argu.addWoPlan.group_plan_id : "", // 引用集团ID
                     published_matters: _that.WoMattersPreview,
                 }, argu);
+
+                !_that.isquote ? argu.group_plan_id = "" : void 0;
 
                 /**
                  *  如果是引用集团计划
@@ -321,10 +362,10 @@ v.pushComponent({
                 // }
 
                 loadding.set("addWoPlan");
-                if (_that.isedit && !_that.iscopy) {
+                if (_that.isedit && !_that.iscopy && !_that.isquote) {
                     // 是编辑
                     argu.draft_matters = argu.draft_matters.map(function (item) {
-                        item.description = item.desc_forepart + item.desc_aftpart + item.desc_works_desc;
+                        item.description = (item.desc_forepart ? item.desc_forepart : '') + (item.desc_aftpart ? item.desc_aftpart : '') + (item.desc_works_desc ? item.desc_works_desc : '');
                         return item;
                     })
 
@@ -332,6 +373,8 @@ v.pushComponent({
                         loadding.remove("addWoPlan");
                     })
                 } else {
+
+                    $("#globalnotice").pshow({ text: _that.iscopy ? "复制成功" : "引用成功", state: "success" });
 
                     createPlan_controller.addWoPlan(argu).then(cb).finally(function () {
                         loadding.remove("addWoPlan");
@@ -371,17 +414,17 @@ v.pushComponent({
                         function (res) {
 
                             $("#createSuccessFul").pshow({
-                                title:"发布成功！",
-                                subtitle:"是否将该计划下发到项目上？",
+                                title: "发布成功！",
+                                subtitle: "是否将该计划下发到项目上？",
                             });
 
                             // 跟新下发的方法
                             window.toProject = function () {
                                 _that.toProjectArgu.group_plan_id = res.group_plan_id;
                                 // 保存计划频率设置
-                                _that.toProjectArgu.plan_freq_type=argu.plan_freq_type;
+                                _that.toProjectArgu.plan_freq_type = argu.plan_freq_type;
                                 // 保存是否实例化全部对象
-                                _that.toProjectArgu.instantiated_object_flag=argu.instantiated_object_flag;
+                                _that.toProjectArgu.instantiated_object_flag = argu.instantiated_object_flag;
                                 // 展示选中的项目框
                                 _that.createToProject();
                             }
@@ -390,18 +433,30 @@ v.pushComponent({
                         }
                     ).finally(function () {
                         loadding.remove("addGroupPlan");
-                        $("#confirmWindow").pshow({ title: '发布成功！', subtitle: '是否将该计划下发到项目上？' });
+
                     });
                 }
             }
+        },
+        // 删除事项
+        deleteMatter: function (item) {
+            var _that = this;
+            var index = _that.matters.indexOf(item);
+            // 删除对应的事项 和事项报错提示
+            _that.matters.splice(index, 1);
+            _that.mattersViews.splice(index, 1);
         },
         // 开始搞下发
         createToProject: function () {
             var _that = this;
 
             $("#modalWindow").pshow();
+            $("#confirmWindow").phide();
+            $("#IssueProjectListLoading").pshow()
             createPlan_controller.getIssueProjectList(_that.getIssueProjectListArgu).then(function (res) {
                 _that.IssueProjectList = res;
+            }).finally(function () {
+                $("#IssueProjectListLoading").phide();
             })
         },
         submitToProjectAllBtn: function () {
@@ -419,29 +474,29 @@ v.pushComponent({
             var _that = this;
             _that.toProjectArgu.project_ids = _.map(_.filter(_that.IssueProjectList, { selected: true }), "project_id");
             // 如果选中的有值才提交
-            if(_that.toProjectArgu.project_ids.length){
+            if (_that.toProjectArgu.project_ids.length) {
 
-                if(_that.toProjectArgu.plan_freq_type=="2"){
+                if (_that.toProjectArgu.plan_freq_type == "2") {
                     $('#globalnotice').pshow({ text: '下发失败，请修改计划频率', state: 'failure' });
                     return;
                 }
 
-                if(_that.toProjectArgu.instantiated_object_flag!=1){
-                    $('#globalnotice').pshow({ text: '下发失败，请修改计划频率', state: 'failure' });
+                if (_that.toProjectArgu.instantiated_object_flag != 1) {
+                    $('#globalnotice').pshow({ text: '下发失败，请实例化全部对象', state: 'failure' });
                     return;
                 }
 
                 $("#globalWindow").pshow();
-                var now =new Date(+new Date()+(24*60*60*1000));
+                var now = new Date(+new Date() + (24 * 60 * 60 * 1000));
                 $("#xfstartTimesPtimeid").psel({
-                    y:now.getFullYear(),
-                    M:now.getMonth()+1,
-                    d:now.getDate(),
+                    y: now.getFullYear(),
+                    M: now.getMonth() + 1,
+                    d: now.getDate(),
                 });
                 $("#xfendTimesPtimeid").psel({
-                    y:now.getFullYear(),
-                    M:now.getMonth()+1,
-                    d:now.getDate(),
+                    y: now.getFullYear(),
+                    M: now.getMonth() + 1,
+                    d: now.getDate(),
                 })
 
                 // createPlan_controller.issueGroupPlanToWoPlan(_that.toProjectArgu).then(function () {
@@ -449,105 +504,130 @@ v.pushComponent({
                 // }).catch(function () {
                 //     $('#globalnotice').pshow({ text: '下发失败', state: 'failure' });
                 // })
-            };  
+            };
         },
         // 下发的年份选择时间
-        xfyearClick:function(item){
-            var _that=this;
-            _that.toProjectArgu.plan_start_time=item.plan_start_time;
-            _that.toProjectArgu.plan_end_time=item.plan_end_time;
+        xfyearClick: function (item) {
+            var _that = this;
+            _that.toProjectArgu.plan_start_time = item.plan_start_time;
+            _that.toProjectArgu.plan_end_time = item.plan_end_time;
         },
         // 起 下拉菜单事件
-        xfstartTimesClick:function(item){
-            var _that=this;
-            _that.toProjectArgu.plan_start_type=item.code;
-            _that.toProjectArgu.plan_start_time=item.value;
+        xfstartTimesClick: function (item) {
+            var _that = this;
+            _that.toProjectArgu.plan_start_type = item.code;
+            _that.toProjectArgu.plan_start_time = item.value;
 
             this.$nextTick(function () {
-                var now =new Date(+new Date()+(24*60*60*1000));
+                var now = new Date(+new Date() + (24 * 60 * 60 * 1000));
                 $("#xfstartTimesPtimeid").psel({
-                    y:now.getFullYear(),
-                    M:now.getMonth()+1,
-                    d:now.getDate(),
+                    y: now.getFullYear(),
+                    M: now.getMonth() + 1,
+                    d: now.getDate(),
                 });
             })
         },
         // 止 下拉菜单事件
-        xfendTimesClick:function(item){
-            var _that=this;
-            _that.toProjectArgu.plan_end_time=item.value;
+        xfendTimesClick: function (item) {
+            var _that = this;
+            _that.toProjectArgu.plan_end_time = item.value;
             this.$nextTick(function () {
-                var now =new Date(+new Date()+(24*60*60*1000));
+                var now = new Date(+new Date() + (24 * 60 * 60 * 1000));
                 $("#xfendTimesPtimeid").psel({
-                    y:now.getFullYear(),
-                    M:now.getMonth()+1,
-                    d:now.getDate(),
+                    y: now.getFullYear(),
+                    M: now.getMonth() + 1,
+                    d: now.getDate(),
                 })
             })
 
         },
         // 自定义开始时间控件点击事件
-        xfstartTimesPtime:function(item){
-            this.toProjectArgu.plan_start_time=item.pEventAttr.startTime.replace(/\-/g,"")+"000000";
+        xfstartTimesPtime: function (item) {
+            this.toProjectArgu.plan_start_time = item.pEventAttr.startTime.replace(/\-/g, "") + "000000";
         },
         // 自定义结束时间控件点击事件
-        xfendTimesPtime:function(item){
-            this.toProjectArgu.plan_end_time=item.pEventAttr.startTime.replace(/\-/g,"")+"235959";
+        xfendTimesPtime: function (item) {
+            this.toProjectArgu.plan_end_time = item.pEventAttr.startTime.replace(/\-/g, "") + "235959";
         },
         // 提交下发按钮
-        submitClick:function(){
-            var _that=this;
+        submitClick: function () {
+            var _that = this;
+            var end = _that.toProjectArgu.plan_end_time;
+            var start = _that.toProjectArgu.plan_start_time;
+            if (end != '' && start >= end) { return }
             createPlan_controller.issueGroupPlanToWoPlan(_that.toProjectArgu).then(function () {
                 $('#globalnotice').pshow({ text: '下发成功', state: 'success' });
             }).catch(function () {
                 $('#globalnotice').pshow({ text: '下发失败', state: 'failure' });
             })
+        },
+
+
+
+        //取消二次弹窗
+        cancelWindows: function () {
+            $("#planCreateWindow").pshow({ title: '确定要取消吗？', subtitle: '取消后计划将不能保存！' });
+        },
+        cancelWindowsConfirm: function () {
+            this.cancelWindowsCancel();
+
+            setTimeout(function () {
+                window.createPlanCallback();
+                if ($("#id_validTypes")) {
+                    $("#id_validTypes").precover();
+                }
+            }, 500);
+
+        },
+        cancelWindowsCancel: function () {
+            $("#planCreateWindow").phide();
         }
+
     },
     computed: {
         base: function () {
             return this.$refs.baseinfomation;
         },
         // 下发选择的年份
-        xfyear:function(){
-            return _.range(2).map(function (item,index) {
+        xfyear: function () {
+            return _.range(2).map(function (item, index) {
 
-                var obj={
-                    name:index+new Date().getFullYear()+'年',
+                var obj = {
+                    name: index + new Date().getFullYear() + '年',
                 }
                 // 今年的选项
-                if(index==0){
+                if (index == 0) {
                     //第二天
-                    obj.plan_start_time=new Date(+new Date()+(24*60*60000)).format('yyyyMMdd000000');
-                }else{
-                    obj.plan_start_time=new Date(new Date().getFullYear()+"/01/01 00:00:00").format('yyyyMMdd000000');
+                    obj.plan_start_time = new Date(+new Date() + (24 * 60 * 60000)).format('yyyyMMdd000000');
+                } else {
+                    obj.plan_start_time = new Date(new Date().getFullYear() + "/01/01 00:00:00").format('yyyyMMdd000000');
                 }
-                obj.plan_end_time=new Date(new Date((new Date().getFullYear()+1+index)+"/01/01 00:00:00")-(24*60*60000)).format('yyyyMMdd235959');
+                obj.plan_end_time = new Date(new Date((new Date().getFullYear() + 1 + index) + "/01/01 00:00:00") - (24 * 60 * 60000)).format('yyyyMMdd235959');
                 return obj;
             })
         },
         // 下发开始时间选项
-        xfstartTimes:function(){
+        xfstartTimes: function () {
             return [{
-                name:"下发成功后第二天生效",
-                code:"1",
-                value:new Date(+new Date()+(24*60*60000)).format('yyyyMMdd000000'),
-            },{
-                name:"自定义",
-                code:"2",
-                value:new Date(+new Date()+(24*60*60000)).format('yyyyMMdd000000'),
+                name: "下发成功后第二天生效",
+                code: "1",
+                value: new Date(+new Date() + (24 * 60 * 60000)).format('yyyyMMdd000000'),
+            }, {
+                name: "自定义",
+                code: "2",
+                value: new Date(+new Date() + (24 * 60 * 60000)).format('yyyyMMdd000000'),
             }];
         },
         // 下发结束时间选项
-        xfendTimes:function(){
+        xfendTimes: function () {
             return [{
-                name:"一直有效",
-                code:"1",
-                value:'',
-            },{
-                name:"自定义",
-                code:"2",
-                value:new Date(+new Date()+(24*60*60000)).format('yyyyMMdd000000'),
+                name: "一直有效",
+                code: "1",
+                value: '',
+            }, {
+                name: "自定义",
+                code: "2",
+                value: new Date(+new Date() + (24 * 60 * 60000)).format('yyyyMMdd000000'),
             }];
         }
     },
@@ -597,6 +677,13 @@ v.pushComponent({
         controller.GeneralDict().then(function (res) {
             _that.WoTypeListAll = res;
         })
+
+        controller.queryGeneralDictByKey().then(function (res) {
+
+            _that.GeneralDictByKey = res.map(function (item) {
+                return item;
+            });
+        });
 
         var convertEnumBak = {
             plan_name: "group_plan_name",

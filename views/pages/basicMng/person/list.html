@@ -157,9 +157,10 @@
                         <column name="登录设备" source="login_device" width="20%"></column>
                         <column name="登录距离项目距离" source="distance+'km'" width="20%" sort="true" defaultsort="desc"></column>
                     </header>
-                    <!-- <page>
-                        <ppage-simple number="10" orientation="up"></ppage-simple>
-                    </page> -->
+                    <page>
+                       <ppage-full bind="true" id="'groupEventPage'" sel="selGroupEventPage"></ppage-full>
+                    </page>
+                    
                 </pgrid-multifunction>
                 <div v-show="personModel.loginInfoGrid.length == 0">
                     <pnotice-nodata text="暂无数据"></pnotice-nodata>

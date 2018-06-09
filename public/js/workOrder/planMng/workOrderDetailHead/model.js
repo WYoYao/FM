@@ -10,6 +10,6 @@ v.pushComponent({
         
     },
     beforeMount : function(){
-        this.workOrderDetailReady();
+        // this.workOrderDetailReady();
     }
 });

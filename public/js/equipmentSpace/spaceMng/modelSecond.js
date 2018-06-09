@@ -31,6 +31,8 @@ spaceInfoModel.instance = function () {
                 editFloatName: 'floor',
                 editMode: 'modify',//保存方式是  修改输入错误
                 
+                floorCodeArr:[],//楼层编码
+
                 //工单
                 curPage: '',
                 orderDetailData: {},
@@ -249,6 +251,7 @@ spaceInfoModel.instance = function () {
                     this.detailEditSign = true;
                     this.editFloatName = 'floor';
                     $("#floorCheckFloat .detailFloat").scrollTop(0);   //滚动条复位
+                    spaceInfoController.queryFloorIdentity();//获取楼层编码
                 },
                 spaceItemClick: function (event, item) {//房间模块的点击事件
                     event.stopPropagation();
@@ -328,6 +331,7 @@ function floorObj() {
     self.floor_sequence_id = '';
     self.BIMID = '';
     self.floor_type = '';
+    self.floor_identity = '';
     self.area = '';
     self.net_height = '';
     self.floor_func_type = '';

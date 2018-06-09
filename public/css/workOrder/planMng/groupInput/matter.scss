@@ -34,6 +34,13 @@
             color: $blue-font-color;
         }
 
+        & > .r{
+            color:initial;
+            position: relative;
+            margin-top: 6px;
+            margin-left: 6px;
+        }
+
         & > .percent{
             float: right;
             line-height: 30px;
@@ -85,6 +92,8 @@
         @include object{
             height: 66px;
         }
+
+        @include cirtext;
     }
 
     & > .group{

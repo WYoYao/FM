@@ -44,6 +44,10 @@ body {
   flex: 1;
   padding-left: 20px; }
 
+.bc {
+  color: #637e99;
+  cursor: pointer; }
+
 #app .toP {
   height: 500px;
   width: 400px; }
@@ -105,14 +109,15 @@ body {
       margin: 0px 10px; }
 #app .ctt {
   width: 500px;
-  height: 360px; }
+  height: 360px;
+  overflow: auto; }
   #app .ctt .tn {
     height: 100px;
     text-align: center;
     font-size: 24px;
-    line-height: 150px; }
+    line-height: 100px; }
   #app .ctt .ct {
-    height: 200px; }
+    height: 220px; }
     #app .ctt .ct > div {
       height: 50px;
       line-height: 50px;
@@ -121,12 +126,16 @@ body {
         width: 190px;
         vertical-align: middle;
         display: inline-block; }
+    #app .ctt .ct .err {
+      line-height: 14px; }
   #app .ctt .cb {
-    height: 90px;
+    height: 40px;
     text-align: center; }
     #app .ctt .cb > div {
       margin: 0 10px;
       display: inline-block; }
+#app #globalWindow .per-modal-global_x {
+  display: none; }
 #app .group_home {
   position: relative;
   background: #f8f8f8; }
@@ -135,7 +144,7 @@ body {
     margin-top: 10px;
     margin-right: 20px; }
     #app .group_home .header .left > div {
-      width: 140px; }
+      width: 200px; }
   #app .group_home .header .right {
     float: right;
     margin: 10px 0;
@@ -165,7 +174,7 @@ body {
           width: 100%;
           color: #000000; }
           #app .group_home .main .content .contenter .t_header .item:nth-last-child(1) {
-            flex: 1.4; }
+            flex: 2; }
         #app .group_home .main .content .contenter .t_body {
           max-height: calc(100% - 29px);
           width: 100%;
@@ -185,7 +194,7 @@ body {
               #app .group_home .main .content .contenter .t_body .info .item .ide .font {
                 margin-right: 10px; }
           #app .group_home .main .content .contenter .t_body .info .item:nth-last-child(1) {
-            flex: 1.4; }
+            flex: 2; }
           #app .group_home .main .content .contenter .t_body .info .item1 {
             color: #333333;
             line-height: 30px; }

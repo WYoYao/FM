@@ -20,7 +20,7 @@ function getCenterMonth(num,type){
     return date.getTime();
 }
 // 获取该月及上一个月的天数
-function getThisAndLastMonthDays(num){
+function getThisAndLastMonthDays(num,type){
     var a = dateTrim(new Date(num),true);    
     var month = a.getMonth();
     a.setDate(0);
@@ -29,7 +29,11 @@ function getThisAndLastMonthDays(num){
     a.setMonth(month + 1);
     a.setDate(0);
     var now = a.getDate();
-    return {last:last,this:now}
+    if(type){
+        return now
+    }else{
+        return {last:last,this:now}
+    }
 }
 
 // 数据处理流程控制
@@ -116,26 +120,28 @@ function dataControll(data){
 
     // 行数据转换
     function rowDataTransform(data){
+        
+        var days = v.instance.dateData.day.length;//页面显示天数总长度
+        // var cell = window.document.getElementById('getCellWidth').offsetWidth/v.instance.dateData.day.length;//单格宽度
+        var cell = (window.document.getElementById('getCellWidth').offsetWidth - v.instance.dateData.day.length + 1)/v.instance.dateData.day.length;//单格宽度
     
         data.forEach(function(plan){
     
             // 无工单计划补足
             plan.row == 0 ? plan.row = 1 : void 0;
             plan.rowData == [] ? plan.rowData = [[]] : void 0;
-            var days = v.instance.dateData.day.length;//页面显示天数总长度
-            var cell = window.document.getElementById('getCellWidth').offsetWidth/v.instance.dateData.day.length;//单格宽度
             plan.grid = [];
     
             for(var i=0;i<plan.row;i++){
                 plan.grid.push([]);
                 for(var a=0;a<days;a++){
-                    plan.grid[i].push({type:'none',id:null,width:1});
+                    plan.grid[i].push({type:null,id:null,width:1});
                 }
             }
     
             plan.rowData.forEach(function(row,index){
                 row.forEach(function(order){ 
-                    if(order){
+                    if(order && order.ask_start_time && order.ask_end_time){
                         var l = getDaysIndex(numToObj(order.ask_start_time));
                         var r = getDaysIndex(numToObj(order.ask_end_time));
                         if(l == r){
@@ -159,11 +165,12 @@ function dataControll(data){
             plan.grid.forEach(function(row){
                 row.forEach(function(grid,index){
                     if(Number(grid.width) === 1){
-                        grid.width = cell - 1;
+                        grid.width = cell; 
                     }else{
                         row.splice(index + 1,(grid.width));
-                        grid.width = (grid.width + 1)*cell - 1;
+                        grid.width = (grid.width + 1)*cell + grid.width;
                     }
+                    (row[index + 1]) || (grid.width = grid.width - 1);
                 })
             })
     
@@ -174,18 +181,18 @@ function dataControll(data){
 
     function getDaysIndex(obj){
         var time = JSON.parse(JSON.stringify(v.instance.dateData));
-        var min = numToObj(time.startTime);
-        var max = numToObj(time.endTime);
-        var mid = {m:new Date(v.instance.centerMonth).getMonth() + 1,d:time.day.length - 4};
-        var a;
-        if(obj.m == min.m){
-            a = obj.d == min.d ? 0 : 1;
-        }else if(obj.m == mid.m){
-            a = 1 + obj.d;
-        }else{
-            a = 1 + mid.d + (obj.d == max.d ? 2 : 1);
-        }
-        return a;
+        // var min = numToObj(time.startTime);
+        // var max = numToObj(time.endTime);
+        // var mid = {m:new Date(v.instance.centerMonth).getMonth() + 1,d:time.day.length - 4};
+        // if(obj.m == min.m){
+        //     a = obj.d == min.d ? 0 : 1;
+        // }else if(obj.m == mid.m){
+        //     a = 1 + obj.d;
+        // }else{
+        //     a = 1 + mid.d + (obj.d == max.d ? 2 : 1);
+        // }
+        // return a;
+        return obj.d - 1;
     }
 
     function numToObj(num){

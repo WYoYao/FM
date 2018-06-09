@@ -1,0 +1,296 @@
+<script type="text/html" id="sopdetail">
+<div class="sopDetailModal" id="sopDetailModal" @click.stop="goBackSopModal()">
+    <div class="sopDetailModal_box" @click.stop="">
+        <div class="sopDetailModal_title">
+            <h3 v-text="currentSopModal.sop_name" :title="currentSopModal.sop_name">SOP名称</h3>
+            <strong v-text="currentSopModal.version"></strong>
+            <span @click.stop="goBackSopModal()">
+                <i> x </i>
+            </span>
+        </div>
+        <div class="sop_detail_content_modal">
+            <div class="sop_detail_content_modal_top">
+                <div class="sop_detail_content_modal_top_con">
+                    <table>
+                        <tr>
+                            <td>编号</td>
+                            <td :title="currentSopModal.sop_id" v-text="currentSopModal.sop_id">AC001</td>
+                        </tr>
+                        <tr>
+                            <td>专业要求</td>
+                            <td :title="filterProfessionalDemand(currentSopModal.domains,professionalDemandList)" v-text="filterProfessionalDemand(currentSopModal.domains,professionalDemandList)">强电、弱电
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>所需工具</td>
+                            <td :title="filterUseTool(currentSopModal.tools)" v-text="filterUseTool(currentSopModal.tools)"></td>
+                        </tr>
+                        <tr>
+                            <td>工单类型</td>
+                            <td :title="filterProfessionalDemand(currentSopModal.order_type,jobTypeList)" v-text="filterProfessionalDemand(currentSopModal.order_type,jobTypeList)">维保、运行
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>适用对象</td>
+                            <td :title="filterUseObject(currentSopModal.fit_objs)" v-text="filterUseObject(currentSopModal.fit_objs)"></td>
+                        </tr>
+                        <tr>
+                            <td>型号</td>
+                            <td :title="filterModelsAndLabelsArr(currentSopModal.equip_models, 1)" v-text="filterModelsAndLabelsArr(currentSopModal.equip_models, 1)">型号1
+                            </td>
+                        </tr>
+                        <tr v-if="currentSopModal.project_id != 'group_sop_id'">
+                            <td>标签</td>
+                            <td :title="filterModelsAndLabelsArr(currentSopModal.labels)" v-text="filterModelsAndLabelsArr(currentSopModal.labels)">标签1
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>相关资料</td>
+                            <td>
+                                <a :href="items.url" target="_blank" v-for="items in currentSopModal.related_data" v-text="items.name" :title="items.name"></a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="sop_detail_content_modal_center">
+                <div class="sop_detail_content_modal_center_tit">
+                    <h3>
+                        <span>
+                            <img src="../images/sop_warning_icon.png" alt="">
+                        </span>
+                        <strong>以下内容待修订</strong>
+
+                    </h3>
+                </div>
+                <div class="sop_detail_content_modal_center_con">
+                    <div>
+                        <p>
+                            <span>2017-07-20 12:00 因建筑体1作废，此标准操作知识部分信息点受影响，待修订</span>
+                            <strong>忽略</strong>
+                        </p>
+                        <p>
+                            <span>2017-07-20 12:00 因建筑体1作废，此标准操作知识部分信息点受影响，待修订</span>
+                            <strong>忽略</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="sop_detail_content_modal_bottom">
+                <ul class="sop_detail_content_modal_bottom_tab">
+                    <li class="active">工作详情</li>
+                    <!-- <li @click="getSopAdduceList($event)">被<span>1</span>个SOP引用</li> -->
+                </ul>
+                <div class="sop_detail_content_modal_bottom_step">
+                    <div class="sop_detail_content_modal_bottom_step_box" v-for=" (items,index) in currentSopModal.steps">
+                        <div class="sop_detail_content_modal_bottom_step_tit">
+                            <p>步骤
+                                <span v-text="index + 1">1</span>
+                            </p>
+                        </div>
+                        <div class="sop_detail_content_modal_bottom_step_con" v-if="items.step_content != '' ">
+                            <div v-for="stepCon in items.step_content">
+                                <ul v-if="!stepCon.from_sop" class="sop_detail_content_modal_bottom_step_con_ul">
+                                    <li v-if="stepCon.content_objs && stepCon.content_objs.length">
+                                        <strong>对象选择：</strong>
+                                        <p>
+                                            <span v-for="content_obj in stepCon.content_objs" v-text="'@' + content_obj.obj_name + ' '" :class="content_obj.is_revise ? 'redMark' : ''"></span>
+                                            <em class="obj-scope-text" v-if="stepCon.obj_scope && stepCon.obj_scope.obj_id" v-text="stepCon.obj_scope.obj_name"></em>
+                                        </p>
+                                    </li>
+                                    <li v-if="stepCon.pre_conform">
+                                        <strong>强制确认操作前提：</strong>
+                                        <p v-text="stepCon.pre_conform"></p>
+                                    </li>
+                                    <li>
+                                        <strong>标准作业操作内容：</strong>
+                                        <!-- <p v-if="stepCon.content instanceof Array"><span v-for="step in stepCon.contentArr" v-text="step.content?step.content.char:''" :class="step.content && step.content.mark ? 'markRed' : ''"></span></p> -->
+                                        <!--
+                                        <p v-if="stepCon.contentArr&&stepCon.contentArr.length>0"><span
+                                                v-for="charObj in stepCon.contentArr" v-text="charObj.content.char"
+                                                :class="charObj.content.mark ? 'markRed' : ''"></span></p>
+                                        <p v-else><span v-text="stepCon.content"></span></p>
+-->
+                                        <p v-text="stepCon.content"></p>
+                                    </li>
+                                    <li v-if="stepCon.notice">
+                                        <strong>注意事项：</strong>
+                                        <p v-text="stepCon.notice"></p>
+                                    </li>
+                                    <li class="sop_detail_content_opera_result" v-if="stepCon.confirm_result.length">
+                                        <strong>需记录的操作结果：</strong>
+                                        <div class="sop_detail_content_opera_result_list">
+                                            <div v-for="(confirmObj, index1) in stepCon.confirm_result">
+                                                <div class="sop_detail_content_opera_result_list_nub">
+                                                    <span v-text="index1 + 1">1</span>.
+                                                </div>
+                                                <div class="sop_detail_content_opera_result_list_con">
+                                                    <div class="obj-parents-links">
+                                                        <span v-text="confirmObj.obj_name" :class="confirmObj.is_revise ? 'redMark' : ''">对象名称1</span>
+                                                        <em v-text="getParentsLinks(confirmObj.parents)"></em>
+                                                    </div>
+                                                    <div class="sop_detail_content_opera_result_list_con_info">
+                                                        <ul>
+                                                            <li v-for="info_point in confirmObj.info_points" v-text="info_point.name + $root.getExceptionDescription(info_point)" :class="info_point.is_revise ? 'redMark' : ''">信息点1
+                                                            </li>
+                                                        </ul>
+                                                        <ul v-if="confirmObj.customs &&confirmObj.customs.length >0 ">
+                                                            <li v-for="customs in confirmObj.customs" v-text="customs.name + $root.getExceptionDescription(customs)">信息点1
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="control-require-show">
+                                                <span v-show="isPhotoOrScan(stepCon.obj_required_control, 0)">在到达每个对象位置时拍照</span>
+                                                <span v-show="isPhotoOrScan(stepCon.obj_required_control, 1)">在到达每个对象位置时扫码</span>
+                                            </div>
+
+                                        </div>
+                                    </li>
+                                    <li v-if="stepCon.domain">
+                                        <strong>专业要求：</strong>
+                                        <p v-text="filterProfessionalTrans(stepCon.domain)"></p>
+                                    </li>
+                                </ul>
+                                <div v-if="stepCon.from_sop" class="sop_detail_content_modal_bottom_step_yr" @click="sopDetailModalShow(stepCon.sop_id,stepCon.version)">
+                                    <h3 :title="stepCon.sop_name" v-text="stepCon.sop_name">SOP名称</h3>
+                                    <ul>
+                                        <li>
+                                            版本：
+                                            <span v-text="stepCon.version">v1.0</span>
+                                        </li>
+                                        <li>
+                                            最后发布时间：
+                                            <span v-text="stepCon.update_time">2017-8-23</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script>
+    Vue.component('sopdetail', {
+        template: '#sopdetail',
+        data: function () {
+
+            return {
+                professionalDemandList: [],
+                jobTypeList: [],
+                currentSopModal: {}
+            }
+        },
+        props: ['sop_id', 'cb', 'version'],
+        methods: {
+            // 返回的回调
+            goBackSopModal: function () {
+                if (_.isFunction(this.cb)) this.cb();
+            },
+            //转换成父级链字符串形式
+            getParentsLinks: function (parents) {
+                if (!parents || !parents.length) return '';
+                var hasParents = false;
+                for (var i = 0; i < parents.length; i++) {
+                    if (parents[i].parent_ids && parents[i].parent_ids.length) {
+                        hasParents = true;
+                        break;
+                    }
+                }
+                if (!hasParents) return '';
+                var str = '(';
+                for (var i = 0; i < parents.length; i++) {
+                    str += parents[i].parent_names.join('-');
+                    if (i != parents.length - 1) str += '/';
+                }
+                return str + ')';
+            },
+            //所需工具过滤
+            filterUseTool: function (arr) {
+                arr = arr || [];
+                var newArr = [];
+                arr.forEach(function (item, index) {
+                    newArr.push(item.tool)
+                });
+                return (newArr.length > 1) ? newArr.join(' 、') : newArr.toString();
+            },
+            //专业要求匹配
+            filterProfessionalDemand: function (arr, arrObj) {
+                var arrResult = arrResult || [];
+                var arr = arr || [];
+                var arrObj = arrObj || [];
+                arr.forEach(function (item1, index1) {
+                    arrObj.forEach(function (item2, index2) {
+                        if (item1 == item2.code) {
+                            arrResult.push(item2.name)
+
+                        }
+                    });
+                });
+                return (arrResult.length > 1) ? arrResult.join(' 、') : arrResult.toString()
+            },
+            //适用对象过滤
+            filterUseObject: function (arr) {
+                arr = arr || [];
+                var newArr = [];
+                arr.forEach(function (item, index) {
+                    newArr.push(item.obj_name)
+                });
+                return (newArr.length > 1) ? newArr.join(' 、') : newArr.toString();
+            },
+            //型号和标签过滤
+            filterModelsAndLabelsArr: function (arr, type) {
+                arr = arr || [];
+                if (type == 1) {
+                    var text = '';
+                    for (var i = 0; i < arr.length; i++) {
+                        text += arr[i].equip_model_name + '、';
+                    }
+                    text.slice(0, text.length - 1);
+                    return text;
+                } else {
+                    return (arr.length > 1) ? arr.join(' 、') : arr.toString();
+                }
+            },
+            //判断是否为拍照或者扫码
+            isPhotoOrScan: function (requiredControlArr, typeIndex) {        //type: 1拍照、2扫码
+                // if (!requiredControlArr) requiredControlArr = [];
+                // return requiredControlArr.indexOf(commonData.controlRequireCodes[typeIndex]) > -1;
+                return true;
+            },
+            filterProfessionalTrans: function (str) {//专业要求键值转换
+                var obj = model.professionalObj;
+                return obj[str];
+            },
+        },
+        computed: {
+
+        },
+        watch: {
+
+        },
+        beforeMount: function () {
+            var _that = this;
+
+            controller.querySopDetailById({
+                sop_id: _that.sop_id,
+                version: _that.version,
+            }).then(function (res) {
+                _that.currentSopModal = res;
+            }).catch(function () {
+                // 失败直接吊回调
+                _that.goBackSopModal()
+            })
+        },
+        destroyed: function () {
+
+        }
+    })
+</script>

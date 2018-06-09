@@ -60,14 +60,16 @@
                 </div>
 
                 <div class="block" v-if="!addwork.robbing_flag">
-                    <ptext-text id="'execute_count_id'" placeholder="'请输入'" value="addwork.execute_count" text="'人'" bind="true">
+                    <ptext-text id="'execute_count_id'" placeholder="'请输入'" value="addwork.suggest_executor_num" text="'人'" bind="true">
+                        <verify errtip="只能为1位数" verifytype="Digits"></verify>
+                        <verify errtip="只能为数字" verifytype="pisNumber"></verify>
                     </ptext-text>
                 </div>
 
                 <div class="block" v-if="addwork.robbing_flag">
-                    <ptext-text id="'execute_count_id'" placeholder="'请输入'" value="addwork.execute_count" text="'人'" bind="true">
+                    <ptext-text id="'execute_count_id'" placeholder="'请输入'" value="addwork.suggest_executor_num" text="'人'" bind="true">
                         <verify errtip="不可为空" verifytype="space"></verify>
-                        <verify errtip="只能为自然数" verifytype="ZInteger"></verify>
+                        <verify errtip="只能为1位数" verifytype="Digits"></verify>
                     </ptext-text>
                 </div>
             </div>
@@ -176,7 +178,8 @@
 
                 <!-- 事项 Start -->
                 <template v-for="(item,index) in matters">
-                    <matter :matter="item" :views="mattersViews[index]" :candelete="matters.length>1" :delete="deleteMatter" :ref="'matter' + index">
+                    <matter :matter="item" :views="mattersViews[index]" :candelete="matters.length>1" :delete="deleteMatter" :workorder="addwork.order_type"
+                        :generaldictbykey="_.cloneDeep(GeneralDictByKey)" :ref="'matter' + index">
                         <matter/>
                 </template>
                 <!-- 事项 End -->
@@ -200,12 +203,16 @@
         </div>
 
         <div>
-            <pbutton-blue text="发布"></pbutton-blue>
+            <pbutton-blue bind="true" id="'addWorkCommit'" text="'发布'" :pdisabled="argu.error"  @click.capture="submit"></pbutton-blue>
         </div>
 
-        <div class="ff">
-            工单将会发给：人员A，人员b
-            <u @click.stop="showPersonTree=!showPersonTree">我要修改</u>
+        <div class="ff" v-if="!v.instance.addwork.robbing_flag">
+            <section>工单将会发给：
+                <span :title="argu.sendPersonName" :class="{error:argu.error}" v-text="argu.sendPersonName"></span>
+                <u @click.stop="showPersonTree=!showPersonTree">我要修改</u>
+            </section>
+           
+            
             <div class="block" v-show="showPersonTree">
                 <persontree :datasource="persons" :cb="getPersions" :cc="cc" />
             </div>

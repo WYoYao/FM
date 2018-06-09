@@ -8,7 +8,7 @@
                 <div class="monitor-content-list-header">
                     <div class="timeWrap">
                         <span>创建时间</span>
-                           <ptime-calendar id="divCalendar" orientation="down" sel="workOrderEvent.selEventsTime">
+                           <ptime-calendar id="workOrderCalendar" orientation="down" sel="workOrderEvent.selEventsTime">
                                   <panel timetype="d" align="left" double="true" startyear="2000" endyear="2028" iscommontime="false" ></panel>
                             </ptime-calendar>
                     </div>                  
@@ -87,15 +87,17 @@
                                 <div class="table-header-summary"><span>工作事项</span></div>
                             </div>
                             <div class="monitor-table-body">
-                                <div class="tr" v-for="item in workOrderMngModel.workList" @click="openOrderDetail_workOrderManage(item)">
-                                    <div class="table-header-create" :title="item.create_time"><span v-text="item.create_time"></span></div>
-                                    <div class="table-header-type" :title="item.order_type_name"><span v-text="item.order_type_name"></span></div>
-                                    <div class="table-header-state" :title="item.order_state_name"><span v-text="item.order_state_name"></span>
-                                        <!-- <span class="self-state" v-if="item.custom_state_name != '--'" v-text="item.custom_state_name"></span> -->
-                                    </div>  
-                                  
-                                    <div class="table-header-summary" :title="item.summary"><span v-text="item.summary"></span></div>
+                                <div>
+                                    <div class="tr" v-for="item in workOrderMngModel.workList" @click="openOrderDetail_workOrderManage(item)">
+                                        <div class="table-header-create" :title="item.create_time"><span v-text="item.create_time"></span></div>
+                                        <div class="table-header-type" :title="item.order_type_name"><span v-text="item.order_type_name"></span></div>
+                                        <div class="table-header-state" :title="item.order_state_name"><span v-text="item.order_state_name"></span>
+                                            <!-- <span class="self-state" v-if="item.custom_state_name != '--'" v-text="item.custom_state_name"></span> -->
+                                        </div>  
+                                    
+                                        <div class="table-header-summary" :title="item.summary"><span v-text="item.summary"></span></div>
 
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -5,7 +5,9 @@ v.pushComponent({
     name: "workOrderDetail",
     data: {
         // 工单详情数据
-        orderDetailData: {},
+        orderDetailData: {
+            place: []
+        },
         // 添加工具保存数组
         toolarr: [],
         // 是否显示添加工具
@@ -13,12 +15,12 @@ v.pushComponent({
     },
     methods: {
         // 查看工单详情 ,id工单id，name，name为"workOrderDetail",path在计划模块中使用，其他模块不需要传
-        openWorkOrderDetail : function(id,name,path){
-            if(!id){
+        openWorkOrderDetail: function (id, name, path) {
+            if (!id) {
                 console.log("请携带工单ID");
                 return
             };
-            v.instance.cache.workOrderId = id;
+            v.instance.cache = { workOrderId: id }
             path ? v.instance.cache.name = path : void 0;
             v.initPage(name);
             v.instance.workOrderDetailReady();
@@ -27,11 +29,46 @@ v.pushComponent({
         workOrderDetailReady: function () {
             var that = this;
             $("#workOrderDetailLoad").pshow();
+            console.log(this.cache);
             PMA.OD({ order_id: that.cache.workOrderId }, function (data) {
-                that.orderDetailData = JSON.parse(JSON.stringify(data.work_order.wo_body || {}));
-                that.orderDetailData.wo_exec_controls && that.orderDetailData.wo_exec_controls.length != 0 && that.orderDetailData.wo_exec_controls.forEach(function(item){
+                // that.orderDetailData = JSON.parse(JSON.stringify(data.work_order.wo_body || {}));
+                that.orderDetailData = JSON.parse(JSON.stringify(data));
+                
+                that.orderDetailData.wo_exec_controls && that.orderDetailData.wo_exec_controls.length != 0 && that.orderDetailData.wo_exec_controls.forEach(function (item) {
                     item.type = that.getWorkOrderCheckType(item.control_code);
                 });
+
+                if (that.orderDetailData.pit_positions && that.orderDetailData.pit_positions.length > 0) {
+                    var arr = [];
+                    that.orderDetailData.pit_positions.forEach(function (item, index) {
+                        if (item.pit_position_ask_names) {
+                            if (item.pit_position_ask_names.length == 1) {
+                                arr.push({ name: (item.pit_position_ask_names).toString() })
+                            }
+                            if (item.pit_position_ask_names.length > 1) {
+                                arr.push({ name: (item.pit_position_ask_names.join('、')).toString() });
+                            }
+
+                        }
+                    })
+                    console.log(arr);
+                    if (arr.length > 0) {
+                        that.orderDetailData.place = JSON.parse(JSON.stringify(arr));
+                    }
+                }
+
+                // that.orderDetailData.matters.forEach(function(item){
+                //     item.matter_steps.forEach(function(step){
+                //         step.forEach(function(feed){
+                //             if(feed.confirm_result){
+                //                 var arr = feed.confirm_result.map(function(x){
+
+                //                 })
+                //             }
+                //         })
+                //     })
+                // })
+
             }, function () {
                 that.orderDetailData = {};
             }, function () {
@@ -51,10 +88,10 @@ v.pushComponent({
         getWorkOrderCheckType: function (str) {
             str = str || "";
 
-            if(str == 'stop'){
-                return {state:'stop',type:'stop'};
+            if (str == 'stop') {
+                return { state: 'stop', type: 'stop' };
             }
-            
+
             var obj = {};
             if (str.search('apply') !== -1) {
                 obj.state = 'apply';
@@ -101,8 +138,10 @@ v.pushComponent({
                     t.slice(0, 1) === ',' ? t = t.slice(1) : void 0;
                     return t;
                 }, "");
-            } else {
+            } else if (b) {
                 return (b.join(u + ',') + u);
+            } else {
+                return "";
             }
         },
         createSureInfoWO: function (model) {
@@ -112,29 +151,45 @@ v.pushComponent({
                     str = model.name;
                     break
                 case '2':
-                    str = model.name + "(异常范围 : " + model.wrongs.join(",") + ")";
+                    str = model.wrongs ? model.name + "(异常范围 : " + model.wrongs.join(",") + ")" : mode.name;
                     break
                 case '3':
-                    str = model.name + "(异常范围 : " + model.wrongs.join(",") + ")";
+                    str = model.wrongs ? model.name + "(异常范围 : " + model.wrongs.join(",") + ")" : model.name;
                     break
                 case '4':
-                    str = model.name + "(异常范围 : " + this.createInfoWrongWO(model.wrong_ranges, model.wrongs, "") + ")";
+                    str = model.name + "(异常范围 : " + this.createInfoWrongWO(model.wrong_ranges, model.wrongs, model.unit || "") + ")";
                     break
                 case '5':
-                    str = model.name + "(异常范围 : " + this.createInfoWrongWO(model.wrong_ranges, model.wrongs, model.unit) + ")";
+                    str = model.name + "(异常范围 : " + this.createInfoWrongWO(model.wrong_ranges, model.wrongs, model.unit || "") + ")";
                     break
             }
             return str;
         },
         getPreview: function (argu) {
             var _that = this;
-            controller.getWoMattersPreview(argu).then(function (res) {
+            controller.getWoMattersWorkOrderPreview({
+                draft_matters: argu
+            }).then(function (res) {
 
-                _that.argu.preview = res;
-                _that.queryPersonListByPositionIdsArgu.domain_list = res.domain_lis;
+                _that.argu.preview = res.matters;
+                _that.queryPersonListByPositionIdsArgu.domain_list = res.domain_list;
+
                 controller.queryPersonListByPositionIds(_that.queryPersonListByPositionIdsArgu).then(function (res) {
-                    _that.persons = res;
-                    // console.log(res);
+                    if (res && res.length > 0) {
+                        _that.persons = res.map(function (item) {
+                            item.selected = true;
+                            item.persons.map(function (info) {
+                                info.selected = true;
+                                v.instance.argu.next_person_ids.push(info);
+                                return info;
+                            })
+                            return item;
+                        });
+
+                        v.instance.argu.next_person_ids;
+                        console.log(v.instance.argu.next_person_ids);
+                    }
+
                 })
 
                 _that.isShowAddTool = true;
@@ -143,9 +198,32 @@ v.pushComponent({
 
 
                 _that.orderDetailData = JSON.parse(JSON.stringify(res)) || {};
-                _that.orderDetailData.wo_exec_controls.forEach(function (item) {
-                    item.type = that.getWorkOrderCheckType(item.control_code);
-                });
+                //判断是否添加选择坑位数组
+                if (_that.addwork.pit_positions && _that.addwork.pit_positions.length > 0) {
+                    var arr = [];
+                    _that.addwork.pit_positions.forEach(function (item, index) {
+                        if (item.pit_position_ask_names) {
+                            if (item.pit_position_ask_names.length == 1) {
+                                arr.push({ name: (item.pit_position_ask_names).toString() })
+                            }
+                            if (item.pit_position_ask_names.length > 1) {
+                                arr.push({ name: (item.pit_position_ask_names.join('、')).toString() });
+                            }
+
+                        }
+                    })
+                    console.log(arr);
+                    if (arr.length > 0) {
+                        _that.orderDetailData.place = JSON.parse(JSON.stringify(arr));
+                    }
+
+                }
+
+                if (_.isArray(_that.orderDetailData.wo_exec_controls)) {
+                    _that.orderDetailData.wo_exec_controls.forEach(function (item) {
+                        item.type = that.getWorkOrderCheckType(item.control_code);
+                    });
+                }
             }).catch(function () {
                 _that.orderDetailData = {};
             })

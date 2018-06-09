@@ -52,8 +52,8 @@
 
 .aite-bubble.point {
   position: absolute;
-  top: 20px;
-  left: 0;
+  top: 10px;
+  left: 86px;
   z-index: 15;
   width: 360px;
   height: 450px;

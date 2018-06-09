@@ -20,8 +20,8 @@ v.pushComponent({
             if (_.isPlainObject(item)) _that.queryWoListArgu.order_state = item.code;
 
             $("#workOrderListLoad").pshow();
-            controller.queryWoListByPlanId({ plan_id: _that.queryWoListArgu.planId, order_state: _that.queryWoListArgu.order_state,project_id: _that.queryWoListArgu.project_id}).then(function (data) {
-                _that.workOrderListData = JSON.parse(JSON.stringify(data.Content));
+            controller.queryWoListByPlanId({ plan_id: _that.queryWoListArgu.planId, order_state: _that.queryWoListArgu.order_state, project_id: _that.queryWoListArgu.project_id }).then(function (data) {
+                _that.workOrderListData = JSON.parse(JSON.stringify(data));
 
                 $("#workOrderListLoad").phide();
             }).catch(function (err) {
@@ -29,18 +29,7 @@ v.pushComponent({
                 _that.workOrderListData = [];
 
                 $("#workOrderListLoad").phide();
-
-                //测试用假数据，后面需要删除
-                _that.workOrderListData = _.range(_.random(10, 100)).map(index => {
-                    return {
-                        "order_id": "工单id" + index,                 //工单id
-                        "summary": "工单概述,事项名称的串连" + index,               //工单概述,事项名称的串连
-                        "create_time": new Date().format('yyyyMMddhhmmss'),   //创建时间，yyyyMMddhhmmss
-                        "close_time": new Date().format('yyyyMMddhhmmss'),    //结束时间，yyyyMMddhhmmss
-                        "participants": "张三，李四",        //参与人/操作人，用"，"隔开
-                        "order_state_name": "工单状态名称" + index          //工单状态名称         
-                    }
-                })
+                
             })
         }
     },
@@ -56,7 +45,7 @@ v.pushComponent({
         _that.queryWoListArgu = {
             order_state: _that.cache.order_state,
             planId: _that.cache.planId,
-            project_id:project_id,
+            project_id: _that.cache.project_id,
         };
 
         _that.selWorkOrderState();

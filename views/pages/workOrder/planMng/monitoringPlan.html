@@ -12,13 +12,6 @@
 
                 <!-- 搜索面板Start  -->
                 <div class="search_view">
-                    <!-- <span class="font">项目是否引用集团计划：</span> -->
-                    <!-- <div class="cbx">
-                        <pcombobox-normal sel="">
-                            <header placeholder="全部"></header>
-                            <item datasource="[]" text="name"></item>
-                        </pcombobox-normal>
-                    </div> -->
                     <span class="font">项目是否更新集团计划：</span>
                     <div class="cbx comboMark" @click.capture="fakerClick(event)">
                         <pcombobox-normal sel="createGroupOrderGrid" bind="true" id="'isUpdateGroupPlan'">
@@ -41,10 +34,9 @@
 
                 <!-- 状态栏 Start -->
                 <div class="status_view">
-                    集团维保计划
-
+                    <div class="name MT" v-text="group_plan_name" :title="group_plan_name"></div>
                     <span class="total_count">
-                        目前有{{notCitePlanList.length}}个项目未引用该计划
+                        目前有<i v-text="notCitePlanList.length"></i>个项目未引用该计划
                         <div class="hoverList">
                             <div>未引用集团计划项目</div>
                             <ul>
@@ -101,38 +93,39 @@
 
                 <!-- 表体 Start -->
                 <div class="t_bodyer">
-                    
+
                     <ploading-part id='moniPlanLoading' text="加载中..."></ploading-part>
 
                     <!-- 行 Start -->
-                    <template v-for="item in monitoringGrid">
+                    <div class="line" v-for="item in monitoringGrid">
 
-                        <div class="line">
+                        <div class="body_name" v-text="item.project_name" :title="item.project_name" @click="openPlanDetail(item)"></div>
+                        <div class="body_name" v-text="item.is_update_group_plan == 1 ? '已更新' : '未更新'" :title="item.is_update_group_plan == 1 ? '已更新' : '未更新'"></div>
+                        <div class="body_name pointer" @click.stop="queryOrderManage(item.plan_id,'',item.project_id)" v-text="item.create_wo_total"
+                            :title="item.create_wo_total"></div>
+                        <div class="body_name" v-text="item.uncreate_wo_total" :title="item.uncreate_wo_total"></div>
+                        <div class="body_name pointer" @click.stop="queryOrderManage(item.plan_id,'5',item.project_id)" v-text="item.executing_wo_total"
+                            :title="item.executing_wo_total"></div>
+                        <div class="body_name pointer" @click.stop="queryOrderManage(item.plan_id,'8',item.project_id)" v-text="item.finished_wo_total"
+                            :title="item.finished_wo_total"></div>
 
-                            <div class="body_name" v-text="item.project_name" :title="item.project_name" @click="openPlanDetail(item)"></div>
-                            <div class="body_name" v-text="item.is_update_group_plan == 1 ? '已更新' : '未更新'" :title="item.is_update_group_plan == 1 ? '已更新' : '未更新'"></div>
-                            <div class="body_name pointer" @click.stop="queryOrderManage(item.plan_id,'',item.project_id)" v-text="item.create_wo_total" :title="item.create_wo_total"></div>
-                            <div class="body_name" v-text="item.uncreate_wo_total" :title="item.uncreate_wo_total"></div>
-                            <div class="body_name pointer" @click.stop="queryOrderManage(item.plan_id,'5',item.project_id)" v-text="item.executing_wo_total" :title="item.executing_wo_total"></div>
-                            <div class="body_name pointer" @click.stop="queryOrderManage(item.plan_id,'8',item.project_id)" v-text="item.finished_wo_total" :title="item.finished_wo_total"></div>
-
-                            <ul class="row">
-                                <li v-for="row in item.grid" class="item">
-                                    <div v-for="(grid,ind) in row" :style="{'flex':grid.width}" :title="(_.find(allOrderState,{code:grid.type}) || {}).name">
-                                        <div v-if="grid.type != 'none'" class="pointer" @click="openWorkOrderDetail(grid.id,'workOrderDetailHead','工单详情')">
-                                            <div v-show="grid.type == ''"></div>
-                                            <img v-show="grid.type != ''" :src=" '../../../../images/orderState/' + grid.type + '.png'" alt="">
-                                        </div>
+                        <ul class="row">
+                            <li v-for="row in item.grid" class="item">
+                                <div v-for="(grid,ind) in row" :style="{'flex':grid.width}" :title="(_.find(allOrderState,{code:grid.type}) || {}).name">
+                                    <div v-if="grid.type != null" class="pointer" @click="openWorkOrderDetail(grid.id,'workOrderDetailHead','工单详情')">
+                                        <div v-show="grid.type == ''"></div>
+                                        <img v-show="grid.type != ''" :src=" '../../../../images/orderState/' + grid.type + '.png'" alt="">
                                     </div>
-                                </li>
-                            </ul>
+                                </div>
+                            </li>
+                        </ul>
 
-                        </div>
-
-                    </template>
+                    </div>
                     <!-- 行 End -->
 
                 </div>
+
+                <pnotice-nodata v-if="!monitoringGrid.length" text="暂无数据" subtitle=""></pnotice-nodata>
                 <!-- 表体 End -->
             </div>
         </div>

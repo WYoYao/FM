@@ -356,6 +356,13 @@
 	width: calc(100% - 360px);
 	height: 100%;
 	border-left: 1px solid #d9e2e8;
+	position: relative;
+}
+.planCreate_page_con_rig_shadow{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 2;
 }
 .planCreate_page_con_rig  > div{
 	width: 100%;

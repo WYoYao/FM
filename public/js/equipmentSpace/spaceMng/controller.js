@@ -99,7 +99,9 @@ spaceInfoController.queryFloorById = function (fitem) { //根据id查询楼层�
         success: function (res) {
             // $("#globalloading").phide();
             data = res || {};
+            data.floor_identity=data.floor_identity?codeFunSel(instance.floorCodeArr,data.floor_identity):'';
             instance.floorDetail = data;
+          
         },
         error: function (errObj) {
             console.error('queryFloorById err');
@@ -785,6 +787,25 @@ spaceInfoController.updateSpaceInfo = function (changeTime, ftype, fvalue, cb) {
             console.error('updateSpaceInfo err');
             $("#globalnotice").pshow({ text: "修改信息失败！", state: "failure" });
             instance.spaceDetail = JSON.parse(JSON.stringify(spaceInfoController.editDetailCopy));//还原 
+        },
+        complete: function () {
+
+        }
+    });
+}
+//获取楼层编码
+spaceInfoController.queryFloorIdentity = function () { 
+    var instance = spaceInfoModel.instance();
+    pajax.post({
+        url: 'restFloorService/getFloorIdentity',
+        data: {},
+        success: function (res) {
+            res=res||{};
+            var data=res.data||[];
+            instance.floorCodeArr=data;
+        },
+        error: function (errObj) {
+            console.error('queryFloorIdentity err');
         },
         complete: function () {
 

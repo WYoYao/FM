@@ -1,6 +1,7 @@
 <!-- <script src="../js/workOrder/planMng/planManage/controller.js"></script> -->
 <script src="../js/workOrder/planMng/workOrderDetail/model.js"></script>
 <script src="../js/workOrder/planMng/workOrderDetail/event.js"></script>
+<script src="../js/workOrder/planMng/term/controller.js"></script>
 
 <link rel="stylesheet" href="../css/workOrder/planMng/term/workOrderDetail.css">
 
@@ -31,12 +32,12 @@
                 <div class="key1 key2">工单紧急程度</div>
                 <div class="value2 MT" v-text="orderDetailData.urgency"></div>
                 <div class="key1 key2">建议执行人数</div>
-                <div class="value2 MT" v-text="orderDetailData.order_type_name"></div>
+                <div class="value2 MT" v-text="orderDetailData.execute_count || 0"></div>
             </div>
 
             <div class="place clear" v-if="orderDetailData.place && _.isArray(orderDetailData.place) && orderDetailData.place.length">
                 <div v-for="(item,index) in orderDetailData.place">
-                    <div v-text="'位置' + index"></div>
+                    <div v-text="'位置' + (index+1)"></div>
                     <div class="MT" v-text="item.name"></div>
                 </div>
             </div>
@@ -50,10 +51,9 @@
                 <div class="value2 MT" v-text="orderDetailData.ask_end_limit"></div>
                 <div class="key2 key1">要求结束时间</div>
                 <div class="value2 MT" v-text="orderDetailData.ask_end_time ? timeFormat(orderDetailData.ask_end_time,'0') : ''"></div>
-
             </div>
 
-            <div class="normal">
+            <div class="normal" v-if="(orderDetailData.required_tools && orderDetailData.required_tools.length) || isShowAddTool">
                 <div class="key1">所需工具</div>
                 <div class="MT" v-text="workOrderArrToString(orderDetailData.required_tools)"></div>
                 <span class="tool" v-if="isShowAddTool" v-for="(item,index) in toolarr">
@@ -92,8 +92,8 @@
                     <!-- 左侧列表 -->
                     <div class="left">
 
-                        <div class="summarize">
-                            <div>事件概述：</div>
+                        <div class="summarize" v-if="index2 == 0">
+                            <div>事项概述：</div>
                             <div class="MT" v-text="matter_steps.description"></div>
                         </div>
 
@@ -135,11 +135,11 @@
                                                 <i v-if="parents.parent_names && parents.parent_names.length">)</i>
                                             </span>
                                         </div>
-                                        <div v-for="confirm_result in steps.confirm_result">
-                                            <i v-for="info_points in confirm_result.info_points" v-text="info_points.name + (createInfoWrongWO(info_points.wrong_ranges,info_points.wrongs,info_points.unit) != '' ?
-                                            ' (异常范围：' + createInfoWrongWO(info_points.wrong_ranges,info_points.wrongs,info_points.unit) + ')' : '')"></i>
-                                            <!-- <i v-for="info_points in confirm_result.info_points" v-text="info_points.name + ' (异常范围：' + createInfoWrongWO(info_points.wrong_ranges,info_points.wrongs,info_points.unit) + ')'"></i>
-                                            <i v-for="customs in confirm_result.customs" v-text="createSureInfoWO(customs)"></i> -->
+                                        <div v-for="confirm_result in steps.confirm_result" v-if="(confirm_result.info_points && confirm_result.info_points.length) || (confirm_result.customs && confirm_result.customs.length)">
+                                            <i v-for="info_points in confirm_result.info_points" v-text="(info_points.wrong_ranges || info_points.wrongs) ? info_points.name + (createInfoWrongWO(info_points.wrong_ranges,info_points.wrongs,info_points.unit) != '' ?
+                                            ' (异常范围：' + createInfoWrongWO(info_points.wrong_ranges,info_points.wrongs,info_points.unit) + ')' : '') : info_points.name"></i>
+                                            <!-- <i v-for="info_points in confirm_result.info_points" v-text="info_points.name + ' (异常范围：' + createInfoWrongWO(info_points.wrong_ranges,info_points.wrongs,info_points.unit) + ')'"></i> -->
+                                            <i v-for="customs in confirm_result.customs" v-text="createSureInfoWO(customs)"></i>
                                         </div>
                                     </li>
                                     
@@ -156,8 +156,8 @@
 
                     <!-- 右侧列表 -->
                     <div class="right">
-                        <div class="rig_box" v-for="(feedback,index4) in matter_steps.feedback">
-                            <ul class="rig_box_list">
+                        <div class="box clear" v-for="(feedback,index4) in matter_steps.feedback">
+                            <!-- <ul class="rig_box_list">
                                 <li v-if="!feedback.confirm_result">
                                     <h4>
                                         <span v-if="feedback.step_sequence" v-text="feedback.step_sequence + ','"></span>
@@ -192,12 +192,40 @@
                                         </i>
                                     </h4>
                                 </li>
-                            </ul>
+                            </ul> -->
+                            <!-- 序号 -->
+                            <div v-text="feedback.step_sequence" class="num"></div>
+                            <!-- 前提确认 -->
+                            <div v-if="feedback.pre_conform_result" v-text="feedback.pre_conform_result"></div>
+                            <!-- 反馈描述 -->
+                            <div v-if="feedback.description" v-text="feedback.description"></div>
+                            <!-- 信息点 -->
+                            <div v-if="feedback.confirm_result" class="infos">
+                                <div v-for="item5 in feedback.confirm_result" class="clear">
+                                    <div v-if="item5.info_points" v-for="(info,index5) in item5.info_points" v-text="info.name + info.value + info.unit + (index5 != item5.info_points.length - 1 ? '，' : item5.customs && item5.customs.length ? '，' : '')"></div>
+                                    <div v-if="item5.customs" v-for="(custom,index6) in item5.customs">
+                                        <i v-if="custom.type == 1" v-text="custom.name + custom.content + (index6 != item5.customs.length -1 ? '，' : '')"></i>
+                                        <i v-if="custom.type == 2" v-text="custom.name + custom.item + (index6 != item5.customs.length -1 ? '，' : '')"></i>
+                                        <i v-if="custom.type == 3" v-text="custom.name + custom.items.join(',') + (index6 != item5.customs.length -1 ? '，' : '')"></i>
+                                        <i v-if="custom.type == 4" v-text="custom.name + custom.value + custom.unit + (index6 != item5.customs.length -1 ? '，' : '')"></i>
+                                        <i v-if="custom.type == 5" v-text="custom.name + custom.value + custom.unit + (index6 != item5.customs.length -1 ? '，' : '')"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 确认结果 -->
+                            <div v-if="feedback.step_finish" v-text="'已完成'"></div>
+                            <!-- 图片 -->
+                            <div v-if="feedback.photos && feedback.photos.length" v-for="photo in feedback.photos" class="photo">
+                                <img src="photo" alt="">
+                            </div>
                         </div>
-                        <div class="rig_box_operatPerson">
-                            <div>操作人：</div>
-                            <p v-for="executors in matter_steps.executors" v-text="executors"></p>
+
+
+                        
+                        <div class="operatPerson" v-if="matter_steps.executors && matter_steps.executors.length">
+                            <div v-text="'操作人:' + ((matter_steps.executors && matter_steps.executors.length) ? matter_steps.executors.join(',') : matter_steps.executors)"></div>
                         </div>
+
                     </div>
 
                 </div>
