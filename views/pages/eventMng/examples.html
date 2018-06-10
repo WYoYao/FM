@@ -1,0 +1,73 @@
+<script type="text/html" id="examples">
+
+    <div class="examples">
+        <div class="eheader" v-text='systemname'></div>
+        <div class="ebody">
+            <div class="item" v-for="(item,index) in list" @click="item.selected=!item.selected">
+                <div class="text" v-text="item.obj_name" :title="item.obj_name"></div>
+                <div class="pcheckbox">
+                    <span class="pcheckbox_input" :class="item.selected?'pcheckbox-checked' : ''"></span>
+                    <span class="pswitch_label"></span>
+                </div>
+            </div>
+            <pnotice-nodata v-show="!list.length" text="暂无数据" subtitle="哎呀，什么都没有找到！"></pnotice-nodata>
+        </div>
+        <div class="ebottom">
+            <div class="btn">
+                <pbutton-blue text="确定"></pbutton-blue>
+            </div>
+        </div>
+    </div>
+
+</script>
+
+<script>
+    Vue.component('examples', {
+        template: '#examples',
+        data: function () {
+
+            return {
+                loading:false,
+                list: [],
+            }
+        },
+        props: ['systemname', 'obj_id', 'obj_type','cb','objs'],
+        methods: {
+            // 确定的回调
+            submit:function(){
+                
+                if(_.isFunction(this.cb)){
+                    this.cb(_.filter(this.list,{selected:true}));
+                }
+            }
+        },
+        computed: {
+
+        },
+        watch: {
+
+        },
+        // 加载查询
+        beforeMount: function () {
+            var _that = this;
+            //  创建组件的时候查询对应的数据源
+            controller.queryObjectByClass({
+                obj_id: _that.obj_id,
+                obj_type: _that.obj_type,
+            }).then(function (res) {
+                
+                var ids= _.isArray(_that.objs)?_.map(_that.objs,'obj_id'):[];
+
+                // 根据传入的已选数据把已选的对象状态修改为已选
+                res.forEach(function (item) {
+                    item.selected= ids.indexOf(item.obj_id)!=-1;
+                });
+
+                _that.list=res;
+            })
+        },
+        destroyed: function () {
+
+        }
+    })
+</script>

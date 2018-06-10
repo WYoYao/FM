@@ -48,6 +48,8 @@
             <link rel="stylesheet" href="/css/workOrder/planMng/group/addcontent.css">
             <link rel="stylesheet" href="/css/workOrder/planMng/group/point.css">
             <link rel="stylesheet" href="/css/workOrder/planMng/group/matter.css">
+            <link rel="stylesheet" href="/css/workOrder/planMng/group/examples.css">
+            
             <% include ../../eventMng/matter.html %>
                 <% include ../../eventMng/aite.html %>
                     <%include ../../eventMng/hashtag.html %>
@@ -55,6 +57,7 @@
                             <%include ../../eventMng/addinfo.html %>
                                 <%include ../../eventMng/point.html %>
                                     <%include ../../eventMng/Multiple.html %>
+                                    <% include ../../eventMng/examples.html %>
 
                                         <!--  创建的计划每个事项 End -->
 
@@ -102,6 +105,9 @@
                                                 </pwindow-confirm>
                                                 
                                                 <div id="shadow_global"></div>
+                                                <div id="leo">
+                                                    <examples :systemname="'123123'" :obj_id="'TD'" :obj_type="'system_class'"><examples/>
+                                                </div>
 
                                         </div>
                                         <pwindow-confirm id="planCreateWindow">

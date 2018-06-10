@@ -76,3 +76,9 @@ $blacker-font-color:#333333;
     zoom: 1;
 }
 
+@mixin textover{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+

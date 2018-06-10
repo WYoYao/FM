@@ -1,5 +1,13 @@
 controller.push([
     {
+        //  获取预览页面
+        name: "queryObjectByClass",
+        url: "restObjectService/queryObjectByClass",
+        argu: {
+        },
+        convert: addSelected
+    },
+    {
         name: "querySopDetailById",
         url: "restSopService/querySopDetailById",
     },
