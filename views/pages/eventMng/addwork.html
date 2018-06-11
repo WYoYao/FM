@@ -28,7 +28,8 @@
 
                 <div class="block">
                     <pcombobox-normal sel="handlerWoType" bind="true">
-                        <header placeholder="selecet(WoTypeList,{plan_id:addwork.order_type},'plan_name')"></header>
+                        <!-- <header placeholder="selecet(WoTypeList,{plan_id:addwork.order_type},'plan_name')"></header> -->
+                        <header placeholder="'请选择'"></header>                        
                         <item datasource="WoTypeList" text="plan_name"></item>
                     </pcombobox-normal>
                 </div>
@@ -60,14 +61,14 @@
                 </div>
 
                 <div class="block" v-if="!addwork.robbing_flag">
-                    <ptext-text id="'execute_count_id'" placeholder="'请输入'" value="addwork.suggest_executor_num" text="'人'" bind="true">
+                    <ptext-text id="'execute_count_id'" placeholder="'请输入'" value="addwork.execute_count" text="'人'" bind="true">
                         <verify errtip="只能为1位数" verifytype="Digits"></verify>
                         <verify errtip="只能为数字" verifytype="pisNumber"></verify>
                     </ptext-text>
                 </div>
 
                 <div class="block" v-if="addwork.robbing_flag">
-                    <ptext-text id="'execute_count_id'" placeholder="'请输入'" value="addwork.suggest_executor_num" text="'人'" bind="true">
+                    <ptext-text id="'execute_count_id'" placeholder="'请输入'" value="addwork.execute_count" text="'人'" bind="true">
                         <verify errtip="不可为空" verifytype="space"></verify>
                         <verify errtip="只能为1位数" verifytype="Digits"></verify>
                     </ptext-text>

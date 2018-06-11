@@ -20,7 +20,7 @@
     <ploading-part id="eventMngPart"></ploading-part>
 
     <!-- 项目预览首页 -->
-    <div class="proList" v-if="EvMngCtrPage.wrap === 0 && EvMngCtrPage.list === 0">
+    <div class="proList" v-show="EvMngCtrPage.wrap === 0 && EvMngCtrPage.list === 0">
 
 
         <div class="left">
@@ -201,14 +201,14 @@
             <span>新建事件</span>
         </div>
 
-        <div class="body">
-            
+        <div class="body" id="newGroup">
             <div class="title">事件内容</div>
 
             <div class="text">
                 <ptext-textarea placeholder="请填写事件描述" id="createGroupEventText">
                     <!--<verify errtip="不可超过100字" length="100" friendlyip="" verifytype="space"></verify>-->
                     <verify errtip="不可超过100字" length="100" friendlyip="" verifytype="length"></verify>
+                    <verify errtip="不可为空"  verifytype="space"></verify>
                 </ptext-textarea>
             </div>
             <div class="img">
@@ -242,7 +242,7 @@
                 <div>要求固定时间内完成</div>
                 <div class="hour">
                     <ptext-text placeholder="请输入数字" text="小时" id="createGroupEvFixStart">
-                        <verify errtip="不可为空"  verifytype="space"></verify>
+                        <verify errtip="请输入正数(小数点后最多保留一位)"  verifytype="positivenumber"></verify>
                     </ptext-text>
                 </div>
             </div>
@@ -261,7 +261,7 @@
         <div class="box"></div>
         
         <div class="sure">
-            <div><pbutton-blue text="'确定'" @click="createEvFin(true)" bind="true"></pbutton-blue></div>
+            <div><pbutton-blue text="'提交'" @click="createEvFin(true)" bind="true"></pbutton-blue></div>
             <div><pbutton-white text="'取消'" @click="createEvFin(false)" bind="true"></pbutton-white></div>
         </div>
 
@@ -320,7 +320,7 @@
             <psearch-delay id="'groupEvProKey'" bind="true" change="searchThisEvPro" placeholder="'搜索关键字'"></psearch-delay>
         </div>
         <div class="tree">
-            <ptree-normal id="'evProListTree'" bind="true" datasource="groupEvProjectList" sel="" number="2"> 
+            <ptree-normal id="'evProListTree'" bind="true" datasource="groupEvProjectList" sel="clickItem" number="2"> 
                 <item itemid="partition_project_id" text="partition_project_name" child="contents" issearch="false"></item> 
                 <panel width="400" height="450"></panel> 
             </ptree-normal>
@@ -353,7 +353,7 @@
 <pwindow-modal id="groupEvCloseW" title="关闭事件" templateid="groupEvCloseWTemplate"></pwindow-modal>
 <script type="text/html" id="groupEvCloseWTemplate">
     <div id="groupEvCloseWrap" xC="a in model">
-         <div class="text">还有以下<a>2</a>个项目未完成事件，是否确认关闭</div>
+         <div class="text">还有以下<a v-text="groupEvIngProList.length"></a>个项目未完成事件，是否确认关闭</div>
          <ul class="grid">
             <pscroll-small templateid="groupEvCloseListTemplate"></pscroll-small>
          </ul>

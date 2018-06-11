@@ -551,6 +551,11 @@ Vue.component('baseinfomation', {
 
             return true;
         },
+        filterfreq_cycleType: function (list) {
+            return list.filter(function (item) {
+                return item.code != "h";
+            })
+        },
         // 外界获取参数
         argu: function () {
             var _that = this;

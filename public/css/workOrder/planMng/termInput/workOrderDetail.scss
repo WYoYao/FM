@@ -40,11 +40,10 @@
                 }
                 .normal{
                     height: 40px;
-                    border-bottom: 1px solid #d9e2e8;
-                    &:nth-last-of-type(1){
-                        border-bottom: none;
+                    border-top: 1px solid #d9e2e8;
+                    &:nth-of-type(1){
+                        border-top: none;
                     }
-
                     & > div{
                         float: left;
                         height: 100%;
@@ -102,6 +101,7 @@
                 .place{
                     height: auto;
                     min-height: 40px;
+                    border-top: 1px solid #d9e2e8;
                     &>div{
                         width: 33.3%;
                         height: 40px;
@@ -111,14 +111,14 @@
                         }
                         div:nth-of-type(1){
                             padding-left: 20px;
-                            width:  calc(39.9% - 20px);
+                            width:  calc(39.9399% - 20px);
                             border-right: 1px solid rgb(217, 226, 232);
                             border-left: 1px solid rgb(217, 226, 232);
                             background: rgb(248, 248, 248);
                         }
                         div:nth-of-type(2){
                             padding-left: 20px;
-                            width: calc(60.1 - 22px);
+                            width: calc(60.0601% - 22px);
                         }
                     }
                     &>div:nth-of-type(1),&>div:nth-of-type(3n+1){
@@ -190,6 +190,7 @@
                         &>.left{
                             width: 75%;
                             border-right: 1px solid #d9e2e8;
+                            position: relative;
                             .summarize{
                                 min-height: 80px;
                                 border-bottom: 1px solid #d9e2e8;
@@ -303,31 +304,6 @@
                             }
                         }
                     }
-                    .sign{
-                        width: 100%;
-                        border-bottom: 1px solid #d9e2e8;
-                        min-height: 240px;
-                        position: relative;
-                        .left{
-                            position: absolute;
-                            top: 20px;
-                            left: 20px;
-                        }
-                        .img{
-                            width: 320px;
-                            height: 200px;
-                            position: absolute;
-                            top: 20px;
-                            left: 50%;
-                            margin-left: -160px;
-                            border: 1px solid #d9e2e8;
-                        }
-                        .right{
-                            position: absolute;
-                            bottom: 20px;
-                            right: 100px;
-                        }
-                    }
                 }
             }
             &>.check{
@@ -376,3 +352,4 @@
         
     }
 }
+

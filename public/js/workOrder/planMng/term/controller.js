@@ -298,7 +298,7 @@ function createPlanModuleController() {
                                                 "step_type": "3",            //步骤类型：1-文字输入、2-上传照片、3-拍照、4-扫码、5-工作内容、6-签字 ,非空
                                                 "step_finish": true,         //步骤工作是否完成
                                                 "description": "****",      //反馈描述
-                                                "photos": ["key", "key"],    //图片key
+                                                "photos": ["../images/card.png", "../images/card.png"],    //图片key
                                                 "executor_id": "***",        //执行人Id
                                                 "operate_time": 20150505055555             //操作时间，yyyyMMddHHmmss
                                             },
@@ -336,7 +336,7 @@ function createPlanModuleController() {
                                                         ]
                                                     },
                                                 ],
-                                                "photos": ["key", "key"],//图片key
+                                                "photos": ["../images/card.png", "../images/card.png"],//图片key
                                                 "executor_id": "***",//执行人Id ,非空
                                                 "operate_time": 20171212121212,//操作时间，yyyyMMddHHmmss ,非空
                                             },
@@ -362,7 +362,7 @@ function createPlanModuleController() {
                                                 "step_sequence": "3-1",     //步骤序号  ,非空
                                                 "step_type": "5",           //步骤类型：1-文字输入、2-上传照片、3-拍照、4-扫码、5-工作内容、6-签字 ,非空
                                                 "description": "****",     //反馈描述
-                                                "photos": ["key", "key"],   //图片key
+                                                "photos": ["../images/card.png", "../images/card.png"],   //图片key
                                                 "executor_id": "***",       //执行人Id
                                                 "operate_time": 20180505050505         //操作时间，yyyyMMddHHmmss
                                             },
@@ -370,7 +370,7 @@ function createPlanModuleController() {
                                         "executors": ["name1", "name2"],    //执行人
                                     },
                                 ],
-                                "desc_photos": ["key1", "key2"],    //描述中的图片
+                                "desc_photos": ["../images/card.png", "../images/card.png"],    //描述中的图片
                                 "desc_sops": [                 //描述中涉及的sop，如果有子对象时，则子对象中sop_id、sop_name、version皆非空	
                                     {
                                         "sop_id": "***",          //sop的id

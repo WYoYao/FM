@@ -11,6 +11,7 @@ v.pushComponent({
         // 选择大Tab
         selEventRate : function(){
             this.clearProEvListSort();
+            this.addDefaultSort();
             this.eventRate = Number($("#eventListTab").psel());
             // this.proEvListPower.isELTHasPage = this.eventRate === 2 ? true : false;
             //开启分页

@@ -101,7 +101,10 @@
         <!-- 表格Start -->
         <div class="body" :style="{'height':residueHeight - 131 + 'px'}">
             <ploading-part id="planManagePartLoading"></ploading-part>
-            <ul class="grid clear" :style="{'max-height':residueHeight - 131 + 'px'}">
+            <ul class="faker" v-show="planData.length == 0">
+                <pnotice-nodata text="暂无数据" subtitle=""></pnotice-nodata>
+            </ul>
+            <ul class="grid clear" v-show="planData.length" :style="{'max-height':residueHeight - 131 + 'px'}">
                 <pscroll-small id="planMngScroll" templateid="planManageList" scroll="planMngScroll(event)"></pscroll-small>
             </ul>
         </div>

@@ -24,40 +24,45 @@
                     <div class="see_planDetail_grid_top_tit_con see_planDetail_grid_top_tit_con1 ">
                         <div>
                             <span>计划名称：</span>
-                            <i v-text="base.addWoPlan.plan_name"></i>
+                            <i v-text="base().addWoPlan.plan_name"></i>
                         </div>
                         <div>
                             <span>工单类型：</span>
-                            <i v-text="(_.find(base.WorkOrderType,{plan_id:base.addWoPlan.order_type}) || {}).plan_name"></i>
+                            <i v-text="(_.find(base().WorkOrderType,{plan_id:base().addWoPlan.order_type}) || {}).plan_name"></i>
                         </div>
                         <div>
                             <span>工单紧急程度：</span>
-                            <i v-text="(_.find(base.urgencyType,{code:base.addWoPlan.urgency}) || {}).name"></i>
+                            <i v-text="(_.find(base().urgencyType,{code:base().addWoPlan.urgency}) || {}).name"></i>
                         </div>
                         <div>
                             <span>工单提前发送时间：</span>
                             <i>提前
-                                <em v-text="base.addWoPlan.ahead_create_time"></em>小时</i>
+                                <em v-text="base().addWoPlan.ahead_create_time"></em>小时</i>
                         </div>
                         <div>
                             <span>是否实例化全部对象：</span>
-                            <i v-text="base.addWoPlan.instantiated_object_flag==1?'是':'否'"></i>
+                            <i v-text="base().addWoPlan.instantiated_object_flag==1?'是':'否'"></i>
                         </div>
                         <div>
                             <span>建议执行人数：</span>
-                            <i v-text="base.addWoPlan.suggest_executor_num"></i>
+                            <i v-text="base().addWoPlan.suggest_executor_num"></i>
                         </div>
 
                     </div>
                     <div class="see_planDetail_grid_top_tit_con see_planDetail_grid_top_tit_con3 ">
                         <h4>计划频率：</h4>
-                        <span>每
-                            <i v-text="(_.find(base.freq_cycleType,{code:base.addWoPlan.freq_cycle}) || {}).name"></i>
-                            <em v-text="base.addWoPlan.freq_num"></em>次</span>
-                        <div>
+                        <span v-if="base().addWoPlan.plan_freq_type==1 || base().addWoPlan.plan_freq_type==2">每
+                            <i v-text="(_.find(base().freq_cycleType,{code:base().addWoPlan.freq_cycle}) || {}).name"></i>
+                            <em v-text="base().addWoPlan.freq_num"></em>次
+                        </span>
+                        <span v-if="base().addWoPlan.plan_freq_type==3">每
+                            <i v-text="base().addWoPlan.freq_time_span.num"></i>天
+                            <em>1</em>次
+                        </span>
+                        <div v-if="base().addWoPlan.plan_freq_type==1">
 
                             (
-                            <span v-for="(item,index) in base.addWoPlan.freq_times">
+                            <span v-for="(item,index) in base().addWoPlan.freq_times">
                                 <i v-text="'第'+ (index+1) +'次'"></i>
                                 <i v-text="fill(item.start_time.time_month,2) + '.'+ fill(item.start_time.time_day,2) + ' '+ fill(item.start_time.time_hour,2)+ ':'+ fill(item.start_time.time_minute,2)"></i>
                                 <em>至</em>
@@ -69,13 +74,13 @@
 
                         <div>
                             <span>计划生效时间：</span>
-                            <i v-text="(_.find(base.plan_start_type,{code:base.addWoPlan.plan_start_type}) || {}).name">
+                            <i v-text="(_.find(base().plan_start_type,{code:base().addWoPlan.plan_start_type}) || {}).name">
                             </i>&nbsp;——&nbsp;
-                            <i v-text="(_.find(base.plan_end_time_type,{code:base.addWoPlan.plan_end_type}) || {}).name"></i>
+                            <i v-text="(_.find(base().plan_end_time_type,{code:base().addWoPlan.plan_end_type}) || {}).name"></i>
                         </div>
                     </div>
-                    <div class="see_planDetail_grid_top_tit_con see_planDetail_grid_top_tit_con1" v-if="base.addWoPlan.pit_positions.length">
-                        <div v-for="(item,index) in base.addWoPlan.pit_positions">
+                    <div class="see_planDetail_grid_top_tit_con see_planDetail_grid_top_tit_con1" v-if="base().addWoPlan.pit_positions.length">
+                        <div v-for="(item,index) in base().addWoPlan.pit_positions">
                             <span>位置{{index+1}}：</span>
                             <i :title="item.pit_position_ask_names.join(',')" v-text="item.pit_position_ask_names.join(',')"></i>
                         </div>
@@ -127,7 +132,7 @@
                                                     </li>
                                                     <li>
                                                         <h5>确认操作结果：</h5>
-                                                        <div v-for="(confirm_result,index4) in steps.confirm_result">
+                                                        <div v-for="(confirm_result,index4) in steps.class_confirm_result">
                                                             <!-- {{steps.confirm_result}} -->
                                                             <div class="confirm_result_div1">
                                                                 <div class="confirm_result_div2">
@@ -137,12 +142,16 @@
                                                                         <i v-for="(names,naIndex) in parents.parent_names" v-text="parents.parent_names.length == naIndex + 1?names : names + '-'"></i>)
                                                                     </span>
                                                                 </div>
-                                                                <div class="choiceObjectBtn" v-if="isterm && base.addWoPlan.instantiated_object_flag!=1">
+                                                                <div class="choiceObjectBtn" v-if="isterm && base().addWoPlan.instantiated_object_flag!=1">
                                                                     <div :type="confirm_result.obj_type">
                                                                         <section style="position: relative;" v-show="confirm_result.obj_type == 'system_class' || confirm_result.obj_type == 'equip_class'">
-                                                                            <pbutton-blue bind="true" text="'选择具体系统设备'" @click.stop="ObjectByClassId=confirm_result;queryObjectByClass(confirm_result.obj_id,confirm_result.obj_type)"></pbutton-blue>
-
-                                                                            <div class="choiceObjExampleModal" v-if="ObjectByClassId == confirm_result" @click.stop="">
+                                                                            <pbutton-blue bind="true" text="'选择具体系统设备'" @click.stop="confirm_result.isshow=true"></pbutton-blue>
+                                                                            <div style="position: absolute;top: 0;left: 150px;">
+                                                                                <examples v-if="confirm_result.isshow" :cb="setConfirm_result.bind(this,steps)" :systemname="confirm_result.obj_name" :obj_id="confirm_result.obj_id"
+                                                                                    :obj_type="confirm_result.obj_type" :objs="steps.confirm_result">
+                                                                                    <examples/>
+                                                                            </div>
+                                                                            <!-- <div class="choiceObjExampleModal" v-if="ObjectByClassId == confirm_result" @click.stop="">
                                                                                 <h4 :title="confirm_result.obj_name + '-' + getparent_names(confirm_result.parents)">
                                                                                     <span v-text="confirm_result.obj_name"></span>
                                                                                     <i v-text="'('+ getparent_names(confirm_result.parents) + ')'"></i>
@@ -157,9 +166,8 @@
                                                                                     </div>
                                                                                     <span>当前尚无设备/当前尚无系统</span>
                                                                                 </section>
-                                                                                <div class="choiceObjExampleModal_bottom">
-                                                                                </div>
-                                                                            </div>
+                                                                                <div class="choiceObjExampleModal_bottom"></div>
+                                                                            </div> -->
                                                                         </section>
                                                                     </div>
                                                                 </div>

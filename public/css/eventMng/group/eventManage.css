@@ -330,8 +330,11 @@
     #eventManage .createEv .body {
       width: 550px;
       height: calc(100% - 123px);
-      margin: 0 auto;
-      padding-top: 20px; }
+      padding-top: 20px;
+      padding-left: 50%;
+      padding-right: 50%;
+      transform: translateX(-225px);
+      overflow: scroll;}
       #eventManage .createEv .body > div {
         width: 100%; }
       #eventManage .createEv .body .title {

@@ -71,6 +71,17 @@ v.pushComponent({
         IssueProjectList: [],
     },
     methods: {
+        setConfirm_result: function (item, arr) {
+            // 获取原来的基础内容
+            var obj = _.isArray(item.confirm_result) && !_.isUndefined(item.confirm_result[0]) ? _.cloneDeep(item.confirm_result[0]) : {};
+            item.confirm_result = arr.map(function (info) {
+                return Object.assign({}, obj, info);
+            });
+
+            item.class_confirm_result = item.class_confirm_result.slice(0, 1).concat(item.confirm_result);
+
+            item.class_confirm_result[0].isshow = false;
+        },
         // 获取对象
         getObj: function (arr) {
             this.str = "";
@@ -137,25 +148,32 @@ v.pushComponent({
             // 并行发送请求多个事项同时验证
             Promise.all(_that.matters.map(function (item) {
 
-                if (item.desc_objs.length && item.desc_sops.length) {
+                // 验证是否匹配
+                // if (item.desc_objs.length && item.desc_sops.length) {
 
-                    // 对象与SOP 匹配验证
-                    return controller.verifyObjectAndSop({
-                        objs: item.desc_objs.map(function (item) {
-                            return {
-                                obj_id: item.obj_id,
-                                obj_name: item.obj_name,
-                            }
-                        }),
-                        sop_ids: _.map(item.desc_sops, "sop_id")
-                    })
-                } else {
-                    return new Promise(function (resolve) {
-                        setTimeout(function () {
-                            resolve([]);
-                        }, 0);
-                    })
-                }
+                //     // 对象与SOP 匹配验证
+                //     return controller.verifyObjectAndSop({
+                //         objs: item.desc_objs.map(function (item) {
+                //             return {
+                //                 obj_id: item.obj_id,
+                //                 obj_name: item.obj_name,
+                //             }
+                //         }),
+                //         sop_ids: _.map(item.desc_sops, "sop_id")
+                //     })
+                // } else {
+                //     return new Promise(function (resolve) {
+                //         setTimeout(function () {
+                //             resolve([]);
+                //         }, 0);
+                //     })
+                // }
+
+                return new Promise(function (resolve) {
+                    setTimeout(function () {
+                        resolve([]);
+                    }, 0);
+                })
 
             })).then(function (res) {
                 // 把原来的错误的状态替换的新的错误信息中
@@ -243,7 +261,25 @@ v.pushComponent({
                         getWoMattersPreviewPromise.then(function (res) {
                             console.log("可以执行保存了");
                             // 保存预览时候数据
-                            _that.WoMattersPreview = res.published_matters;
+                            _that.WoMattersPreview = res.published_matters.map(function (item) {
+
+                                item.matter_steps = item.matter_steps.map(function (info) {
+
+                                    if (info.step_type == "5") {
+                                        info.step_content = info.step_content.map(function (x) {
+
+                                            x.class_confirm_result = x.confirm_result ? JSON.parse(JSON.stringify(x.confirm_result)).map(function (y) {
+                                                y.isshow = false;
+                                                return y;
+                                            }) : [];
+
+                                            return x;
+                                        })
+                                    }
+                                    return info;
+                                });
+                                return item;
+                            });
 
                             _that.PreView = true;
 
@@ -291,6 +327,9 @@ v.pushComponent({
             confirm_result.obj_id = item.obj_id;
             confirm_result.obj_name = item.obj_name;
             confirm_result.obj_type = item.obj_type;
+        },
+        base: function () {
+            return this.$refs.baseinfomation;
         },
         // 根据不同的条件做不同的背景
         createPlan: function () {
@@ -345,6 +384,43 @@ v.pushComponent({
                     published_matters: _that.WoMattersPreview,
                 }, argu);
 
+                /**
+                 * 如果是项目中 且不全部实例化对象
+                 */
+                if (_that.isterm && _that.base().addWoPlan.instantiated_object_flag != 1) {
+                    var bool = argu.published_matters.map(function (item) {
+                        return item.matter_steps;
+                    }).reduce(function (con, item) {
+                        return con.concat(item);
+                    }, []).filter(function (item) {
+                        return item.step_type == 5;
+                    }).map(function (item) {
+                        return item.step_content;
+                    }).reduce(function (con, item) {
+                        return con.concat(item);
+                    }, []).map(function (item) {
+                        return item.confirm_result;
+                    }).map(function (item) {
+                        return item.map(function (info) {
+                            return info.obj_type;
+                        });
+                    }).map(function (item) {
+                        return item.indexOf('system_class') != -1 || item.indexOf('equip_class') != -1;
+                    }).filter(function (bool) {
+                        return bool;
+                    }).length;
+
+                    if (bool) {
+
+                        $("#globalnotice").pshow({
+                            text: "请实例化全部系统设备类",
+                            state: "failure"
+                        });
+
+                        return;
+                    }
+                }
+
                 !_that.isquote ? argu.group_plan_id = "" : void 0;
 
                 /**
@@ -373,8 +449,7 @@ v.pushComponent({
                         loadding.remove("addWoPlan");
                     })
                 } else {
-
-                    $("#globalnotice").pshow({ text: _that.iscopy ? "复制成功" : "引用成功", state: "success" });
+                    $("#globalnotice").pshow({ text: _that.iscopy ? "复制成功" : _that.isquote ? "引用成功" : '创建成功', state: "success" });
 
                     createPlan_controller.addWoPlan(argu).then(cb).finally(function () {
                         loadding.remove("addWoPlan");
@@ -573,11 +648,7 @@ v.pushComponent({
 
             setTimeout(function () {
                 window.createPlanCallback();
-                if ($("#id_validTypes")) {
-                    $("#id_validTypes").precover();
-                }
             }, 500);
-
         },
         cancelWindowsCancel: function () {
             $("#planCreateWindow").phide();
@@ -585,9 +656,6 @@ v.pushComponent({
 
     },
     computed: {
-        base: function () {
-            return this.$refs.baseinfomation;
-        },
         // 下发选择的年份
         xfyear: function () {
             return _.range(2).map(function (item, index) {

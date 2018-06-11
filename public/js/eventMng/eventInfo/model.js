@@ -92,11 +92,12 @@ v.pushComponent({
         },
         // 在事件详情弹窗中关闭项目事件
         proEvInfoCloseSel: function (sel) {
-            this.selCloseProEvWay(sel, 'info');
+            this.selCloseProEvWay(sel, 'list');
         },
         // 编辑项目事件信息
         editProEvInfo: function () {
             var that = this;
+            that.textareaBlur("focus");
             this.proEvInPower.isEdit = true;
             EMA.QT({}, function (data) {
                 that.someEventType = JSON.parse(JSON.stringify(data)) || [];
@@ -149,8 +150,15 @@ v.pushComponent({
         },
         // 编辑项目信息确认
         editEventInfo: function (type) {
+            var that = this;
+            
             if (type) {
-                var that = this;
+                if(that.proEvStr==""){
+                    that.textareaBlur("blur");
+                    return;
+                }
+
+            
                 var x = that.proEvObjs.length ? that.proEvObjs.reduce(function (t, a) {
                     t += a.obj_name + ',';
                     return t
@@ -159,7 +167,7 @@ v.pushComponent({
                 var param = {
                     eventId: that.proEvInfoData.full.eventId,
                     person_id: v.instance.userInfo.person_id,
-                    reviseProblemType: $("#editEvTypeCombo").psel().text,
+                    reviseProblemType: $("#editEvTypeCombo").psel().text?$("#editEvTypeCombo").psel().text:'',
                     reviseEventDescribe: that.proEvStr,
                     reviseAssociationObject: that.proEvObjs,
                     reviseAssociationObjectString: x
@@ -238,6 +246,20 @@ v.pushComponent({
             this.proEvListPower.closeEvent = false;
             this.openProEvInfoW(model);
         },
+        //问题修正 多行文本框 失去焦点事件
+        textareaBlur:function(type){ 
+            var that = this;
+            if(type=="focus"){
+                $("#textareaErrorClass").removeClass("input-error");
+                $("#textareaErrorTip").hide();
+            }else if(type=="blur"){
+                if( that.proEvStr==""){
+                    $("#textareaErrorClass").addClass("input-error");
+                    $("#textareaErrorTip").show();
+                }
+            }
+             
+        }
 
     },
     filters: {

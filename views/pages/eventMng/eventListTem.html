@@ -5,7 +5,7 @@
         <a v-show="eventRate === 1">处理中</a>
         <a v-show="eventRate === 2">已关闭</a>
         事件
-        <a v-text="proEvListData.len.totalCount || 0"></a>
+        <a v-text="proEvListData.len.totalCount || 0" class="coRed"></a>
         条，客户报修
         <a v-text="proEvListData.len.customerRepairCount || 0"></a>
         条，工程报修
@@ -64,7 +64,7 @@
             <span class="s2">关联对象</span>
             <span :class="(!proEvListPower.closeEvent && eventRate === 0) || eventRate === 1 ? 's32' : 's31'">
                 <span>问题类型</span>
-                <span class="sort" unselectable="on" @click="proEvListSort(event,'problemType')"><em mgsim="" class="t">t</em><em mgsim="" class=" b">b</em></span>
+                <span class="sort quertionType" unselectable="on" @click="proEvListSort(event,'problemType')"><em mgsim="" class="t">t</em><em mgsim="" class="b">b</em></span>
             </span>
 
             <span class="s1">处理部门</span>
@@ -86,7 +86,7 @@
             <span class="s1">报修位置</span>
             <span class="s2">
                 <span>问题类型</span>
-                <span class="sort" unselectable="on" @click="proEvListSort(event,'problemType')"><em mgsim="" class="t">t</em><em mgsim="" class=" b">b</em></span>
+                <span class="sort quertionType" unselectable="on" @click="proEvListSort(event,'problemType')"><em mgsim="" class="t">t</em><em mgsim="" class=" b">b</em></span>
             </span>
             <span class="s3" v-text="eventRate === 2 ? '解决人' : '联系人'"></span>
 
@@ -109,7 +109,7 @@
             <span :class="eventRate === 1 ? 's21' : 's22'">关联对象</span>
             <span :class="(eventRate === 1 || (eventRate === 0 && !proEvListPower.closeEvent)) ? 's31' : 's32'">
                 <span>问题类型</span>
-                <span class="sort" unselectable="on" @click="proEvListSort(event,'problemType')"><em mgsim="" class="t">t</em><em mgsim="" class=" b">b</em></span>
+                <span class="sort quertionType" unselectable="on" @click="proEvListSort(event,'problemType')"><em mgsim="" class="t">t</em><em mgsim="" class=" b">b</em></span>
             </span>
             <span class="s1">处理部门</span>
             <span :class="eventRate === 0 && !proEvListPower.closeEvent ? 's41' : 's42'" v-text="eventRate === 2 ? '解决人' : '联系人'"></span>

@@ -166,6 +166,13 @@
     #planManage > .body > .body {
       width: 100%;
       position: relative; }
+      #planManage > .body > .body > .faker {
+        position: relative;
+        border-left: 1px solid #d9e2e8;
+        border-right: 1px solid #d9e2e8;
+        border-bottom: 1px solid #d9e2e8;
+        width: calc(100% - 2px);
+        height: calc(100% - 1px); }
       #planManage > .body > .body > .grid {
         width: calc(100% - 2px);
         overflow-x: hidden;

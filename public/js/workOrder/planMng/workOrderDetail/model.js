@@ -31,8 +31,8 @@ v.pushComponent({
             $("#workOrderDetailLoad").pshow();
             console.log(this.cache);
             PMA.OD({ order_id: that.cache.workOrderId }, function (data) {
-                // that.orderDetailData = JSON.parse(JSON.stringify(data.work_order.wo_body || {}));
-                that.orderDetailData = JSON.parse(JSON.stringify(data));
+                that.orderDetailData = JSON.parse(JSON.stringify(data.work_order.wo_body || {}));
+                // that.orderDetailData = JSON.parse(JSON.stringify(data));
                 
                 that.orderDetailData.wo_exec_controls && that.orderDetailData.wo_exec_controls.length != 0 && that.orderDetailData.wo_exec_controls.forEach(function (item) {
                     item.type = that.getWorkOrderCheckType(item.control_code);
@@ -57,17 +57,54 @@ v.pushComponent({
                     }
                 }
 
-                // that.orderDetailData.matters.forEach(function(item){
-                //     item.matter_steps.forEach(function(step){
-                //         step.forEach(function(feed){
-                //             if(feed.confirm_result){
-                //                 var arr = feed.confirm_result.map(function(x){
-
-                //                 })
-                //             }
-                //         })
-                //     })
-                // })
+                that.orderDetailData.matters.forEach(function(item){
+                    item.matter_steps.forEach(function(step){
+                        if(step.feedback && step.feedback.length){
+                            step.feedback.forEach(function(model){
+                                if(model.confirm_result && model.confirm_result.length){
+                                    model.confirm_result.forEach(function(feed){
+                                        var str = '';
+                                        if(feed.info_points && feed.info_points.length){
+                                            str = feed.info_points.reduce(function(t,a){
+                                                if(a.value || (a.values && a.values.length)){
+                                                    if(a.values){
+                                                        t += (a.name + '：' + a.values.join(",") + (a.unit || '')) + ' ； ';
+                                                    }else{
+                                                        t += (a.name + '：' + a.value + (a.unit || '')) + ' ； ';
+                                                    }
+                                                }
+                                                return t;
+                                            },str)
+                                        }
+                                        if(feed.customs && feed.customs.length){
+                                            str = feed.customs.reduce(function(t,a){
+                                                switch(a.type){
+                                                    case '1' : 
+                                                        if(a.content){t += (a.name + '：' + a.content + ' ； ')}
+                                                    break
+                                                    case '2' : 
+                                                        if(a.item){t += (a.name + '：' + a.item + ' ； ')}
+                                                    break
+                                                    case '3' : 
+                                                        if(a.items && a.items.length){t += (a.name + '：' + a.items.join(',') + ' ； ')}
+                                                    break
+                                                    case '4' : 
+                                                        if(a.value){t += (a.name + '：' + a.value + (a.unit || '') + ' ； ')}
+                                                    break
+                                                    case '5' : 
+                                                        if(a.value){t += (a.name + '：' + a.value + (a.unit || '') + ' ； ')}
+                                                    break
+                                                };
+                                                return t;
+                                            },str)
+                                        }
+                                        feed.str = str;
+                                    })
+                                }
+                            })
+                        }
+                    })
+                })
 
             }, function () {
                 that.orderDetailData = {};

@@ -15,13 +15,13 @@
             float: left;
         }
         .name{
-            width: 300px;
+            width: calc(100% - 1200px);
+            text-align: center;
+            right: 630px;
             position: absolute;
-            margin: 17px auto 0;
+            top: 17px;
             height: 16px; 
             line-height: 16px;
-            left: calc(50% - 150px);
-            text-align: center;
         }
         .operate{
             margin-top: 17px;

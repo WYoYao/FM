@@ -31,6 +31,7 @@ v.pushComponent({
         // 选择事件状态
         selEventState:function(){
             this.clearProEvListSort();
+            this.addDefaultSort();
             this.proEvListData.sort = {name:null,type:null};
             this.eventRate = Number($("#eventRateCombo").psel().id);
             $("#eventListPages").psel(1,false);
@@ -39,11 +40,17 @@ v.pushComponent({
         // 选择事件类型
         selEventType : function(){
             this.clearProEvListSort();
+            // debugger;
+           
             this.proEvListData.sort = {name:null,type:null};
             $("#eventListPages").psel(1,false);
             this.eventTypeSel = Number($("#eventType").psel().id);
             this.getProEvListData();
             this.getProEvListLen();
+            setTimeout(function(){
+                this.addDefaultSort();
+            })
+            
         },
         // 搜索事件
         searchThisEvent : function(){
@@ -88,10 +95,10 @@ v.pushComponent({
             $("#proEvListKey").pval().key.length > 0 ? param.keyword = $("#proEvListKey").pval().key : void 0;
             // 关闭原因及时间筛选
             if(this.eventRate === 2){
-                param.close_type = $("#closeReasonCombo").psel() ? $("#closeReasonCombo").psel().index : null;
-                param.close_time = {
-                    start : time.startTime,
-                    end : time.endTime
+                param.closeType = $("#closeReasonCombo").psel() ? '' + ($("#closeReasonCombo").psel().index) : null;
+                param.closeTime = {
+                    start : new Date(time.startTime).format("yMd") || '',
+                    end : new Date(time.endTime).format("yMd") || ''
                 }
             }
             // 分页
@@ -200,7 +207,7 @@ v.pushComponent({
             this.clearProEvListSort();
             isSel ? isTop ? $(ev.target).next('em').addClass('op') : $(ev.target).prev('em').addClass('op') : $(ev.target).addClass('op');
             obj.name = type;
-            if((isTop&&isSel) || (!isTop&&!isSel)){obj.type = 'desc';}else{obj.type = 'asc';};
+            if((isTop&&isSel) || (!isTop&&!isSel)){obj.type = 'asc';}else{obj.type = 'desc';};
         },
         // 清除排序箭头状态
         clearProEvListSort : function(){
@@ -211,20 +218,42 @@ v.pushComponent({
                 $(em[1]).removeClass('op');
             }
         },
+        addDefaultSort:function(){//z增加表头默认排序向下
+            var elGather = document.getElementsByClassName('quertionType');
+            for(var i=0;i<elGather.length;i++){
+                var em = $(elGather[i]).find('em');
+                $(em[0]).removeClass('op');
+                $(em[1]).addClass('op');
+            }
+        },
         // 项目事件列表关闭按钮的假下拉列表
         proEvListFakerCombo : function(ev,id){
+            ev.stopPropagation();
             this.closedEvId = id; 
             var el = ev.target.childNodes.length === 0 ? $(ev.target).parents('.btn') : ev.target;
             this.proEvListSelEl = el;
-            var isS = $(el).hasClass('is');  
-            isS ? $(el).removeClass('is') : $(el).addClass('is');
-            if(!isS){
-                var p = $(el).offset();
-                $("#closeProEventCombo").css({"top":p.top,"left":p.left,"display":"block"});
-                $("#closeProEventCombo>div").eq(1).css("display","block")
+            // var isS = $(el).hasClass('is');  
+            // isS ? $(el).removeClass('is') : $(el).addClass('is');
+            // if(!isS){
+            //     var p = $(el).offset();
+            //     $("#closeProEventCombo").css({"top":p.top,"left":p.left,"display":"block"});
+            //     $("#closeProEventCombo>div").eq(1).css("display","block")
+            // }else{
+            //     $("#closeProEventCombo").css('display',"none");
+            // }
+            //.per-combobox-wrap  控件下拉框的下半部分
+            var isShow=$("#closeProEventCombo .per-combobox-wrap").is(":visible");
+            if(isShow){
+                $("#closeProEventCombo").hide();
+                $("#closeProEventCombo .per-combobox-wrap").hide();
             }else{
-                $("#closeProEventCombo").css('display',"none");
+                var p = $(el).offset();
+                $("#closeProEventCombo").css({"top":p.top,"left":p.left});
+                $("#closeProEventCombo").show();
+                $("#closeProEventCombo .per-combobox-wrap").show();
+                $("#closeProEventCombo>div").eq(1).css("display","block");
             }
+          
         },
         // 项目列表选择了关闭原因
         proEvListCloseSel: function(sel){
@@ -279,7 +308,7 @@ v.pushComponent({
         //事件列表中关联对象处理
         evListStrToArr : function(str){
             if(str && str.length != 0){
-                return [str.split(","),str.split(",").length];
+                return [str.split("，"),str.split("，").length];
             }else{
                 return [this.noDataWord,0];
             }   

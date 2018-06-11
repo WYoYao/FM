@@ -266,7 +266,11 @@ var workOrderMngMethod = { //工单管理模块方法
     /*中止工单*/
     stopOrderSetYes:function(obj,event){
         console.log(event);
-        $(event.target).pdisable(true);//禁用确定按钮
+        // $(event.target).pdisable(true);//禁用确定按钮
+        /*$(event.target).attr("isClick","true");
+        if($(event.target).attr("isClick")==="true"){
+            event.preventDefault();
+        }*/
         var content = workOrderMngModel.stop_order_content;
         var _data = {
             order_id: workOrderMngModel.order_id,
@@ -430,7 +434,7 @@ var workOrderMngMethod = { //工单管理模块方法
             target.text("r");
         } else {
             next.slideDown();
-            target.text("b")
+            target.text("b");
         }
     }
 };

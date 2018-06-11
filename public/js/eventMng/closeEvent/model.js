@@ -24,6 +24,7 @@ v.pushComponent({
                     break
                 case 2:
                     type === 'list' ? this.stopModelEvPropagation(true) : void 0;
+                    $("#closeEvOthText").precover();
                     $("#closeEvOthRsnW").pshow();
                     break
             }
@@ -53,6 +54,7 @@ v.pushComponent({
         },
         // 关闭事件  其他原因  确认
         closeEvOthRsnFin : function(type){
+              
             if(type){
                 var param = {
                     eventId : this.closedEvId,
@@ -61,10 +63,12 @@ v.pushComponent({
                     closeRemark: $("#closeEvOthText").pval(),
                     person_id:this.userInfo.person_id
                 };
+                if(!$("#closeEvOthText").pverifi()) return;
                 var fn = this.evCloseFromList ? v.instance.getProEvListData : v.instance.getProEvInfo;
                 this.closeProEv(param,fn);
             }
             $("#closeEvOthRsnW").phide();
+        
         },
         // 关闭误报事件
         closeEvWrong : function(){
@@ -96,6 +100,7 @@ v.pushComponent({
         closeProEv : function(param,fn){
             EMA.CP(param,function(){
                 $("#globalnotice").pshow({ text: '提交成功', state: "success" });
+                $("#eventInfoFloat").phide();
                 fn();
             },function(){
 

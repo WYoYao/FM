@@ -45,6 +45,7 @@
         <ul>
             <ploading-part id="groupPlanPartLoad"></ploading-part>
             <pscroll-small templateid="groupPlanList"></pscroll-small>
+            <pnotice-nodata v-show="groupPlanList.length == 0" text="暂无数据" subtitle=""></pnotice-nodata>
         </ul>
 
     </div>

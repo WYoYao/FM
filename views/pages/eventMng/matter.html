@@ -3,19 +3,18 @@
     <div class="name">
         <input type="text" maxlength="100" v-model="matter.matter_name" placeholder="请输入事项名称" class="input">
         <div class="percent">
-            {{matter.matter_name.length}}/100
+            {{matter.matter_name?matter.matter_name.length:0}}/100
         </div>
     </div>
 
     <div class="obj">
         <textarea placeholder="例如：@消防水泵" class="textarea" v-model="matter.desc_forepart" maxlength="1000"></textarea>
         <div class="bottom">
-            <!-- <div class="btn pointer" @click.stop="desc_str='@'">@添加对象</div> -->
-            <div class="btn pointer" @click.stop="!desc_str.length?matter.desc_forepart+='@':''">@添加对象</div>
+            <div class="btn pointer" @click.stop="!desc_str?matter.desc_forepart+='@':''">@添加对象</div>
             <div class="btn r">
                  <aite :str="desc_str" :isterm="isterm" :desc_objs="matter.desc_objs" :cb="getObj" ref="aite" v-if="desc_str"></aite>
             </div>
-            <div class="percent">{{matter.desc_forepart.length}}/1000</div>
+            <div class="percent">{{matter.desc_forepart?matter.desc_forepart.length:0}}/1000</div>
         </div>
     </div>
 
@@ -34,7 +33,7 @@
     <div class="sop">
         <textarea placeholder="请选择SOP 此处为选择的SOP名称，例如：#巡检SOP" v-model="matter.desc_aftpart" class="textarea" maxlength="1000"></textarea>
         <div class="bottom">
-            <div class="btn pointer" @click.stop="!desc_sop_c_str.length?matter.desc_aftpart+='#':''">#添加SOP</div>
+            <div class="btn pointer" @click.stop="!desc_sop_c_str?matter.desc_aftpart+='#':''">#添加SOP</div>
             <div class="btn r">
                 <hashtag :str="desc_sop_c_str" :order_type="workorder" :desc_objs="matter.desc_objs" :desc_sops="matter.desc_sops" :cb="getSOPObj" ref="hashtag" v-if="desc_sop_c_str"></hashtag>
             </div>
@@ -44,9 +43,9 @@
 
     <!-- work Start -->
     <div class="work">
-        <textarea disabled="true" placeholder="添加工作内容 此处为工作内容的名称，例如：巡检工作" v-if="matter.desc_works.length==0" class="textarea">
+        <textarea disabled="true" placeholder="添加工作内容 此处为工作内容的名称，例如：巡检工作" v-if="_.isArray(matter.desc_works) &&  matter.desc_works.length==0" class="textarea">
         </textarea>
-        <div class="textarea" v-if="matter.desc_works.length">
+        <div class="textarea" v-if="_.isArray(matter.desc_works) && matter.desc_works.length">
             <div class="block" v-for="(item,index) in matter.desc_works">
                 <span v-text="item.work_name" :title="item.work_name"></span>
                 <img src="../images/del.png" alt="删除图标" @click="matter.desc_works.splice(index,1)">
@@ -315,7 +314,11 @@
                 this.delete(this.matter);
             },
             required_control_isselected: function (item) {
-                return this.matter.required_control.indexOf(item.code) != -1;
+                try {
+                    return this.matter.required_control.indexOf(item.code) != -1;
+                } catch (error) {
+                    return false;
+                }
             }
         },
         computed: {

@@ -1515,3 +1515,154 @@ Cannot read property 'personalManagement' of undefined
     at Object._errnoException (util.js:1022:11)
     at _exceptionWithHostPort (util.js:1044:20)
     at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
+[2018-06-11 09:30:55.189] [ERROR] log_file - 获取getuserbyticket的数据err："无效的用户"
+[2018-06-11 09:31:20.144] [ERROR] log_file - 获取getuserbyticket的数据err："无效的用户"
+[2018-06-11 11:44:36.581] [ERROR] log_file - 获取restObjectService/querySystemForSystemDomain的数据err："缺少必填项"
+[2018-06-11 11:47:09.693] [ERROR] log_file - 获取restObjectService/querySystemForSystemDomain的数据err："缺少必填项"
+[2018-06-11 15:25:28.740] [ERROR] log_file - 获取/workorder/restWoPlanService/queryGroupPlanUseNum的数据err："[com.zillion.database.agent.ZillionAgent.Query(ZillionAgent.java:113), com.zillion.database.agent.ZillionAgent.Query(ZillionAgent.java:107), com.sagacloud.workorder.dao.DBCommonMethods.queryRecordByCriteria(DBCommonMethods.java:448), com.sagacloud.workorder.dao.DBCommonMethods.queryRecordByCriteria(DBCommonMethods.java:425), com.sagacloud.workorder.service.ipml.WoPlanServiceImpl.queryGroupPlanUseNum(WoPlanServiceImpl.java:556), com.sagacloud.workorder.controller.RestWoPlanController.queryGroupPlanUseNum(RestWoPlanController.java:96), sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method), sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62), sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43), java.lang.reflect.Method.invoke(Method.java:498), org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory$1.invoke(ResourceMethodInvocationHandlerFactory.java:81), org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:144), org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:161), org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$TypeOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:205), org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:99), org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:389), org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:347), org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:102), org.glassfish.jersey.server.ServerRuntime$2.run(ServerRuntime.java:326), org.glassfish.jersey.internal.Errors$1.call(Errors.java:271), org.glassfish.jersey.internal.Errors$1.call(Errors.java:267), org.glassfish.jersey.internal.Errors.process(Errors.java:315), org.glassfish.jersey.internal.Errors.process(Errors.java:297), org.glassfish.jersey.internal.Errors.process(Errors.java:267), org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:317), org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:305), org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:1154), org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:473), org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:427), org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:388), org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:341), org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:228), org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231), org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166), org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53), org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193), org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166), org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199), org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96), org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:475), org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140), org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:80), org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:625), org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87), org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342), org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:498), org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66), org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:796), org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1372), org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49), java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149), java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624), org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61), java.lang.Thread.run(Thread.java:748)]"
+[2018-06-11 15:25:28.764] [ERROR] log_file - 获取/workorder/restWoPlanService/queryWoPlanDayExecuteList的数据err："[com.zillion.database.agent.ZillionAgent.Query(ZillionAgent.java:113), com.zillion.database.agent.ZillionAgent.Query(ZillionAgent.java:107), com.sagacloud.workorder.dao.DBCommonMethods.queryRecordByCriteria(DBCommonMethods.java:448), com.sagacloud.workorder.dao.DBCommonMethods.queryRecordByCriteria(DBCommonMethods.java:425), com.sagacloud.workorder.service.ipml.WoPlanServiceImpl.queryWoPlanDayExecuteList(WoPlanServiceImpl.java:358), com.sagacloud.workorder.controller.RestWoPlanController.queryWoPlanDayExecuteList(RestWoPlanController.java:80), sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method), sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62), sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43), java.lang.reflect.Method.invoke(Method.java:498), org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory$1.invoke(ResourceMethodInvocationHandlerFactory.java:81), org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:144), org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:161), org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$TypeOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:205), org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:99), org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:389), org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:347), org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:102), org.glassfish.jersey.server.ServerRuntime$2.run(ServerRuntime.java:326), org.glassfish.jersey.internal.Errors$1.call(Errors.java:271), org.glassfish.jersey.internal.Errors$1.call(Errors.java:267), org.glassfish.jersey.internal.Errors.process(Errors.java:315), org.glassfish.jersey.internal.Errors.process(Errors.java:297), org.glassfish.jersey.internal.Errors.process(Errors.java:267), org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:317), org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:305), org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:1154), org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:473), org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:427), org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:388), org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:341), org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:228), org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231), org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166), org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53), org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193), org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166), org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199), org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96), org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:475), org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140), org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:80), org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:625), org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87), org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342), org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:498), org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66), org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:796), org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1372), org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49), java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149), java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624), org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61), java.lang.Thread.run(Thread.java:748)]"
+[2018-06-11 17:54:18.067] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:18.184] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:18.273] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:18.361] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:18.447] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:18.532] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:18.629] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:18.740] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:18.852] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:18.954] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:19.042] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:19.136] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:19.233] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:19.362] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:19.462] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:19.546] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:19.625] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:19.712] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:19.792] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:19.888] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:19.974] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:20.059] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:20.149] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:20.232] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:20.315] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:20.425] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:20.615] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:20.821] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:20.938] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:21.041] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:21.135] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:21.226] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:21.321] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:21.407] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:21.500] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:21.674] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:21.816] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:21.906] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:21.986] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:22.074] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:22.158] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:22.242] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:22.324] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:22.408] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:22.490] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:22.570] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:22.650] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:22.739] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:22.828] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:22.913] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:23.018] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:23.107] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:23.198] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:23.291] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:23.382] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:23.470] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:23.556] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:23.641] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:23.728] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:23.816] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:23.916] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:24.008] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:24.141] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:24.243] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:24.337] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:24.435] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:24.521] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:24.602] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:24.684] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:24.774] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:25.336] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 17:54:25.428] [ERROR] log_file - 子进程退出,code:12,signal:null
+[2018-06-11 18:15:37.400] [ERROR] log_file - 获取getuserbyticket的数据err："Cannot POST /getuserbyticket"
+[2018-06-11 18:15:39.413] [ERROR] log_file - Error: Failed to lookup view "login"
+    at Function.app.render (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\application.js:495:17)
+    at ServerResponse.res.render (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\response.js:759:7)
+    at Object.renderLogin (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\responseTool.js:62:13)
+    at noAccess (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:94:34)
+    at Object.call (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:55:51)
+    at Object.call (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\executeRequest.js:239:70)
+    at Request._callback (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\request.js:137:22)
+    at Request.self.callback (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\request\request.js:200:22)
+    at emitTwo (events.js:126:13)
+    at Request.emit (events.js:214:7)
+[2018-06-11 18:15:57.116] [ERROR] log_file - 获取getuserbyticket的数据err："Cannot POST /getuserbyticket"
+[2018-06-11 18:16:05.799] [ERROR] log_file - Error: Failed to lookup view "login"
+    at Function.app.render (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\application.js:495:17)
+    at ServerResponse.res.render (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\response.js:759:7)
+    at Object.renderLogin (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\responseTool.js:62:13)
+    at noAccess (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:94:34)
+    at Object.call (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:55:51)
+    at Object.call (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\executeRequest.js:239:70)
+    at Request._callback (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\request.js:137:22)
+    at Request.self.callback (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\request\request.js:200:22)
+    at emitTwo (events.js:126:13)
+    at Request.emit (events.js:214:7)
+[2018-06-11 18:16:15.073] [ERROR] log_file - 获取getuserbyticket的数据err："Cannot POST /getuserbyticket"
+[2018-06-11 18:16:15.880] [ERROR] log_file - Error: Failed to lookup view "login"
+    at Function.app.render (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\application.js:495:17)
+    at ServerResponse.res.render (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\response.js:759:7)
+    at Object.renderLogin (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\responseTool.js:62:13)
+    at noAccess (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:94:34)
+    at Object.call (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:55:51)
+    at Object.call (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\executeRequest.js:239:70)
+    at Request._callback (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\request.js:137:22)
+    at Request.self.callback (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\request\request.js:200:22)
+    at emitTwo (events.js:126:13)
+    at Request.emit (events.js:214:7)
+[2018-06-11 18:17:03.297] [ERROR] log_file - 获取getuserbyticket的数据err："Cannot POST /getuserbyticket"
+[2018-06-11 18:17:04.032] [ERROR] log_file - Error: Failed to lookup view "login"
+    at Function.app.render (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\application.js:495:17)
+    at ServerResponse.res.render (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\response.js:759:7)
+    at Object.renderLogin (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\responseTool.js:62:13)
+    at noAccess (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:94:34)
+    at Object.call (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:55:51)
+    at Object.call (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\executeRequest.js:239:70)
+    at Request._callback (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\request.js:137:22)
+    at Request.self.callback (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\request\request.js:200:22)
+    at emitTwo (events.js:126:13)
+    at Request.emit (events.js:214:7)
+[2018-06-11 18:17:05.364] [ERROR] log_file - 获取getuserbyticket的数据err："Cannot POST /getuserbyticket"
+[2018-06-11 18:17:06.040] [ERROR] log_file - Error: Failed to lookup view "login"
+    at Function.app.render (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\application.js:495:17)
+    at ServerResponse.res.render (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\response.js:759:7)
+    at Object.renderLogin (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\responseTool.js:62:13)
+    at noAccess (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:94:34)
+    at Object.call (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:55:51)
+    at Object.call (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\executeRequest.js:239:70)
+    at Request._callback (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\request.js:137:22)
+    at Request.self.callback (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\request\request.js:200:22)
+    at emitTwo (events.js:126:13)
+    at Request.emit (events.js:214:7)
+[2018-06-11 18:17:08.719] [ERROR] log_file - 获取getuserbyticket的数据err："Cannot POST /getuserbyticket"
+[2018-06-11 18:17:09.375] [ERROR] log_file - Error: Failed to lookup view "login"
+    at Function.app.render (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\application.js:495:17)
+    at ServerResponse.res.render (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\response.js:759:7)
+    at Object.renderLogin (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\responseTool.js:62:13)
+    at noAccess (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:94:34)
+    at Object.call (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:55:51)
+    at Object.call (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\executeRequest.js:239:70)
+    at Request._callback (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\request.js:137:22)
+    at Request.self.callback (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\request\request.js:200:22)
+    at emitTwo (events.js:126:13)
+    at Request.emit (events.js:214:7)
+[2018-06-11 18:20:42.633] [ERROR] log_file - 获取workorder/restGroupPlanService/issueGroupPlanToWoPlan的数据err："java.lang.NullPointerException--[com.sagacloud.workorder.service.ipml.GroupPlanServiceImpl.issueGroupPlanToWoPlan(GroupPlanServiceImpl.java:1365), com.sagacloud.workorder.controller.RestGroupPlanController.issueGroupPlanToWoPlan(RestGroupPlanController.java:325), sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method), sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62), sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43), java.lang.reflect.Method.invoke(Method.java:498), org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory$1.invoke(ResourceMethodInvocationHandlerFactory.java:81), org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:144), org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:161), org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$TypeOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:205), org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:99), org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:389), org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:347), org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:102), org.glassfish.jersey.server.ServerRuntime$2.run(ServerRuntime.java:326), org.glassfish.jersey.internal.Errors$1.call(Errors.java:271), org.glassfish.jersey.internal.Errors$1.call(Errors.java:267), org.glassfish.jersey.internal.Errors.process(Errors.java:315), org.glassfish.jersey.internal.Errors.process(Errors.java:297), org.glassfish.jersey.internal.Errors.process(Errors.java:267), org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:317), org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:305), org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:1154), org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:473), org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:427), org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:388), org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:341), org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:228), org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231), org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166), org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53), org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193), org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166), org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199), org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96), org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:475), org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140), org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:80), org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:625), org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87), org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342), org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:498), org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66), org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:796), org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1372), org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49), java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149), java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624), org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61), java.lang.Thread.run(Thread.java:748)]"

@@ -24,6 +24,7 @@
         <ul class="grid">
             <pscroll-small templateid="planWorkOrderList"></pscroll-small>
             <ploading-part id="planWorkOrderLoad"></ploading-part>
+            <pnotice-nodata v-show="planWorkOrderData.length == 0" text="暂无数据" subtitle=""></pnotice-nodata>
         </ul>
     </div>
 </div>
@@ -31,7 +32,8 @@
 
 <script type="text/html" id="planWorkOrderList">
     <li v-for="item in planWorkOrderData">
-        <div class="people" v-text="item.participants" :title="item.participants"></div>
+        <div class="people" v-text="(typeof item.participants == 'string') ? item.participants : item.participants.join(',')" 
+        :title="(typeof item.participants == 'string') ? item.participants : item.participants.join(',')"></div>
         <div class="start" v-text="timeFormat(item.create_time,'0')" :title="timeFormat(item.create_time,'0')"></div>
         <div class="end" v-text="timeFormat(item.close_time,'0')" :title="timeFormat(item.close_time,'0')"></div>
         <div class="state" v-text="item.order_state_name" :title="item.order_state_name"></div>

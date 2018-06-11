@@ -83,7 +83,7 @@
                         </span>
                     </div>
     
-                    <div class="box" v-if="proEvInfoData.full.eventState == '3' && proEvInfoData.full.closeType && proEvInfoData.full.closeType==='2'">
+                    <div class="box" v-if="proEvInfoData.full.eventState == '2' && proEvInfoData.full.closeType && proEvInfoData.full.closeType==='2'">
                         <span>备注</span>
                         <span v-text="proEvInfoData.full.closeRemark" class="MT"></span>
                     </div>
@@ -114,12 +114,13 @@
                                 </div>
                             </div>
                             <div class="input">
-                                <textarea type="text" v-model="proEvStr"></textarea>
+                                <textarea type="text" id="textareaErrorClass" v-model="proEvStr" @blur="textareaBlur('blur')"  @focus="textareaBlur('focus')"></textarea>
                                 <aite :str="proEvDesc_str" :desc_objs="proEvObjs" :isterm="true" :cb="ProEvgetObjs" ref="aite" v-if="proEvDesc_str"></aite>
                             </div>
                             <span class="grayBule hint" @click="v.instance.proEvStr+='@'">@对象</span>
                              
                         </div>
+                        <div class="error-tip" id="textareaErrorTip">不可为空</div>
                         <div class="bottom">
                             <div><pbutton-white text="'取消'" bind="true" @click="editEventInfo(false)"></pbutton-white></div>
                             <div><pbutton-blue text="'保存'"  bind="true" @click="editEventInfo(true)"></pbutton-blue></div>

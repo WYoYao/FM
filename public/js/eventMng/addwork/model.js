@@ -94,7 +94,7 @@ v.pushComponent({
             "end_minute": "",
             "input_mode": "1",                   //输入方式，1-自由输入，2-结构化输入,必须
             "order_from_id": "***",              //工单来源id，报修转工单时，这里是报修单id
-            "suggest_executor_num": ""
+            "execute_count": ""
         },
         WoTypeList: [],                          // 工单集合
         shouldStartEnums: [{ name: "无", code: "" }, { name: "发单后立即开始", code: "1" }, { name: "自定义开始时间", code: "2" }],
@@ -428,6 +428,11 @@ v.pushComponent({
 
                             // console.log("SuccessFul");
                             // console.log(_that.matters);
+                            //将desc_forepart转成工单预览时的数据结构
+                            _that.matters = _that.matters.map(function(item){
+                                item["description"] = item.desc_forepart ;
+                                return item;
+                            })
                             _that.getPreview(_that.matters);
 
                             // controller.queryPersonListByPositionIds().then(function (res) {
@@ -462,26 +467,26 @@ v.pushComponent({
             _that.argu.next_person_ids = list;
             _that.showPersonTree = false;
         },
-        fillpit_positions: function (robbing_flag, suggest_executor_num) {
+        fillpit_positions: function (robbing_flag, execute_count) {
 
             var fn = arguments.callee;
 
-            suggest_executor_num = +suggest_executor_num;
+            execute_count = +execute_count;
 
             // 如果是抢单的话的
             if (robbing_flag) {
 
-                if (_.isNumber(suggest_executor_num) && suggest_executor_num > 0 && suggest_executor_num < 10) {
-                    // this.addwork.suggest_executor_num = this.comExecutreNumber(suggest_executor_num);
-                    this.addwork.suggest_executor_num = suggest_executor_num;
+                if (_.isNumber(execute_count) && execute_count > 0 && execute_count < 10) {
+                    // this.addwork.execute_count = this.comExecutreNumber(execute_count);
+                    this.addwork.execute_count = execute_count;
 
 
-                    this.addwork.pit_positions = fill(this.addwork.pit_positions, suggest_executor_num, pit_positions)
+                    this.addwork.pit_positions = fill(this.addwork.pit_positions, execute_count, pit_positions)
                 } else {
                     // var input = $("#peoplenumber").find("input");
                     // // 如果拥有焦点事件的情况下
                     // if (document.hasFocus() && document.activeElement === input[0]) {
-                    //     input.one("blur", fn.bind(this, robbing_flag, suggest_executor_num));
+                    //     input.one("blur", fn.bind(this, robbing_flag, execute_count));
                     // } else {
                     //     $("#peoplenumber").pshowTextTip("抢单状态下建议执行人数只允许输入个位数");
                     // }
@@ -600,11 +605,23 @@ v.pushComponent({
                 return item;
             });
         });
-
+        //将事件描述和问题类型带入工单
+        if (event.originalData && event.originalData.originalProblemType) {
+            _that.matters[0].matter_name = event.originalData.originalProblemType;
+        }
+        if (event.originalData && event.originalData.originalEventDescribe) {
+            _that.matters[0].desc_forepart = event.originalData.originalEventDescribe;
+        }
         // 如果事件有图片的情况下 附加到第一个事项中
         if (_.isArray(event.pictures)) {
+            if(event.pictures && event.pictures.length >0){
+                event.pictures = event.pictures.map(function(item){
+                    return item = ('/' + pconst.requestType.pdownload + '/' + psecret.create(item));
+                })
+            }
             _that.matters[0].desc_photos = event.pictures;
         }
+        
 
         // 查询用户的权限
         controller.queryPersonDetailByPersonId(
@@ -616,7 +633,7 @@ v.pushComponent({
             var item = _.find(obj.project_persons, { project_id: v.instance.project_id });
             // 查询某个岗位拥有某控制模块的工单类型
             // return controller.queryWoTypeListByPersonIdControlCode({ position_id: item.position_id });
-            return controller.queryWoTypeListByPersonIdControlCode({});
+            return controller.queryWoTypeListByPersonIdControlCode({"wo_execute_type": "temp","repair_flag":"1","position_id": item.position_id});
         }).then(function (list) {
             _that.WoTypeList = list;
         })
@@ -648,13 +665,13 @@ v.pushComponent({
 
 
         },
-        "addwork.suggest_executor_num": function (num, old) {
+        "addwork.execute_count": function (num, old) {
 
             this.fillpit_positions(this.addwork.robbing_flag, num);
         },
         "addwork.robbing_flag": function (newValue, oldValue) {
 
-            this.fillpit_positions(newValue, this.addwork.suggest_executor_num);
+            this.fillpit_positions(newValue, this.addwork.execute_count);
         },
         'addwork.ask_start_time': function (date) {
             var date = new Date(date);
@@ -689,10 +706,10 @@ v.pushComponent({
 
         //     this.addwork.order_state = newValue ? 2 : 5
         // },
-        'addwork.suggest_executor_num': function (num, old) {
+        'addwork.execute_count': function (num, old) {
             // 如果是抢单的话的
             if (this.addwork.robbing_flag) {
-                this.addwork.suggest_executor_num = this.comExecutreNumber(this.addwork.suggest_executor_num);
+                this.addwork.execute_count = this.comExecutreNumber(this.addwork.execute_count);
 
                 this.addwork.pit_positions = fill(this.addwork.pit_positions, num, pit_positions)
 

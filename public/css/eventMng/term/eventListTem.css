@@ -8,6 +8,9 @@
     height: 50px;
     line-height: 50px;
     border-bottom: 1px solid #dae3e9; }
+    .eventListTemWrap .head .coRed{
+      color: red;
+  }
   .eventListTemWrap .neck {
     padding: 0 20px 0;
     width: calc(100% - 40px);
@@ -88,8 +91,8 @@
     .eventListTemWrap .foot > div {
       float: right; }
   .eventListTemWrap .all .s0 {
-    width: 9%;
-    padding-right: 8%; }
+    width: 14%;
+    padding-right: 4%; }
   .eventListTemWrap .all .s1 {
     width: 14%; }
   .eventListTemWrap .all .s2 {

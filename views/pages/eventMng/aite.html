@@ -253,7 +253,7 @@
                 </div>
                 <div class="tree-body">
                     <div class="tree-box">
-                        <ptree-normal id="'id_BuildFloorSpaceTree'" datasource="BuildFloorSpaceTree" sel="QuipTreeSel">
+                        <ptree-normal id="'id_BuildFloorSpaceTree'" bind="true" datasource="BuildFloorSpaceTree" sel="QuipTreeSel">
                             <item text="obj_name" issearch="false" child="content"></item>
                         </ptree-normal>
                     </div>
@@ -712,7 +712,12 @@
                         _that.BuildFloorSpaceTree = res;
 
                         b.then(function (res) {
-                            _that.GeneralDict = res;
+                            _that.GeneralDict = [{
+                                "code": "",
+                                "name": "全部",
+                                "description": "一般是指直流电路或音频、视频线路、网络线路、电话线路，直流电压一般在36V以内，弱电一般用作信号电",
+                                "dict_type": "--"
+                            }].concat(res);
 
                         }).finally(function () { _that.isLoading = false; })
                     })
@@ -890,11 +895,14 @@
             }
             //  设备树形菜单事件
             window.QuipTreeSel = function () {
-                // 查询设备
-                _that.queryQuip();
+                setTimeout(function () {
+                    // 查询设备
+                    _that.queryQuip();
+                }, 0);
             }
             // 系统选择事件
             window.DictSystemSel = function () {
+
                 // 查询设备
                 _that.queryQuip();
             }

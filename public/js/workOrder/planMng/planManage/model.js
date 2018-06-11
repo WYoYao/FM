@@ -148,7 +148,7 @@ v.pushComponent({
             a(param,function(data){
                 data = data || [];
                 if(data.length == 0){
-                    $("#globalnotice").pshow({ text: "没有更多计划了", state: "success" });
+                    // $("#globalnotice").pshow({ text: "没有更多计划了", state: "success" });
                     return
                 }else{
                     data = dataControll(JSON.parse(JSON.stringify(data)));
@@ -161,8 +161,8 @@ v.pushComponent({
                     })
                 }
             },function(){
-                $("#planManagePartLoading").phide();
             },function(){
+                $("#planManagePartLoading").phide();
             })
         },
         // 统一获取向后台获取计划工单数据时的参数
@@ -171,8 +171,8 @@ v.pushComponent({
                 plan_name  : $("#planKeyword").pval().key,
                 start_time : this.dateData.startTime,
                 end_time   : this.dateData.endTime,
-                pageSize   : this.pageSize,
-                page       : this.planData.length/this.pageSize + 1,
+                // pageSize   : this.pageSize,
+                // page       : this.planData.length/this.pageSize + 1,
             }
             this.allFreq.forEach(function(item){
                 if(item.sel){param.freq_cycle = item.id}

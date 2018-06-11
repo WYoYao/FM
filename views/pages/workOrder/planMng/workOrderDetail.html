@@ -46,11 +46,11 @@
 
             <div class="normal">
                 <div class="key1">要求开始时间</div>
-                <div class="value1 MT" v-text="orderDetailData.ask_start_time ? timeFormat(orderDetailData.ask_start_time,'0') : '' "></div>
+                <div class="value1 MT" v-text="orderDetailData.ask_start_time ? timeFormat(orderDetailData.ask_start_time,'0') : '--' "></div>
                 <div class="key1 key2">要求固定时间内完成</div>
-                <div class="value2 MT" v-text="orderDetailData.ask_end_limit"></div>
+                <div class="value2 MT" v-text="(orderDetailData.ask_end_limit + '小时') || '--'"></div>
                 <div class="key2 key1">要求结束时间</div>
-                <div class="value2 MT" v-text="orderDetailData.ask_end_time ? timeFormat(orderDetailData.ask_end_time,'0') : ''"></div>
+                <div class="value2 MT" v-text="orderDetailData.ask_end_time ? timeFormat(orderDetailData.ask_end_time,'0') : '--'"></div>
             </div>
 
             <div class="normal" v-if="(orderDetailData.required_tools && orderDetailData.required_tools.length) || isShowAddTool">
@@ -200,7 +200,7 @@
                             <!-- 反馈描述 -->
                             <div v-if="feedback.description" v-text="feedback.description"></div>
                             <!-- 信息点 -->
-                            <div v-if="feedback.confirm_result" class="infos">
+                            <!-- <div v-if="feedback.confirm_result" class="infos">
                                 <div v-for="item5 in feedback.confirm_result" class="clear">
                                     <div v-if="item5.info_points" v-for="(info,index5) in item5.info_points" v-text="info.name + info.value + info.unit + (index5 != item5.info_points.length - 1 ? '，' : item5.customs && item5.customs.length ? '，' : '')"></div>
                                     <div v-if="item5.customs" v-for="(custom,index6) in item5.customs">
@@ -211,12 +211,18 @@
                                         <i v-if="custom.type == 5" v-text="custom.name + custom.value + custom.unit + (index6 != item5.customs.length -1 ? '，' : '')"></i>
                                     </div>
                                 </div>
+                            </div> -->
+                            <div v-if="feedback.confirm_result && feedback.confirm_result.length">
+                                <div v-for="x in feedback.confirm_result">
+                                    <div v-text="x.obj_name"></div>
+                                    <div v-text="x.str"></div>
+                                </div>
                             </div>
                             <!-- 确认结果 -->
                             <div v-if="feedback.step_finish" v-text="'已完成'"></div>
                             <!-- 图片 -->
                             <div v-if="feedback.photos && feedback.photos.length" v-for="photo in feedback.photos" class="photo">
-                                <img src="photo" alt="">
+                                <img :src="photo" alt="">
                             </div>
                         </div>
 
@@ -230,17 +236,6 @@
 
                 </div>
 
-                <!-- 签名 -->
-                <!-- <div class="sign" v-if="!matter_steps.obj_step_id && !matter_steps.description">
-                    <div class="left">签字：</div>
-                    <div class="img">
-                        <img :src="matter_steps.feedback[0].photos[0]" alt="">
-                    </div>
-                    <div class="right">
-                        <span>操作人:</span>
-                        <i v-text="workOrderArrToString(matter_steps.executors)"></i>
-                    </div>
-                </div> -->
 
             </div>
 

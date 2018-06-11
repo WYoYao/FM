@@ -62,7 +62,8 @@
         width: 530px;
         height: 360px;
         border: 1px solid #eeeeee;
-        margin-top: 15px; }
+        margin-top: 15px; 
+        position: relative;}
         #eventInfoFloat #projectEvInfo .content .body .edit .top {
           width: calc(100% - 50px);
           padding: 25px 20px 0 30px;
@@ -93,6 +94,15 @@
           width: 170px;
           margin-left: 340px;
           margin-top: 10px; }
+          #eventInfoFloat #projectEvInfo .content .body .edit  .error-tip{ 
+             font-size: 12px;
+            height: 22px;
+            line-height: 24px;
+            color: #f97c7c;
+            white-space: nowrap;
+            position: absolute;
+            bottom: 16px;
+            left: 38px;}
           #eventInfoFloat #projectEvInfo .content .body .edit .bottom > div {
             width: 80px;
             float: left; }
@@ -302,5 +312,5 @@
             display: none; }
           #eventInfoFloat #groupEvInfo .pro > div > div:nth-of-type(3):hover > img:nth-of-type(2) {
             display: inline-block; }
-
+#textareaErrorTip{display: none;}
 /*# sourceMappingURL=eventInfo.css.map */

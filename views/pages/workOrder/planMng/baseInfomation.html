@@ -70,12 +70,15 @@
         <div class="aheadCreateTime" v-if="!isquote && !(addWoPlan.executie_mode=='execute' ||  addWoPlan.robbing_flag)">
             <ptext-text bind="true" value="addWoPlan.suggest_executor_num" id="'peoplenumber'" text="'人'" placeholder="'建议执行人数'" align="right">
                 <verify errtip="只能为1位数" verifytype="Digits"></verify>
+                <verify errtip="只能为整数" verifytype="ZInteger"></verify>
+
             </ptext-text>
         </div>
         <!-- 抢单时候不能为空 -->
         <div class="aheadCreateTime" v-if="!isquote && (addWoPlan.executie_mode=='execute' ||  addWoPlan.robbing_flag)">
             <ptext-text bind="true" value="addWoPlan.suggest_executor_num" id="'peoplenumber'" text="'人'" placeholder="'建议执行人数'" align="right">
                 <verify errtip="不能为空" verifytype="space"></verify>
+                <verify errtip="只能为整数" verifytype="ZInteger"></verify>
                 <verify errtip="只能为1位数" verifytype="Digits"></verify>
             </ptext-text>
         </div>
@@ -131,7 +134,7 @@
             <span v-if="isedit" v-text="(_.find(freq_cycleType,{code:addWoPlan.freq_cycle}) || {}).name"></span>
             <pcombobox-normal v-if="!isedit" id="'cbx_id_freq_cycle'" bind="true" sel="cbx_sel_freq_cycle" >
                 <header placeholder="(_.find(freq_cycleType,{code:addWoPlan.freq_cycle}) || {}).name"></header>
-                <item datasource="freq_cycleType" text="name"></item>
+                <item datasource="filterfreq_cycleType(freq_cycleType)" text="name"></item>
             </pcombobox-normal>
 
 

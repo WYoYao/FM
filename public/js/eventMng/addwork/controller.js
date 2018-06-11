@@ -537,6 +537,12 @@ controller.push([
         //  查询设备专业系统
         name: "GeneralSystem",
         url: "restObjectService/querySystemForSystemDomain",
+        convert: function (list) {
+            return [{
+                system_id: "",
+                system_name: "全部"
+            }].concat(list);
+        }
     },
     {
         //  查询设备

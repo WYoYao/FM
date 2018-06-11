@@ -1,62 +1,72 @@
 @import "./public";
 @import "./structure";
 
-.examples{
+.examplesblock{
     position: absolute;
-    width: 360px;
-    background: #ffffff;
-    border: 1px solid #dcdce4;
-    top:90px;
-    left:20px;
-    
-    .eheader{
-        line-height: 50px;
-        background: #f2f2f2;
-        font-size: 14px;
-        font-weight: 400;
-        border-bottom: 1px solid #dcdce4;
-        text-align: center;
+
+    .layer{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
     }
 
-    .ebody{
-        height: 370px;
-        overflow-y: auto;
+    .examples{
+        position: absolute;
+        width: 360px;
+        background: #ffffff;
+        border: 1px solid #dcdce4;
+        z-index: 1;
         
-        .item{
-            padding: 0 20px;
-            line-height: 40px;
+        .eheader{
+            line-height: 50px;
+            background: #f2f2f2;
+            font-size: 14px;
+            font-weight: 400;
             border-bottom: 1px solid #dcdce4;
+            text-align: center;
+        }
 
-            @include clear;
+        .ebody{
+            height: 370px;
+            overflow-y: auto;
+            
+            .item{
+                padding: 0 20px;
+                line-height: 40px;
+                border-bottom: 1px solid #dcdce4;
 
-            .text{
-                height: 40px;
-                float: left;
-                width: calc(100% - 50px);
-                cursor: pointer;
+                @include clear;
+
+                .text{
+                    height: 40px;
+                    float: left;
+                    width: calc(100% - 50px);
+                    cursor: pointer;
+                }
+
+                @include pcheckbox{
+                    margin-top: 5px;
+                    float: right;
+                }
+
+                & > :last-of-type{
+                    border-bottom: none;
+                }
             }
+        }
 
-            @include pcheckbox{
-                margin-top: 5px;
-                float: right;
-            }
+        .ebottom{
+            line-height: 30px;
+            border-top: 1px solid #dcdce4;
+            text-align: center;
+            background: #f2f2f2;
 
-            & > :last-of-type{
-                border-bottom: none;
+            .btn{
+                margin-top: 10px;
+                display: inline-block;
             }
         }
     }
-
-    .ebottom{
-        line-height: 30px;
-        border-top: 1px solid #dcdce4;
-        text-align: center;
-        background: #f2f2f2;
-
-        .btn{
-            margin-top: 10px;
-            display: inline-block;
-        }
-    }
-
 }
