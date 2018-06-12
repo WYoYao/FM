@@ -115,7 +115,10 @@
                             </div>
                             <div class="input">
                                 <textarea type="text" id="textareaErrorClass" v-model="proEvStr" @blur="textareaBlur('blur')"  @focus="textareaBlur('focus')"></textarea>
-                                <aite :str="proEvDesc_str" :desc_objs="proEvObjs" :isterm="true" :cb="ProEvgetObjs" ref="aite" v-if="proEvDesc_str"></aite>
+                                <div>
+                                    <aite :str="proEvDesc_str" :desc_objs="proEvObjs" :isterm="true" :cb="ProEvgetObjs" ref="aite" v-if="proEvDesc_str"></aite>
+                                </div>
+                                
                             </div>
                             <span class="grayBule hint" @click="v.instance.proEvStr+='@'">@对象</span>
                              
@@ -153,7 +156,7 @@
                                 <span class="soh" v-text="proEvInPower.showObjT ? '收起' : '显示'" @click="proEvInPower.showObjT = !proEvInPower.showObjT"></span>
                                 <ul class="obj" v-show="proEvInPower.showObjT">
                                     <li v-for="item in proEvInfoData.full.reviseData.reviseAssociationObject">
-                                        <div v-text="item.obj_name + ' - ' + allObjType[item.obj_type]"></div>
+                                        <div :title="item.obj_name + ' - ' + allObjType[item.obj_type]" v-text="item.obj_name + ' - ' + allObjType[item.obj_type]"></div>
                                         <div v-if="item.obj_type === 'equip'">
                                             <i class="icon">O</i>
                                             <span v-text="item.space_name"></span>
@@ -292,9 +295,15 @@
                         <img src="../images/waitD.png" alt="" v-if="item.eventState == '0'">
                         <i class="icon moreBlue" v-if="item.eventState == '1'">G</i>
                         <img src="../images/closed.png" v-if="item.eventState == '2'">
-                        <span v-text="allEvSta[item.eventState]"></span>
-                        <div class="state" v-if="item.eventState != '0'" v-text="item.eventState == '1' ? 
-                        allWkOrdSta[item.workOrderState] : allcleRon[item.closeType]"></div>
+                        <!--<span v-text="allEvSta[item.eventState]"></span>-->
+                        <!--eventState:"****",事件状态 0-待处理,1-处理中,2-已关闭-->
+                        <span v-text="allEvSte[item.eventState]"></span>
+                        <!--<div class="state" v-if="item.eventState != '0'" v-text="item.eventState == '1' ?
+                        allWkOrdSta[item.workOrderState] : allcleRon[item.closeType]">
+                        </div>-->
+                        <div class="state" v-if="item.eventState != '0'" v-text="item.eventState == '1' ?
+                        item.workOrderState : allcleRon[item.closeType]">
+                        </div>
                     </div>
                     <div v-if="item.eventState != '1'" @click="lookProjectEvInfo(item)">
                         <img src="../images/somep.png" alt="">

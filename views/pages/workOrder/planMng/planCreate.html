@@ -37,7 +37,7 @@
 
 
                                 <!-- 每一个事项 End -->
-                                <div class="add-new-matter" @click="matters.push(new Matter())">
+                                <div class="add-new-matter" v-show="!isquote" @click="matters.push(new Matter())">
                                     <em>J</em>
                                     <span>添加新事项</span>
                                 </div>

@@ -138,5 +138,32 @@ controller.prototype.userInfo = function () {
     };
 };
 
+controller.prototype.blocHomePage = function () {
+    return function (req, res, next) {
+        res.render('.pages/blocHomePage/index.html', { host: commonLibUrl });
+    };
+}
+
+controller.prototype.proHomePage = function () {
+    return function (req, res, next) {
+        res.render('./scan.html', { host: commonLibUrl });
+    };
+}
+
+
+controller.prototype.blocReport = function () {
+    return function (req, res, next) {
+        res.render('./scan.html', { host: commonLibUrl });
+    };
+}
+
+
+controller.prototype.proReport = function () {
+    return function (req, res, next) {
+        res.render('./scan.html', { host: commonLibUrl });
+    };
+}
+
+
 
 module.exports = new controller();

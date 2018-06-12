@@ -19,7 +19,7 @@
                     <i>修改版本</i>
                 </div>
 
-                <div :class="{'orange':comparePlanEffect(item.plan_end_time) == '1' || item.plan_end_time==''}">
+                <div :class="{'orange':historyRecordList.length == 1 || index == 0}">
                     生效时间：
                     <span v-text="timeFormat(item.plan_start_time,'1')"></span>
                     - 

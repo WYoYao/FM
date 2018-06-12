@@ -93,22 +93,8 @@ v.pushComponent({
     },
     // 查看项目所有计划
     lookAllPlan: function () {
-      var a = psecret.create(JSON.stringify({ project_name: this.cache.project_name, project_id: this.cache.project_id }));
+      var a = psecret.create(JSON.stringify({ pt: this.cache.project_id }));
       window.open(window.location.ancestorOrigins[0] + '/frame/PlanManagement?ot=' + a);
-    },
-    //与当前时间做比较，判断计划生效时间
-    comparePlanEffect: function (str) {
-      if (str != '') {
-        var _st = this.timeFormat(str, '0');
-        var _st_tran = Date.parse(new Date(_st));
-        var date = new Date();
-        var _curr_t = Date.parse(new Date()); //当前时间
-        if (_st_tran > _curr_t) {
-          return 1;
-        } else {
-          return 2;
-        }
-      }
     },
   },
   filters: {

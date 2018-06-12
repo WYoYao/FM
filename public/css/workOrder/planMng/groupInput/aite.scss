@@ -189,6 +189,10 @@
                 .aite-list{
                     @extend .aite-list;
 
+                    .left{
+                        
+                    }
+
                      & > .name{
                         display: inline-block;
                         max-width: 100px;

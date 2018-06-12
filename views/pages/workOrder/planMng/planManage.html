@@ -120,8 +120,8 @@
     
         <div class="name grayblue MT" :style="{'height':item.grid.length*60 - 1 + 'px','line-height':item.grid.length*60 - 1 + 'px'}" @click="openPlanDetail(item)">
             <span v-text="item.plan_name" :title="item.plan_name"></span>
-            <div class="warn1 bottom" v-if="item.plan_from == 1" v-show="item.plan_update_status == 1">已引用集团计划</div>
-            <div class="warn2 bottom" v-if="item.plan_from == 1" v-show="item.plan_update_status == 0">已引用集团计划，集团计划已修改</div>
+            <div class="warn1 bottom" v-if="item.plan_from == 1" v-show="item.plan_update_status == 0">已引用集团计划</div>
+            <div class="warn2 bottom" v-if="item.plan_from == 1" v-show="item.plan_update_status == 1">已引用集团计划，集团计划已修改</div>
             <div class="warn5 top" v-if="item.remind_type == 2"></div>
             <div class="warn6 top" v-if="item.remind_type == 3"></div>
             <div class="warn3 top" v-if="item.remind_type == 2">即将失效</div>

@@ -31,7 +31,9 @@
       height: 36px;
       line-height: 36px;
       position: relative;
-      cursor: pointer; }
+      cursor: pointer; 
+      display:flex;
+    }
       #repeatEvent .grid li:nth-of-type(odd) {
         background: #f4f6f9; }
       #repeatEvent .grid li span {

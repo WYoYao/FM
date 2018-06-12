@@ -8,7 +8,11 @@ var headerbdata = [{
 }, {
     name: "技术参数"
 }]
-
+  // 返回详情
+var _clickGoBackDeatil=function(){
+      v.instance.showWorkOrder = "false";
+    $("#detailBlock").show();
+}
 var headerbCall = function () {
 
     v.instance.baseTab = $("#baseTab").psel();

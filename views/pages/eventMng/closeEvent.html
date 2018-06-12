@@ -61,7 +61,7 @@
         <span class="per-radio_input t4" :class="{'per-radio-checked':model.sel}" style="background-color: rgb(255, 255, 255);" @click="selRepeatProEv(model)"></span>
         <span class="t1" v-text="model.eventDescribe">事件描述</span>
         <span class="t2" v-text="model.associationObject">关联对象</span>
-        <span class="t3" v-text="model.eventType">事件类型</span>
+        <span class="t3" v-text="allEvType[model.eventType]">事件类型</span>
     </li>
 </script>
 <!-- 重复事件列表模板End -->

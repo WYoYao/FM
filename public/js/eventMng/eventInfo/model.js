@@ -34,11 +34,12 @@ v.pushComponent({
         allObjType: {
             build: "建筑",
             floor: "楼层",
-            space: "空间",
+            space: "房间",
             system: "系统实例",
             equip: "设备实例",
             system_class: "系统类",
-            equip_class: "设备类"
+            equip_class: "设备类",
+            space_class:"空间功能类型"
         }
     },
     methods: {
@@ -49,6 +50,7 @@ v.pushComponent({
             this.EvInfoType = "project";
             this.closedEvId = data.eventId;
             this.proEvInfoData.easy = data;
+            // this.proEvInfoData.full["repeatedEventId"] = data.repeatedEventId || "";
             this.getProEvInfo();
             $("#eventInfoFloat").pshow();
         },
@@ -77,11 +79,11 @@ v.pushComponent({
             }
         },
         // 获取项目事件详情
-        getProEvInfo: function () {
+        getProEvInfo: function (repeatId) {
             var that = this;
             $("#EvInfoLoading").pshow();
             EMA.EI({
-                eventId: this.proEvInfoData.easy.eventId
+                eventId: repeatId ? repeatId :this.proEvInfoData.easy.eventId
             }, function (data) {
                 that.proEvInfoData.full = JSON.parse(JSON.stringify(data[0])) || {};
             }, function () {
@@ -103,6 +105,24 @@ v.pushComponent({
                 that.someEventType = JSON.parse(JSON.stringify(data)) || [];
                 $("#editEvTypeCombo").precover("请选择");
                 that.proEvStr = "";
+                //获取是否存在修正信息
+                if(that.proEvInfoData.full.reviseData ){
+                    if(that.proEvInfoData.full.reviseData.reviseEventDescribe){
+                        that.proEvStr = that.proEvInfoData.full.reviseData.reviseEventDescribe;
+                        var reviseObjArr = that.proEvInfoData.full.reviseData.reviseEventDescribe.split(' ');
+                        reviseObjArr.forEach(function(item){
+                            if(item.indexOf('@') == '0'){
+                                that.proEvObjs.push(item);
+                            }
+                        });
+                    }
+                    if(that.proEvInfoData.full.reviseData.reviseProblemType){
+                        setTimeout(function(){
+                            $("#editEvTypeCombo").psel(that.proEvInfoData.full.reviseData.reviseProblemType);
+                        },0)
+                    }
+                };
+
             }, function () {
                 that.someEventType = [];
             }, function () {
@@ -115,8 +135,9 @@ v.pushComponent({
         },
         // 查看项目事件重复事件
         lookProEvRepeatEv: function () {
+            var repeatId = this.proEvInfoData.full.repeatedEventId;
             this.closedEvId = this.proEvInfoData.full.repeatedEventId;
-            this.getProEvInfo();
+            this.getProEvInfo(repeatId);
         },
 
 

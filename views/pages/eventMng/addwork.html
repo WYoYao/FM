@@ -1,4 +1,4 @@
-<div class="towork" v-if="onPage === 'addwork'">
+<div class="towork" v-show="onPage === 'addwork'">
     <!-- Header Start -->
     <div class="header">
         <div class="cancel" @click.capture="v.initPage('eventList')">
@@ -199,7 +199,8 @@
 <div class="towork" v-if="onPage === 'Preview'">
     <!-- Header Start -->
     <div class="header">
-        <div class="cancel" @click.capture="onPage = 'addwork'">
+        <!-- <div class="cancel" @click.capture="onPage = 'addwork';"> -->
+        <div class="cancel" @click.capture="v.goBack('addwork',false)">
             <pbutton-white text="返回"></pbutton-white>
         </div>
 

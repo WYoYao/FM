@@ -28,15 +28,15 @@
 
             <div class="normal">
                 <div class="key1">工单类型</div>
-                <div class="value1 MT" v-text="orderDetailData.order_type_name"></div>
+                <div class="value1 MT" v-text="workOrderDetailData.order_type_name"></div>
                 <div class="key1 key2">工单紧急程度</div>
-                <div class="value2 MT" v-text="orderDetailData.urgency"></div>
+                <div class="value2 MT" v-text="workOrderDetailData.urgency"></div>
                 <div class="key1 key2">建议执行人数</div>
-                <div class="value2 MT" v-text="orderDetailData.execute_count || 0"></div>
+                <div class="value2 MT" v-text="workOrderDetailData.execute_count || 0"></div>
             </div>
 
-            <div class="place clear" v-if="orderDetailData.place && _.isArray(orderDetailData.place) && orderDetailData.place.length">
-                <div v-for="(item,index) in orderDetailData.place">
+            <div class="place clear" v-if="workOrderDetailData.place && _.isArray(workOrderDetailData.place) && workOrderDetailData.place.length">
+                <div v-for="(item,index) in workOrderDetailData.place">
                     <div v-text="'位置' + (index+1)"></div>
                     <div class="MT" v-text="item.name"></div>
                 </div>
@@ -46,16 +46,16 @@
 
             <div class="normal">
                 <div class="key1">要求开始时间</div>
-                <div class="value1 MT" v-text="orderDetailData.ask_start_time ? timeFormat(orderDetailData.ask_start_time,'0') : '--' "></div>
+                <div class="value1 MT" v-text="workOrderDetailData.ask_start_time ? timeFormat(workOrderDetailData.ask_start_time,'0') : '--' "></div>
                 <div class="key1 key2">要求固定时间内完成</div>
-                <div class="value2 MT" v-text="(orderDetailData.ask_end_limit + '小时') || '--'"></div>
+                <div class="value2 MT" v-text="workOrderDetailData.ask_end_limit ? (workOrderDetailData.ask_end_limit + '小时') : '--'"></div>
                 <div class="key2 key1">要求结束时间</div>
-                <div class="value2 MT" v-text="orderDetailData.ask_end_time ? timeFormat(orderDetailData.ask_end_time,'0') : '--'"></div>
+                <div class="value2 MT" v-text="workOrderDetailData.ask_end_time ? timeFormat(workOrderDetailData.ask_end_time,'0') : '--'"></div>
             </div>
 
-            <div class="normal" v-if="(orderDetailData.required_tools && orderDetailData.required_tools.length) || isShowAddTool">
+            <div class="normal" v-if="(workOrderDetailData.required_tools && workOrderDetailData.required_tools.length) || isShowAddTool">
                 <div class="key1">所需工具</div>
-                <div class="MT" v-text="workOrderArrToString(orderDetailData.required_tools)"></div>
+                <div class="MT" v-text="workOrderArrToString(workOrderDetailData.required_tools)"></div>
                 <span class="tool" v-if="isShowAddTool" v-for="(item,index) in toolarr">
                     <ptext-text placeholder="'请输入'" value="item.name" text="   " bind="true">
                         <verify errtip=""  verifytype="space"></verify>
@@ -75,7 +75,7 @@
         <div class="holder"></div>
 
         <!-- 工单事项 -->
-        <div class="content" v-for="(matters,index1) in orderDetailData.matters">
+        <div class="content" v-for="(matters,index1) in workOrderDetailData.matters">
 
             <!-- 事项信息 -->
             <div class="title">
@@ -242,9 +242,9 @@
         </div>
 
         <!-- 审核相关 -->
-        <div class="check" v-show="orderDetailData.wo_exec_controls && orderDetailData.wo_exec_controls.length">
+        <div class="check" v-show="workOrderDetailData.wo_exec_controls && workOrderDetailData.wo_exec_controls.length">
 
-            <div class="order" v-for="model in orderDetailData.wo_exec_controls">
+            <div class="order" v-for="model in workOrderDetailData.wo_exec_controls">
                 <div class="head">
                     <div class="name" v-text="model.control_name"></div>
                     <div class="time" v-text=" (model.type === 'apply' ? '申请' : model.type === 'audit' ? '审核' : model.type === 'stop' ? '中止' : '审批') + '时间 : ' + model.operate_time"></div>
@@ -269,7 +269,7 @@
                 </div>
             </div>
 
-            <!-- <ul v-for="wo_exec_controls in orderDetailData.wo_exec_controls">
+            <!-- <ul v-for="wo_exec_controls in workOrderDetailData.wo_exec_controls">
                 <li>
                     <div class="see_check_header">
                         <div>
@@ -310,7 +310,7 @@
         <!-- 操作人列表 -->
         <!-- <div class="operat_person_list">
 
-            <ul v-for="wo_exec_controls in orderDetailData.wo_exec_controls">
+            <ul v-for="wo_exec_controls in workOrderDetailData.wo_exec_controls">
                 <li>
                     <i>操作人</i>
                     <span v-text="wo_exec_controls.operator_name">张三</span>

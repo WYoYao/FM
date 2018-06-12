@@ -71,6 +71,46 @@ v.pushComponent({
         IssueProjectList: [],
     },
     methods: {
+        // 将相对设置转换成为对应的精确设置
+        convertAddWoPlan: function (addWoPlan) {
+            // 周期设置为年
+            addWoPlan.freq_cycle = "y";
+
+            var dayTime = 24 * 60 * 60 * 1000;
+
+            // 时间范围
+            var range = Math.floor(
+                (yyyyMMdd2Date(addWoPlan.plan_end_time) - yyyyMMdd2Date(addWoPlan.plan_start_time)) / dayTime / addWoPlan.freq_time_span.num
+            );
+
+            var startTime = addWoPlan.plan_start_time,
+                endTime = addWoPlan.plan_end_time,
+                num = parseInt(addWoPlan.freq_time_span.num),
+                hour = parseInt(addWoPlan.freq_time_span.time_hour),
+                minute = parseInt(addWoPlan.freq_time_span.time_minute),
+                continuer = parseInt(addWoPlan.freq_time_span.continue);
+
+            //  生成对应的精确数组
+            addWoPlan.freq_times = _.range(range).map(function (index) {
+
+                return {
+                    start_time: {
+                        cycle: "y",
+                        time_day: addDate(yyyyMMdd2Date(startTime), index * num).format('yyyyMMdd'),          //y("0612"-6月12日)，q("312"-第三个月12号，)，m("01"-1号)，w("1"-1号，周一)，d("")
+                        time_hour: hour,                    //10时
+                        time_minute: minute,                //15分
+                    },
+                    end_time: {
+                        cycle: "y",
+                        time_day: addDate(yyyyMMdd2Date(startTime), index * num, hour + continuer).format('yyyyMMdd'),          //y("0612"-6月12日)，q("312"-第三个月12号，)，m("01"-1号)，w("1"-1号，周一)，d("")
+                        time_hour: addDate(yyyyMMdd2Date(startTime), index * num, hour + continuer).getHours().toString(),        //10时
+                        time_minute: minute,                //15分
+                    }
+                }
+            })
+
+            return addWoPlan;
+        },
         setConfirm_result: function (item, arr) {
             // 获取原来的基础内容
             var obj = _.isArray(item.confirm_result) && !_.isUndefined(item.confirm_result[0]) ? _.cloneDeep(item.confirm_result[0]) : {};
@@ -346,6 +386,10 @@ v.pushComponent({
 
             var argu = _.cloneDeep(_that.req);
 
+            if (argu.plan_freq_type == 3) {
+                argu.freq_cycle = "y";
+            }
+
             argu.instantiated_object_flag = argu.instantiated_object_flag.toString();
             argu.ahead_create_time = +argu.ahead_create_time;
             argu.suggest_executor_num = +argu.suggest_executor_num;
@@ -376,8 +420,12 @@ v.pushComponent({
             })
 
             if (_that.isterm) {
-                // 项目版处理
 
+                if (_that.addWoPlan.plan_freq_type == 3) {
+                    _that.addWoPlan = _that.convertAddWoPlan(_that.addWoPlan)
+                };
+
+                // 项目版处理
                 argu = Object.assign({}, {
                     plan_from: _that.isquote ? "1" : "2", // 是否引用
                     group_plan_id: _that.isquote ? _that.cache.argu.addWoPlan.group_plan_id : "", // 引用集团ID
@@ -422,20 +470,6 @@ v.pushComponent({
                 }
 
                 !_that.isquote ? argu.group_plan_id = "" : void 0;
-
-                /**
-                 *  如果是引用集团计划
-                 */
-                // if (_that.isquote) {
-                //     // 修改计划的创建类型
-                //     argu.plan_from = "1";
-                // }
-
-                // if (_that.iscopy) {
-                //     // 如果是复制的情况下
-                //     argu.group_plan_id = "";
-                //     argu.plan_from = "2";
-                // }
 
                 loadding.set("addWoPlan");
                 if (_that.isedit && !_that.iscopy && !_that.isquote) {
@@ -562,12 +596,14 @@ v.pushComponent({
                 }
 
                 $("#globalWindow").pshow();
+
                 var now = new Date(+new Date() + (24 * 60 * 60 * 1000));
                 $("#xfstartTimesPtimeid").psel({
                     y: now.getFullYear(),
                     M: now.getMonth() + 1,
                     d: now.getDate(),
                 });
+
                 $("#xfendTimesPtimeid").psel({
                     y: now.getFullYear(),
                     M: now.getMonth() + 1,
@@ -629,16 +665,40 @@ v.pushComponent({
             var _that = this;
             var end = _that.toProjectArgu.plan_end_time;
             var start = _that.toProjectArgu.plan_start_time;
-            if (end != '' && start >= end) { return }
-            createPlan_controller.issueGroupPlanToWoPlan(_that.toProjectArgu).then(function () {
-                $('#globalnotice').pshow({ text: '下发成功', state: 'success' });
-            }).catch(function () {
-                $('#globalnotice').pshow({ text: '下发失败', state: 'failure' });
+
+            controller.queryGroupPlanById({
+                group_plan_id: _that.toProjectArgu.group_plan_id
+            }).then(function (res) {
+
+                // if (res.plan_freq_type == 1) {
+                //     _that.toProjectArgu.freq_cycle = res.freq_cycle;
+                //     _that.toProjectArgu.freq_num = res.freq_num;
+                //     _that.toProjectArgu.freq_times = res.freq_times;
+
+                // } else 
+                if (res.plan_freq_type == 3) {
+
+                    res.plan_start_time = _that.toProjectArgu.plan_start_time;
+                    res.plan_end_time = _that.toProjectArgu.plan_end_time;
+
+                    res = _that.convertAddWoPlan(res);
+
+                }
+                _that.toProjectArgu.freq_cycle = res.freq_cycle;
+                _that.toProjectArgu.freq_num = res.freq_times.length;
+                _that.toProjectArgu.freq_times = res.freq_times;
+
+                _that.toProjectArgu.plan_freq_type = 1;
+
+
+                createPlan_controller.issueGroupPlanToWoPlan(_that.toProjectArgu).then(function () {
+                    $('#globalnotice').pshow({ text: '下发成功', state: 'success' });
+                }).catch(function () {
+                    $('#globalnotice').pshow({ text: '下发失败', state: 'failure' });
+                })
+
             })
         },
-
-
-
         //取消二次弹窗
         cancelWindows: function () {
             $("#planCreateWindow").pshow({ title: '确定要取消吗？', subtitle: '取消后计划将不能保存！' });

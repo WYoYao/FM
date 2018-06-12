@@ -304,6 +304,8 @@ v.pushComponent({
 
             //  当指定开始时间和结束时间的时候需要验证弹窗提示比对大小的结果
             if (_that.shouldStartType == 1 && _that.addwork.start_time_type == 2) {
+                _that.addwork.ask_start_time = +new Date(($("#ask_start_time").psel().startTime).replace(/-/g,'.'));
+                _that.addwork.ask_end_time = +new Date(($("#ask_end_time").psel().startTime).replace(/-/g,'.'));
                 if (_that.addwork.ask_start_time > _that.addwork.ask_end_time) {
                     $('#globalnotice').pshow({ text: '要求开始时间大于要求结束时间', state: 'failure' });
                     return;
@@ -433,6 +435,19 @@ v.pushComponent({
                                 item["description"] = item.desc_forepart ;
                                 return item;
                             })
+                            //转换时间格式
+                            if(_that.addwork.ask_start_time){
+                                _that.addwork.ask_start_time = new Date(_that.addwork.ask_start_time).format("yMdhm");
+                            }
+                            if(_that.addwork.ask_end_time){
+                                _that.addwork.ask_end_time = new Date(_that.addwork.ask_end_time).format("yMdhm");
+                            }
+
+                            //通过新建选择的要求开始时间类型设置预览时显示的事件模块
+                            if(_that.shouldStartType == "1"){
+                                _that.addwork.ask_end_limit = "";
+                            }
+                            
                             _that.getPreview(_that.matters);
 
                             // controller.queryPersonListByPositionIds().then(function (res) {
@@ -531,6 +546,15 @@ v.pushComponent({
             var _that = this;
             _that.showPersonTree = false;
         },
+        transTimeType:function(str){//时间类型转换
+            return {
+                y:str.substr(0,4),
+                M:str.substr(4,2),
+                d:str.substr(6,2),
+                h:str.substr(8,2),
+                s:str.substr(10,2)                
+            }
+        },
         //事件转工单发布
         submit: function () {
             var _that = this;
@@ -621,8 +645,52 @@ v.pushComponent({
             }
             _that.matters[0].desc_photos = event.pictures;
         }
+        //转工单时将事件开始结束时间带入工单 0612
+        //获取当前时间时间戳
+        var currTime = +new Date();
         
+        //1.无开始和结束时间：开始时间选择为无，结束时间显示为当前系统时间+1小时；
+       
+        if(event && !event.startTime && !event.endTime){
+            v.instance.addwork.start_time_type = "";
+            //设置当前时间 加一小时为设置结束时间
+            var setEndTime =  currTime + 60 * 60 * 1000;
+            var tranSetEndTime = new Date(setEndTime).format("yMdhm");
+            setTimeout(function(){
+                $("#ask_end_time").psel(_that.transTimeType(tranSetEndTime));
+            },0)
 
+        }
+        //2.有开始和结束时间：带入开始和结束时间
+        else if(event && event.startTime && event.endTime){
+            v.instance.addwork.start_time_type = "2";
+            var setStartTime = event.startTime.replace(/\.|\s|:/g,"");
+            var setEndTime = event.endTime.replace(/\.|\s|:/g,"");
+            setTimeout(function(){
+                $("#ask_start_time").psel(_that.transTimeType(setStartTime));
+                $("#ask_end_time").psel(_that.transTimeType(setEndTime));
+            },0)
+        }
+        //3.有开始无结束时间：带入开始时间，结束时间显示为开始时间+1小时；
+        else if(event && event.startTime && !event.endTime){
+            v.instance.addwork.start_time_type = "2";
+            var setStartTime = event.startTime.replace(/\.|\s|:/g,"");
+            var setEndTime = +new Date(event.startTime) + 60 * 60 * 1000;
+            var tranSetEndTime = new Date(setEndTime).format("yMdhm");
+            setTimeout(function(){
+                $("#ask_start_time").psel(_that.transTimeType(setStartTime));
+                $("#ask_end_time").psel(_that.transTimeType(tranSetEndTime));
+            },0)
+        }
+        //4.无开始有结束时间：开始时间显示为发单后立即开始，结束时间显示为当前系统时间+1小时；
+        else if(event && !event.startTime && event.endTime){
+            v.instance.addwork.start_time_type = "1";
+            var setEndTime =  currTime + 60 * 60 * 1000;
+            var tranSetEndTime = new Date(setEndTime).format("yMdhm");
+            setTimeout(function(){
+                $("#ask_end_time").psel(_that.transTimeType(tranSetEndTime));
+            },0)
+        }
         // 查询用户的权限
         controller.queryPersonDetailByPersonId(
             {

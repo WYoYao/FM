@@ -312,6 +312,46 @@ Vue.component('baseinfomation', {
     //isEdit: false,
     props: ['addwoplan', 'isquote', 'isterm', 'isedit', "wotypelistall"],
     methods: {
+        // 将相对设置转换成为对应的精确设置
+        convertAddWoPlan: function (addWoPlan) {
+            // 周期设置为年
+            addWoPlan.freq_cycle = "y";
+
+            var dayTime = 24 * 60 * 60 * 1000;
+
+            // 时间范围
+            var range = Math.floor(
+                (yyyyMMdd2Date(addWoPlan.plan_end_time) - yyyyMMdd2Date(addWoPlan.plan_start_time)) / dayTime / addWoPlan.freq_time_span.num
+            );
+
+            var startTime = addWoPlan.plan_start_time,
+                endTime = addWoPlan.plan_end_time,
+                num = parseInt(addWoPlan.freq_time_span.num),
+                hour = parseInt(addWoPlan.freq_time_span.time_hour),
+                minute = parseInt(addWoPlan.freq_time_span.time_minute),
+                continuer = parseInt(addWoPlan.freq_time_span.continue);
+
+            //  生成对应的精确数组
+            addWoPlan.freq_times = _.range(range).map(function (index) {
+
+                return {
+                    start_time: {
+                        cycle: "y",
+                        time_day: addDate(yyyyMMdd2Date(startTime), index * num).format('yyyyMMdd'),          //y("0612"-6月12日)，q("312"-第三个月12号，)，m("01"-1号)，w("1"-1号，周一)，d("")
+                        time_hour: hour,                    //10时
+                        time_minute: minute,                //15分
+                    },
+                    end_time: {
+                        cycle: "y",
+                        time_day: addDate(yyyyMMdd2Date(startTime), index * num, hour + continuer).format('yyyyMMdd'),          //y("0612"-6月12日)，q("312"-第三个月12号，)，m("01"-1号)，w("1"-1号，周一)，d("")
+                        time_hour: addDate(yyyyMMdd2Date(startTime), index * num, hour + continuer).getHours().toString(),        //10时
+                        time_minute: minute,                //15分
+                    }
+                }
+            })
+
+            return addWoPlan;
+        },
         // 绑定计划频率数组
         addfreq_times: function (type, count, bool) {
 
@@ -414,7 +454,9 @@ Vue.component('baseinfomation', {
                     break;
             }
 
-            return +start >= +end;
+            if (+start > +end) return 1;
+            if (+start == +end) return 2;
+            return 0;
         },
         // 数据验证
         canUse: function () {
@@ -471,7 +513,39 @@ Vue.component('baseinfomation', {
                                 end: + (item.end_time.time_day + item.end_time.time_hour + item.end_time.time_minute),
                             }
                         })
-                );
+                ).map(function (_ref, index) {
+                    var OverlapIndexs = _ref.OverlapIndexs,
+                        isOverlap = _ref.isOverlap;
+
+
+                    if (OverlapIndexs.size) {
+
+                        for (var _iterator = OverlapIndexs.values(), _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator](); ;) {
+                            var _ref2;
+
+                            if (_isArray) {
+                                if (_i >= _iterator.length) break;
+                                _ref2 = _iterator[_i++];
+                            } else {
+                                _i = _iterator.next();
+                                if (_i.done) break;
+                                _ref2 = _i.value;
+                            }
+
+                            var i = _ref2;
+
+                            if (i > index) {
+                                OverlapIndexs.delete(i);
+                            }
+                        }
+
+                        var _isOverlap = !!OverlapIndexs.size;
+
+                        return { OverlapIndexs: OverlapIndexs, isOverlap: _isOverlap };
+                    }
+
+                    return { OverlapIndexs: OverlapIndexs, isOverlap: isOverlap };
+                });
                 // 将忽略列表上面的内容附加到对应覆盖选项上面
                 _that.ignoreTimeOverlaps.forEach(function (bool, index) {
                     _that.TimeOverlaps[index].isOverlap = _that.TimeOverlaps[index].isOverlap ? !bool : false;
@@ -529,7 +603,6 @@ Vue.component('baseinfomation', {
                             });
                             return;
                         }
-
                     }
                 }
             }
@@ -565,53 +638,6 @@ Vue.component('baseinfomation', {
             addWoPlan.freq_times = addWoPlan.freq_times.map(function (item) {
                 return Cycle.prototype.Cycle2Item.call(item);
             })
-
-            //   相对设置转换成为精确设置
-            // if (addWoPlan.plan_freq_type == "3" && _that.isterm) {
-
-            //     // 转换生成对应的 精确时间点
-            //     var convertFn = function (addWoPlan) {
-            //         // 周期设置为年
-            //         addWoPlan.freq_cycle = "y";
-
-            //         var dayTime = 24 * 60 * 60 * 1000;
-
-            //         // 时间范围
-            //         var range = Math.floor(
-            //             (yyyyMMdd2Date(addWoPlan.plan_end_time) - yyyyMMdd2Date(addWoPlan.plan_start_time)) / dayTime / addWoPlan.freq_time_span.num
-            //         );
-
-            //         var startTime = addWoPlan.plan_start_time,
-            //             endTime = addWoPlan.plan_end_time,
-            //             num = parseInt(addWoPlan.freq_time_span.num),
-            //             hour = parseInt(addWoPlan.freq_time_span.time_hour),
-            //             minute = parseInt(addWoPlan.freq_time_span.time_minute),
-            //             continuer = parseInt(addWoPlan.freq_time_span.continue);
-
-            //         //  生成对应的精确数组
-            //         addWoPlan.freq_times = _.range(range).map(function (index) {
-
-            //             return {
-            //                 start_time: {
-            //                     cycle: "y",
-            //                     time_day: addDate(yyyyMMdd2Date(startTime), index * num).format('yyyyMMdd'),          //y("0612"-6月12日)，q("312"-第三个月12号，)，m("01"-1号)，w("1"-1号，周一)，d("")
-            //                     time_hour: hour,                    //10时
-            //                     time_minute: minute,                //15分
-            //                 },
-            //                 end_time: {
-            //                     cycle: "y",
-            //                     time_day: addDate(yyyyMMdd2Date(startTime), index * num, hour + continuer).format('yyyyMMdd'),          //y("0612"-6月12日)，q("312"-第三个月12号，)，m("01"-1号)，w("1"-1号，周一)，d("")
-            //                     time_hour: addDate(yyyyMMdd2Date(startTime), index * num, hour + continuer).getHours().toString(),        //10时
-            //                     time_minute: minute,                //15分
-            //                 }
-            //             }
-            //         })
-
-            //         return addWoPlan;
-            //     };
-
-            //     addWoPlan = convertFn(addWoPlan);
-            // }
 
             return addWoPlan;
         },
@@ -732,7 +758,7 @@ Vue.component('baseinfomation', {
         // },
         sendTypes: function () {
             return this.isterm ? this.sendTypesEnumAll.filter(function (item) {
-                return item.code != 2;
+                return item.code == 1;
             }) : this.sendTypesEnumAll;
         },
         cycleTypes: function () {
@@ -907,9 +933,8 @@ Vue.component('baseinfomation', {
             // 编辑情况
             if (_that.isedit) {
 
-                // var addwoplan = function () {
-                //     return JSON.parse(JSON.stringify(_that.addwoplan))
-                // }
+                // 如果是想的
+
                 var addwoplan = function () {
                     return JSON.parse(JSON.stringify(Object.assign(new AddWoPlan(), _that.addwoplan || {})))
                 }
@@ -918,6 +943,7 @@ Vue.component('baseinfomation', {
 
                     //  绑定基础信息
                     _that.addWoPlan = Object.assign(new AddWoPlan(), addwoplan())
+
                     // 判断生成 结束类型
                     _that.addWoPlan.plan_end_type = (_.isString(_that.addWoPlan.plan_end_time) && _that.addWoPlan.plan_end_time.length) ? '2' : '1';
 

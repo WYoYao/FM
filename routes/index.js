@@ -40,6 +40,18 @@ module.exports = function (app) {
     //工单管理
     app.get('/workOrderManagement', controller.workOrderManagement());
 
-    //工单管理
+    //获取用户信息
     app.get('/userInfo', controller.userInfo());
+
+    //集团首页
+    app.get('/blochomepage', controller.blocHomePage());
+
+    //项目首页
+    app.get('/prohomepage', controller.proHomePage());
+
+    //集团报表
+    app.get('/blocreport', controller.blocReport());
+
+    //项目报表
+    app.get('/proreport', controller.proReport());
 };

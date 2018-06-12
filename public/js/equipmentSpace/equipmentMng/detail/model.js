@@ -534,6 +534,104 @@ var CardInfo = function () {
 
         },
         methods: {
+            // Start 6.12
+            // 解决日历控件和下拉框控件下拉框隐藏问题
+            fakerClick: function (event) {
+                if (event) {
+    
+                    var el = event.srcElement ? event.srcElement : event.target;
+                    $(el).addClass("NowSelthisEl");
+    
+                    var elList = $("._combobox_bottom");
+    
+                    for (var i = 0; i < elList.length; i++) {
+                        var elWrap = $(elList[i]).parents(".comboMark");
+                        var len = $(elWrap).find(".NowSelthisEl").length;
+                        len != 0 ? void 0 : $(elList[i]).css("display", "none");
+                    }
+    
+                    $(el).removeClass("NowSelthisEl");
+                } else {
+                    // 兼容IE,页面发生一次点击事件
+                    $("body").trigger("click");
+                }
+            },
+            transfYMWD: function (str) { //通过年月周天转换对应的中文
+                var obj = {
+                    y: "年",
+                    m: "月",
+                    w: "周",
+                    d: "日",
+                    q: "季"
+                }
+                return obj[str]
+            },
+            filter_weekDetail_trans: function (str) {
+                var obj = {
+                    "01": "周一",
+                    "02": "周二",
+                    "03": "周三",
+                    "04": "周四",
+                    "05": "周五",
+                    "06": "周六",
+                    "07": "周日",
+                };
+                return obj[str]
+            },
+            sectionToChinese: function (section) {
+                var chnNumChar = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+                var chnUnitSection = ["", "万", "亿", "万亿", "亿亿"];
+                var chnUnitChar = ["", "十", "百", "千"];
+    
+                var strIns = '', chnStr = '';
+                var unitPos = 0;
+                var zero = true;
+                while (section > 0) {
+                    var v = section % 10;
+                    if (v === 0) {
+                        if (!zero) {
+                            zero = true;
+                            chnStr = chnNumChar[v] + chnStr;
+                        }
+                    } else {
+                        zero = false;
+                        strIns = chnNumChar[v];
+                        strIns += chnUnitChar[unitPos];
+                        chnStr = strIns + chnStr;
+                    }
+                    unitPos++;
+                    section = Math.floor(section / 10);
+                }
+                return chnStr;
+            },
+            // yyyymmddhhMMss => yyyy.mm.dd hh:MM  type === '0'
+            // yyyymmddhhMMss => yyyy.mm.dd        type === '1'
+            timeFormat: function (str, type) {
+                str = str || "";
+                if ((typeof str) != 'string') { str = str + ""; }
+                switch (type) {
+                    case '0':
+                        return str.length > 0 ? str.substring(0, 4) + '.' + str.substring(4, 6) + '.' + str.substring(6, 8) + ' ' + str.substring(8, 10) + ':' + str.substring(10, 12) : this.noData
+                        break;
+                    case '1':
+                        return str.length > 0 ? str.substring(0, 4) + '.' + str.substring(4, 6) + '.' + str.substring(6, 8) : this.noData
+                        break;
+                }
+            },
+            // 后台格式转换日期格式
+            yyyyMMddhhmmss2date: function (str) {
+    
+                return str.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/g, function () {
+                    var arr = Array.prototype.slice.call(arguments);
+                    return arr.slice(1, 4).join('/') + " " + arr.slice(4, 7).join(':');
+                });
+            },
+            // 普通格式转换
+            date2yyyyMMddhhmm: function (date) {
+    
+                return (new Date(date)).format('yyyy.MM.dd hh:mm');
+            },
+            // End 6.12
             _clickInsertBack: function () {
                 var _that = this;
                 v.initPage("equipmentMng")
@@ -542,18 +640,10 @@ var CardInfo = function () {
             // 前往工单详情
             _clickGoWorkBkDeatil: function (item) {
                 var _that = this;
-
                 _that.showWorkOrder = "wordorder";
-
                 $("#detailBlock").hide();
-
-
-                orderDetail_pub.getOrderDetail(v.instance, item.order_id, "1", function () {
-
-                    _that.showWorkOrder = false;
-
-                    $("#detailBlock").show();
-                });
+                createPlanModuleController();
+                v.instance.openWorkOrderDetail(item.order_id,"workOrderDetail");
             },
             // 下载设备名片
             downloadCardInfo: function () {

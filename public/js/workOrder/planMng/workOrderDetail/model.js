@@ -5,7 +5,7 @@ v.pushComponent({
     name: "workOrderDetail",
     data: {
         // 工单详情数据
-        orderDetailData: {
+        workOrderDetailData: {
             place: []
         },
         // 添加工具保存数组
@@ -31,16 +31,16 @@ v.pushComponent({
             $("#workOrderDetailLoad").pshow();
             console.log(this.cache);
             PMA.OD({ order_id: that.cache.workOrderId }, function (data) {
-                that.orderDetailData = JSON.parse(JSON.stringify(data.work_order.wo_body || {}));
-                // that.orderDetailData = JSON.parse(JSON.stringify(data));
+                that.workOrderDetailData = JSON.parse(JSON.stringify(data.work_order.wo_body || {}));
+                // that.workOrderDetailData = JSON.parse(JSON.stringify(data));
                 
-                that.orderDetailData.wo_exec_controls && that.orderDetailData.wo_exec_controls.length != 0 && that.orderDetailData.wo_exec_controls.forEach(function (item) {
+                that.workOrderDetailData.wo_exec_controls && that.workOrderDetailData.wo_exec_controls.length != 0 && that.workOrderDetailData.wo_exec_controls.forEach(function (item) {
                     item.type = that.getWorkOrderCheckType(item.control_code);
                 });
 
-                if (that.orderDetailData.pit_positions && that.orderDetailData.pit_positions.length > 0) {
+                if (that.workOrderDetailData.pit_positions && that.workOrderDetailData.pit_positions.length > 0) {
                     var arr = [];
-                    that.orderDetailData.pit_positions.forEach(function (item, index) {
+                    that.workOrderDetailData.pit_positions.forEach(function (item, index) {
                         if (item.pit_position_ask_names) {
                             if (item.pit_position_ask_names.length == 1) {
                                 arr.push({ name: (item.pit_position_ask_names).toString() })
@@ -53,11 +53,11 @@ v.pushComponent({
                     })
                     console.log(arr);
                     if (arr.length > 0) {
-                        that.orderDetailData.place = JSON.parse(JSON.stringify(arr));
+                        that.workOrderDetailData.place = JSON.parse(JSON.stringify(arr));
                     }
                 }
 
-                that.orderDetailData.matters.forEach(function(item){
+                that.workOrderDetailData.matters.forEach(function(item){
                     item.matter_steps.forEach(function(step){
                         if(step.feedback && step.feedback.length){
                             step.feedback.forEach(function(model){
@@ -107,7 +107,7 @@ v.pushComponent({
                 })
 
             }, function () {
-                that.orderDetailData = {};
+                that.workOrderDetailData = {};
             }, function () {
                 $("#workOrderDetailLoad").phide();
             })
@@ -234,7 +234,7 @@ v.pushComponent({
                 var res = Object.assign({}, res, JSON.parse(JSON.stringify(_that.addwork)));
 
 
-                _that.orderDetailData = JSON.parse(JSON.stringify(res)) || {};
+                _that.workOrderDetailData = JSON.parse(JSON.stringify(res)) || {};
                 //判断是否添加选择坑位数组
                 if (_that.addwork.pit_positions && _that.addwork.pit_positions.length > 0) {
                     var arr = [];
@@ -251,18 +251,18 @@ v.pushComponent({
                     })
                     console.log(arr);
                     if (arr.length > 0) {
-                        _that.orderDetailData.place = JSON.parse(JSON.stringify(arr));
+                        _that.workOrderDetailData.place = JSON.parse(JSON.stringify(arr));
                     }
 
                 }
 
-                if (_.isArray(_that.orderDetailData.wo_exec_controls)) {
-                    _that.orderDetailData.wo_exec_controls.forEach(function (item) {
+                if (_.isArray(_that.workOrderDetailData.wo_exec_controls)) {
+                    _that.workOrderDetailData.wo_exec_controls.forEach(function (item) {
                         item.type = that.getWorkOrderCheckType(item.control_code);
                     });
                 }
             }).catch(function () {
-                _that.orderDetailData = {};
+                _that.workOrderDetailData = {};
             })
         }
 

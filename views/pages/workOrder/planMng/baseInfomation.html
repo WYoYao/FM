@@ -69,16 +69,15 @@
         <!-- 非抢单的时候不用必填 -->
         <div class="aheadCreateTime" v-if="!isquote && !(addWoPlan.executie_mode=='execute' ||  addWoPlan.robbing_flag)">
             <ptext-text bind="true" value="addWoPlan.suggest_executor_num" id="'peoplenumber'" text="'人'" placeholder="'建议执行人数'" align="right">
+                <verify errtip="只能为正整数" verifytype="pisPositiveInt"></verify>
                 <verify errtip="只能为1位数" verifytype="Digits"></verify>
-                <verify errtip="只能为整数" verifytype="ZInteger"></verify>
-
             </ptext-text>
         </div>
         <!-- 抢单时候不能为空 -->
         <div class="aheadCreateTime" v-if="!isquote && (addWoPlan.executie_mode=='execute' ||  addWoPlan.robbing_flag)">
             <ptext-text bind="true" value="addWoPlan.suggest_executor_num" id="'peoplenumber'" text="'人'" placeholder="'建议执行人数'" align="right">
                 <verify errtip="不能为空" verifytype="space"></verify>
-                <verify errtip="只能为整数" verifytype="ZInteger"></verify>
+                <verify errtip="只能为正整数" verifytype="pisPositiveInt"></verify>
                 <verify errtip="只能为1位数" verifytype="Digits"></verify>
             </ptext-text>
         </div>
@@ -171,7 +170,7 @@
                             <panel startyear="2013" endyear="2022" timeType="Mdhm"></panel>
                         </ptime-form>
                     </section>
-                    <span class="rc" v-show="compare[index]">开始时间大于等于结束时间</span>                     
+                    <span class="rc" v-show="compare[index]">开始时间{{ ['大于','等于'][compare[index]-1] }}结束时间</span>                     
                     <span class="rc" v-show="(TimeOverlaps[index] && TimeOverlaps[index].isOverlap) && !ignoreTimeOverlaps[index]">时间设置有重复，可能出现工单重复发送！<em class="bc" @click="handlerClick(index)">忽略</em></span>
                 </li>
             </ul>
@@ -204,7 +203,7 @@
                             </ptime-form>
                         </span>
                     </section>
-                    <span class="rc" v-show="compare[index]">开始时间大于等于结束时间</span>                     
+                    <span class="rc" v-show="compare[index]">开始时间{{ ['大于','等于'][compare[index]-1] }}结束时间</span>                     
                     <span class="rc" v-show="(TimeOverlaps[index] && TimeOverlaps[index].isOverlap) && !ignoreTimeOverlaps[index]">时间设置有重复，可能出现工单重复发送！<em class="bc" @click="handlerClick(index)">忽略</em></span>
                 </li>
             </ul>
@@ -224,7 +223,7 @@
                             <panel startyear="2013" endyear="2022" timeType="dhm"></panel>
                         </ptime-form>
                     </section>
-                    <span class="rc" v-show="compare[index]">开始时间大于等于结束时间</span>                     
+                    <span class="rc" v-show="compare[index]">开始时间{{ ['大于','等于'][compare[index]-1] }}结束时间</span>                     
                     <span class="rc" v-show="(TimeOverlaps[index] && TimeOverlaps[index].isOverlap) && !ignoreTimeOverlaps[index]">时间设置有重复，可能出现工单重复发送！<em class="bc" @click="handlerClick(index)">忽略</em></span>
                 </li>
             </ul>
@@ -256,7 +255,7 @@
 
                         </span>
                     </section>
-                    <span class="rc" v-show="compare[index]">开始时间大于等于结束时间</span>                     
+                    <span class="rc" v-show="compare[index]">开始时间{{ ['大于','等于'][compare[index]-1] }}结束时间</span>                     
                     <span class="rc" v-show="(TimeOverlaps[index] && TimeOverlaps[index].isOverlap) && !ignoreTimeOverlaps[index]">时间设置有重复，可能出现工单重复发送！<em class="bc" @click="handlerClick(index)">忽略</em></span>
                 </li>
             </ul>
@@ -276,13 +275,13 @@
                             <panel startyear="2013" endyear="2022" timeType="hm"></panel>
                         </ptime-form>
                     </section>
-                    <span class="rc" v-show="compare[index]">开始时间大于等于结束时间</span>                     
+                    <span class="rc" v-show="compare[index]">开始时间{{ ['大于','等于'][compare[index]-1] }}结束时间</span>                     
                     <span class="rc" v-show="(TimeOverlaps[index] && TimeOverlaps[index].isOverlap) && !ignoreTimeOverlaps[index]">时间设置有重复，可能出现工单重复发送！<em class="bc" @click="handlerClick(index)">忽略</em></span>
                 </li>
             </ul>
         </div>
         <div class="freq_limit" v-if="addWoPlan.plan_freq_type == '2'">
-            <span class="freq_limit_s">任两次间隔大于</span>
+            <span class="freq_limit_s">任两次间隔不小于</span>
             <div class="freq_limit_c">
                 <ptext-text bind="true" id="'num_id'" value="addWoPlan.freq_limit.num" align="right" >
                     <verify errtip="次数不能为空" verifytype="space"></verify>

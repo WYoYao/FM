@@ -49,12 +49,12 @@
 
             <div class="remark" v-if="cache.planType === 'order' || cache.planType === 'orderD'">
                 <!-- <img src="../images/history_icon.png" alt=""> -->
-                <div class="icon" @click="!planInfo.plan_from || (planInfo.plan_from && planInfo.plan_from == '2') ? lookVersionRemark() : void 0;">
-                    <svg class="iconf" aria-hidden="true" :class="(planInfo.plan_from && planInfo.plan_from != '2') ? 'grayicon' : 'blueicon'">
+                <div class="icon" @click="lookVersionRemark">
+                    <svg class="iconf blueicon" aria-hidden="true">
                         <use xlink:href="#icon-lishi"></use>
                     </svg>
                 </div>
-                <pbutton-blue text="'版本记录'" icon="'`'" bind="true" isborder="false" @click.stop="lookVersionRemark" disabled="(planInfo.plan_from && planInfo.plan_from != '2')"></pbutton-blue>
+                <pbutton-blue text="'版本记录'" icon="'`'" bind="true" isborder="false" @click.stop="lookVersionRemark"></pbutton-blue>
             </div>
 
             <div class="order" v-if="cache.planType === 'project'">
@@ -69,7 +69,7 @@
 
     </div>
 
-    <div class="warn" v-if="(cache.planType === 'order' || cache.planType === 'project') && planInfo.plan_from == 1" v-show="planInfo.plan_update_status == 0">
+    <div class="warn" v-if="(cache.planType === 'order' || cache.planType === 'project') && planInfo.plan_from == 1" v-show="planInfo.plan_update_status == 1">
         提示:集团对
         <span v-text="planInfo.plan_name"></span>中的
         <span v-text="planInfo.plan_update_type == 1 ? '计划频率' : planInfo.plan_update_type == 2 ? '工作事项' : '计划频率和工作事项'"></span>进行了修改
