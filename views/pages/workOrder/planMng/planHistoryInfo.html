@@ -64,7 +64,7 @@
                         <i v-text="item.suggest_executor_num"></i>
                     </div>
 
-                    <div class="row" v-show="item.place && item.place.length" v-for="(item1,index1) in item.place" v-text="'位置' + index1 + '：' + item1.name"></div>
+                    <div class="row" v-show="item.place && item.place.length" v-for="(item1,index1) in item.place" v-text="'位置' + (index1+1) + '：' + item1.name"></div>
 
                     <div class="row" v-if="item.plan_freq_type == 1" v-text="'计划频率：每' + transfYMWD(item.freq_cycle) + item.freq_num + '次'"></div>
 
@@ -119,10 +119,16 @@
                     </div>
 
                     
-                    <div class="row" v-if="item.plan_freq_type == 3" v-text="item.freq_time_span.num + transfYMWD(item.freq_time_span.unit) + '1次'"></div>
+                    <div class="row" v-if="item.plan_freq_type == 2" v-text="'计划频率：' + '每' + transfYMWD(item.freq_cycle) + item.freq_num + '次'"></div>
+
+                    <div class="row" v-if="item.plan_freq_type == 2" 
+                    v-text="'相邻两次间隔不小于' + item.freq_limit.num + transfYMWD(item.freq_limit.unit)"></div>
+
+                    
+                    <div class="row" v-if="item.plan_freq_type == 3" v-text="item.freq_time_span.num + '日1次'"></div>
 
                     <div class="row" v-if="item.plan_freq_type == 3" 
-                    v-text="'每次要求开始时间：' + item.freq_time_span.time_hour + ':' + item.freq_time_span.time_minute + '；持续' + item.freq_time_span.continue + transfYMWD(item.freq_time_span.unit)"></div>
+                    v-text="'每次要求开始时间：' + item.freq_time_span.time_hour + ':' + item.freq_time_span.time_minute + '；持续' + item.freq_time_span.continue + '小时'"></div>
 
                     
 

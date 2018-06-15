@@ -29,8 +29,8 @@ var equipmentMngList = {
                 url: 'restDictService/queryDomainSystemEquipType',
                 data: argu,
                 success: function (data) {
-
-                    resolve(data);
+                    var re= data&&data.data?data.data:data;
+                    resolve(re);
 
                 },
                 error: function (err) {

@@ -1,27 +1,27 @@
 v.pushComponent({
     name: "dumpedPlan",
     data: {
-        dumpedPlanList:[]
-      },
+        dumpedPlanList: []
+    },
     methods: {
         // 打开被废弃计划详情
-        openDumpedPlan:function(model){
-            this.cache = {name:"已作废计划详情",planType:'orderD',planId:model.plan_id};
+        openDumpedPlan: function (model) {
+            this.cache = { name: "已作废计划详情", planType: 'orderD', planId: model.plan_id };
             v.initPage('planInformation');
         }
     },
     filters: {
-        
+
     },
-    beforeMount:function(){
+    beforeMount: function () {
         var that = this;
         $("#dumpedPlanPartLoad").pshow();
         // 获取作废计划列表
-        PMA.DP({order_type:this.cache.orderType},function(data){
+        PMA.DP({ order_type: this.cache.orderType, person_id: that.userInfo.person_id }, function (data) {
             that.dumpedPlanList = JSON.parse(JSON.stringify(data || []));
-        },function(){
+        }, function () {
             that.dumpedPlanList = [];
-        },function(){
+        }, function () {
             $("#dumpedPlanPartLoad").phide();
         })
 

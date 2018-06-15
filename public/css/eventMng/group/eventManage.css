@@ -286,7 +286,7 @@
     #eventManage #groupEvList .s4 {
       width: 12%; }
     #eventManage #groupEvList .s5 {
-      width: 14%;
+      /*width: 14%;*/
       margin-right: 0 !important; }
     #eventManage #groupEvList .opearte > span {
       float: right;
@@ -328,12 +328,12 @@
         color: #333;
         margin-left: 5px; }
     #eventManage .createEv .body {
-      width: 550px;
+      width: 570px;
       height: calc(100% - 123px);
       padding-top: 20px;
       padding-left: 50%;
       padding-right: 50%;
-      transform: translateX(-225px);
+      transform: translateX(-285px);
       overflow: scroll;}
       #eventManage .createEv .body > div {
         width: 100%; }
@@ -348,7 +348,8 @@
       #eventManage .createEv .body .img {
         height: 130px;
         margin-top: 20px;
-        margin-bottom: 40px; }
+        margin-bottom: 40px; 
+        position: relative;}
       #eventManage .createEv .body .sel {
         height: 30px;
         margin-top: 10px;
@@ -414,7 +415,8 @@
     background: #F8F8F8; }
   #groupEvAssignWrap .tree, #groupEvAssignTwoWrap .tree {
     width: 400px;
-    height: 450px; }
+    height: 450px; 
+    overflow: scroll;}
 
 #groupEvCloseWrap {
   width: 300px;
@@ -451,4 +453,121 @@
       #groupEvCloseWrap .sure > div:nth-of-type(2) {
         margin-left: 20px; }
 
+.per-tree-ts{
+  display: none;
+}
+.imgReduceNum{
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: #cacaca;
+  font-size: 12px;
+}
+.combobox_le_title {
+  background: #fff;
+  border: 1px solid #999;
+  padding: 5px;
+  width: 200px;
+  text-align: left;
+  color: #9c9c9c;
+  box-sizing: border-box;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.combobox_le_title:hover {
+  box-shadow: 0 0 4px 0px #ababab;
+}
+
+.combobox_le_con {
+  position: absolute;
+  top: 29px;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #999;
+  border-top: none;
+  font-size: 13px;
+}
+
+.combobox_le_list {
+  width: 100%;
+  position: relative;
+}
+
+.combobox_le_item {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
+  cursor: default;
+  line-height: 44px;
+  height: 44px;
+  border-bottom: 1px solid #dee6eb;
+}
+
+.mulpFlag{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  font-family: 'perficon';
+  line-height: 20px;
+  position: relative;
+  text-align: center;
+  margin-top: 0px;
+  margin-left: -3px;
+  color: #7a94ad;
+  transform: rotate(-90deg);
+}
+
+.turnDown{
+  transform: rotate(0deg);
+}
+.combobox_le_item:hover {
+  background: #ececec;
+}
+
+.combobox_le_selected {
+  /* background: #ececec; */
+  color: rgb(16, 208, 233)
+}
+.checkbox_le{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+.combobox_le_gray{
+  opacity: 0.5;
+}
+.combobox_le_combox_input {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #7a94ad;
+  border-radius: 2px;
+  box-sizing: border-box;
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  cursor: pointer;
+  background: #fff;
+}
+.combobox_le_combox_input_checked.combobox_le_combox_input:before {
+  box-sizing: content-box;
+  content: "";
+  border: 2px solid #fff;
+  border-left: 0;
+  border-top: 0;
+  height: 7px;
+  left: 4px;
+  top: 1px;
+  transform: rotate(45deg);
+  width: 4px;
+  transition: transform .15s cubic-bezier(.71, -0.46, .88, .6) .05s;
+  transform-origin: center;
+  position: absolute;
+}
+.combobox_le_combox_input_checked {
+  background: #7a94ad;
+}
 /*# sourceMappingURL=eventManage.css.map */

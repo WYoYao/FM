@@ -1,0 +1,29 @@
+<% include ../../template/pageHead.html %>
+<link rel="stylesheet" href="../css/public/common.css" />
+<link rel="stylesheet" href="../css/proReportPage/index.css" />
+<script type="text/javascript" src="../js/proReportPage/model.js"></script>
+<script type="text/javascript" src="../js/proReportPage/controller.js"></script>
+<script type="text/javascript" src="../js/proReportPage/event.js"></script>
+
+<div id="proReportPage">
+    <div class="reTabWrap">
+        <ptab-navigation text="name" icon="icon" id="navBar" datasource="proReportModel.tabMenus" templateid='tabTemplate' sel="proReportMethods.tabChange(model,event)"></ptab-navigation>
+    </div>
+</div>
+<script type="text/html" id="tabTemplate">
+    <div class="reTabCont">
+        <div class="eachTabCont" id="" v-show="pageShow==0">
+            工单报表
+        </div>
+        <div class="eachTabCont" id="" v-show="pageShow==1">
+            需求报表
+        </div>
+        <div class="eachTabCont" id="" v-show="pageShow==2">
+            设备报表
+        </div>
+        <div class="eachTabCont" id="" v-show="pageShow==3"> 
+            员工KPI
+        </div>
+    </div>
+</script>
+<% include ../../template/pageFoot.html %>

@@ -64,17 +64,17 @@
         <h4>
             <span v-if="addWoPlan.robbing_flag || addWoPlan.executie_mode=='execute'">*</span>
             <i class="nomust">建议执行人数：</i>
-            <em v-if="isquote" v-text="addWoPlan.suggest_executor_num+'人'"></em>
+            <em v-if="(!suggest_executor_num_isnull && isquote)" v-text="addWoPlan.suggest_executor_num+'人'"></em>
         </h4>
         <!-- 非抢单的时候不用必填 -->
-        <div class="aheadCreateTime" v-if="!isquote && !(addWoPlan.executie_mode=='execute' ||  addWoPlan.robbing_flag)">
+        <div class="aheadCreateTime" v-if="(suggest_executor_num_isnull || !isquote) && !(addWoPlan.executie_mode=='execute' ||  addWoPlan.robbing_flag)">
             <ptext-text bind="true" value="addWoPlan.suggest_executor_num" id="'peoplenumber'" text="'人'" placeholder="'建议执行人数'" align="right">
                 <verify errtip="只能为正整数" verifytype="pisPositiveInt"></verify>
                 <verify errtip="只能为1位数" verifytype="Digits"></verify>
             </ptext-text>
         </div>
         <!-- 抢单时候不能为空 -->
-        <div class="aheadCreateTime" v-if="!isquote && (addWoPlan.executie_mode=='execute' ||  addWoPlan.robbing_flag)">
+        <div class="aheadCreateTime" v-if="(suggest_executor_num_isnull || !isquote) && (addWoPlan.executie_mode=='execute' ||  addWoPlan.robbing_flag)">
             <ptext-text bind="true" value="addWoPlan.suggest_executor_num" id="'peoplenumber'" text="'人'" placeholder="'建议执行人数'" align="right">
                 <verify errtip="不能为空" verifytype="space"></verify>
                 <verify errtip="只能为正整数" verifytype="pisPositiveInt"></verify>
@@ -86,7 +86,7 @@
     <div class="planCreate_page_con_left_sendTime" v-if="addWoPlan.robbing_flag" v-for="(item,index) in addWoPlan.pit_positions">
         <h4>
             <i class="nomust">位置{{index + 1}}</i>
-            <i v-if="isterm && addWoPlan.robbing_flag && isedit" v-text="item.pit_position_ask_names.join()"></i>
+            <i v-if="isterm && addWoPlan.robbing_flag && isquote" v-text="item.pit_position_ask_names.join()"></i>
         </h4>
         <div class="aheadCreateTime" v-if="!isquote">
             <multiple :ref="'multiple'+index" :arr="getSelected(wotypelistall,item.pit_position_asks, 'code')" :datasource="wotypelistall"
@@ -100,10 +100,10 @@
         <h4>
             <!-- <span>*</span> -->
             <i class="nomust">是否实例化全部对象：</i>
-            <em v-if="addWoPlan.instantiated_object_flag!=2 && isterm" v-text='(_.find(instantiatedTypes,{code:addWoPlan.instantiated_object_flag}) || {}).name'></em>
+            <em v-if="addWoPlan.instantiated_object_flag!=2 && isquote && !instantiated_object_flag_isnull" v-text='(_.find(instantiatedTypes,{code:addWoPlan.instantiated_object_flag}) || {}).name'></em>
         </h4>
         <!-- <div v-if="!(addWoPlan.instantiated_object_flag && isterm)"> -->
-        <div v-if="!(addWoPlan.instantiated_object_flag!=2 && isterm)">
+        <div v-if="!(addWoPlan.instantiated_object_flag!=2 && isquote) || instantiated_object_flag_isnull">
             <pcombobox-normal bind="true" sel="cbx_sel_instantiated_object_flag">
                 <header placeholder="(_.find(instantiatedTypes,{code:addWoPlan.instantiated_object_flag}) || {name:'请选择是否实例化全部对象'}).name"></header>
                 <item datasource="instantiatedTypes" text="name"></item>
@@ -119,7 +119,7 @@
             <em v-if="isquote" v-text='addWoPlan.freq_num + "次/"+ (_.find(freq_cycleType,{code:addWoPlan.freq_cycle}) || {}).name'></em>
         </h4>
         <div id="orderUrgency" v-if="!isquote">
-            <pcombobox-normal bind="true" id="'cbx_id_plan_freq_type'" sel="cbx_sel_plan_freq_type" disabled="(!isterm && isedit) || (isterm && isquote && isedit)">
+            <pcombobox-normal bind="true" id="'cbx_id_plan_freq_type'" sel="cbx_sel_plan_freq_type" disabled="(isedit && !iscopy) || isquote">
                 <header placeholder="(_.find(sendTypes,{code:addWoPlan.plan_freq_type}) || {}).name"></header>
                 <item datasource="sendTypes" text="name"></item>
             </pcombobox-normal>
@@ -130,8 +130,8 @@
 
         <div v-if="!isquote">
             <span>每</span>
-            <span v-if="isedit" v-text="(_.find(freq_cycleType,{code:addWoPlan.freq_cycle}) || {}).name"></span>
-            <pcombobox-normal v-if="!isedit" id="'cbx_id_freq_cycle'" bind="true" sel="cbx_sel_freq_cycle" >
+            <span v-if="isedit && !iscopy" v-text="(_.find(freq_cycleType,{code:addWoPlan.freq_cycle}) || {}).name"></span>
+            <pcombobox-normal v-if="!(isedit && !iscopy)" id="'cbx_id_freq_cycle'" bind="true" sel="cbx_sel_freq_cycle" >
                 <header placeholder="(_.find(freq_cycleType,{code:addWoPlan.freq_cycle}) || {}).name"></header>
                 <item datasource="filterfreq_cycleType(freq_cycleType)" text="name"></item>
             </pcombobox-normal>
@@ -285,7 +285,7 @@
             <div class="freq_limit_c">
                 <ptext-text bind="true" id="'num_id'" value="addWoPlan.freq_limit.num" align="right" >
                     <verify errtip="次数不能为空" verifytype="space"></verify>
-                    <verify errtip="只能为整数" verifytype="ZInteger"></verify>
+                    <verify errtip="只能为正整数" verifytype="pisPositiveInt"></verify>
                 </ptext-text>
             </div>
             <div class="freq_limit_u">

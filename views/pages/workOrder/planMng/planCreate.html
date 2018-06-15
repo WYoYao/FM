@@ -10,8 +10,8 @@
                 </div>
             </div>
             <div class="planCreate_page_con">
-                <baseinfomation :addwoplan='addWoPlan' :wotypelistall="WoTypeListAll" :isquote="isquote" :isedit="isedit" v-if="onPage=='createPlan'"
-                    :isterm="isterm" ref='baseinfomation'>
+                <baseinfomation :addwoplan='addWoPlan' :wotypelistall="WoTypeListAll" :iscopy="iscopy" :isquote="isquote" :isedit="isedit"
+                    v-if="onPage=='createPlan'" :isterm="isterm" ref='baseinfomation'>
                 </baseinfomation>
                 <div class="planCreate_page_con_rig">
                     <div class="planCreate_page_con_rig_shadow" v-show="isquote && isterm"></div>
@@ -31,7 +31,7 @@
                                 <!-- <div class="matter-kind" v-for="(model, index0) in allMatters"> -->
                                 <template v-for="(item,index) in matters" v-if='onPage=="createPlan"'>
                                     <matter :matter="item" :isterm="isterm" :generaldictbykey="_.cloneDeep(GeneralDictByKey)" :workorder="$refs.baseinfomation?$refs.baseinfomation.argu().order_type:''"
-                                        :views="mattersViews[index]" :candelete="true" :delete="deleteMatter" :ref="'matter' + index">
+                                        :views="mattersViews[index]" :candelete="!isquote" :delete="deleteMatter" :ref="'matter' + index">
                                         <matter/>
                                 </template>
 

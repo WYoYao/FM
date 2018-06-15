@@ -1,0 +1,306 @@
+.workOrderInfo {
+  width: 100%;
+  height: 100%; }
+  .workOrderInfo > .line {
+    border-top: 1px solid #d9e2e8;
+    margin: -1px 20px 0;
+    width: calc(100% - 40px); }
+  .workOrderInfo > .wrap {
+    width: calc(100% - 40px);
+    max-height: 100%;
+    margin: 0 20px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    border-top: 1px solid #d9e2e8; }
+    .workOrderInfo > .wrap .grid {
+      width: calc(100% - 2px);
+      position: relative;
+      border-left: 1px solid #d9e2e8;
+      border-right: 1px solid #d9e2e8; }
+      .workOrderInfo > .wrap .grid > .holder {
+        height: 20px;
+        width: 100%; }
+      .workOrderInfo > .wrap .grid > .top {
+        width: 100%;
+        border-bottom: 1px solid #d9e2e8; }
+        .workOrderInfo > .wrap .grid > .top > div {
+          width: 100%; }
+        .workOrderInfo > .wrap .grid > .top .normal > div, .workOrderInfo > .wrap .grid > .top .place > div {
+          float: left;
+          height: 40px; }
+        .workOrderInfo > .wrap .grid > .top .normal div, .workOrderInfo > .wrap .grid > .top .place div {
+          line-height: 40px; }
+        .workOrderInfo > .wrap .grid > .top .normal {
+          height: 40px;
+          border-top: 1px solid #d9e2e8; }
+          .workOrderInfo > .wrap .grid > .top .normal:nth-of-type(1) {
+            border-top: none; }
+          .workOrderInfo > .wrap .grid > .top .normal > div {
+            float: left;
+            height: 100%;
+            padding-left: 18px;
+            line-height: 40px; }
+          .workOrderInfo > .wrap .grid > .top .normal:nth-last-of-type(2) {
+            border-top: 1px solid #d9e2e8;
+            margin-top: -1px; }
+          .workOrderInfo > .wrap .grid > .top .normal > div:nth-of-type(odd) {
+            padding-left: 20px;
+            border-right: 1px solid #d9e2e8;
+            background: #f8f8f8; }
+          .workOrderInfo > .wrap .grid > .top .normal > div:nth-of-type(even) {
+            padding-left: 20px; }
+          .workOrderInfo > .wrap .grid > .top .normal .tool {
+            display: inline-block;
+            margin: 5px 5px;
+            position: relative;
+            line-height: 30px !important; }
+            .workOrderInfo > .wrap .grid > .top .normal .tool div {
+              line-height: 30px !important; }
+            .workOrderInfo > .wrap .grid > .top .normal .tool .per-inputunit {
+              padding: 0 14px;
+              line-height: 30px !important; }
+            .workOrderInfo > .wrap .grid > .top .normal .tool > .icon {
+              position: absolute;
+              top: 6px;
+              right: 6px;
+              font-family: "perficon";
+              height: 14px;
+              width: 14px;
+              text-align: center;
+              line-height: 14px;
+              border-radius: 50%;
+              color: #7a94ad;
+              border: 1px solid #7a94ad;
+              cursor: pointer;
+              z-index: 2; }
+        .workOrderInfo > .wrap .grid > .top .place {
+          height: auto;
+          min-height: 40px;
+          border-top: 1px solid #d9e2e8; }
+          .workOrderInfo > .wrap .grid > .top .place > div {
+            width: 33.3%;
+            height: 40px;
+            border-bottom: 1px solid #d9e2e8; }
+            .workOrderInfo > .wrap .grid > .top .place > div div {
+              float: left; }
+            .workOrderInfo > .wrap .grid > .top .place > div div:nth-of-type(1) {
+              padding-left: 20px;
+              width: calc(39.9399% - 20px);
+              border-right: 1px solid #d9e2e8;
+              border-left: 1px solid #d9e2e8;
+              background: #f8f8f8; }
+            .workOrderInfo > .wrap .grid > .top .place > div div:nth-of-type(2) {
+              padding-left: 20px;
+              width: calc(60.0601% - 22px); }
+          .workOrderInfo > .wrap .grid > .top .place > div:nth-of-type(1) div:nth-of-type(1), .workOrderInfo > .wrap .grid > .top .place > div:nth-of-type(3n+1) div:nth-of-type(1) {
+            border-left: none; }
+          .workOrderInfo > .wrap .grid > .top .place > div:nth-of-type(1) div:nth-of-type(2), .workOrderInfo > .wrap .grid > .top .place > div:nth-of-type(3n+1) div:nth-of-type(2) {
+            width: calc(55.7 - 21px); }
+        .workOrderInfo > .wrap .grid > .top .toolBar {
+          height: 40px;
+          border-top: 1px solid #d9e2e8;
+          min-height: 40px;
+          height: auto;
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: stretch;
+          justify-content: center; }
+          .workOrderInfo > .wrap .grid > .top .toolBar > div {
+            padding-left: 20px; }
+          .workOrderInfo > .wrap .grid > .top .toolBar > div:nth-of-type(1) {
+            background: #f8f8f8;
+            border-right: 1px solid #d9e2e8;
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center; }
+            .workOrderInfo > .wrap .grid > .top .toolBar > div:nth-of-type(1) div {
+              line-height: 40px; }
+          .workOrderInfo > .wrap .grid > .top .toolBar > div:nth-of-type(2) {
+            display: flex;
+            flex-flow: row wrap;
+            line-height: 40px; }
+          .workOrderInfo > .wrap .grid > .top .toolBar .tool {
+            display: inline-block;
+            margin: 5px 5px;
+            position: relative;
+            height: 30px !important; }
+            .workOrderInfo > .wrap .grid > .top .toolBar .tool div {
+              line-height: 30px !important; }
+            .workOrderInfo > .wrap .grid > .top .toolBar .tool .per-inputunit {
+              padding: 0 14px;
+              line-height: 30px !important; }
+            .workOrderInfo > .wrap .grid > .top .toolBar .tool > .icon {
+              position: absolute;
+              top: 6px;
+              right: 6px;
+              font-family: "perficon";
+              height: 14px;
+              width: 14px;
+              text-align: center;
+              line-height: 14px;
+              border-radius: 50%;
+              color: #7a94ad;
+              border: 1px solid #7a94ad;
+              cursor: pointer;
+              z-index: 2; }
+        .workOrderInfo > .wrap .grid > .top .key1 {
+          width: calc(13.3% - 20px); }
+        .workOrderInfo > .wrap .grid > .top .value1 {
+          width: calc(20% - 21px); }
+        .workOrderInfo > .wrap .grid > .top .key2 {
+          border-left: 1px solid #d9e2e8; }
+        .workOrderInfo > .wrap .grid > .top .value2 {
+          width: calc(20% - 22px); }
+        .workOrderInfo > .wrap .grid > .top .value3 {
+          width: calc(86.7% - 21px); }
+      .workOrderInfo > .wrap .grid > .content {
+        width: 100%;
+        border-top: 1px solid #d9e2e8;
+        margin-top: -2px; }
+        .workOrderInfo > .wrap .grid > .content:nth-of-type(1) {
+          margin-top: 0; }
+        .workOrderInfo > .wrap .grid > .content .title {
+          width: 100%;
+          height: 40px;
+          font-size: 14px;
+          background: #f8f8f8;
+          border-bottom: 1px solid #d9e2e8; }
+          .workOrderInfo > .wrap .grid > .content .title div {
+            float: left;
+            height: 100%;
+            line-height: 40px;
+            text-align: center; }
+          .workOrderInfo > .wrap .grid > .content .title .name {
+            width: 75%; }
+          .workOrderInfo > .wrap .grid > .content .title .result {
+            width: 25%; }
+        .workOrderInfo > .wrap .grid > .content .step {
+          border-bottom: 1px solid #d9e2e8; }
+          .workOrderInfo > .wrap .grid > .content .step .div {
+            width: 100%;
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: stretch; }
+            .workOrderInfo > .wrap .grid > .content .step .div > .left {
+              width: 75%;
+              border-right: 1px solid #d9e2e8;
+              position: relative; }
+              .workOrderInfo > .wrap .grid > .content .step .div > .left .summarize {
+                min-height: 80px;
+                border-bottom: 1px solid #d9e2e8;
+                box-sizing: border-box;
+                padding-top: 20px;
+                padding-left: 20px; }
+                .workOrderInfo > .wrap .grid > .content .step .div > .left .summarize div {
+                  width: 95%;
+                  font-size: 14px;
+                  line-height: 14px;
+                  height: 14px; }
+                .workOrderInfo > .wrap .grid > .content .step .div > .left .summarize div:nth-of-type(1) {
+                  color: #aaaaaa; }
+                .workOrderInfo > .wrap .grid > .content .step .div > .left .summarize div:nth-of-type(2) {
+                  margin-top: 10px; }
+              .workOrderInfo > .wrap .grid > .content .step .div > .left .stepobj {
+                height: 28px;
+                line-height: 28px;
+                padding-left: 20px;
+                border-bottom: 1px solid #d9e2e8; }
+              .workOrderInfo > .wrap .grid > .content .step .div > .left .process {
+                display: flex;
+                flex-flow: row nowrap;
+                border-bottom: 1px solid #d9e2e8; }
+                .workOrderInfo > .wrap .grid > .content .step .div > .left .process .index {
+                  width: 100px;
+                  border-right: 1px solid #d9e2e8;
+                  min-height: 40px;
+                  display: flex;
+                  flex-flow: row nowrap;
+                  align-items: center;
+                  justify-content: center; }
+                .workOrderInfo > .wrap .grid > .content .step .div > .left .process .item {
+                  padding: 12px 0 0 20px;
+                  width: calc(100% - 101px); }
+                  .workOrderInfo > .wrap .grid > .content .step .div > .left .process .item li {
+                    min-height: 40px;
+                    margin-bottom: 30px; }
+                    .workOrderInfo > .wrap .grid > .content .step .div > .left .process .item li div {
+                      font-size: 14px;
+                      line-height: 14px;
+                      min-height: 14px; }
+                    .workOrderInfo > .wrap .grid > .content .step .div > .left .process .item li div:nth-of-type(1) {
+                      color: #AAAAAA; }
+                    .workOrderInfo > .wrap .grid > .content .step .div > .left .process .item li div:nth-of-type(2) {
+                      margin-top: 10px; }
+                    .workOrderInfo > .wrap .grid > .content .step .div > .left .process .item li div:nth-of-type(3) {
+                      margin-top: 10px; }
+                      .workOrderInfo > .wrap .grid > .content .step .div > .left .process .item li div:nth-of-type(3) i {
+                        margin-right: 25px; }
+                  .workOrderInfo > .wrap .grid > .content .step .div > .left .process .item li:nth-of-type(1) {
+                    margin-top: 8px; }
+                  .workOrderInfo > .wrap .grid > .content .step .div > .left .process .item li:nth-last-of-type(1) {
+                    margin-bottom: 20px; }
+              .workOrderInfo > .wrap .grid > .content .step .div > .left > .process:nth-last-of-type(1) {
+                margin-bottom: -1px; }
+            .workOrderInfo > .wrap .grid > .content .step .div > .right {
+              width: 25%;
+              margin-left: -1px;
+              border-left: 1px solid #d9e2e8; }
+              .workOrderInfo > .wrap .grid > .content .step .div > .right > .box {
+                width: calc(100% - 40px);
+                height: auto;
+                padding: 20px 20px;
+                position: relative; }
+                .workOrderInfo > .wrap .grid > .content .step .div > .right > .box > div {
+                  line-height: 24px;
+                  height: auto;
+                  width: calc(100% - 35px);
+                  float: right; }
+                .workOrderInfo > .wrap .grid > .content .step .div > .right > .box .num {
+                  float: left;
+                  width: 30px; }
+                .workOrderInfo > .wrap .grid > .content .step .div > .right > .box .infos > div > div {
+                  float: left; }
+                .workOrderInfo > .wrap .grid > .content .step .div > .right > .box .photo {
+                  width: 100%; }
+                  .workOrderInfo > .wrap .grid > .content .step .div > .right > .box .photo img {
+                    width: 100%;
+                    height: auto; }
+              .workOrderInfo > .wrap .grid > .content .step .div > .right .operatPerson {
+                padding: 20px 20px;
+                color: #999999; }
+      .workOrderInfo > .wrap .grid > .check {
+        width: calc(100% - 22px);
+        padding: 10px;
+        height: auto; }
+        .workOrderInfo > .wrap .grid > .check .order {
+          width: calc(100% - 2px);
+          margin-bottom: 10px;
+          height: auto;
+          border: 1px solid #d9e2e8; }
+          .workOrderInfo > .wrap .grid > .check .order .head {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            position: relative;
+            background: #f8f8f8;
+            border-bottom: 1px solid #d9e2e8; }
+            .workOrderInfo > .wrap .grid > .check .order .head .name {
+              margin: 0 auto 0;
+              text-align: center;
+              height: 40px; }
+            .workOrderInfo > .wrap .grid > .check .order .head .time {
+              position: absolute;
+              right: 10px;
+              top: 0; }
+          .workOrderInfo > .wrap .grid > .check .order .body {
+            padding: 20px;
+            width: calc(100% - 40px); }
+            .workOrderInfo > .wrap .grid > .check .order .body > div {
+              line-height: 28px;
+              width: 100%; }
+            .workOrderInfo > .wrap .grid > .check .order .body .info > div {
+              float: left;
+              width: 33%; }
+
+/*# sourceMappingURL=workOrderInfo.css.map */

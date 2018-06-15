@@ -1,0 +1,103 @@
+.persontree {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  border: 1px solid #d9e2e8;
+  line-height: 30px; }
+  .persontree .ptheader {
+    background: #f8f8f8;
+    border-bottom: 1px solid #d9e2e8;
+    padding: 0 20px;
+    color: #aaaaaa; }
+  .persontree .ptbody {
+    height: calc(100% - 60px);
+    background: #ffffff;
+    overflow-y: auto; }
+    .persontree .ptbody .list .line {
+      position: relative;
+      padding: 0 0 0 20px;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-start;
+      line-height: 30px;
+      cursor: pointer;
+      border-bottom: 1px solid #d9e2e8; }
+      .persontree .ptbody .list .line .icon {
+        font-family: "perficon"; }
+      .persontree .ptbody .list .line .btm:after {
+        font-size: 12px;
+        display: inline-block;
+        content: ">";
+        vertical-align: middle;
+        overflow: hidden;
+        cursor: pointer; }
+      .persontree .ptbody .list .line .rt:after {
+        font-size: 12px;
+        display: inline-block;
+        content: "v";
+        vertical-align: middle;
+        overflow: hidden;
+        cursor: pointer; }
+      .persontree .ptbody .list .line .txt {
+        position: absolute;
+        top: 0;
+        right: 0;
+        line-height: 30px;
+        width: 30px;
+        height: 30px;
+        text-align: center; }
+        .persontree .ptbody .list .line .txt .pcheckbox {
+          margin-top: 8px !important;
+          overflow: hidden;
+          color: #637e99;
+          line-height: 16px;
+          cursor: pointer;
+          display: inline-block;
+          margin-top: 14px; }
+          .persontree .ptbody .list .line .txt .pcheckbox > .pcheckbox_input {
+            float: left;
+            width: 16px;
+            height: 16px;
+            border: 1px solid #7a94ad;
+            border-radius: 2px;
+            box-sizing: border-box;
+            position: relative;
+            cursor: pointer;
+            background: #fff; }
+          .persontree .ptbody .list .line .txt .pcheckbox .pswitch_label {
+            float: left; }
+          .persontree .ptbody .list .line .txt .pcheckbox .pcheckbox-checked {
+            background: #7a94ad; }
+          .persontree .ptbody .list .line .txt .pcheckbox .pcheckbox-checked.pcheckbox_input:before {
+            box-sizing: content-box;
+            content: "";
+            border: 2px solid #fff;
+            border-left: 0;
+            border-top: 0;
+            height: 7px;
+            left: 4px;
+            top: 1px;
+            transform: rotate(45deg);
+            width: 4px;
+            transition: transform 0.15s cubic-bezier(0.71, -0.46, 0.88, 0.6) 0.05s;
+            transform-origin: center;
+            position: absolute; }
+    .persontree .ptbody .list .child {
+      padding: 0 0 0 40px !important; }
+  .persontree .ptfooter {
+    padding: 0 20px;
+    border-top: 1px solid #d9e2e8;
+    background: #f8f8f8;
+    color: #aaaaaa;
+    display: flex;
+    line-height: 30px;
+    flex-flow: row-reverse nowrap;
+    justify-content: flex-start; }
+    .persontree .ptfooter .btn {
+      margin: 0 20px;
+      cursor: pointer; }
+    .persontree .ptfooter .smt {
+      color: #637e99; }
+
+/*# sourceMappingURL=PersonTree.css.map */

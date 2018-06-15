@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="block">
-                    <pcombobox-normal sel="handlerWoType" bind="true">
+                    <pcombobox-normal id="'add_work_order_type'" sel="handlerWoType" bind="true">
                         <!-- <header placeholder="selecet(WoTypeList,{plan_id:addwork.order_type},'plan_name')"></header> -->
                         <header placeholder="'请选择'"></header>                        
                         <item datasource="WoTypeList" text="plan_name"></item>
@@ -124,10 +124,12 @@
 
                 <div class="text" v-if="addwork.start_time_type==2">
                     <ptime-form id="ask_start_time" sel="handlerstart_time">
-                        <panel timetype="yMdhm" startyear="2003" endyear="2018"></panel>
+                        <panel timetype="yMdhm" startyear="2003" endyear="2030"></panel>
                     </ptime-form>
                 </div>
-
+                <div class="startTimeTip" style="color:#ff6666;display:none" id="startTimeTip">
+                    要求开始时间大于当前系统时间
+                </div>
             </div>
             <!-- 要求开始时间 End -->
 
@@ -140,10 +142,12 @@
 
                 <div class="block">
                     <ptime-form id="ask_end_time" sel="handlerEnd_time">
-                        <panel timetype="yMdhm" startyear="2003" endyear="2018"></panel>
+                        <panel timetype="yMdhm" startyear="2003" endyear="2030"></panel>
                     </ptime-form>
                 </div>
-
+                <div class="endTimeTip"  style="color:#ff6666;display:none" id="endTimeTip">
+                    要求完成时间大于当前系统时间
+                </div>
             </div>
             <!-- Item End -->
             <!-- 要求开始和结束时间 End   -->
@@ -157,8 +161,9 @@
                 </div>
 
                 <div class="block">
-                    <ptext-text placeholder=" '请输入'" value="addwork.ask_end_limit" text=" '小时'" bind="true">
+                    <ptext-text id="'ask_end_limit_num'" placeholder=" '请输入'" value="addwork.ask_end_limit" text=" '小时'" bind="true">
                         <verify errtip="不可为空" verifytype="space"></verify>
+                        <verify errtip="只能为正整数" verifytype="pisPositiveInt"></verify>
                     </ptext-text>
                 </div>
 
@@ -179,7 +184,7 @@
 
                 <!-- 事项 Start -->
                 <template v-for="(item,index) in matters">
-                    <matter :matter="item" :views="mattersViews[index]" :candelete="matters.length>1" :delete="deleteMatter" :workorder="addwork.order_type"
+                    <matter :matter="item" :views="mattersViews[index]" :candelete="matters.length>0" :delete="deleteMatter" :workorder="addwork.order_type"
                         :generaldictbykey="_.cloneDeep(GeneralDictByKey)" :ref="'matter' + index">
                         <matter/>
                 </template>

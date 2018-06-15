@@ -81,7 +81,7 @@ var equipmentMngDeatilController = {
             pajax.post({
                 url: 'restGeneralDictService/queryGeneralDictByKey',
                 data: {
-                    "dict_type": "work_order_type"
+                    "dict_type": "work_type"
                 },
                 success: function (data) {
                     if (data.data) {
@@ -108,7 +108,8 @@ var equipmentMngDeatilController = {
 
 
             pajax.post({
-                url: 'restEquipService/queryEquipRelWorkOrder',
+                configServiceName: "baseServiceUrl",
+                url: 'workorder/restWorkOrderService/queryEquipDetailRelWorkOrder',
                 data: argu,
                 success: function (data) {
                     if (data.data) {
@@ -117,7 +118,7 @@ var equipmentMngDeatilController = {
                         reject(data);
                     }
                 },
-                error: function () {
+                error: function (err) {
                     reject(err);
                 },
                 complete: function () {
@@ -402,9 +403,8 @@ var equipmentMngDeatilController = {
     },
     // 下载设备名片
     downloadCardInfo: function (equip_id) {
-
-        pajax.downloadByParam("restEquipService/downloadEquipCard", {
-            "equip_id": equip_id,
+        pajax.downloadByParam("restCardService/downloadQRCardPic", {
+            "obj_id": equip_id,
         });
     }
 }

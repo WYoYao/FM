@@ -1,0 +1,435 @@
+<link rel="stylesheet" href="../css/workOrder/planMng/term/workOrderInfo.css">
+<script type="text/html" id="workOrderInfoTemplate">
+    <div class="workOrderInfo">
+        <div class="wrap">
+            <pscroll-small templateid="workOrderInfoScroll"></pscroll-small>
+            <ploading-part id="workOrderInfoLoading"></ploading-part>
+        </div>
+        <div class="line"></div>
+    </div>
+</script>
+
+<script type="text/html" id="workOrderInfoScroll">
+    <div class="grid">
+
+        <!-- 顶部列表 工单信息 -->
+        <div class="top">
+
+            <div class="normal">
+                <div class="key1">工单类型</div>
+                <div class="value1 MT" v-text="workOrderInfoData.order_type_name ? workOrderInfoData.order_type_name : workOrderNoData"></div>
+                <div class="key1 key2">工单紧急程度</div>
+                <div class="value2 MT" v-text="workOrderInfoData.urgency ? workOrderInfoData.urgency : workOrderNoData"></div>
+                <div class="key1 key2">建议执行人数</div>
+                <div class="value2 MT" v-text="workOrderInfoData.execute_count ? (workOrderInfoData.execute_count + '人') : workOrderNoData"></div>
+            </div>
+
+            <div class="place clear" v-if="workOrderInfoData.place && _.isArray(workOrderInfoData.place) && workOrderInfoData.place.length">
+                <div v-for="(item,index) in workOrderInfoData.place">
+                    <div v-text="'位置' + (index+1)"></div>
+                    <div class="MT" v-text="item.name"></div>
+                </div>
+            </div>
+
+
+
+            <div class="normal">
+                <div class="key1">要求开始时间</div>
+                <div class="value1 MT" v-text="workOrderInfoData.ask_start_time ? timeFormat(workOrderInfoData.ask_start_time,'0') : workOrderNoData "></div>
+                <div class="key1 key2">要求固定时间内完成</div>
+                <div class="value2 MT" v-text="workOrderInfoData.ask_end_limit ? (workOrderInfoData.ask_end_limit + '小时') : workOrderNoData"></div>
+                <div class="key2 key1">要求结束时间</div>
+                <div class="value2 MT" v-text="workOrderInfoData.ask_end_time ? timeFormat(workOrderInfoData.ask_end_time,'0') : workOrderNoData"></div>
+            </div>
+
+            <div class="toolBar" v-if="(workOrderDetailData.required_tools && workOrderDetailData.required_tools.length) || isShowAddTool">
+                <div class="key1">所需工具</div>
+                <div class="MT value3">
+                    <i class="MT" v-text="workOrderArrToString(workOrderDetailData.required_tools)"></i>
+                    <span class="tool" v-if="isShowAddTool" v-for="(item,index) in toolarr">
+                        <ptext-text placeholder="'请输入'" value="item.name" text="   " bind="true">
+                            <verify errtip=""  verifytype="space"></verify>
+                        </ptext-text>
+                        <em class="icon" @click="toolarr.splice(index,1)">
+                            x
+                        </em>
+                        </span>
+                        <span class="tool" v-if="isShowAddTool && toolarr.length<99" @click.capture="toolarr.push({name:''})">
+                            <pbutton-white text="+工具"></pbutton-white>
+                        </span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 占位用，无意义 -->
+        <div class="holder"></div>
+
+        <!-- 工单事项 -->
+        <div class="content" v-for="(matters,index1) in workOrderInfoData.matters">
+
+            <!-- 事项信息 -->
+            <div class="title">
+                <div class="name" v-text="matters.matter_name"></div>
+                <div class="result">反馈结果</div>
+            </div>
+
+            <!-- 事项步骤 -->
+            <div class="step" v-for="(matter_steps,index2) in matters.matter_steps">
+
+                <!-- 有id或者有描述 -->
+                <div v-if="matter_steps.obj_step_id || matter_steps.description" class="div">
+
+                    <!-- 左侧列表 -->
+                    <div class="left">
+
+                        <div class="summarize" v-if="index2 == 0">
+                            <div>事项概述：</div>
+                            <div class="MT" v-text="matter_steps.description"></div>
+                        </div>
+
+                        <div class="stepobj" v-if="matter_steps.obj_name" v-text="matter_steps.obj_name"></div>
+
+                        <div class="process" v-for="(steps,index3) in matter_steps.steps">
+
+                            <div class="index" v-text="steps.step_sequence"></div>
+
+                            <div class="item">
+
+                                <div v-text="steps.content" v-if="steps.step_type != 5"></div>
+
+                                <ul v-if="steps.step_type == 5">
+
+                                    <li v-if="steps.pre_conform">
+                                        <div>强制确认操作前提：</div>
+                                        <div v-text="steps.pre_conform"></div>
+                                    </li>
+
+                                    <li v-if="steps.content">
+                                        <div>标准作业操作内容：</div>
+                                        <div v-text="steps.content"></div>
+                                    </li>
+
+                                    <li v-if="steps.notice">
+                                        <div>注意事项：</div>
+                                        <div v-text="steps.notice"></div>
+                                    </li>
+
+                                    <li v-if="steps.confirm_result">
+                                        <div>需确认的操作结果：</div>
+                                        <div v-for="confirm_result in steps.confirm_result" v-if="steps.confirm_result && steps.confirm_result.length">
+                                            <em v-text="confirm_result.obj_name"></em>
+                                            <span v-for="parents in confirm_result.parents" v-if="confirm_result.parents && confirm_result.parents.length">
+                                                <i v-if="parents.parent_names && parents.parent_names.length">(</i>
+                                                <i v-if="parents.parent_names && parents.parent_names.length" v-for="(names,naIndex) in parents.parent_names"
+                                                v-text="parents.parent_names.length == naIndex + 1 ? names : names + '-'"></i>
+                                                <i v-if="parents.parent_names && parents.parent_names.length">)</i>
+                                            </span>
+                                        </div>
+                                        <div v-for="confirm_result in steps.confirm_result" v-if="(confirm_result.info_points && confirm_result.info_points.length) || (confirm_result.customs && confirm_result.customs.length)">
+                                            <i v-for="info_points in confirm_result.info_points" v-text="regroupInfoAndCustomWrong(info_points)"></i>
+                                            <i v-for="custom in confirm_result.customs" v-text="regroupInfoAndCustomWrong(custom)"></i>
+                                        </div>
+                                    </li>
+                                    
+                                </ul>
+
+                                
+                                
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- 右侧列表 -->
+                    <div class="right">
+                        <div class="box clear" v-for="(feedback,index4) in matter_steps.feedback">
+                            <!-- 序号 -->
+                            <div v-text="feedback.step_sequence" class="num"></div>
+                            <!-- 前提确认 -->
+                            <div v-if="feedback.pre_conform_result" v-text="feedback.pre_conform_result"></div>
+                            <!-- 反馈描述 -->
+                            <div v-if="feedback.description" v-text="feedback.description"></div>
+                            <!-- 信息点 -->
+                            <div v-if="feedback.confirm_result && feedback.confirm_result.length">
+                                <div v-for="x in feedback.confirm_result">
+                                    <div v-text="x.obj_name"></div>
+                                    <div v-text="x.str"></div>
+                                </div>
+                            </div>
+                            <!-- 确认结果 -->
+                            <div v-if="feedback.step_finish" v-text="'已完成'"></div>
+                            <!-- 图片 -->
+                            <div v-if="feedback.photos && feedback.photos.length" v-for="photo in feedback.photos" class="photo">
+                                <img :src="photo" alt="">
+                            </div>
+                        </div>
+
+
+                        
+                        <div class="operatPerson" v-if="matter_steps.executors && matter_steps.executors.length">
+                            <div v-text="'操作人:' + ((matter_steps.executors && matter_steps.executors.length) ? matter_steps.executors.join(',') : matter_steps.executors)"></div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <!-- 审核相关 -->
+        <div class="check" v-show="workOrderInfoData.wo_exec_controls && workOrderInfoData.wo_exec_controls.length">
+
+            <div class="order" v-for="model in workOrderInfoData.wo_exec_controls">
+
+                <div class="head">
+                    <div class="name" v-text="model.control_name"></div>
+                    <div class="time" v-text=" (model.type.state === 'apply' ? '申请' : model.type.state === 'audit' ? '审核' : model.type.type === 'stop' ? '中止' : '审批') + '时间 : ' + 
+                    (new Date(yyyyMMddhhmmss2date(model.operate_time)).format('yyyy.MM.dd hh:mm'))"></div>
+                </div>
+
+                <div class="body">
+
+                    <!-- 是否通过 审核和审批状态 -->
+                    <div class="end" v-if="model.type.state === 'audit' || model.type.state === 'approval'" :class="{'red' : model.audit_result == 0}"
+                    v-text="model.audit_result == 1 ? '通过' : ('不通过' + ((model.next_route_names && model.next_route_names.length) ? model.next_route_names.join(',') : ''))">
+                    </div>
+
+                    <!-- 审核信息 加人AddingPeople类型   -->
+                    <div class="info" v-if="model.type.type === 'ap'">
+                        <div class="peo" v-text="'人数:' + (model.person_num ? model.person_num + '人' : workOrderNoData)"></div>
+                        <div class="job" v-text="'专业要求:' + (model.domain_names ? workOrderArrToString(model.domain_names) : workOrderNoData)"></div>
+                        <div class="dop" v-text="'执行人:' + (model.person_names ? workOrderArrToString(model.person_names) : workOrderNoData)"></div>
+                    </div>
+
+                    <!-- 审核信息 换人ReplacePeople类型 -->
+                    <div class="info" v-if="model.type.type === 'rp'">
+                        <div class="job" v-text="'执行人:' + (model.replace_person_name ? model.replace_person_name : workOrderNoData)" ></div>
+                    </div>
+
+                    <!-- 审核信息 延期Delay类型 -->
+                    <div class="info" v-if="model.type.type === 'dl'">
+                        <div class="dop" v-text="'延期:' + (model.delay_hour ? model.delay_hour + '小时' : workOrderNoData)"></div>
+                    </div>
+
+                    <!-- 执行人 指派 -->
+                    <div class="assign" v-if="model.type.type === 'assign'" v-text="'执行人：' + ((model.next_route_names && model.next_route_names.length) ? model.next_route_names.join('、') : '')"></div>
+
+                    <!-- 申请内容 审核和审批状态-->
+                    <div class="content MT" v-text="model.apply_content" v-if="model.type.state == 'audit' || model.type.state == 'approval'"></div>
+
+                    <!-- 意见 -->
+                    <div class="opinion MT" v-text="model.opinion" v-if="model.opinion"></div>
+
+                    <!-- 操作人名字 -->
+                    <div class="pe" v-text="'操作人:'+ model.operator_name" v-if="model.operator_name"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</script>
+
+<script>
+    Vue.component('workorderinfo', {
+        template: '#workOrderInfoTemplate',
+        props: ["id","addtool"],
+        data : function(){
+            return {
+                workOrderInfoData : {},//工单详情数据
+                workOrderNoData : "--",//无数据显示
+                toolarr:[],//工具列表
+            }
+        },
+        methods:{
+            //普通数组转字符串方法
+            workOrderArrToString: function (a) { 
+                if(Object.prototype.toString.call(a).substr(8).slice(0,-1) == 'Array'){
+                    return a.join('、');
+                }else{return a;};
+            },
+            // 获取工单控制模块类型
+            getWorkOrderCheckType: function (str) {
+                str = str || "";
+
+                if (str == 'stop') {
+                    return { state: 'stop', type: 'stop' };
+                }
+                if (str == 'assign') {
+                    return { state: 'assign', type: 'assign' }
+                }
+                var obj = {};
+                if (str.search('apply') !== -1) {
+                    obj.state = 'apply';
+                } else if (str.search('audit') !== -1) {
+                    obj.state = 'audit';
+                } else {
+                    obj.state = 'approval';
+                }
+
+                if (str.search('Matters') !== -1) {
+                    obj.type = 'ma';
+                } else if (str.search('AddingPeople') !== -1) {
+                    obj.type = 'ap';
+                } else if (str.search('ReplacePeople') !== -1) {
+                    obj.type = 'rp';
+                } else if (str.search('Delay') !== -1) {
+                    obj.type = 'dl';
+                } else {
+                    obj.type = 'cl';
+                }
+                return obj;
+            },
+            // 重组工单反馈信息，返回字符串
+            regroupFeedbackInfo : function(){
+                this.workOrderInfoData.matters.forEach(function (item) {
+                    item.matter_steps.forEach(function (step) {
+                        if (step.feedback && step.feedback.length) {
+                            step.feedback.forEach(function (model) {
+                                if (model.confirm_result && model.confirm_result.length) {
+                                    model.confirm_result.forEach(function (feed) {
+                                        var str = '';
+                                        if (feed.info_points && feed.info_points.length) {
+                                            str = feed.info_points.reduce(function (t, a) {
+                                                if (a.value || (a.values && a.values.length)) {
+                                                    if (a.value) {
+                                                        t += (a.name + '：' + a.value + (a.unit || '')) + ' ； ';
+                                                    } else {
+                                                        t += (a.name + '：' + a.values.join(",") + (a.unit || '')) + ' ； ';
+                                                    }
+                                                }
+                                                return t;
+                                            }, str)
+                                        }
+                                        if (feed.customs && feed.customs.length) {
+                                            str = feed.customs.reduce(function (t, a) {
+                                                switch (a.type) {
+                                                    case '1':
+                                                        if (a.content) { t += (a.name + '：' + a.content + ' ； ') }
+                                                        break
+                                                    case '2':
+                                                        if (a.item) { t += (a.name + '：' + a.item + ' ； ') }
+                                                        break
+                                                    case '3':
+                                                        if (a.items && a.items.length) { t += (a.name + '：' + a.items.join(',') + ' ； ') }
+                                                        break
+                                                    case '4':
+                                                        if (a.value) { t += (a.name + '：' + a.value + (a.unit || '') + ' ； ') }
+                                                        break
+                                                    case '5':
+                                                        if (a.value) { t += (a.name + '：' + a.value + (a.unit || '') + ' ； ') }
+                                                        break
+                                                };
+                                                return t;
+                                            }, str)
+                                        }
+                                        feed.str = str;
+                                    })
+                                }
+                            })
+                        }
+                    })
+                })
+            },
+            // 重组项目信息点与自定义确认数据的异常范围
+            regroupInfoAndCustomWrong: function (model) {
+                var name = model.name;
+                var a = model.wrong_ranges;
+                var b = model.wrongs;
+                var u = model.unit || "";
+                if (a) {
+                    if (a.length == 0) { return name; }
+                    var str = a.reduce(function (t, item) {
+                        // gt-大于,gte-大于等于，lt-小于,lte-小于等于
+                        switch (item.type) {
+                            case 'gt':
+                                t += (',大于' + item.values + u);
+                                break
+                            case 'gte':
+                                t += (',大于等于' + item.values + u);
+                                break
+                            case 'lt':
+                                t += (',小于' + item.values + u);
+                                break
+                            case 'lte':
+                                t += (',小于等于' + item.values + u);
+                                break
+                            case 'range':
+                                t += (item.values[0] + u + '~' + item.values[1] + u);
+                                break
+                        }
+                        t.slice(0, 1) === ',' ? t = t.slice(1) : void 0;
+                        return t;
+                    }, "");
+                    return name + '：异常范围(' + str + ')';
+                } else if (b) {
+                    if (b.length == 0) { return name; }
+                    return name + '：异常范围(' + (b.join(u + ',') + u) + ')';
+                } else {
+                    return name;
+                }
+            },
+            // 重组工单位置信息
+            regroupPlaceData : function(){
+                if (this.workOrderInfoData.pit_positions && this.workOrderInfoData.pit_positions.length > 0) {
+                    var arr = [];
+                    this.workOrderInfoData.pit_positions.forEach(function (item, index) {
+                        if (item.pit_position_ask_names) {
+                            if (item.pit_position_ask_names.length == 1) {
+                                arr.push({ name: (item.pit_position_ask_names).toString() })
+                            }
+                            if (item.pit_position_ask_names.length > 1) {
+                                arr.push({ name: (item.pit_position_ask_names.join('、')).toString() });
+                            }
+
+                        }
+                    })
+                    if (arr.length > 0) {
+                        this.workOrderInfoData.place = JSON.parse(JSON.stringify(arr));
+                    }
+                }
+            },
+        },
+        beforeMount : function(){
+            var that = this;
+            $("#workOrderInfoLoading").pshow();
+            pajax.post({
+                url: "/workorder/restWoMonitorService/queryWorkOrderById",
+                data: {
+                    "order_id":this.id,
+                    "configServiceName":"baseServiceUrl",
+                },
+                success: function (data) {
+                    that.workOrderInfoData = JSON.parse(JSON.stringify(data.work_order.wo_body || {}));
+                    that.workOrderInfoData.wo_exec_controls && that.workOrderInfoData.wo_exec_controls.length != 0 && that.workOrderInfoData.wo_exec_controls.forEach(function (item) {
+                        item.type = that.getWorkOrderCheckType(item.control_code);
+                    });
+                    that.regroupPlaceData();
+                    that.regroupFeedbackInfo();
+                    //返回数据存在工具时构造数据
+                    if (that.workOrderInfoData.required_tools && that.workOrderInfoData.required_tools.length > 0) {
+                        that.toolarr = [];
+                        that.workOrderInfoData.required_tools.forEach(function (item) {
+                            that.toolarr.push({ name: item });
+                        })
+                    }
+                },
+                error: function () {
+                    $("#globalnotice").pshow({ text: "网络错误", state: "failure" });
+                },
+                complete: function(){
+                    $("#workOrderInfoLoading").phide();
+                },
+                configServiceName: "baseServiceUrl",
+            })
+        }
+    })
+</script>

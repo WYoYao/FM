@@ -20,7 +20,8 @@ v.pushComponent({
         // 工单状态集合
         WorkOrderStateList: [],
         // 集团计划名称
-        group_plan_name: ""
+        group_plan_name: "",
+        is_delete_plan : false,
     },
 
     methods: {
@@ -92,6 +93,7 @@ v.pushComponent({
                 freq_cycle: "",
                 start_time: (this.timeData.startTime || new Date().format("yyyyMMddhhmmss")),
                 end_time: (this.timeData.endTime || new Date().format("yyyyMMdd235959")),
+                valid : this.is_delete_plan,
             };
             this.fiveFreq.forEach(function (item) { item.sel && (param.freq_cycle = item.id); });
             param.freq_cycle || (param.freq_cycle = this.cache.freq_cycle);
@@ -125,7 +127,7 @@ v.pushComponent({
             req = JSON.parse(JSON.stringify(_that.cache));
 
         _that.group_plan_name = req.group_plan_name;
-
+        if(this.cache.is_delete_plan != undefined){this.is_delete_plan = this.cache.is_delete_plan};
         // 默认频率
         (_.find(_that.fiveFreq, { id: req.freq_cycle }) || {}).sel = true;
 

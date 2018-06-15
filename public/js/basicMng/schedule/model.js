@@ -217,7 +217,13 @@ var appMounted = function () {
     appMethods.queryPosition(appData.currentDate.ym);
     $("#download em").html('下载'+appData.currentDate.m+'月排班表模板');
     $("#downloadModel em").html('下载'+appData.currentDate.m+'月排班表模板');
-
+    //初始化时间
+    // var date = new Date();
+    // var y = date.getFullYear();
+    // var m = date.getMonth() + 1;
+    // appData.currentDate.m = m;
+    // appData.currentDate.y = y;
+    // appData.currentDate.ym = y + "" + (m > 9 ? m : ("0" + m));
 }
 
 var appCreated = function () {

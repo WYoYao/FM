@@ -506,7 +506,7 @@ function createPlanModuleController() {
         }
     }
     // planManageAjax
-    window.PMA ? console.error("计划模块的AJAX集合名PMA被占用，方法createPlanModuleController") : window.PMA = createAjax(PML);
+    window.PMA ? console.log("计划模块的AJAX集合名PMA被占用，方法createPlanModuleController") : window.PMA = createAjax(PML);
     // planManagePromise
-    window.PMP ? console.error("计划模块的Promise集合名PMP被占用，方法createPlanModuleController") : window.PMP = cteatePromise(PML);
+    window.PMP ? console.log("计划模块的Promise集合名PMP被占用，方法createPlanModuleController") : window.PMP = cteatePromise(PML);
 }

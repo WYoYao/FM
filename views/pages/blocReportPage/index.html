@@ -1,0 +1,96 @@
+<% include ../../template/pageHead.html %>
+<link rel="stylesheet" href="../css/public/common.css"/>
+<link rel="stylesheet" href="../css/blocReportPage/index.css"/>
+<script type="text/javascript" src="../js/blocReportPage/model.js"></script>
+<script type="text/javascript" src="../js/blocReportPage/controller.js"></script>
+<script type="text/javascript" src="../js/blocReportPage/event.js"></script>
+
+<div id="blocReportPage">
+    <div class="reTabWrap">
+        <ptab-navigation text="name" icon="icon" id="navBar" datasource="blocReportModel.tabMenus"
+                         templateid='tabTemplate' sel="blocReportMethods.tabChange(model,event)"></ptab-navigation>
+    </div>
+</div>
+<script type="text/html" id="tabTemplate">
+    <div class="selectWrap">
+        <div class="calendarBox">
+            <ptime-calendar id="blocReportCalendar" orientation="down" sel="blocReportMethods.selEventsTime">
+                <panel timetype="d" align="left" double="true" startyear="2000" endyear="2028"
+                       iscommontime="false"></panel>
+            </ptime-calendar>
+        </div>
+        <div class="timeType">
+            <pcombobox-normal id="projectList" sel="blocReportMethods.choiceProject">
+                <header placeholder="项目：全部" prefix="项目："></header>
+                <item datasource="blocReportModel.projectSelect" text="name" id="id"></item>
+            </pcombobox-normal>
+        </div>
+        <div class="timeType">
+            <pcombobox-normal id="timeTypeList" sel="blocReportMethods.choiceTimeType">
+                <header placeholder="时间类型：全部" prefix="时间类型："></header>
+                <item datasource="blocReportModel.timeTypeSelect" text="name" id="Item1"></item>
+            </pcombobox-normal>
+        </div>
+        <div class="timeType">
+            <pcombobox-normal id="priorLevelList" sel="blocReportMethods.choicePriorLevel">
+                <header placeholder="优先级：全部" prefix="优先级："></header>
+                <item datasource="blocReportModel.priorLevelSelect" text="name" id="Item2"></item>
+            </pcombobox-normal>
+        </div>
+        <div>部门<span v-html="showName"></span></div>
+        <div class="timeType">
+            <pcombobox-normal id="Pcombobox-normal1" sel="blocReportMethods.choiceSpecialty">
+                <header placeholder="专业：全部" prefix="专业："></header>
+                <item datasource="blocReportModel.specialtySelect" text="name" id="Item3"></item>
+            </pcombobox-normal>
+        </div>
+        <div>岗位</div>
+    </div>
+    <div class="reTabCont">
+        <div class="eachTabCont" id="repairWorkOrder" v-show="pageShow==0">
+            <pgrid-multifunction  bind="true">
+                <panel bind="true" datasource="blocReportModel.repairWorkOrder"
+                       sortevent="blocReportMethods.repairOrderSort"></panel>
+                <header>
+                    <column name="项目" source="name" width="13%"></column>
+                    <column name="工单数量" source="orderNum" width="13%" sort="true"></column>
+                    <column name="商服工单数量及占比" source="sfOrderNum+'%'" width="13%" sort="true"></column>
+                    <column name="新云工单数量及占比" source="xyOrderNum+'%'" width="13%" sort="true"></column>
+                    <column name="内部工单数量及占比" source="innerOrderNum+'%'" width="13%" sort="true"></column>
+                    <column name="及时完成率（大时间）" source="timelyCompleteBig" width="13%" sort="true"></column>
+                    <column name="及时完成率（小时间）" source="timelyCompleteSmall" width="13%" sort="true"></column>
+                    <column name="逾期率" source="overdueRate+'%'" width="9%" sort="true"></column>
+                </header>
+            </pgrid-multifunction>
+        </div>
+        <div class="eachTabCont" id="inspectWorkOrder" v-show="pageShow==1">
+              <pgrid-multifunction  bind="true">
+                <panel bind="true" datasource="blocReportModel.inspectWorkOrder"
+                       sortevent="blocReportMethods.inspectOrderSort"></panel>
+                <header>
+                    <column name="项目" source="name" width="10%"></column>
+                    <column name="工单数量" source="orderNum" width="9%" sort="true"></column>
+                    <column name="未完成点位数量及占比" source="undonePointNum+'%'" width="9%" sort="true"></column>
+                    <column name="逾期未完成点位数量及占比" source="overdueUndonePointNum+'%'" width="9%" sort="true"></column>
+                    <column name="已完成点位数量及占比" source="donePointNum+'%'" width="9%" sort="true"></column>
+                    <column name="逾期已完成点位数量及占比" source="overdueDonePointNum+'%'" width="9%" sort="true"></column>
+                    <column name="点位异常率" source="pointUnusualRate" width="9%" sort="true"></column>
+                    <column name="及时完成率（小时间）" source="timelyCompleteSmall" width="9%" sort="true"></column>
+                    <column name="巡检点位数" source="inspectPointNum" width="9%" sort="true"></column>
+                    <column name="漏检点位数" source="missInspectNum" width="9%" sort="true"></column>
+                    <column name="漏检率" source="missInspectRate+'%'" width="9%" sort="true"></column>
+                </header>
+            </pgrid-multifunction>
+        </div>
+        <div class="eachTabCont" id="maintainWorkOrder" v-show="pageShow==2">
+            维保工单
+        </div>
+        <div class="eachTabCont" id="runningWorkOrder" v-show="pageShow==3">
+            运行工单
+        </div>
+        <div class="eachTabCont" id="managePerson" v-show="pageShow==4">
+            管理人员
+        </div>
+    </div>
+</script>
+<% include ../../template/pageFoot.html %>

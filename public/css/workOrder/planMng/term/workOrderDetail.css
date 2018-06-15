@@ -1,21 +1,20 @@
 #workOrderDetail {
   width: 100%;
   height: 100%; }
-  #workOrderDetail > .hold {
-    margin: 0 20px 0;
-    width: calc(100% - 40px);
-    height: 0;
-    border-bottom: 1px solid #d9e2e8; }
-  #workOrderDetail > .hold2 {
-    margin-top: -1px; }
+  #workOrderDetail > .line {
+    border-top: 1px solid #d9e2e8;
+    margin: -1px 20px 0;
+    width: calc(100% - 40px); }
   #workOrderDetail > .box {
-    width: 100%;
-    height: calc(100% - 1px);
+    width: calc(100% - 40px);
+    max-height: 100%;
+    margin: 0 20px 0;
     overflow-y: auto;
-    overflow-x: hidden; }
+    overflow-x: hidden;
+    position: relative;
+    border-top: 1px solid #d9e2e8; }
     #workOrderDetail > .box .grid {
-      width: calc(100% - 42px);
-      margin: 0 20px 0;
+      width: calc(100% - 2px);
       position: relative;
       border-left: 1px solid #d9e2e8;
       border-right: 1px solid #d9e2e8; }
@@ -27,10 +26,10 @@
         border-bottom: 1px solid #d9e2e8; }
         #workOrderDetail > .box .grid > .top > div {
           width: 100%; }
-          #workOrderDetail > .box .grid > .top > div > div {
-            float: left;
-            height: 40px; }
-        #workOrderDetail > .box .grid > .top div {
+        #workOrderDetail > .box .grid > .top .normal > div, #workOrderDetail > .box .grid > .top .place > div {
+          float: left;
+          height: 40px; }
+        #workOrderDetail > .box .grid > .top .normal div, #workOrderDetail > .box .grid > .top .place div {
           line-height: 40px; }
         #workOrderDetail > .box .grid > .top .normal {
           height: 40px;
@@ -51,17 +50,40 @@
             background: #f8f8f8; }
           #workOrderDetail > .box .grid > .top .normal > div:nth-of-type(even) {
             padding-left: 20px; }
-          #workOrderDetail > .box .grid > .top .normal .tool {
+        #workOrderDetail > .box .grid > .top .toolBar {
+          height: 40px;
+          border-top: 1px solid #d9e2e8;
+          min-height: 40px;
+          height: auto;
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: stretch;
+          justify-content: center; }
+          #workOrderDetail > .box .grid > .top .toolBar > div {
+            padding-left: 20px; }
+          #workOrderDetail > .box .grid > .top .toolBar > div:nth-of-type(1) {
+            background: #f8f8f8;
+            border-right: 1px solid #d9e2e8;
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center; }
+            #workOrderDetail > .box .grid > .top .toolBar > div:nth-of-type(1) div {
+              line-height: 40px; }
+          #workOrderDetail > .box .grid > .top .toolBar > div:nth-of-type(2) {
+            display: flex;
+            flex-flow: row wrap;
+            line-height: 40px; }
+          #workOrderDetail > .box .grid > .top .toolBar .tool {
             display: inline-block;
             margin: 5px 5px;
             position: relative;
-            line-height: 30px !important; }
-            #workOrderDetail > .box .grid > .top .normal .tool div {
+            height: 30px !important; }
+            #workOrderDetail > .box .grid > .top .toolBar .tool div {
               line-height: 30px !important; }
-            #workOrderDetail > .box .grid > .top .normal .tool .per-inputunit {
+            #workOrderDetail > .box .grid > .top .toolBar .tool .per-inputunit {
               padding: 0 14px;
               line-height: 30px !important; }
-            #workOrderDetail > .box .grid > .top .normal .tool > .icon {
+            #workOrderDetail > .box .grid > .top .toolBar .tool > .icon {
               position: absolute;
               top: 6px;
               right: 6px;

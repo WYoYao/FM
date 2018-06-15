@@ -32,7 +32,7 @@ spaceInfoModel.instance = function () {
                 editMode: 'modify',//保存方式是  修改输入错误
                 
                 floorCodeArr:[],//楼层编码
-
+                showWorkOrder:'',
                 //工单
                 curPage: '',
                 orderDetailData: {},
@@ -41,6 +41,17 @@ spaceInfoModel.instance = function () {
                 userInfo:'',
                 showPage: '',//当前显示的页面
                 layer: new layerModel(),
+
+                // 工单详情数据
+                workOrderDetailData: {
+                    place: []
+                },
+                // 添加工具保存数组
+                toolarr: [],
+                // 是否显示添加工具
+                isShowAddTool: false,
+                workOrderNoData:"--"
+
             },
             methods: {
                 //滚动监听public事件
@@ -291,7 +302,10 @@ spaceInfoModel.instance = function () {
                         item.orders.length > 1 && $orderList.css({'display': 'block'});
                     }
                     if (item.orders.length == 1) {//只有一个工单
-                        orderDetail_pub.getOrderDetail(this, item.orders[0].order_id, '1');
+                        this.workOrderDetailReady(item.orders[0].order_id)
+                        $("#workOrderDetailDivSpace").show();
+                       // orderDetail_pub.goWorkOrderDetail(this,"Wo110102000410bc3fde591d46a8931627a104427f62",true);
+                       // orderDetail_pub.getOrderDetail(this, item.orders[0].order_id, '1');
                     }
                 },
                 orderLiClick: function (event, item) {//工单列表一行的点击
@@ -301,9 +315,361 @@ spaceInfoModel.instance = function () {
                     function cb() {
                         $orderList.css({'display': 'none'});
                     }
-
-                    orderDetail_pub.getOrderDetail(this, item.order_id, '1', cb);
+                    this.workOrderDetailReady(item.order_id);
+                    $("#workOrderDetailDivSpace").show();
+                   // orderDetail_pub.goWorkOrderDetail(this,"Wo110102000410bc3fde591d46a8931627a104427f62",true);
+                   // orderDetail_pub.getOrderDetail(this, item.order_id, '1', cb);
+                },
+                //工单详情相关
+                 // Start 6.12
+            // 解决日历控件和下拉框控件下拉框隐藏问题
+            fakerClick: function (event) {
+                if (event) {
+    
+                    var el = event.srcElement ? event.srcElement : event.target;
+                    $(el).addClass("NowSelthisEl");
+    
+                    var elList = $("._combobox_bottom");
+    
+                    for (var i = 0; i < elList.length; i++) {
+                        var elWrap = $(elList[i]).parents(".comboMark");
+                        var len = $(elWrap).find(".NowSelthisEl").length;
+                        len != 0 ? void 0 : $(elList[i]).css("display", "none");
+                    }
+    
+                    $(el).removeClass("NowSelthisEl");
+                } else {
+                    // 兼容IE,页面发生一次点击事件
+                    $("body").trigger("click");
                 }
+            },
+            transfYMWD: function (str) { //通过年月周天转换对应的中文
+                var obj = {
+                    y: "年",
+                    m: "月",
+                    w: "周",
+                    d: "日",
+                    q: "季"
+                }
+                return obj[str]
+            },
+            filter_weekDetail_trans: function (str) {
+                var obj = {
+                    "01": "周一",
+                    "02": "周二",
+                    "03": "周三",
+                    "04": "周四",
+                    "05": "周五",
+                    "06": "周六",
+                    "07": "周日",
+                };
+                return obj[str]
+            },
+            sectionToChinese: function (section) {
+                var chnNumChar = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+                var chnUnitSection = ["", "万", "亿", "万亿", "亿亿"];
+                var chnUnitChar = ["", "十", "百", "千"];
+    
+                var strIns = '', chnStr = '';
+                var unitPos = 0;
+                var zero = true;
+                while (section > 0) {
+                    var v = section % 10;
+                    if (v === 0) {
+                        if (!zero) {
+                            zero = true;
+                            chnStr = chnNumChar[v] + chnStr;
+                        }
+                    } else {
+                        zero = false;
+                        strIns = chnNumChar[v];
+                        strIns += chnUnitChar[unitPos];
+                        chnStr = strIns + chnStr;
+                    }
+                    unitPos++;
+                    section = Math.floor(section / 10);
+                }
+                return chnStr;
+            },
+            // yyyymmddhhMMss => yyyy.mm.dd hh:MM  type === '0'
+            // yyyymmddhhMMss => yyyy.mm.dd        type === '1'
+            timeFormat: function (str, type) {
+                str = str || "";
+                if ((typeof str) != 'string') { str = str + ""; }
+                switch (type) {
+                    case '0':
+                        return str.length > 0 ? str.substring(0, 4) + '.' + str.substring(4, 6) + '.' + str.substring(6, 8) + ' ' + str.substring(8, 10) + ':' + str.substring(10, 12) : this.noData
+                        break;
+                    case '1':
+                        return str.length > 0 ? str.substring(0, 4) + '.' + str.substring(4, 6) + '.' + str.substring(6, 8) : this.noData
+                        break;
+                }
+            },
+            // 后台格式转换日期格式
+            yyyyMMddhhmmss2date: function (str) {
+    
+                return str.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/g, function () {
+                    var arr = Array.prototype.slice.call(arguments);
+                    return arr.slice(1, 4).join('/') + " " + arr.slice(4, 7).join(':');
+                });
+            },
+            // 普通格式转换
+            date2yyyyMMddhhmm: function (date) {
+    
+                return (new Date(date)).format('yyyy.MM.dd hh:mm');
+            },
+            // End 6.12
+                    // 查看工单详情 ,id工单id，name，name为"workOrderDetail",path在计划模块中使用，其他模块不需要传
+                // openWorkOrderDetail: function (id, name, path) {
+                //     if (!id) {
+                //         console.log("请携带工单ID");
+                //         return
+                //     };
+                //     v.instance.cache = { workOrderId: id }
+                //     path ? v.instance.cache.name = path : void 0;
+                //    // v.initPage(name);
+                //     v.instance.workOrderDetailReady();
+                // },
+                 // 生成页面
+                workOrderDetailReady: function (order_id ) {
+                    var that = this;
+                    that.isShowAddTool = false;
+                    $("#workOrderDetailLoad").pshow();
+                  //  console.log(this.cache);
+                    PMA.OD({ order_id: order_id  }, function (data) {
+                        that.workOrderDetailData = JSON.parse(JSON.stringify(data.work_order.wo_body || {}));
+                        // that.workOrderDetailData = JSON.parse(JSON.stringify(data));
+                        
+                        that.workOrderDetailData.wo_exec_controls && that.workOrderDetailData.wo_exec_controls.length != 0 && that.workOrderDetailData.wo_exec_controls.forEach(function (item) {
+                            item.type = that.getWorkOrderCheckType(item.control_code);
+                        });
+
+                        if (that.workOrderDetailData.pit_positions && that.workOrderDetailData.pit_positions.length > 0) {
+                            var arr = [];
+                            that.workOrderDetailData.pit_positions.forEach(function (item, index) {
+                                if (item.pit_position_ask_names) {
+                                    if (item.pit_position_ask_names.length == 1) {
+                                        arr.push({ name: (item.pit_position_ask_names).toString() })
+                                    }
+                                    if (item.pit_position_ask_names.length > 1) {
+                                        arr.push({ name: (item.pit_position_ask_names.join('、')).toString() });
+                                    }
+
+                                }
+                            })
+                            console.log(arr);
+                            if (arr.length > 0) {
+                                that.workOrderDetailData.place = JSON.parse(JSON.stringify(arr));
+                            }
+                        }
+
+                        that.workOrderDetailData.matters.forEach(function(item){
+                            item.matter_steps.forEach(function(step){
+                                if(step.feedback && step.feedback.length){
+                                    step.feedback.forEach(function(model){
+                                        if(model.confirm_result && model.confirm_result.length){
+                                            model.confirm_result.forEach(function(feed){
+                                                var str = '';
+                                                if(feed.info_points && feed.info_points.length){
+                                                    str = feed.info_points.reduce(function(t,a){
+                                                        if(a.value || (a.values && a.values.length)){
+                                                            if(a.value){
+                                                                t += (a.name + '：' + a.value + (a.unit || '')) + ' ； ';
+                                                            }else{
+                                                                t += (a.name + '：' + a.values.join(",") + (a.unit || '')) + ' ； ';
+                                                            }
+                                                        }
+                                                        return t;
+                                                    },str)
+                                                }
+                                                if(feed.customs && feed.customs.length){
+                                                    str = feed.customs.reduce(function(t,a){
+                                                        switch(a.type){
+                                                            case '1' : 
+                                                                if(a.content){t += (a.name + '：' + a.content + ' ； ')}
+                                                            break
+                                                            case '2' : 
+                                                                if(a.item){t += (a.name + '：' + a.item + ' ； ')}
+                                                            break
+                                                            case '3' : 
+                                                                if(a.items && a.items.length){t += (a.name + '：' + a.items.join(',') + ' ； ')}
+                                                            break
+                                                            case '4' : 
+                                                                if(a.value){t += (a.name + '：' + a.value + (a.unit || '') + ' ； ')}
+                                                            break
+                                                            case '5' : 
+                                                                if(a.value){t += (a.name + '：' + a.value + (a.unit || '') + ' ； ')}
+                                                            break
+                                                        };
+                                                        return t;
+                                                    },str)
+                                                }
+                                                feed.str = str;
+                                            })
+                                        }
+                                    })
+                                }
+                            })
+                        })
+
+                    }, function () {
+                        that.workOrderDetailData = {};
+                    }, function () {
+                        $("#workOrderDetailLoad").phide();
+                    })
+                },
+                workOrderArrToString: function (arr) { //普通数组转字符串方法
+                    var arr = arr || [];
+                    var str = ''
+                    if (arr) {
+                        str = arr.join("、");
+                    } else {
+                        str = ""
+                    }
+                    return str;
+                },
+                // 获取工单控制模块类型
+                getWorkOrderCheckType: function (str) {
+                    str = str || "";
+
+                    if (str == 'stop') {
+                        return { state: 'stop', type: 'stop' };
+                    }
+                    if(str == 'assign'){
+                        return { state: 'assign', type: 'assign' }
+                    }
+                    var obj = {};
+                    if (str.search('apply') !== -1) {
+                        obj.state = 'apply';
+                    } else if (str.search('audit') !== -1) {
+                        obj.state = 'audit';
+                    } else {
+                        obj.state = 'approval';
+                    }
+
+                    if (str.search('Matters') !== -1) {
+                        obj.type = 'ma';
+                    } else if (str.search('AddingPeople') !== -1) {
+                        obj.type = 'ap';
+                    } else if (str.search('ReplacePeople') !== -1) {
+                        obj.type = 'rp';
+                    } else if (str.search('Delay') !== -1) {
+                        obj.type = 'dl';
+                    } else {
+                        obj.type = 'cl';
+                    }
+                    return obj;
+                },
+                // 项目信息点与确认信息异常范围
+                createInfoWrongWO: function (model) {
+                    var name = model.name;
+                    var a = model.wrong_ranges;
+                    var b = model.wrongs;
+                    var u = model.unit || "";
+                    if (a) {
+                        if(a.length == 0){ return name;}
+                        var str = a.reduce(function (t, item) {
+                            // gt-大于,gte-大于等于，lt-小于,lte-小于等于
+                            switch (item.type) {
+                                case 'gt':
+                                    t += (',大于' + item.values + u);
+                                    break
+                                case 'gte':
+                                    t += (',大于等于' + item.values + u);
+                                    break
+                                case 'lt':
+                                    t += (',小于' + item.values + u);
+                                    break
+                                case 'lte':
+                                    t += (',小于等于' + item.values + u);
+                                    break
+                                case 'range':
+                                    t += (item.values[0] + u + '~' + item.values[1] + u);
+                                    break
+                            }
+                            t.slice(0, 1) === ',' ? t = t.slice(1) : void 0;
+                            return t;
+                        }, "");
+                        return name + '：异常范围(' + str + ')';
+                    } else if (b) {
+                        if(b.length == 0){ return name;}
+                        return name + '：异常范围(' + (b.join(u + ',') + u) + ')';
+                    } else {
+                        return name;
+                    }
+                },
+                getPreview: function (argu) {
+                    var _that = this;
+                    controller.getWoMattersWorkOrderPreview({
+                        draft_matters: argu
+                    }).then(function (res) {
+
+                        _that.argu.preview = res.matters;
+                        _that.queryPersonListByPositionIdsArgu.domain_list = res.domain_list;
+                        //返回数据存在工具时构造数据
+                        if(res.required_tools && res.required_tools.length >0){
+                            _that.toolarr = [];
+                            res.required_tools.forEach(function(item){
+                                _that.toolarr.push({name:item});
+                            })
+                        }
+                        controller.queryPersonListByPositionIds(_that.queryPersonListByPositionIdsArgu).then(function (res) {
+                            if (res && res.length > 0) {
+                                _that.persons = res.map(function (item) {
+                                    item.selected = true;
+                                    item.persons.map(function (info) {
+                                        info.selected = true;
+                                        v.instance.argu.next_person_ids.push(info);
+                                        return info;
+                                    })
+                                    return item;
+                                });
+
+                                v.instance.argu.next_person_ids;
+                                console.log(v.instance.argu.next_person_ids);
+                            }
+
+                        })
+
+                        _that.isShowAddTool = true;
+
+                        var res = Object.assign({}, res, JSON.parse(JSON.stringify(_that.addwork)));
+
+
+                        _that.workOrderDetailData = JSON.parse(JSON.stringify(res)) || {};
+                        //判断是否添加选择坑位数组
+                        if (_that.addwork.pit_positions && _that.addwork.pit_positions.length > 0) {
+                            var arr = [];
+                            _that.addwork.pit_positions.forEach(function (item, index) {
+                                if (item.pit_position_ask_names) {
+                                    if (item.pit_position_ask_names.length == 1) {
+                                        arr.push({ name: (item.pit_position_ask_names).toString() })
+                                    }
+                                    if (item.pit_position_ask_names.length > 1) {
+                                        arr.push({ name: (item.pit_position_ask_names.join('、')).toString() });
+                                    }
+
+                                }
+                            })
+                            console.log(arr);
+                            if (arr.length > 0) {
+                                _that.workOrderDetailData.place = JSON.parse(JSON.stringify(arr));
+                            }
+
+                        }
+
+                        if (_.isArray(_that.workOrderDetailData.wo_exec_controls)) {
+                            _that.workOrderDetailData.wo_exec_controls.forEach(function (item) {
+                                item.type = that.getWorkOrderCheckType(item.control_code);
+                            });
+                        }
+                    }).catch(function () {
+                        _that.workOrderDetailData = {};
+                    })
+                },
+
+
+
             },
             beforeMount: function () {
             },

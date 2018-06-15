@@ -640,10 +640,8 @@ var CardInfo = function () {
             // 前往工单详情
             _clickGoWorkBkDeatil: function (item) {
                 var _that = this;
-                _that.showWorkOrder = "wordorder";
-                $("#detailBlock").hide();
-                createPlanModuleController();
-                v.instance.openWorkOrderDetail(item.order_id,"workOrderDetail");
+             //   $("#detailBlock").hide();
+                orderDetail_pub.goWorkOrderDetail(_that,item.order_id);
             },
             // 下载设备名片
             downloadCardInfo: function () {
@@ -2083,7 +2081,7 @@ var CardInfo = function () {
 
                 //查询完之后默认查询第一个
                 equipmentMngDeatilController.queryEquipRelWorkOrder({
-                    order_type: "",
+                    work_type: "",
                     equip_id: _that.equip_id,
                 }).then(function (list) {
 
@@ -2250,7 +2248,7 @@ var CardInfo = function () {
                 if (newVal != oldVal || newVal == "") {
 
                     equipmentMngDeatilController.queryEquipRelWorkOrder({
-                        order_type: newVal,
+                        work_type: newVal,
                         equip_id: _that.equip_id,
                     }).then(function (list) {
 

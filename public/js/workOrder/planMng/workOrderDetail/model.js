@@ -12,6 +12,8 @@ v.pushComponent({
         toolarr: [],
         // 是否显示添加工具
         isShowAddTool: false,
+        workOrderNoData: "--",
+        pscrollShwo:true,
     },
     methods: {
         // 查看工单详情 ,id工单id，name，name为"workOrderDetail",path在计划模块中使用，其他模块不需要传
@@ -23,17 +25,19 @@ v.pushComponent({
             v.instance.cache = { workOrderId: id }
             path ? v.instance.cache.name = path : void 0;
             v.initPage(name);
+            this.pscrollShwo = false;
             v.instance.workOrderDetailReady();
         },
         // 生成页面
         workOrderDetailReady: function () {
             var that = this;
+            that.isShowAddTool = false;
             $("#workOrderDetailLoad").pshow();
             console.log(this.cache);
             PMA.OD({ order_id: that.cache.workOrderId }, function (data) {
                 that.workOrderDetailData = JSON.parse(JSON.stringify(data.work_order.wo_body || {}));
                 // that.workOrderDetailData = JSON.parse(JSON.stringify(data));
-                
+
                 that.workOrderDetailData.wo_exec_controls && that.workOrderDetailData.wo_exec_controls.length != 0 && that.workOrderDetailData.wo_exec_controls.forEach(function (item) {
                     item.type = that.getWorkOrderCheckType(item.control_code);
                 });
@@ -57,46 +61,46 @@ v.pushComponent({
                     }
                 }
 
-                that.workOrderDetailData.matters.forEach(function(item){
-                    item.matter_steps.forEach(function(step){
-                        if(step.feedback && step.feedback.length){
-                            step.feedback.forEach(function(model){
-                                if(model.confirm_result && model.confirm_result.length){
-                                    model.confirm_result.forEach(function(feed){
+                that.workOrderDetailData.matters.forEach(function (item) {
+                    item.matter_steps.forEach(function (step) {
+                        if (step.feedback && step.feedback.length) {
+                            step.feedback.forEach(function (model) {
+                                if (model.confirm_result && model.confirm_result.length) {
+                                    model.confirm_result.forEach(function (feed) {
                                         var str = '';
-                                        if(feed.info_points && feed.info_points.length){
-                                            str = feed.info_points.reduce(function(t,a){
-                                                if(a.value || (a.values && a.values.length)){
-                                                    if(a.values){
-                                                        t += (a.name + '：' + a.values.join(",") + (a.unit || '')) + ' ； ';
-                                                    }else{
+                                        if (feed.info_points && feed.info_points.length) {
+                                            str = feed.info_points.reduce(function (t, a) {
+                                                if (a.value || (a.values && a.values.length)) {
+                                                    if (a.value) {
                                                         t += (a.name + '：' + a.value + (a.unit || '')) + ' ； ';
+                                                    } else {
+                                                        t += (a.name + '：' + a.values.join(",") + (a.unit || '')) + ' ； ';
                                                     }
                                                 }
                                                 return t;
-                                            },str)
+                                            }, str)
                                         }
-                                        if(feed.customs && feed.customs.length){
-                                            str = feed.customs.reduce(function(t,a){
-                                                switch(a.type){
-                                                    case '1' : 
-                                                        if(a.content){t += (a.name + '：' + a.content + ' ； ')}
-                                                    break
-                                                    case '2' : 
-                                                        if(a.item){t += (a.name + '：' + a.item + ' ； ')}
-                                                    break
-                                                    case '3' : 
-                                                        if(a.items && a.items.length){t += (a.name + '：' + a.items.join(',') + ' ； ')}
-                                                    break
-                                                    case '4' : 
-                                                        if(a.value){t += (a.name + '：' + a.value + (a.unit || '') + ' ； ')}
-                                                    break
-                                                    case '5' : 
-                                                        if(a.value){t += (a.name + '：' + a.value + (a.unit || '') + ' ； ')}
-                                                    break
+                                        if (feed.customs && feed.customs.length) {
+                                            str = feed.customs.reduce(function (t, a) {
+                                                switch (a.type) {
+                                                    case '1':
+                                                        if (a.content) { t += (a.name + '：' + a.content + ' ； ') }
+                                                        break
+                                                    case '2':
+                                                        if (a.item) { t += (a.name + '：' + a.item + ' ； ') }
+                                                        break
+                                                    case '3':
+                                                        if (a.items && a.items.length) { t += (a.name + '：' + a.items.join(',') + ' ； ') }
+                                                        break
+                                                    case '4':
+                                                        if (a.value) { t += (a.name + '：' + a.value + (a.unit || '') + ' ； ') }
+                                                        break
+                                                    case '5':
+                                                        if (a.value) { t += (a.name + '：' + a.value + (a.unit || '') + ' ； ') }
+                                                        break
                                                 };
                                                 return t;
-                                            },str)
+                                            }, str)
                                         }
                                         feed.str = str;
                                     })
@@ -109,6 +113,7 @@ v.pushComponent({
             }, function () {
                 that.workOrderDetailData = {};
             }, function () {
+                that.pscrollShwo = true;
                 $("#workOrderDetailLoad").phide();
             })
         },
@@ -122,13 +127,16 @@ v.pushComponent({
             }
             return str;
         },
+        // 获取工单控制模块类型
         getWorkOrderCheckType: function (str) {
             str = str || "";
 
             if (str == 'stop') {
                 return { state: 'stop', type: 'stop' };
             }
-
+            if (str == 'assign') {
+                return { state: 'assign', type: 'assign' }
+            }
             var obj = {};
             if (str.search('apply') !== -1) {
                 obj.state = 'apply';
@@ -151,10 +159,16 @@ v.pushComponent({
             }
             return obj;
         },
-        // gt-大于,gte-大于等于，lt-小于,lte-小于等于
-        createInfoWrongWO: function (a, b, u) {
+        // 项目信息点与确认信息异常范围
+        createInfoWrongWO: function (model) {
+            var name = model.name;
+            var a = model.wrong_ranges;
+            var b = model.wrongs;
+            var u = model.unit || "";
             if (a) {
-                return a.reduce(function (t, item) {
+                if (a.length == 0) { return name; }
+                var str = a.reduce(function (t, item) {
+                    // gt-大于,gte-大于等于，lt-小于,lte-小于等于
                     switch (item.type) {
                         case 'gt':
                             t += (',大于' + item.values + u);
@@ -175,32 +189,13 @@ v.pushComponent({
                     t.slice(0, 1) === ',' ? t = t.slice(1) : void 0;
                     return t;
                 }, "");
+                return name + '：异常范围(' + str + ')';
             } else if (b) {
-                return (b.join(u + ',') + u);
+                if (b.length == 0) { return name; }
+                return name + '：异常范围(' + (b.join(u + ',') + u) + ')';
             } else {
-                return "";
+                return name;
             }
-        },
-        createSureInfoWO: function (model) {
-            var str = "";
-            switch (model.type) {
-                case '1':
-                    str = model.name;
-                    break
-                case '2':
-                    str = model.wrongs ? model.name + "(异常范围 : " + model.wrongs.join(",") + ")" : mode.name;
-                    break
-                case '3':
-                    str = model.wrongs ? model.name + "(异常范围 : " + model.wrongs.join(",") + ")" : model.name;
-                    break
-                case '4':
-                    str = model.name + "(异常范围 : " + this.createInfoWrongWO(model.wrong_ranges, model.wrongs, model.unit || "") + ")";
-                    break
-                case '5':
-                    str = model.name + "(异常范围 : " + this.createInfoWrongWO(model.wrong_ranges, model.wrongs, model.unit || "") + ")";
-                    break
-            }
-            return str;
         },
         getPreview: function (argu) {
             var _that = this;
@@ -210,7 +205,14 @@ v.pushComponent({
 
                 _that.argu.preview = res.matters;
                 _that.queryPersonListByPositionIdsArgu.domain_list = res.domain_list;
-
+                //返回数据存在工具时构造数据
+                if (res.required_tools && res.required_tools.length > 0) {
+                    _that.toolarr = [];
+                    res.required_tools.forEach(function (item) {
+                        _that.toolarr.push({ name: item });
+                    })
+                }
+                v.instance.argu.next_person_ids = [];
                 controller.queryPersonListByPositionIds(_that.queryPersonListByPositionIdsArgu).then(function (res) {
                     if (res && res.length > 0) {
                         _that.persons = res.map(function (item) {
@@ -261,11 +263,21 @@ v.pushComponent({
                         item.type = that.getWorkOrderCheckType(item.control_code);
                     });
                 }
+                that.pscrollShwo = true;
             }).catch(function () {
                 _that.workOrderDetailData = {};
+                that.pscrollShwo = true;
             })
-        }
+        },
 
+        // 后台格式转换日期格式
+        // yyyyMMddhhmmss2date: function (str) {
+
+        //     return str.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/g, function () {
+        //         var arr = Array.prototype.slice.call(arguments);
+        //         return arr.slice(1, 4).join('/') + " " + arr.slice(4, 7).join(':');
+        //     });
+        // },
 
     },
     filters: {

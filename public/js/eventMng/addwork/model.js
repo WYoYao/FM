@@ -12,7 +12,7 @@ var pit_positions = function () {
     return {
         "pit_position_asks": [],		// 专业ID数组
         "pit_position_ask_names": [], // 专业名称数组
-        "pit_position_state": "",				//坑位状态  0-空、1-已抢单、2-确认执行
+        "pit_position_state": "0",				//坑位状态  0-空、1-已抢单、2-确认执行
         "pit_position_person_id": "",		//坑位对应人员ID
         "pit_position_person_name": ""		//坑位对应人员名称
     };
@@ -70,7 +70,7 @@ v.pushComponent({
             pit_positions: [],
             "start_time_type": "1",           //开始时间类型,1-发单后立即开始，2-自定义开始时间
             "ask_start_time": "",             //要求开始时间,yyyyMMddhhmmss
-            "ask_end_limit": "2",             //要求固定时间内完成,单位小时
+            "ask_end_limit": "",             //要求固定时间内完成,单位小时
             "ask_end_time": "",               //要求结束时间,yyyyMMddhhmmssf
 
             required_tools: [],             //所需工具名称数组 预览后获取
@@ -303,23 +303,54 @@ v.pushComponent({
             if (!$("#execute_count_id").pverifi()) return;
 
             //  当指定开始时间和结束时间的时候需要验证弹窗提示比对大小的结果
-            if (_that.shouldStartType == 1 && _that.addwork.start_time_type == 2) {
-                _that.addwork.ask_start_time = +new Date(($("#ask_start_time").psel().startTime).replace(/-/g,'.'));
-                _that.addwork.ask_end_time = +new Date(($("#ask_end_time").psel().startTime).replace(/-/g,'.'));
+            // $("#startTimeTip").hide();
+            // $("#endTimeTip").hide();
+            var currTime = +new Date();
+
+            //_that.shouldStartType 单选时间类型  _that.addwork.start_time_type 下拉时间类型
+            if (_that.shouldStartType == 1 && _that.addwork.start_time_type == 2) {//要求开始时间和结束时间    自定义开始时间
+                _that.addwork.ask_start_time = +new Date(($("#ask_start_time").psel().startTime).replace(/-/g, '.'));
+                _that.addwork.ask_end_time = +new Date(($("#ask_end_time").psel().startTime).replace(/-/g, '.'));
                 if (_that.addwork.ask_start_time > _that.addwork.ask_end_time) {
-                    $('#globalnotice').pshow({ text: '要求开始时间大于要求结束时间', state: 'failure' });
+                    $('#globalnotice').pshow({ text: '要求完成时间需大于要求开始时间', state: 'failure' });
+                    return;
+                }
+                if (_that.addwork.ask_start_time) {
+                    if (_that.addwork.ask_start_time < currTime) {
+                        $('#globalnotice').pshow({ text: '要求开始时间需大于当前系统时间', state: 'failure' });
+                        return;
+                    }
+                }
+                if (_that.addwork.ask_end_time) {
+                    if (_that.addwork.ask_end_time < currTime) {
+                        $('#globalnotice').pshow({ text: '要求完成时间需大于当前系统时间', state: 'failure' });
+                        return;
+                    }
+                }
+
+            } else if (_that.shouldStartType == 1 && _that.addwork.start_time_type == "" || _that.shouldStartType == 1 && _that.addwork.start_time_type == "1") {
+                _that.addwork.ask_end_time = +new Date(($("#ask_end_time").psel().startTime).replace(/-/g, '.'));
+                if (_that.addwork.ask_end_time < currTime) {
+                    $('#globalnotice').pshow({ text: '要求完成时间需大于当前系统时间', state: 'failure' });
+                    return;
+                }
+            } else if (_that.shouldStartType == 0 && _that.addwork.start_time_type == "2") {
+                _that.addwork.ask_start_time = +new Date(($("#ask_start_time").psel().startTime).replace(/-/g, '.'));
+                if (_that.addwork.ask_start_time < currTime) {
+                    $('#globalnotice').pshow({ text: '要求开始时间需大于当前系统时间', state: 'failure' });
                     return;
                 }
             }
 
-            // matters 验证
+            //验证固定完成时间
+            if (!$("#ask_end_limit_num").pverifi()) return;
 
-            if (_.filter(_that.mattersViews, { isRepeat: true }).length) return;
+
 
             // 验证名称非空
             _that.mattersViews.forEach(function (item, index) {
                 item.isSpace = !_that.matters[index].matter_name.length;
-                item.isDescForepartSpace = !_that.matters[index].desc_forepart.length;
+                item.isDescForepartSpace = !_that.matters[index].desc_forepart.length && !_that.matters[index].desc_aftpart.length && !_that.matters[index].desc_works.length;
             })
 
             // 验证内容为空
@@ -331,6 +362,8 @@ v.pushComponent({
                 item.isRepeat = (_.uniq(_.map(_that.matters, 'matter_name')).length != _that.matters.length);
                 return item;
             });
+            // matters 验证
+            if (_.filter(_that.mattersViews, { isRepeat: true }).length) return;
 
             //  验证多个关系是否不匹配
 
@@ -431,23 +464,23 @@ v.pushComponent({
                             // console.log("SuccessFul");
                             // console.log(_that.matters);
                             //将desc_forepart转成工单预览时的数据结构
-                            _that.matters = _that.matters.map(function(item){
-                                item["description"] = item.desc_forepart ;
+                            _that.matters = _that.matters.map(function (item) {
+                                item["description"] = item.desc_forepart;
                                 return item;
                             })
                             //转换时间格式
-                            if(_that.addwork.ask_start_time){
+                            if (_that.addwork.ask_start_time) {
                                 _that.addwork.ask_start_time = new Date(_that.addwork.ask_start_time).format("yMdhm");
                             }
-                            if(_that.addwork.ask_end_time){
+                            if (_that.addwork.ask_end_time) {
                                 _that.addwork.ask_end_time = new Date(_that.addwork.ask_end_time).format("yMdhm");
                             }
 
                             //通过新建选择的要求开始时间类型设置预览时显示的事件模块
-                            if(_that.shouldStartType == "1"){
+                            if (_that.shouldStartType == "1") {
                                 _that.addwork.ask_end_limit = "";
                             }
-                            
+
                             _that.getPreview(_that.matters);
 
                             // controller.queryPersonListByPositionIds().then(function (res) {
@@ -546,13 +579,13 @@ v.pushComponent({
             var _that = this;
             _that.showPersonTree = false;
         },
-        transTimeType:function(str){//时间类型转换
+        transTimeType: function (str) {//时间类型转换
             return {
-                y:str.substr(0,4),
-                M:str.substr(4,2),
-                d:str.substr(6,2),
-                h:str.substr(8,2),
-                s:str.substr(10,2)                
+                y: +str.substr(0, 4),
+                M: +str.substr(4, 2),
+                d: +str.substr(6, 2),
+                h: +str.substr(8, 2),
+                m: +str.substr(10, 2)
             }
         },
         //事件转工单发布
@@ -638,8 +671,8 @@ v.pushComponent({
         }
         // 如果事件有图片的情况下 附加到第一个事项中
         if (_.isArray(event.pictures)) {
-            if(event.pictures && event.pictures.length >0){
-                event.pictures = event.pictures.map(function(item){
+            if (event.pictures && event.pictures.length > 0) {
+                event.pictures = event.pictures.map(function (item) {
                     return item = ('/' + pconst.requestType.pdownload + '/' + psecret.create(item));
                 })
             }
@@ -648,50 +681,56 @@ v.pushComponent({
         //转工单时将事件开始结束时间带入工单 0612
         //获取当前时间时间戳
         var currTime = +new Date();
-        
+
         //1.无开始和结束时间：开始时间选择为无，结束时间显示为当前系统时间+1小时；
-       
-        if(event && !event.startTime && !event.endTime){
+
+        if (!!event && !!event.startTime == false && !!event.endTime == false) {
             v.instance.addwork.start_time_type = "";
             //设置当前时间 加一小时为设置结束时间
-            var setEndTime =  currTime + 60 * 60 * 1000;
+            var setEndTime = currTime + 60 * 60 * 1000;
             var tranSetEndTime = new Date(setEndTime).format("yMdhm");
-            setTimeout(function(){
+            setTimeout(function () {
                 $("#ask_end_time").psel(_that.transTimeType(tranSetEndTime));
-            },0)
+            }, 100)
 
         }
         //2.有开始和结束时间：带入开始和结束时间
-        else if(event && event.startTime && event.endTime){
+        else if (!!event && !!event.startTime && !!event.endTime) {
             v.instance.addwork.start_time_type = "2";
-            var setStartTime = event.startTime.replace(/\.|\s|:/g,"");
-            var setEndTime = event.endTime.replace(/\.|\s|:/g,"");
-            setTimeout(function(){
+            var st = event.startTime;
+            var et = event.endTime;
+            var setStartTime = st.replace(/\.|\s|:/g, "");
+            var setEndTime = et.replace(/\.|\s|:/g, "");
+            _that.$nextTick(function () {
                 $("#ask_start_time").psel(_that.transTimeType(setStartTime));
                 $("#ask_end_time").psel(_that.transTimeType(setEndTime));
-            },0)
+            }, 100)
         }
         //3.有开始无结束时间：带入开始时间，结束时间显示为开始时间+1小时；
-        else if(event && event.startTime && !event.endTime){
+        else if (!!event && !!event.startTime && !!event.endTime == false) {
             v.instance.addwork.start_time_type = "2";
-            var setStartTime = event.startTime.replace(/\.|\s|:/g,"");
-            var setEndTime = +new Date(event.startTime) + 60 * 60 * 1000;
+            var st = event.startTime;
+            var setStartTime = st.replace(/\.|\s|:/g, "");
+            var setEndTime = +new Date(st) + 60 * 60 * 1000;
             var tranSetEndTime = new Date(setEndTime).format("yMdhm");
-            setTimeout(function(){
+            _that.$nextTick(function () {
                 $("#ask_start_time").psel(_that.transTimeType(setStartTime));
                 $("#ask_end_time").psel(_that.transTimeType(tranSetEndTime));
-            },0)
+            }, 100)
         }
         //4.无开始有结束时间：开始时间显示为发单后立即开始，结束时间显示为当前系统时间+1小时；
-        else if(event && !event.startTime && event.endTime){
+        else if (!!event && !!event.startTime == false && !!event.endTime) {
             v.instance.addwork.start_time_type = "1";
-            var setEndTime =  currTime + 60 * 60 * 1000;
+            var setEndTime = currTime + 60 * 60 * 1000;
             var tranSetEndTime = new Date(setEndTime).format("yMdhm");
-            setTimeout(function(){
+            _that.$nextTick(function () {
                 $("#ask_end_time").psel(_that.transTimeType(tranSetEndTime));
-            },0)
+            }, 100)
         }
         // 查询用户的权限
+        // controller.getPersonByUserId().then(function(res){
+        //     console.log(res)
+        // });
         controller.queryPersonDetailByPersonId(
             {
                 person_id: v.instance.userInfo.person_id
@@ -701,12 +740,14 @@ v.pushComponent({
             var item = _.find(obj.project_persons, { project_id: v.instance.project_id });
             // 查询某个岗位拥有某控制模块的工单类型
             // return controller.queryWoTypeListByPersonIdControlCode({ position_id: item.position_id });
-            return controller.queryWoTypeListByPersonIdControlCode({"wo_execute_type": "temp","repair_flag":"1","position_id": item.position_id});
+            return controller.queryWoTypeListByPersonIdControlCode({ "wo_execute_type": "temp", "repair_flag": "1", "position_id": item.position_id });
         }).then(function (list) {
             _that.WoTypeList = list;
         })
 
-
+        _that.$nextTick(function () {
+            $("#add_work_order_type").precover("请选择");
+        })
         // persons
 
     },
@@ -813,7 +854,7 @@ v.pushComponent({
             if (num != old && num == 0) {
                 _that.addwork.ask_end_time = +new Date();
             } else {
-                _that.addwork.ask_end_limit = 0;
+                _that.addwork.ask_end_limit = "";
             }
 
         },

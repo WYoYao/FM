@@ -413,7 +413,6 @@ v.pushComponent({
         ],
         cache: {},//调用工单详情所需，用来存储工单ID
         evPageLen: 20,
-        noDataWord: "--",
         userInfo: {
             "userId": "userId",                //类型：String  必有字段  备注：用户id
             "userName": "userName",                //类型：String  必有字段  备注：用户名称
@@ -428,6 +427,7 @@ v.pushComponent({
             "head_portrait": "head_portrait",                //类型：String  可有字段  备注：系统头像
         },
         project_id: "",
+        noData:"--",
     },
     methods: {
         timeFormat: function (str, type) {
@@ -475,7 +475,7 @@ $(function () {
         type: 'get',
         data: {},
         success: function (result) {
-            v.instance.userInfo = result;
+            v.instance.userInfo = result;      
         },
         error: function (error) {
         },

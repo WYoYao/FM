@@ -18,6 +18,7 @@ v.pushComponent({
                     break
                 case 1:
                     type === 'list' ? this.stopModelEvPropagation(true) : void 0;
+                    $("#repeatEventSearch").pval("");
                     this.getRepeateEvList();
                     this.isSelCloseEv = true;
                     $("#selRepeatEventW").pshow();
@@ -81,7 +82,7 @@ v.pushComponent({
             var that = this;
             $("#evRepeatLoading").pshow();
             EMA.RE({
-                keyword:$("#proEvListKey").pval().key.length === 0 ? null : $("#proEvListKey").pval().key,
+                keyword:$("#repeatEventSearch").pval().key.length === 0 ? null : $("#repeatEventSearch").pval().key,
                 projectId:this.eventListProjectId,
                 eventId:this.closedEvId,
             },function(data){

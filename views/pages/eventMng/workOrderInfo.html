@@ -2,7 +2,7 @@
 
 <link rel="stylesheet" href="./css/eventMng/term/workOrderInfo.css">
 
-<div id="workOrderInfo" v-show="onPage === 'workOrderInfo'">
+<div id="workOrderInfo" v-show="onPage === 'workOrderInfo'" style="display:none">
     
     <div class="head">
         <i @click="evMngWorkOrderBack()" class="icon grayBule">I</i>
@@ -14,6 +14,6 @@
         <% include ../workOrder/planMng/workOrderDetail.html %>
     </div>
 
-    <div class="bottBoder"></div>
+    <div class="bottBoder" ></div>
 
 </div>

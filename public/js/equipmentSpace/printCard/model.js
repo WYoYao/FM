@@ -378,8 +378,8 @@ var cardPrintLogic = {
         paramObj.domain_code= '';
         paramObj.system_code='';
         cardPrintController.getyDomainSystemEquipArr(paramObj,function (data) {
-         
-            var arr = data || [];
+            var tarr= data&&data.data?data.data:data;
+            var arr = tarr || [];
             arr.unshift({
                 code: '', name: '全部'
             });
@@ -400,7 +400,8 @@ var cardPrintLogic = {
         paramObj.domain_code= cardPrintModal.selMajor.code;
         paramObj.system_code='';
         cardPrintController.getyDomainSystemEquipArr(paramObj, function (data) {
-            var arr = data || [];
+            var tarr= data&&data.data?data.data:data;
+            var arr = tarr || [];
             arr.unshift({
                code: '', name: '全部'
             });
@@ -419,7 +420,8 @@ var cardPrintLogic = {
         paramObj.domain_code= cardPrintModal.selMajor.code;
         paramObj.system_code=cardPrintModal.selSystem.code;
         cardPrintController.getyDomainSystemEquipArr(paramObj, function (data) {
-            var arr = data || [];
+            var tarr= data&&data.data?data.data:data;
+            var arr = tarr || [];
             arr.unshift({
                code: '', name: '全部'
             });
@@ -441,7 +443,8 @@ var cardPrintLogic = {
         for (var i = 0; i < list.length; i++) {
             idArr.push(list[i][idProName]);
         }
-        tabIndex == 0 ? cardPrintController.downEqCard(idArr, success, err) : cardPrintController.downSpCard(idArr, success, err);
+        cardPrintController.downEqCard(idArr, success, err);
+      //tabIndex == 0 ? cardPrintController.downEqCard(idArr, success, err) : cardPrintController.downSpCard(idArr, success, err);
 
         function success() {
             $("#gridCardPrintForEq").precover();

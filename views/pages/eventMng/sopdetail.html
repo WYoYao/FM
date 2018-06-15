@@ -79,7 +79,6 @@
             <div class="sop_detail_content_modal_bottom">
                 <ul class="sop_detail_content_modal_bottom_tab">
                     <li class="active">工作详情</li>
-                    <!-- <li @click="getSopAdduceList($event)">被<span>1</span>个SOP引用</li> -->
                 </ul>
                 <div class="sop_detail_content_modal_bottom_step">
                     <div class="sop_detail_content_modal_bottom_step_box" v-for=" (items,index) in currentSopModal.steps">
@@ -88,8 +87,10 @@
                                 <span v-text="index + 1">1</span>
                             </p>
                         </div>
+                        <!-- 123123 -->
                         <div class="sop_detail_content_modal_bottom_step_con" v-if="items.step_content != '' ">
                             <div v-for="stepCon in items.step_content">
+                                <!-- 111 -->
                                 <ul v-if="!stepCon.from_sop" class="sop_detail_content_modal_bottom_step_con_ul">
                                     <li v-if="stepCon.content_objs && stepCon.content_objs.length">
                                         <strong>对象选择：</strong>
@@ -104,15 +105,9 @@
                                     </li>
                                     <li>
                                         <strong>标准作业操作内容：</strong>
-                                        <!-- <p v-if="stepCon.content instanceof Array"><span v-for="step in stepCon.contentArr" v-text="step.content?step.content.char:''" :class="step.content && step.content.mark ? 'markRed' : ''"></span></p> -->
-                                        <!--
-                                        <p v-if="stepCon.contentArr&&stepCon.contentArr.length>0"><span
-                                                v-for="charObj in stepCon.contentArr" v-text="charObj.content.char"
-                                                :class="charObj.content.mark ? 'markRed' : ''"></span></p>
-                                        <p v-else><span v-text="stepCon.content"></span></p>
--->
                                         <p v-text="stepCon.content"></p>
                                     </li>
+                                    <!-- aaaaaa -->
                                     <li v-if="stepCon.notice">
                                         <strong>注意事项：</strong>
                                         <p v-text="stepCon.notice"></p>
@@ -131,11 +126,13 @@
                                                     </div>
                                                     <div class="sop_detail_content_opera_result_list_con_info">
                                                         <ul>
-                                                            <li v-for="info_point in confirmObj.info_points" v-text="info_point.name + $root.getExceptionDescription(info_point)" :class="info_point.is_revise ? 'redMark' : ''">信息点1
+
+                                                            <li v-for="info_point in confirmObj.info_points" v-text="info_point.name" :class="info_point.is_revise ? 'redMark' : ''">信息点1
                                                             </li>
                                                         </ul>
                                                         <ul v-if="confirmObj.customs &&confirmObj.customs.length >0 ">
-                                                            <li v-for="customs in confirmObj.customs" v-text="customs.name + $root.getExceptionDescription(customs)">信息点1
+
+                                                            <li v-for="customs in confirmObj.customs" v-text="customs.name">信息点1
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -153,7 +150,9 @@
                                         <strong>专业要求：</strong>
                                         <p v-text="filterProfessionalTrans(stepCon.domain)"></p>
                                     </li>
+                                    <!-- aaaaaa -->
                                 </ul>
+                                <!-- 111 -->
                                 <div v-if="stepCon.from_sop" class="sop_detail_content_modal_bottom_step_yr" @click="sopDetailModalShow(stepCon.sop_id,stepCon.version)">
                                     <h3 :title="stepCon.sop_name" v-text="stepCon.sop_name">SOP名称</h3>
                                     <ul>
@@ -169,6 +168,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- 123123 -->
                     </div>
                 </div>
             </div>
@@ -266,8 +266,11 @@
                 return true;
             },
             filterProfessionalTrans: function (str) {//专业要求键值转换
-                var obj = model.professionalObj;
-                return obj[str];
+                if (obj && obj[str]) {
+                    var obj = model.professionalObj;
+                    return obj[str];
+                }
+                return "";
             },
         },
         computed: {

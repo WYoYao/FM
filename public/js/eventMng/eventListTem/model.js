@@ -4,11 +4,20 @@ v.pushComponent({
         eventRate:0,              // 事件状态
         eventTypeSel:0,           // 事件类别    
         eventCloseReason:[
+            {name:"全部",code:null,id:null},
+            {name:"误报",code:0,id:"0"},
+            {name:"重复报修",code:1,id:"1"},
+            {name:"其他",code:2,id:"2"},
+            {name:"工单已完成",code:3,id:"3"},
+            {name:"工单已中止",code:4,id:"4"}
+        ],
+        eventCloseReasonBtn:[//操作按钮上的状态
             {name:"误报",code:0},
             {name:"重复报修",code:1},
             {name:"其他",code:2},
-            // {name:"工单已完成",code:3}
         ],
+        eventDeptSel: null,      //事件处理部门
+        eventDealDepts: [],       //事件处理部门数据
         eventListProjectId:"",    // 查询该项目的事件
         proEvListPower:{          // 该页所有控制类数据
             closeEvent:false,      // 操作或者关闭事件权限
@@ -25,6 +34,9 @@ v.pushComponent({
             }
         },
         proEvListSelEl:"",
+        _startTime:"", //设置时间筛选
+        _endTime:"",
+        showDepartmentCombo: true,
     },
     methods: {
 
@@ -58,6 +70,13 @@ v.pushComponent({
             $("#proEvListKey").pval().key.length >= 0 ? this.getProEvListData() : void 0;
             
         },
+        // 选择事件处理部门
+        selDepartment : function(){
+            this.eventDeptSel = arguments[0];
+            $("#eventListPages").psel(1,false);
+            this.getProEvListData();
+            this.getProEvListLen();
+        },
         // 选择关闭事件原因
         selCloseReason : function(){
             $("#eventListPages").psel(1,false);
@@ -67,6 +86,8 @@ v.pushComponent({
         // 选择关闭事件时间
         selCloseEvTime : function(){
             $("#eventListPages").psel(1,false);
+            this._startTime = $("#closeTimePtime").psel().startTime;
+            this._endTime = $("#closeTimePtime").psel().endTime;
             this.getProEvListData();
             this.getProEvListLen();
         },
@@ -76,15 +97,38 @@ v.pushComponent({
             this.getProEvListLen();
             $("#closeProEventCombo").hide();
         },
+        //关闭时间控件弹框
+        hideTimeCalendar:function(){
+            $('#closeTimePtime').pslideUp();
+        },
 
 
 
-
+        //获取事件处理部门
+        getEventDealDepts: function () {
+            var that = this;
+            EMA.DT({"projectId":this.eventListProjectId}, function (data) {
+                function appendAttrTree (arr, arrAttr, settedAttr, value, curLevel) {
+                    arr = arr ? arr : [];
+                    for (var i = 0; i < arr.length; i++) {
+                        arr[i][settedAttr] = value;
+                        arr[i]['level'] = curLevel;
+                        appendAttrTree(arr[i][arrAttr], arrAttr, settedAttr, value, curLevel + 1);
+                    }
+                }
+                appendAttrTree(data.data || [], 'child_objs', 'issel', true, 1);
+                that.eventDealDepts = JSON.parse(JSON.stringify(data.data)) || [];
+            }, function () {
+                that.eventDealDepts = [];
+            }, function () {
+            })
+        },
         getProEvListDataParam : function(){
             var param = {
                 "eventState":String(this.eventRate),
                 "eventType":this.eventTypeSel === 0 ? null : String(this.eventTypeSel - 1),
                 "projectId":this.eventListProjectId,
+                "deptId":(this.eventDeptSel || {}).obj_id
             }
             if(this.proEvListData.sort.type != null){
                 param.orderName = this.proEvListData.sort.name;
@@ -95,11 +139,16 @@ v.pushComponent({
             $("#proEvListKey").pval().key.length > 0 ? param.keyword = $("#proEvListKey").pval().key : void 0;
             // 关闭原因及时间筛选
             if(this.eventRate === 2){
-                param.closeType = $("#closeReasonCombo").psel() ? '' + ($("#closeReasonCombo").psel().index) : null;
-                param.closeTime = {
-                    start : new Date(time.startTime).format("yMd") || '',
-                    end : new Date(time.endTime).format("yMd") || ''
+                param.closeType = $("#closeReasonCombo").psel() && $("#closeReasonCombo").psel().text == "全部" ? null : ($("#closeReasonCombo").psel().index -1 );
+                if(this._startTime){
+                    param.closeTime = {
+                        start : new Date(time.startTime).format("yMd") || '',
+                        end :new Date(time.endTime).format("yMd") || ''
+                    }
+                }else{
+                    param.closeTime = null;
                 }
+                
             }
             // 分页
             if(this.proEvListPower.isELTHasPage){
@@ -144,6 +193,11 @@ v.pushComponent({
         },
         // 有分页时切换大Tab获取数据
         getProEvListLenAndData : function(){
+            this._startTime = ""; //设置时间重置
+            this._endTime = "";
+            if(this.eventRate === 2){
+                
+            }
             this.getProEvListLen();
             this.getProEvListData();
         },
@@ -156,6 +210,7 @@ v.pushComponent({
         eventListRecover : function(){
             this.eventRate = 0;
             this.eventTypeSel = 0;
+            this.timeIsDefault = false;
             $("#eventRateCombo").psel(0,false);
             $("#eventType").psel(0,false);
         },

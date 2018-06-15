@@ -132,12 +132,13 @@ v.pushComponent({
         // 前往工单详情
         _clickGoWork: function (item) {
             var _that = this;
-
-            _that.showWorkOrder = "wordorder";
-            orderDetail_pub.getOrderDetail(v.instance, item.order_id, "1", function () {
-                _that.onPage = "list";
-                _that.showWorkOrder = false;
-            });
+           // $("#detailBlock").hide();
+           orderDetail_pub.goWorkOrderDetail(_that,item.order_id);
+            // _that.showWorkOrder = "wordorder";
+            // orderDetail_pub.getOrderDetail(v.instance, item.order_id, "1", function () {
+            //     _that.onPage = "list";
+            //     _that.showWorkOrder = false;
+            // });
         },
         // 跳转到详情页
         _clickIntoDeatil: function (item) {

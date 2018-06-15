@@ -31,18 +31,12 @@
       height: 36px;
       line-height: 36px;
       position: relative;
-      cursor: pointer; 
-      display:flex;
-    }
+      cursor: pointer; }
       #repeatEvent .grid li:nth-of-type(odd) {
         background: #f4f6f9; }
       #repeatEvent .grid li span {
         float: left;
-        display: block; 
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+        display: block; }
       #repeatEvent .grid li .t4 {
         position: absolute;
         left: 17px;

@@ -108,7 +108,7 @@
             </div>
         </div>
     </div>
-    <sopdetail v-if="showDeatil" :sop_id="'SOP92c715a5a6344dafa95e537762b50665'" :cb="cancelDeatil" :version="'V0.1'"></sopdetail>
+    <sopdetail v-if="showDeatil" :sop_id="sop_id" :cb="cancelDeatil" :version="version"></sopdetail>
 </div>
 </script>
 
@@ -200,12 +200,37 @@
                             return params;
                         })
                     }
+                    var brands_ids = _.map(_.filter(_that.criteria.brands, { selected: true }) || [], 'equip_model_id')
+                    var brands = (data.criteria.equip_model_ids || data.criteria.equip_models).map(function (item) {
+                        item.selected = brands_ids.indexOf(item.equip_model_id) != -1;
+                        return item;
+                    });
+
+                    var fit_objs_ids = _.map(_.filter(_that.criteria.fit_objs, { selected: true }) || [], 'obj_id')
+                    var fit_objs = data.criteria.fit_objs.map(function (item) {
+                        item.selected = fit_objs_ids.indexOf(item.obj_id) != -1;
+                        return item;
+                    });
+
+                    var labels_ids = _.map(_.filter(_that.criteria.labels, { selected: true }) || [], 'code');
+                    var labels = data.criteria.labels.map(function (item) {
+                        return {
+                            name: item,
+                            selected: labels_ids.indexOf(item) != -1
+                        }
+                    });
+
+                    var order_type_ids = _.map(_.filter(_that.criteria.order_type, { selected: true }), 'code');
+                    var order_type = data.criteria.order_type.map(function (item) {
+                        item.selected = order_type_ids.indexOf(item.code) != -1;
+                        return item;
+                    })
 
                     _that.criteria = {
-                        brands: addSelected(data.criteria.equip_model_ids || data.criteria.equip_models),
-                        fit_objs: addSelected(data.criteria.fit_objs),
-                        labels: addSelected(data.criteria.labels),
-                        order_type: addSelected(data.criteria.order_type),
+                        brands: brands,
+                        fit_objs: fit_objs,
+                        labels: labels,
+                        order_type: order_type,
                     };
 
                     var arr_sop_id = _.map(_that.desc_sops, 'sop_id');
@@ -287,7 +312,7 @@
                 _that.criteria.fit_objs = allUnSelected(_that.criteria.fit_objs);
                 _that.criteria.labels = allUnSelected(_that.criteria.labels);
                 _that.criteria.order_type = allUnSelected(_that.criteria.order_type);
-                _that.SopList = allUnSelected(_that.SopList);
+                // _that.SopList = allUnSelected(_that.SopList);
             },
             // 根据筛选条件查询
             submitSelect: function () {

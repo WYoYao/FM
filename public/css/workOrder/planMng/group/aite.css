@@ -270,6 +270,8 @@
         width: auto !important;
         max-width: 125px;
         vertical-align: text-bottom; }
+      .aite-bubble.aite .aite-body .equip .system-major #id_GeneralDict .per-combobox-con, .aite-bubble.aite .aite-body .equip .system-major #id_GeneralSystem .per-combobox-con {
+        width: 120px; }
       .aite-bubble.aite .aite-body .equip .system-major .major-need {
         vertical-align: initial; }
     .aite-bubble.aite .aite-body .equip .tree-body {

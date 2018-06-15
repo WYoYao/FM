@@ -34,15 +34,94 @@ v.pushComponent({
         evMngProject: {},//操作该项目
         groupEvOpeId: "",//对该集团事件进行操作
         groupEvProjectList: [],//集团事件可指派的项目列表数据
+        groupEvProjectList_: [],
         groupEvOrgainTree: [],//组织部门树数据
+        groupEvOrgainTree_: [],
         groupEvIngProList: [],//该集团事件相关的正在执行的项目
         groupEvAssignStep: 0,//项目树中选中的项目集合
+        city: [
+            {
+                name: "中国",  // 名称
+                deep: 1,  // 层级
+                childStatus: false,  // 子对象状态
+                selected: false,  // 是否被选中  
+                hasBranch: true,  // 是否存在分支  
+                gray: false,  // 置灰（不可用状态）
+                obj: [  // 子对象数组
+                    {
+                        name: "北京",
+                        deep: 2,
+                        childStatus: false,
+                        selected: false,
+                        hasBranch: true, 
+                        gray: false, 
+                        obj: [
+                            {
+                                name: "朝阳区",
+                                deep: 3,
+                                childStatus: false,
+                                selected: false,
+                                hasBranch: false, 
+                                gray: false, 
+                                obj: []
+                            },
+                            {
+                                name: "海淀区",
+                                deep: 3,
+                                childStatus: false,
+                                selected: false,
+                                hasBranch: false, 
+                                gray: false, 
+                                obj: []
+                            },
+                        ]
+                    },
+                    {
+                        name: "上海",
+                        childStatus: false,
+                        deep: 2,
+                        selected: false,
+                        hasBranch: false, 
+                        gray: false, 
+                        obj: []
+                    },
+                ]
+            },
+            {
+                name: "美国",
+                deep: 1,
+                childStatus: false,
+                selected: false,
+                hasBranch: true, 
+                gray: false, 
+                obj: [
+                    {
+                        name: "华盛顿",
+                        deep: 2,
+                        childStatus: false,
+                        selected: false,
+                        hasBranch: false, 
+                        gray: false, 
+                        obj: []
+                    }
+                ]
+            },
+        ]
     },
     methods: {
 
         // 选择分页大Tab
         selEventTab: function () {
             this.EvMngCtrPage.wrap = $("#eventManageTab").psel() === 0 ? 0 : 1;
+            // 切换标签时初始化
+            if($("#eventManageTab").psel() === 0){
+                $("#eventGPKeyWord").precover();
+                $("#eventTypeCombo").psel(0)
+            }else{
+                $("#groupEvSerKey").precover();
+                $("#isEvPCombo").psel(0)
+                this.EvMngCtrPage.group = 0;
+            }
         },
 
 
@@ -51,7 +130,7 @@ v.pushComponent({
         getEvProListData: function () {
             var that = this;
             $("#eventMngPart").pshow();
-            EMA.GI({ eventType: ($("#eventTypeCombo").psel().index === 0 || $("#eventTypeCombo").psel() === undefined) ? null : $("#eventTypeCombo").psel().index - 1 }, function (data) {
+            EMA.GI({ keyword: $("#eventGPKeyWord").pval().key,eventType: ($("#eventTypeCombo").psel().index === 0 || $("#eventTypeCombo").psel() === undefined) ? null : $("#eventTypeCombo").psel().index - 1 }, function (data) {
                 that.groupEvIndexData = JSON.parse(JSON.stringify(data[0])) || {};
             }, function () {
                 that.groupEvIndexData = {};
@@ -115,7 +194,6 @@ v.pushComponent({
             $("#groupEvSerKey").pval().key.length > 0 ? param.keyword = $("#groupEvSerKey").pval().key : void 0;
             $("#groupEvListLoading").pshow();
             EMA.GD(param, function (data) {
-                console.log(data);
                 $("#groupEventPage").pcount(Math.ceil(data[0].total / that.evPageLen));
                 that.groupListData.data = JSON.parse(JSON.stringify(data[0].contents)) || [];
                 that.groupListData.data.total = data[0].total || 0;
@@ -134,8 +212,28 @@ v.pushComponent({
             $("#groupEvProKey").pval().key.length > 0 ? param.keyword = $("#groupEvProKey").pval().key : void 0;
             EMA.GP(param, function (data) {
                 that.groupEvProjectList = JSON.parse(JSON.stringify(data)) || [];
+                // deep: 1,  // 层级
+                // childStatus: false,  // 子对象状态
+                // selected: false,  // 是否被选中  
+                // hasBranch: true,  // 是否存在分支  
+                // gray: false,  // 置灰（不可用状态）
+                var newObj = JSON.parse(JSON.stringify(data));
+                (function recursion(newObj,deep){
+                    newObj.map(function(item,index){
+                        item.childStatus = false;  
+                        item.selected = false;  
+                        item.gray = false; 
+                        item.contents && item.contents.length > 0 ? item.hasBranch = true : item.hasBranch = false;  
+                        item.deep = deep+1;  
+                        item.name = item.partition_project_name;
+                        item.obj = item.contents ? item.contents : [];
+                        item.hasBranch ? recursion(item.obj,item.deep) : null;
+                    })
+                })(newObj,0);
+                that.groupEvProjectList_ = newObj;
             }, function () {
                 that.groupEvProjectList = [];
+                that.groupEvProjectList_ = [];
             }, function () {
                 $("#groupEvAssignProLoading").phide();
             })
@@ -146,8 +244,23 @@ v.pushComponent({
             $("#groupEvAssignProLoading").pshow();
             EMA.OT({ keyword: $("#groupEvDeptKey").pval().key }, function (data) {
                 that.groupEvOrgainTree = JSON.parse(JSON.stringify(data.data)) || [];
+                var newObj = JSON.parse(JSON.stringify(data.data));
+                (function recursion(newObj,deep){
+                    newObj.map(function(item,index){
+                        item.childStatus = false;  
+                        item.selected = false;  
+                        item.gray = false; 
+                        item.child_objs && item.child_objs.length > 0 ? item.hasBranch = true : item.hasBranch = false;  
+                        item.deep = deep+1;  
+                        item.name = item.obj_name;
+                        item.obj = item.child_objs ? item.child_objs : [];
+                        item.hasBranch ? recursion(item.obj,item.deep) : null;
+                    })
+                })(newObj,0);
+                that.groupEvOrgainTree_ = newObj;
             }, function () {
                 that.groupEvOrgainTree = [];
+                that.groupEvOrgainTree_ = [];
             }, function () {
                 $("#groupEvAssignProLoading").phide();
             })
@@ -186,46 +299,52 @@ v.pushComponent({
         // 指派集团事件下一步
         groupEvAssignFin: function (type) {
             if (type) {
-                if ($("#evProListTree").psel().length != 0) {
-                    this.groupEvSelProList = $("#evProListTree").psel();
+                var newArr = [];
+                var selectedArr = (function recursion(arr){   
+                    arr.map(function(item,index){
+                        (item.selected == true && item.type == "0") ? newArr.push(item) : null;
+                        item.hasBranch ? recursion(item.obj) : null;
+                    })
+        
+                })(this.groupEvProjectList_);
+                if (newArr.length != 0) {
+                    this.groupEvSelProList = newArr;
                     this.groupEvAssignStep = 1;
                     $("#groupEvDeptKey").precover();
+                    $("#groupEvAssignW .per-modal-custom_title").html("选择部门")
                 } else {
-                    $("#globalnotice").pshow({ text: "请选择需要指派的项目", state: "failure" });
+                    $("#globalnotice").pshow({ text: "请选择需要指派的项目(非项目选中无效)", state: "failure" });
                 }
             } else {
                 $("#groupEvAssignW").phide();
-            }
-        },
-        // 项目选择事件
-        clickItem: function (model, event) {
-            var list = $($(event.target).parent().parent().parent().find(".per-tree-title")[0]);
-            if (model.type != "0") {
-                if (list.hasClass("per-tree-ts_active")) {
-                    setTimeout(function () {
-                        $(list.find("ul li")[0]).trigger("click");
-                        list.find("ul").hide();
-                    }, 0)
-                } else {
-                    $(list.find("ul li")[2]).trigger("click");
-                    list.find("ul").hide();
-                }
             }
         },
         // 指派集团事件选择部门下一步
         groupEvAssignTwoFin: function (type) {
             var that = this;
             if (type) {
+                var newArr = [];
+                var selectedArr = (function recursion(arr){   
+                    arr.map(function(item,index){
+                        (item.selected == true) ? newArr.push(item) : null;
+                        item.hasBranch ? recursion(item.obj) : null;
+                    })
+        
+                })(this.groupEvOrgainTree_);
+                if (newArr.length == 0) {
+                    $("#globalnotice").pshow({ text: "请选择需要指派的部门", state: "failure" });
+                    return;
+                }   
                 var param = {
                     person_id: v.instance.userInfo.person_id,
                     groupEventId: this.groupEvOpeId,
-                    projectIds: $("#evProListTree").psel().reduce(function (total, item) {
+                    projectIds: that.groupEvSelProList.reduce(function (total, item) {
                         if (item.type == "0") {    //只提交项目id
                             total.push(item.partition_project_id);
                         }
                         return total;
                     }, []),
-                    deptIds: $("#evOrgainTree").psel().map(function (item) {
+                    deptIds: newArr.map(function (item) {
                         return item.obj_id;
                     })
                 }
@@ -234,9 +353,13 @@ v.pushComponent({
                     $("#groupEvAssignW").phide();
                     $("#eventInfoFloat").css("display") === 'block' && that.getGroupEvInfo();
                     that.getGroupEvList();
+                    // $("#evOrgainTree").precover();
                 }, function () { }, function () { });
             } else {
-                $("#groupEvAssignW").phide();
+                // $("#groupEvAssignW").phide();
+                this.groupEvAssignStep = 0;
+                // $("#evOrgainTree").precover();
+                $("#groupEvAssignW .per-modal-custom_title").html("选择项目")
             }
         },
         // 删除集团事件
@@ -294,7 +417,10 @@ v.pushComponent({
                 $("#groupEvCloseW").phide();
             }
         },
-
+        backGroupEv: function (model) {
+            // console.log(model);
+            this.EvInfoType = "group";
+        }, 
         // 搜索该项目
         searchThisEvPro: function () {
             this.getGroupEvProList();
@@ -319,7 +445,7 @@ v.pushComponent({
             var t = new Date();
             var y = t.getFullYear();
             var M = t.getMonth() + 1;
-            var d = t.getDay();
+            var d = t.getDate();
             var h = t.getHours();
             var m = t.getMinutes();
             $("#createGroupEventText").phideTextTip();
@@ -336,9 +462,9 @@ v.pushComponent({
             var that = this;
             if (type) {
 
-                if (this.createEv.end === 0) {
+                // if (this.createEv.end === 0) {
                     if (!$("#newGroup").pverifi()) { return };
-                }
+                // }
                 var param = {
                     "person_id": v.instance.userInfo.person_id,
                     "groupEventDescribe": $("#createGroupEventText").pval(),     			  //事件描述
@@ -361,6 +487,28 @@ v.pushComponent({
                 this.createEv.start === 1 ? param.startTime = new Date($("#groupEventStartTime").psel().startTime.replace(/-/g, "/")).format("yyyyMMddhhmmss") : void 0;
                 this.createEv.end === 0 ? param.requireFixedTime = $("#createGroupEvFixStart").pval() :
                     param.endTime = new Date($("#createGroupEventEndTime").psel().startTime.replace(/-/g, "/")).format("yyyyMMddhhmmss");
+                // 验证事件开始时间是否早于当前服务器时间，早于则提示修改
+                if(param.startTime){
+                    if(!v.currentTime){
+                        console.log("系统时间获取失败！",that);
+                        return;
+                    }
+                    if(new Date($("#groupEventStartTime").psel().startTime).getTime() < v.currentTime){
+                        $("#globalnotice").pshow({ text: "事件开始时间不能早于当前时间，请检查后提交", state: "failure" });
+                        return;
+                    }
+                }   
+                // 验证事件结束时间是否早于当前服务器时间，早于则提示修改
+                if(param.endTime){
+                    if(!v.currentTime){
+                        console.log("系统时间获取失败！",that);
+                        return;
+                    }
+                    if(new Date($("#createGroupEventEndTime").psel().startTime).getTime() < v.currentTime){
+                        $("#globalnotice").pshow({ text: "事件结束时间不能早于当前时间，请检查后提交", state: "failure" });
+                        return;
+                    }
+                } 
                 // 验证事件开始时间是否晚于结束时间，晚于则提示修改
                 if (param.startTime && param.endTime) {
                     var start = new Date($("#groupEventStartTime").psel().startTime.replace(/-/g, "/")).getTime();
@@ -370,11 +518,7 @@ v.pushComponent({
                         return;
                     }
                 }
-                // 验证小时输入
-                if(param.requireFixedTime && param.requireFixedTime.indexOf(".") != -1 && param.requireFixedTime.split(".")[1].length > 1){
-                    $("#createGroupEvFixStart").pshowTextTip("请输入正数(小数点后最多保留一位)");
-                    return;
-                }
+                
                 $("#eventMngPart").pshow()
                 EMA.NG(param, function () {
                     $("#globalnotice").pshow({ text: "新建成功", state: "success" });
@@ -416,6 +560,7 @@ v.pushComponent({
         // 计算右侧项目格子宽度
         this.$nextTick(function () {
             this.proBoxWidth = this.computeBoxWidth();
+            this.showDepartmentCombo = false;
         })
     }
 });

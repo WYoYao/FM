@@ -53,7 +53,7 @@
                                    
                                             <div class="obj-fragment-div">
                                                 <span class="aite-btn" @click.stop="content_str='@'" :class="content_str ? 'eleDisable' : ''">@对象</span>
-                                                <span class="aite-btn" v-if="content_str" style="margin-left:10px;position:relative;color:initial;">
+                                                <span class="aite-btn posi1" v-if="content_str" style="margin-left:10px;margin-top:-120px;position:relative;color:initial;">
                                                     <aite :str="content_str" ref="aite" :desc_objs="desc_work.content_objs" :isterm="isterm" :cb="get_content_Obj" v-if="content_str"></aite>
                                                 </span>
                                                 <span class="counter" :class="{'errorNumber':false}">
@@ -567,7 +567,7 @@
             commit: function () {
                 var _that = this;
                 // 当前的内容
-                var dw = _that.desc_work;
+                var dw = JSON.parse(JSON.stringify(_that.desc_work));
 
                 // 获取强制操作
                 dw.obj_required_control = _.map(_.filter(_that.GeneralDictByKeyCode, { selected: true }), "code");
@@ -590,6 +590,10 @@
                     $('#globalnotice').pshow({ text: '标准作业操作内容不能为空', state: "failure", });
                     return;
                 }
+
+                dw.content = dw.newcontent;
+
+                delete dw.newcontent;
 
                 // 返回上级
                 if (_.isFunction(_that.cb)) _that.cb(dw);

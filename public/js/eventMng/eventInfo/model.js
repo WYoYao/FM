@@ -26,7 +26,7 @@ v.pushComponent({
             full: {}
         },
         allWkOrdSta: ["待接单", "已接单", "处理中"],
-        allcleRon: ['误报', '重复报修', '其他', '工单已完成'],
+        allcleRon: ['误报', '重复报修', '其他', '工单已完成', '工单已中止'],
         allEvSta: ["未指派", "已指派", "已关闭"],
         // allEvSte: ["待处理", "工单待接单", "工单运行中", "已关闭"],
         allEvSte: ["待处理", "处理中", "已关闭"],
@@ -39,15 +39,19 @@ v.pushComponent({
             equip: "设备实例",
             system_class: "系统类",
             equip_class: "设备类",
-            space_class:"空间功能类型"
-        }
+            space_class: "空间功能类型"
+        },
+        modelSwitch:{
+            id:"",
+            show:false,
+        }//工单详情模态窗显示控制
     },
     methods: {
         // 打开项目事件详情
         openProEvInfoW: function (data) {
             this.resetProEvInfo();
             this.stopModelEvPropagation(false);
-            this.EvInfoType = "project";
+            this.EvInfoType = "project_";
             this.closedEvId = data.eventId;
             this.proEvInfoData.easy = data;
             // this.proEvInfoData.full["repeatedEventId"] = data.repeatedEventId || "";
@@ -83,7 +87,7 @@ v.pushComponent({
             var that = this;
             $("#EvInfoLoading").pshow();
             EMA.EI({
-                eventId: repeatId ? repeatId :this.proEvInfoData.easy.eventId
+                eventId: repeatId ? repeatId : this.proEvInfoData.easy.eventId
             }, function (data) {
                 that.proEvInfoData.full = JSON.parse(JSON.stringify(data[0])) || {};
             }, function () {
@@ -105,21 +109,32 @@ v.pushComponent({
                 that.someEventType = JSON.parse(JSON.stringify(data)) || [];
                 $("#editEvTypeCombo").precover("请选择");
                 that.proEvStr = "";
-                //获取是否存在修正信息
-                if(that.proEvInfoData.full.reviseData ){
-                    if(that.proEvInfoData.full.reviseData.reviseEventDescribe){
-                        that.proEvStr = that.proEvInfoData.full.reviseData.reviseEventDescribe;
-                        var reviseObjArr = that.proEvInfoData.full.reviseData.reviseEventDescribe.split(' ');
-                        reviseObjArr.forEach(function(item){
-                            if(item.indexOf('@') == '0'){
-                                that.proEvObjs.push(item);
-                            }
-                        });
+
+                if (!that.proEvInfoData.full.reviseData) {//若不存在修正信息
+                    if (that.proEvInfoData.full.originalData && that.proEvInfoData.full.originalData.originalEventDescribe) {
+                        that.proEvStr = that.proEvInfoData.full.originalData.originalEventDescribe;
                     }
-                    if(that.proEvInfoData.full.reviseData.reviseProblemType){
-                        setTimeout(function(){
+                    if (that.proEvInfoData.full.originalData.originalProblemType) {
+                        setTimeout(function () {
+                            $("#editEvTypeCombo").psel(that.proEvInfoData.full.originalData.originalProblemType);
+                        }, 0)
+                    }
+                } else if (that.proEvInfoData.full.reviseData) {
+                    //获取是否存在修正信息
+                    if (that.proEvInfoData.full.reviseData.reviseEventDescribe) {
+                        that.proEvStr = that.proEvInfoData.full.reviseData.reviseEventDescribe;
+                        that.proEvObjs = that.proEvInfoData.full.reviseData.reviseAssociationObject
+                        // var reviseObjArr = that.proEvInfoData.full.reviseData.reviseEventDescribe.split(' ');
+                        // reviseObjArr.forEach(function(item){
+                        //     if(item.indexOf('@') == '0'){
+                        //         that.proEvObjs.push(item);
+                        //     }
+                        // });
+                    }
+                    if (that.proEvInfoData.full.reviseData.reviseProblemType) {
+                        setTimeout(function () {
                             $("#editEvTypeCombo").psel(that.proEvInfoData.full.reviseData.reviseProblemType);
-                        },0)
+                        }, 0)
                     }
                 };
 
@@ -145,9 +160,17 @@ v.pushComponent({
 
         // 打开工单详情
         evInfoToWorkOrder: function (id) {
-            // debugger
-            $("#eventInfoFloat").phide();
-            this.openWorkOrderDetail(id, 'workOrderInfo');
+            // 如果页面中有workOrderInfo页面则跳转该页面，否则打开工单详情模态弹窗
+            if(v.init.hasOwnProperty('workOrderInfo')){
+                $("#eventInfoFloat").phide();
+                this.openWorkOrderDetail(id, 'workOrderInfo');
+                return
+            }
+            this.modelSwitch = {
+                id:id,
+                show:true
+            };
+            
         },
         // 转工单
         eventToWorkOrder: function (id) {
@@ -172,14 +195,17 @@ v.pushComponent({
         // 编辑项目信息确认
         editEventInfo: function (type) {
             var that = this;
-            
+
             if (type) {
-                if(that.proEvStr==""){
+                if (that.proEvStr == "") {
+                    that.textareaBlur("blur");
+                    return;
+                }
+                if (that.proEvStr.length > 100) {
                     that.textareaBlur("blur");
                     return;
                 }
 
-            
                 var x = that.proEvObjs.length ? that.proEvObjs.reduce(function (t, a) {
                     t += a.obj_name + ',';
                     return t
@@ -188,7 +214,7 @@ v.pushComponent({
                 var param = {
                     eventId: that.proEvInfoData.full.eventId,
                     person_id: v.instance.userInfo.person_id,
-                    reviseProblemType: $("#editEvTypeCombo").psel().text?$("#editEvTypeCombo").psel().text:'',
+                    reviseProblemType: $("#editEvTypeCombo").psel().text ? $("#editEvTypeCombo").psel().text : '',
                     reviseEventDescribe: that.proEvStr,
                     reviseAssociationObject: that.proEvObjs,
                     reviseAssociationObjectString: x
@@ -219,16 +245,43 @@ v.pushComponent({
                 obj[item.obj_name] = true;
                 return true;
             })
+            
+            // var replaceTemplate = function(sign, str, list){
+
+            //     // 原有符合标准的对象替换
+            //     str = str.replace(new RegExp(sign + "(\\S*?)\\s{1}", 'g'), function (c, name) {
+            //         var index = list.indexOf(name);
+            //         if (index != -1) {
+            //             // 删除已经的被替换的内容
+            //             list.splice(index, 1);
+            //             return c;
+            //         }
+            //         return "";
+            //     }) + "";
+        
+            //     str = str.replace(new RegExp(sign + '(\\S*?)$'), function (c) {
+            //         if (list.length) {
+            //             return list.map(function (str) {
+            //                 return sign + str + ' ';
+            //             }).join('');
+            //         }
+            //         return '';
+            //     })
+        
+            //     return str;
+            // }
 
             // 更新文本信息
             _that.proEvStr = replaceTemplate('@', _that.proEvStr, _that.proEvObjs.map(function (obj) {
                 return obj.obj_name;
             }));
+
         },
 
 
         // 打开集团事件详情侧弹窗
         openGroupEvInfoW: function (model) {
+            console.log(model);
             this.EvInfoType = "group";
             this.groupEvOpeId = model.groupEventId;
             this.groupEvInfoData.easy = JSON.parse(JSON.stringify(model));
@@ -268,18 +321,23 @@ v.pushComponent({
             this.openProEvInfoW(model);
         },
         //问题修正 多行文本框 失去焦点事件
-        textareaBlur:function(type){ 
+        textareaBlur: function (type) {
             var that = this;
-            if(type=="focus"){
+            if (type == "focus") {
                 $("#textareaErrorClass").removeClass("input-error");
-                $("#textareaErrorTip").hide();
-            }else if(type=="blur"){
-                if( that.proEvStr==""){
+                $("#textareaErrorTip").html("").phide();
+            } else if (type == "blur") {
+                if (that.proEvStr == "") {
                     $("#textareaErrorClass").addClass("input-error");
-                    $("#textareaErrorTip").show();
+                    $("#textareaErrorTip").html("不可为空").show();
+                }
+                if (that.proEvStr.length > 100) {
+                    $("#textareaErrorClass").addClass("input-error");
+                    $("#textareaErrorTip").html("不可超过100个字符").show();
                 }
             }
-             
+
+
         }
 
     },

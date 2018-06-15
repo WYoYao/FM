@@ -236,6 +236,12 @@
                     vertical-align: text-bottom;
                 }
 
+                #id_GeneralDict,#id_GeneralSystem{
+                    .per-combobox-con{
+                        width: 120px;
+                    }
+                }
+
                 .major-need{
                     vertical-align: initial;
                 }

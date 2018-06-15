@@ -1491,6 +1491,52 @@ var dataModelMap = {
             }
         ]
     },
+    'restWorkOrderService/queryEquipDetailRelWorkOrder': {
+        "type": "array",
+        "note": "未输入note",
+        "proArr": [{
+            "name": "order_id",
+            "type": "string",
+            "note": "order_id"
+        },
+            {
+                "name": "summary",
+                "type": "string",
+                "note": "summary"
+            },
+            {
+                "name": "order_state",
+                "type": "string",
+                "note": "order_state",
+                "isToSpecial": false
+            },
+            {
+                "name": "order_state_name",
+                "type": "string",
+                "note": "order_state_name"
+            },
+            {
+                "name": "custom_state_name",
+                "type": "string",
+                "note": "custom_state_name"
+            },
+            {
+                "name": "participants",
+                "type": "string",
+                "note": "participants"
+            },
+            {
+                "name": "publish_time",
+                "type": "string",
+                "note": "publish_time"
+            },
+            {
+                "name": "desc_photos",
+                "type": "fileArray",
+                "note": "desc_photos"
+            }
+        ]
+    },
     "restObjectService/queryBuildFloorSpaceTree": {
         note: '查询建筑-楼层-空间列表树',
         type: 'array',

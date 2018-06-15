@@ -10,6 +10,16 @@ v.pushComponent({
     methods: {
         // 选择大Tab
         selEventRate : function(){
+            this.eventTypeSel = 0;
+            $("#eventType").precover("全部");
+            $("#proEvListKey").precover('',false);
+            $("#departmentCombo").precover('处理部门', true);
+            $("#eventType").pslideUp();
+            $("#closeReasonCombo").pslideUp();
+            $("#departmentCombo").pslideUp();
+            $('#closeTimePtime').pslideUp();
+            this.eventDealDepts = JSON.parse(JSON.stringify(this.eventDealDepts));
+            this.eventDeptSel = null;
             this.clearProEvListSort();
             this.addDefaultSort();
             this.eventRate = Number($("#eventListTab").psel());
@@ -32,6 +42,7 @@ v.pushComponent({
         };
         this.$nextTick(function(){
             $("#eventListTab").psel(0);
+            this.getEventDealDepts();
         })
         // here
         // 获取项目Id后存入eventListProjectId

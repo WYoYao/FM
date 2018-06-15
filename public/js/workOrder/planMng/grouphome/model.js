@@ -36,20 +36,20 @@ v.pushComponent({
             this.queryGroupPlanList.valid = param.code;
         },
         // 跳转计划监控
-        handler_to_monitoringPlan: function (item) {
-            this.cache = Object.assign({ name: "项目计划监控" }, item);
+        handler_to_monitoringPlan: function (item, x, valid) {
+            this.cache = Object.assign({ name: "项目计划监控" }, item, { is_delete_plan: valid });
             v.initPage('monitoringPlan');
         },
         /**
          * isquote 是否是引用
          * isedit 是否是编辑状态
          * isterm 是否是项目版
-         * addWoPlan  对象
+         * addWoPlan  对象                         
          * cb 提交完成后返回的回调函数
          */
         handler_to_createplan: function (isquote, isedit, isterm, iscopy, addWoPlan, cb) {
             v.instance.cache = {
-                argu: {
+                argu: { 
                     isquote: isquote || false,
                     isedit: isedit || false,
                     isterm: isterm || false,
@@ -86,6 +86,7 @@ v.pushComponent({
             _that.confirmInvalid;
 
             controller.destroyWoPlanById({
+                person_id: _that.userInfo.person_id,
                 group_plan_id: _that.confirmInvalid
             }).then(function () {
                 $('#globalnotice').pshow({ text: '作废成功', state: 'success' });

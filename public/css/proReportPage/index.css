@@ -1,0 +1,22 @@
+#proReportPage {
+    height: 100%;
+    width: 100%;
+    padding: 12px 10px 0 10px;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.reTabWrap {
+    height: 100%;
+}
+
+.reTabCont {
+    height: 100%;
+    padding: 20px 20px 0;
+    box-sizing: border-box;
+}
+
+.eachTabCont {
+    height: 100%;
+}

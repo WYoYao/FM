@@ -4,7 +4,7 @@
 
 <link rel="stylesheet" href="./css/eventMng/group/eventManage.css">
 
-<div id="eventManage" v-show="onPage=='eventManage'">
+<div id="eventManage" v-show="onPage=='eventManage' || onPage=='workOrderInfo'">
     
     <ptab-navigation bind="true" id="'eventManageTab'" datasource="eventManageTab" text="name" icon="icon" templateid="eventManageTemplate" sel="selEventTab"></ptab-navigation>
     
@@ -18,15 +18,21 @@
 <script type="text/html" id="eventManageTemplate">
 
     <ploading-part id="eventMngPart"></ploading-part>
-
+    <% if (!user.authorObj.projectPreview) { %>
+    <div v-show="EvMngCtrPage.wrap === 0 && EvMngCtrPage.list === 0" style="padding: 10px;text-align: center;">无权限访问</div>
+    <% } %>
+    <% if (!user.authorObj.groupEventManagement) { %>
+    <div v-show="EvMngCtrPage.wrap === 1 && EvMngCtrPage.group === 0" style="padding: 10px;text-align: center;">无权限访问</div>
+    <% } %>
+    
     <!-- 项目预览首页 -->
+    <% if (user.authorObj.projectPreview) { %>
     <div class="proList" v-show="EvMngCtrPage.wrap === 0 && EvMngCtrPage.list === 0">
-
 
         <div class="left">
             <div class="search">
                 <div>
-                    <psearch-delay id="'eventGPKeyWord'" bind="true" change="proEvSearch" placeholder="'租户名称或租户编号'"></psearch-delay>
+                    <psearch-delay id="'eventGPKeyWord'" bind="true" change="proEvSearch" placeholder="'事件描述关键字'"></psearch-delay>
                 </div>
                 <div>
                     <pcombobox-normal id="'eventTypeCombo'" sel="selProEventType" bind="true">
@@ -35,6 +41,7 @@
                     </pcombobox-normal>
                 </div>
             </div>
+            
             <div class="content">
 
                 <div class="pro">
@@ -108,9 +115,10 @@
         </div>
 
     </div>
-
+    <% } %>
 
     <!-- 项目事件列表 -->
+    
     <div class="proEvList" v-show="EvMngCtrPage.wrap === 0 && EvMngCtrPage.list === 1">
         <div class="nav">
             <span @click="EvMngCtrPage.list = 0">
@@ -125,14 +133,15 @@
             <% include ./eventListTem.html %>
         </div>
     </div>
-
+    
 
     <!-- 集团事件列表 -->
+    <% if (user.authorObj.groupEventManagement) { %>
     <div id="groupEvList" v-show="EvMngCtrPage.wrap === 1 && EvMngCtrPage.group === 0">
 
         <div class="head">
             未指派事件
-            <a v-text="groupListData.num.noAssignCount || 0"></a>
+            <a v-text="groupListData.num.noAssignCount || 0" class="coRed"></a>
             条，已指派
             <a v-text="groupListData.num.assignedCount || 0"></a>
             条，已关闭
@@ -141,11 +150,11 @@
         </div>
     
         <div class="neck">
-    
+            <% if (user.authorObj.addGroupEvent) { %>
             <div class="left">
                 <pbutton-white text="'新建事件'" bind="true" id="'createEvBtn'" @click="createNewEvent"></pbutton-white>
             </div>
-    
+            <% } %>
             <div class="right">
                 <psearch-delay id="'groupEvSerKey'" bind="true" change="groupEvListSeaKey" placeholder="'搜索关键字'"></psearch-delay>
             </div>
@@ -171,7 +180,7 @@
                 <span class="sort" unselectable="on" @click="groupEvListSort(event,'endTime')"><em mgsim="t" class="">t</em><em mgsim="" class=" b">b</em></span>
             </span>
             <span class="s4">是否已指派</span>
-            <span class="s5"></span>
+            <span class="s5">操作</span>
         </div>
     
         <div class="grid">
@@ -186,7 +195,7 @@
         </div>
 
     </div>
-
+    <% } %>
 
     <!-- 新建事件 -->
     <div class="createEv" v-show="EvMngCtrPage.wrap === 1 && EvMngCtrPage.group === 1">
@@ -206,13 +215,15 @@
 
             <div class="text">
                 <ptext-textarea placeholder="请填写事件描述" id="createGroupEventText">
-                    <!--<verify errtip="不可超过100字" length="100" friendlyip="" verifytype="space"></verify>-->
                     <verify errtip="不可超过100字" length="100" friendlyip="" verifytype="length"></verify>
                     <verify errtip="不可为空"  verifytype="space"></verify>
                 </ptext-textarea>
             </div>
             <div class="img">
-                <pupload-img number="4" arrange="horizontal" id="createGroupEventImg"></pupload-img>
+                <pupload-img number="4" arrange="horizontal" id="createGroupEventImg">
+                    <panel success="successNum" clear="clearNum"></panel>
+                </pupload-img>
+                <div class="imgReduceNum">(0/4)</div>
             </div>
 
             <div class="title">要求开始时间</div>
@@ -227,7 +238,7 @@
             <div class="time" v-show="createEv.start === 1">
                 <div>要求开始时间</div>
                 <div>
-                    <ptime-form id="groupEventStartTime" >
+                    <ptime-form id="groupEventStartTime">
                         <panel timetype="yMdhm" startyear="2003" endyear="2018"></panel>
                     </ptime-form>
                 </div>
@@ -286,19 +297,25 @@
         <span class="s4" v-text="model.groupEventState == 1 ? '已指派' + model.assignCount + '项目' : allEvSta[model.groupEventState]"
         :title="model.groupEventState == 1 ? '已指派' + model.assignCount + '项目' : allEvSta[model.groupEventState]"></span>
         <span class="s5 opearte">
+            <% if (user.authorObj.deleteGroupEvent) { %>
             <span v-show="model.groupEventState == 0" @click.stop="deleteGroupEv(model)">
                 <i class="icon">p</i>
                 <span>删除</span>
             </span>
+            <% } %>
+            <% if (user.authorObj.closeGroupEvent) { %>
             <span v-show="model.groupEventState != '0' && model.groupEventState != '2'"
             @click.stop="closeGroupEv(model)">
                 <img src="../images/scrap_blue_btn.png" alt="">
                 <span>关闭</span>
             </span>
+            <% } %>
+            <% if (user.authorObj.assignGroupEvent) { %>
             <span v-show="model.groupEventState != '2'" @click.stop="openAssignW(model)">
                 <i class="icon">U</i>
                 <span>指派</span>
             </span>
+            <% } %>
             <!-- <span v-show="model.groupEventState === '2'">
                 <img src="../images/personList.png" alt="">
                 <span>详情</span>
@@ -310,7 +327,7 @@
 
 
 <!-- 集团事件指派弹窗Start -->
-<pwindow-modal id="groupEvAssignW" title="选择项目" templateid="groupEvAssignWTemplate"></pwindow-modal>
+<pwindow-modal id="groupEvAssignW" title="选择项目" templateid="groupEvAssignWTemplate" ></pwindow-modal>
 <script type="text/html" id="groupEvAssignWTemplate">
     
     <ploading-part id="groupEvAssignProLoading"></ploading-part>
@@ -320,10 +337,11 @@
             <psearch-delay id="'groupEvProKey'" bind="true" change="searchThisEvPro" placeholder="'搜索关键字'"></psearch-delay>
         </div>
         <div class="tree">
-            <ptree-normal id="'evProListTree'" bind="true" datasource="groupEvProjectList" sel="clickItem" number="2"> 
+            <mulptree :data="groupEvProjectList_" :mode="'together'"></mulptree>
+            <!-- <ptree-normal id="'evProListTree'" bind="true" datasource="groupEvProjectList" sel="clickItem" number="2"> 
                 <item itemid="partition_project_id" text="partition_project_name" child="contents" issearch="false"></item> 
                 <panel width="400" height="450"></panel> 
-            </ptree-normal>
+            </ptree-normal> -->
         </div>
         <div class="sure">
             <div><pbutton-white text="'取消'" bind="true" @click="groupEvAssignFin(false)"></pbutton-white></div>
@@ -335,13 +353,14 @@
             <psearch-delay id="'groupEvDeptKey'" bind="true" change="getGroupEvListOrign" placeholder="'搜索关键字'"></psearch-delay>
         </div>
         <div class="tree">
-            <ptree-normal id="'evOrgainTree'" bind="true" datasource="groupEvOrgainTree" sel="" number="2"> 
+            <mulptree :data="groupEvOrgainTree_" :mode="'alone'"></mulptree>
+            <!-- <ptree-normal id="'evOrgainTree'" bind="true" datasource="groupEvOrgainTree" sel="" number="2"> 
                 <item itemid="obj_id" text="obj_name" child="child_objs" issearch="false"></item> 
                 <panel width="400" height="500"></panel> 
-            </ptree-normal>
+            </ptree-normal> -->
         </div>
         <div class="sure">
-            <div><pbutton-white text="'取消'" bind="true" @click="groupEvAssignTwoFin(false)"></pbutton-white></div>
+            <div><pbutton-white text="'上一步'" bind="true" @click="groupEvAssignTwoFin(false)"></pbutton-white></div>
             <div><pbutton-blue  text="'确定'" bind="true" @click="groupEvAssignTwoFin(true)"></pbutton-blue></div>
         </div>
     </div>
@@ -396,3 +415,72 @@
     </div>
 </script>
 <!-- 项目列表模板End -->
+
+
+<!-- 多选树 -->
+<script type="text/html" id="plan">
+    <ul class="combobox_le_lists">
+        <li v-for="city in data" class="combobox_le_list">
+            <div class="combobox_le_item" :class="{combobox_le_gray:city.gray}" @click.stop="combobox_le_item_click(city)"
+                :style="'padding-left:'+15*city.deep+'px'"><span class="mulpFlag" :class="{turnDown: city.childStatus}" v-if="city.hasBranch">b</span>{{city.name}}</div>
+                <span class="combobox_le_combox_input" :class="{combobox_le_combox_input_checked:city.selected,combobox_le_gray:city.gray}" @click="checkbox_change_le(city)"></span>
+            <mulptree v-if="(city.obj.length > 0)" :data="city.obj" v-show="city.childStatus" :mode="mode"></mulptree>
+        </li>
+    </ul>
+</script>
+
+<script>
+    Vue.component('mulptree', {
+        template: '#plan',
+        props: [
+            "data",
+            "mode"
+        ],
+        data: function () {
+            return {
+                count: 0,
+            }
+        },
+        methods: {
+            combobox_le_item_click: function (city) {
+                if(city.hasBranch){
+                    city.childStatus = !city.childStatus;
+                    if(!city.childStatus){
+                        (function recursion(arr){
+                            arr.map(function(item,index){
+                                item.childStatus = false;
+                                item.hasBranch ? recursion(item.obj) : null;
+                            })
+                        })(city.obj);
+                    }
+                }
+            },
+            checkbox_change_le: function (city){
+                if(city.gray){
+                    return false;
+                } 
+                city.selected = !city.selected;
+                if(city.hasBranch && this.mode == "together"){
+                    if(city.selected){
+                        (function recursion(arr){
+                            arr.map(function(item,index){
+                                item.gray = true;
+                                item.selected = true;
+                                item.hasBranch ? recursion(item.obj) : null;
+                            })
+                        })(city.obj);
+                    }else{
+                        (function recursion(arr){
+                            arr.map(function(item,index){
+                                item.gray = false;
+                                item.selected = false;
+                                item.hasBranch ? recursion(item.obj) : null;
+                            })
+                        })(city.obj);
+                    }
+                }
+            }
+        },
+    })
+</script>
+<!-- 多选树 -->

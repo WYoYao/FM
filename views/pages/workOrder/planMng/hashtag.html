@@ -14,7 +14,7 @@
                     <div class="aite-list" v-for="(model,index) in SopList" @click="model.selected=!model.selected" :index="'index'" :title="'model.sop_name'">
                         <div>
                          
-                            <span>
+                            <span class="sr">
                                 <em v-for="charObj in model.sop_name_arr" v-text="charObj.char" :class="charObj.mark ? 'redMark' : ''"></em>
                             </span>
 

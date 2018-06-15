@@ -56,25 +56,25 @@ var cardPrintController = {
     downEqCard: function (idArr, successCall, errCall) {
         pajax.downloadByParam({
             data: {
-                equip_ids: idArr
+                obj_ids: idArr
             },
-            url: 'restCardService/downloadEquipCard',
+            url: 'restCardService/downloadQRCardPicZip',
             successCall: successCall,
             errCall: errCall
         });
     },
-    /*下载空间名片
+    /*下载空间名片  作废  下载设备名片与空间名片用一样的接口
     */
-    downSpCard: function (idArr, successCall, errCall) {
-        pajax.downloadByParam({
-            data: {
-                space_ids: idArr
-            },
-            url: 'restCardService/downloadSpaceCard',
-            successCall: successCall,
-            errCall: errCall
-        });
-    },
+    // downSpCard: function (idArr, successCall, errCall) {
+    //     pajax.downloadByParam({
+    //         data: {
+    //             space_ids: idArr
+    //         },
+    //         url: 'restCardService/downloadSpaceCard',
+    //         successCall: successCall,
+    //         errCall: errCall
+    //     });
+    // },
     /*获取设备名片设置的可选项
     */
     getEqCardInfoArr: function (successCall, errCall, completeCall) {

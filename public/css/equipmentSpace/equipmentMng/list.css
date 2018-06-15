@@ -250,7 +250,7 @@
             white-space: pre-wrap;
         }
         .equipmentlist .queryblock .list.heightRegular{
-            height: 36px;
+           min-height: 36px;
         }
         .equipmentlist .queryblock .list.heightAuto{
             height: auto;

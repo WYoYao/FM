@@ -27,7 +27,7 @@ function createEventModuleController(){
                         complete: complete,
                         
                     };  
-                    link.severName ? data.configServiceName = link.severName : console.log("使用默认服务器");
+                    link.severName ? data.configServiceName = link.severName : void 0;
                     if(argu.attachments && (argu.attachments.length > 0)){
                         pajax.updateWithFile(data);
                     }else{
@@ -57,7 +57,7 @@ function createEventModuleController(){
                         },
                         configServiceName:link.severName,
                     };
-                    link.severName ? data.configServiceName = link.severName : console.log("使用默认服务器");
+                    link.severName ? data.configServiceName = link.severName : void 0;
                     pajax.post(data);
                 })
             }
@@ -122,6 +122,11 @@ function createEventModuleController(){
                 name:"PL",
                 url:"countProjectEventsService",
                 severName:"jsonStringServerUrl",
+            },
+            {
+                name:"DT",
+                url: "saas/restDeptService/queryDeptTree ",
+                severName: "baseServiceUrl",
             },
             //查询问题类型
             {
@@ -517,6 +522,15 @@ function createEventModuleController(){
                         "reason": "***"          		//类型：String  可有字段  备注：失败原因，result为failure时reason不为null
                     }
                 },
+            },
+            // 获取服务器时间
+            {
+                name: "GT",
+                url: "restCommonService/queryCommonInfo",
+                faker: false,
+                data: function(){
+                    return {}
+                }
             }
         ],
         // argu:{
@@ -529,7 +543,7 @@ function createEventModuleController(){
         // }
     }
 
-    window.EMA ? console.error("事件模块AJAX集合EMA被占用，请修改createEventModuleController方法") : window.EMA = createAjax(EML);
-    window.EMP ? console.error("事件模块Promise集合EMP被占用，请修改createEventModuleController方法") : window.EMP = cteatePromise(EML);
+    window.EMA ? console.log("事件模块AJAX集合EMA被占用，请修改createEventModuleController方法") : window.EMA = createAjax(EML);
+    window.EMP ? console.log("事件模块Promise集合EMP被占用，请修改createEventModuleController方法") : window.EMP = cteatePromise(EML);
 }
 

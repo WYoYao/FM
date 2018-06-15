@@ -18,16 +18,17 @@
     <script src="../js/workOrder/workOrderMng/event.js"></script>
     <script src="../js/public/orderDetail_pub.js"></script>
     <script src="../js/public/publicMethod.js"></script>
-    <div id="workOrderManage-Monitor" >
-        <%include WorkOrderMonitoring.html%>
-        <pwindow-modal id="evaluateModal" templateid="evaluate" title="评价"></pwindow-modal>
-        <pwindow-modal id="stopOrder" templateid="pause" title="中止工单"></pwindow-modal>
+    <div class="workOrderManageWrap">
+        <div id="workOrderManage-Monitor" >
+            <%include WorkOrderMonitoring.html%>
+            <pwindow-modal id="evaluateModal" templateid="evaluate" title="评价"></pwindow-modal>
+            <pwindow-modal id="stopOrder" templateid="pause" title="中止工单"></pwindow-modal>
+        </div>
+        <!--TODO: 查看工单详情-->
+        <div id="app" style="display: none;background:#fff;" >
+                <%include WorkOrderDetail.html%>
+        </div>
     </div>
-    <!--TODO: 查看工单详情-->
-    <div id="app" style="display: none;" >
-            <%include WorkOrderDetail.html%>
-    </div>
-
     <pnotice-message id="monitor-list-notice"></pnotice-message>
 
 <script type="text/html" id="screeningModalTemp">
@@ -111,8 +112,8 @@
     </div>
     <!--<div id="stopPromptMessage">请填写中止原因</div>-->
     <div class="stopWorkOrder_con_btn">
-        <pbutton-blue bind="true" id="'stop_order_btn_yes'" text="'确定'" click="workOrderMngMethod.stopOrderSetYes" pdisabled="false"></pbutton-blue>
-         <pbutton-white id="stop_order_no" text="取消" click="workOrderMngMethod.stopOrderSetHide"></pbutton-white>
+        <pbutton-blue bind="true" id="'stop_order_btn_yes'" text="'确定'" click="workOrderMngMethod.stopOrderSetYes"></pbutton-blue>
+        <pbutton-white id="stop_order_no" text="取消" click="workOrderMngMethod.stopOrderSetHide"></pbutton-white>
     </div>
 </script>
 <% include ../../../template/pageFoot.html %>

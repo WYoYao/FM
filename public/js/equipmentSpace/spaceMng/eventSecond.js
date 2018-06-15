@@ -673,6 +673,8 @@ $(function(){
         $("#fileNum").html("已选0");
         $("#uploadEquipment1").pshow();
     });
+    createPlanModuleController();
+
 });
 
 var  codeFunSel=function (arr,code){

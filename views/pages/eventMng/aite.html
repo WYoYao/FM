@@ -475,6 +475,31 @@
                 //     }
                 // })
             },
+            queryDeep: function (list, index) {
+                return (function (list, index) {
+
+                    if (index != 0) {
+                        var result = (_.find(list, { selected: true }) || {}).content || [];
+                        return arguments.callee(result, --index);
+                    } else {
+                        return list.map(function (item) {
+                            // 如果本来有种类直接返回
+                            if (_.has(item, "obj_type")) return item;
+
+                            item.obj_type = {
+                                "Bd": "build",
+                                "Fl": "floor",
+                                "Sp": "space",
+                                "Sy": "system",
+                                "Eq": "equip",
+                            }[item.obj_id.slice(0, 2)];
+
+                            return item;
+                        });
+                    }
+
+                })(list, --index || 0);
+            },
             querySelectedDeep: function (list, index) {
 
                 return (function (list, index) {
@@ -550,7 +575,7 @@
                     })
                 } else if (_that.onBlock == "Floor" || _that.onBlock == "System" || _that.onBlock == "universalSystem") {
                     // 通用系统类和通用空间类型需要深度查找
-                    _that.callback(_that.getValueDeep(_that[_that.onBlock]));
+                    _that.callback(_that.getValueDeep(_that[_that.onBlock]), _that.queryDeep(_that[_that.onBlock], 2));
                 } else {
                     var type = _that.onBlock;
                     if (type == 'Room') type = 'Space';
@@ -564,7 +589,7 @@
                     //     _that.callback(_that.getValue(_that.querySelectedContent(_that.universalSystem)));
                     // }
 
-                    _that.callback(_that.getValue(_that[type]));
+                    _that.callback(_that.getValue(_that[type]), _that[type]);
                 }
             },
             // 搜索按钮点击返回有没有选中值的之后直接把 输入的文字当成自定义对象保存
@@ -753,7 +778,7 @@
                 _that.queryClass("EquipList", argu);
             },
             // 对调内容
-            callback: function (arr) {
+            callback: function (arr, list) {
                 var _that = this;
                 if (_that.onBlock == "Search") {
                     var arr_desc_objs = _.map(_that.desc_objs, 'obj_id');
@@ -767,18 +792,19 @@
 
                 } else {
 
-                    if (_.isArray(arr) && arr.length) {
-                        var obj_types = _.map(arr, 'obj_type');
+                    // var obj_types = _.map(arr, 'obj_type');
+                    var desc_objs_types = _.map(list, "obj_id")
 
-                        // 通过修改相同引用地址的方式修改父级中被取消的对象
-                        _that.desc_objs.filter(function (item, index) {
-                            // 相同的类型且在里面被取消的内容
-                            return (obj_types.indexOf(item.obj_type) != -1) && _.filter(arr, { obj_id: item.obj_id }.length)
-                        }).forEach(function (item) {
-                            // 从原来的方法中剔除已经被取消的内容
-                            _that.desc_objs.splice(_that.desc_objs.indexOf(item), 1);
-                        });
-                    }
+                    //已经选中的对象 在当前页面展示出来的内容 
+                    _.filter(_that.desc_objs, function (item) {
+                        return desc_objs_types.indexOf(item.obj_id) != -1;
+                    }).filter(function (item, index) {// 通过修改相同引用地址的方式修改父级中被取消的对象
+                        // 当前列表中已经被取消的对象
+                        return _.filter(arr, { obj_id: item.obj_id, seleced: false }.length)
+                    }).forEach(function (item) {
+                        // 从原来的方法中剔除已经被取消的内容
+                        _that.desc_objs.splice(_that.desc_objs.indexOf(item), 1);
+                    });
                 }
 
                 //  如果传入回调调用回调
@@ -831,10 +857,21 @@
                 _that.timer = setTimeout(function () {
 
                     if (_that.isterm) {
-                        // 查询事件
-                        _that.queryClass('searchObject', {
-                            keyword: _that.searchStr,
-                        });
+
+                        Promise.all([
+                            controller.searchObject({
+                                keyword: _that.searchStr,
+                            }), controller.searchObjectClass({
+                                keyword: _that.searchStr,
+                            })
+                        ]).then(function (res) {
+
+                            _that.searchObject = res.reduce(function (con, item) {
+
+                                return con.concat(item);
+                            }, []);
+                        })
+
                     } else {
                         // 查询事件
                         _that.queryClass('searchObjectClass', {
@@ -885,10 +922,15 @@
 
             // 专业点击事件
             window.DictSel = function (item) {
-                // 查询 专业对应的系统
-                _that.queryClass("GeneralSystem", { system_domain: item.code });
 
-                $("#id_GeneralSystem").pdisable(false)
+                if (!item.code) {
+                    $("#id_GeneralSystem").psel(0, false)
+                    $("#id_GeneralSystem").pdisable(true)
+                } else {
+                    // 查询 专业对应的系统
+                    _that.queryClass("GeneralSystem", { system_domain: item.code });
+                    $("#id_GeneralSystem").pdisable(false)
+                }
 
                 // 查询设备
                 _that.queryQuip()

@@ -11,7 +11,7 @@
         <textarea placeholder="例如：@消防水泵" class="textarea" v-model="matter.desc_forepart" maxlength="1000"></textarea>
         <div class="bottom">
             <div class="btn pointer" @click.stop="!desc_str?matter.desc_forepart+='@':''">@添加对象</div>
-            <div class="btn r">
+            <div class="btn r posi" style="margin-left:10px;position:relative;color:initial;">
                  <aite :str="desc_str" :isterm="isterm" :desc_objs="matter.desc_objs" :cb="getObj" ref="aite" v-if="desc_str"></aite>
             </div>
             <div class="percent">{{matter.desc_forepart?matter.desc_forepart.length:0}}/1000</div>
@@ -262,9 +262,14 @@
             getSOPObj: function (arr) {
                 var _that = this;
                 _that.matter.desc_sops = _that.matter.desc_sops.concat(arr);
-                _that.matter.desc_aftpart = _that.matter.desc_sops.map(function (item) {
-                    return (item.hasOwnProperty('sop_name') ? "#" : "@") + (item.sop_name || item.obj_name) + " ";
-                }).join("");
+
+                _that.matter.desc_aftpart = replaceTemplate('#', _that.matter.desc_aftpart, _that.matter.desc_sops.map(function (item) {
+                    return item.sop_name;
+                }))
+
+                // _that.matter.desc_aftpart = _that.matter.desc_sops.map(function (item) {
+                //     return (item.hasOwnProperty('sop_name') ? "#" : "@") + (item.sop_name || item.obj_name) + " ";
+                // }).join("");
 
                 _that.desc_sop_str = "";
                 _that.desc_sop_c_str = "";
@@ -364,19 +369,6 @@
                 _that.matter.desc_sops = res.list;
                 _that.desc_sop_c_str = res.str;
             },
-            // // required_control
-            // "GeneralDictByKey": {
-            //     handler: function (newValue) {
-            //         var _that = this;
-            //         var arr = _.map(_.filter(_that.GeneralDictByKey, {
-            //             code: "matter_end_scan",
-            //             selected: true
-            //         }), "code");
-
-            //         _that.matter.required_control = arr;
-            //     },
-            //     deep: true
-            // },
             "generaldictbykey": function (newValue) {
 
                 var _that = this;

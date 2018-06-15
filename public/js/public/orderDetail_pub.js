@@ -1,4 +1,20 @@
 var orderDetail_pub = {
+goWorkOrderDetail:function(_that,order_id,falg){   
+    //_that.showWorkOrder = "wordorder"; 
+    if(falg){
+        $("#workOrderDetailDivSpace").show();
+    }else{
+        $("#workOrderDetailDiv").show();
+    }
+    // createPlanModuleController();
+    v.instance.openWorkOrderDetail(order_id,"workOrderDetail");
+},
+goWorkOrderDetailHide:function(_that,order_id){   
+    //_that.showWorkOrder = "wordorder";           
+    $("#workOrderDetailDiv").hide();
+    $("#workOrderDetailDivSpace").hide();
+   
+},
     getOrderDetail: function (pub_model, order_id, flag, fn) {
         if (flag == '4') {
             orderDetail_data.goBackFlag = flag;

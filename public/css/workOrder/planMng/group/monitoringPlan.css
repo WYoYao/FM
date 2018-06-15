@@ -302,10 +302,17 @@ body {
                   border-bottom: 1px solid #d9e2e8; }
                   #app .monitoring_plan .main .content .contenter .t_bodyer .line .row .item > div div, #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .row .item > div div {
                     width: 100%;
-                    height: 100%; }
+                    height: 100%;
+                    position: relative; }
                     #app .monitoring_plan .main .content .contenter .t_bodyer .line .row .item > div div:hover, #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .row .item > div div:hover {
                       cursor: pointer; }
                     #app .monitoring_plan .main .content .contenter .t_bodyer .line .row .item > div div div, #app .monitoring_plan .main .content .contenter .t_bodyer1 .line .row .item > div div div {
-                      background: #d9e2e8; }
+                      width: 16px;
+                      height: 16px;
+                      position: absolute;
+                      top: calc(50% - 9px);
+                      left: calc(50% - 9px);
+                      border: 1px solid #d9e2e8;
+                      background: #f8f8f8; }
 
 /*# sourceMappingURL=monitoringPlan.css.map */

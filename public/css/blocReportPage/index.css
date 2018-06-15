@@ -1,0 +1,41 @@
+#blocReportPage {
+    height: 100%;
+    width: 100%;
+    padding: 12px 10px 0 10px;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.reTabWrap {
+    height: 100%;
+}
+
+.reTabCont {
+    height: 100%;
+    padding: 20px 20px 0;
+    box-sizing: border-box;
+}
+
+.eachTabCont {
+    height: 100%;
+}
+
+    .reTabWrap .selectWrap {
+        height: 50px;
+        background: #eaeef0;
+        padding: 10px 0 0 20px;
+        box-sizing: border-box;
+    }
+
+.selectWrap .timeType {
+    width: 160px;
+    margin-right: 12px;
+    float: left;
+}
+
+.selectWrap .calendarBox {
+    width: 240px;
+    float: left;
+    margin-right: 12px;
+}

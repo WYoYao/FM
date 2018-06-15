@@ -69,7 +69,8 @@ var workOrderMngModel = { //工单管理模块数据模型
     //wyy end
 
     evaluateMessage:[],//展示执行人信息
-    executor_comments:[]//提交执行人的评价信息
+    executor_comments:[],//提交执行人的评价信息
+    stopWorkOrderIsClick:true//
 
 
 }
@@ -258,26 +259,22 @@ var workOrderMngMethod = { //工单管理模块方法
             "next_route": nextRoute
         };
         controller.assignOrderSet(_data);
-  
-
 
         $("#createAssignSet").hide();
     },
     /*中止工单*/
     stopOrderSetYes:function(obj,event){
-        console.log(event);
-        // $(event.target).pdisable(true);//禁用确定按钮
-        /*$(event.target).attr("isClick","true");
-        if($(event.target).attr("isClick")==="true"){
-            event.preventDefault();
-        }*/
-        var content = workOrderMngModel.stop_order_content;
-        var _data = {
-            order_id: workOrderMngModel.order_id,
-            person_id:workOrderMngModel.userInfo.person_id,
-            content: content
-        };
-        controller.stopOrderSet(_data);
+        var flag=workOrderMngModel.stopWorkOrderIsClick;
+        if(flag){
+            workOrderMngModel.stopWorkOrderIsClick=false;
+            var content = workOrderMngModel.stop_order_content;
+            var _data = {
+                order_id: workOrderMngModel.order_id,
+                person_id:workOrderMngModel.userInfo.person_id,
+                content: content
+            };
+            controller.stopOrderSet(_data);
+        }
     },
     /*停止工单显示*/
     stopOrder_con_show:function(){

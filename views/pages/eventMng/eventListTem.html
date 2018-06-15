@@ -21,20 +21,20 @@
 
         <div class="left" v-show="proEvListPower.isCanSelState">
             <pcombobox-normal id="'eventRateCombo'" sel="selEventState" bind="true">
-                <header placeholder="'待处理'"></header>
+                <header placeholder="'待处理'" click="hideTimeCalendar"></header>
                 <item datasource="allEventRate" text="name" id="code"></item>
             </pcombobox-normal>
         </div>
 
         <div class="left2">
             <pcombobox-normal id="'eventType'" sel="selEventType" bind="true">
-                <header placeholder="'全部'"></header>
+                <header placeholder="'全部'" click="hideTimeCalendar"></header>
                 <item datasource="allEventType" text="name" id="code"></item>
             </pcombobox-normal>
         </div>
 
         <div class="right">
-            <psearch-delay id="'proEvListKey'" bind="true" change="searchThisEvent" placeholder="'搜索关键字'"></psearch-delay>
+            <psearch-delay id="'proEvListKey'" bind="true" change="searchThisEvent" placeholder="'搜索关键字'" focus="hideTimeCalendar"></psearch-delay>
         </div>
 
         <div class="right2 right3" v-show="eventRate === 2">
@@ -49,8 +49,15 @@
 
         <div class="right2" v-show="eventRate === 2">
             <pcombobox-normal id="'closeReasonCombo'" sel="selCloseReason" bind="true">
-                <header placeholder="'关闭原因'"></header>
+                <header placeholder="'全部'" click="hideTimeCalendar"></header>
                 <item datasource="eventCloseReason" text="name" id="code"></item>
+            </pcombobox-normal>
+        </div>
+
+        <div class="right2" v-show="showDepartmentCombo">
+            <pcombobox-normal id="'departmentCombo'" sel="selDepartment" bind="true" istree="true">
+                <header placeholder="'处理部门'" click="hideTimeCalendar"></header>
+                <item datasource="eventDealDepts" text="obj_name" id="obj_id" child="child_objs" orientation="right" pronametoissel="issel"></item>
             </pcombobox-normal>
         </div>
 

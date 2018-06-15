@@ -108,7 +108,6 @@ Vue.component('matter', {
         },
         "matter.matter_name": function (newValue, old) {
             // 有任何输入就把错误提示取消
-            debugger
             this.valite.matter_name_isnull = false;
         },
         // 对象输入监听

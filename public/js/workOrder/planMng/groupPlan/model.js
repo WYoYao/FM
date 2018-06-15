@@ -11,7 +11,12 @@ v.pushComponent({
             var that = this;
             $("#groupPlanPartLoad").pshow();
             PMA.GPL({ order_type: $("#groupPlanTypeCombo").psel().id, is_use_group_plan: $("#isPlanSite").psel().id }, function (data) {
-                that.groupPlanList = JSON.parse(JSON.stringify(data || []));
+                data = JSON.parse(JSON.stringify(data || []));
+                that.groupPlanList = [];
+                data.reduce(function(t,a){
+                    if(a.plan_freq_type != 3){t.push(a);}
+                    return t;
+                },that.groupPlanList);
             }, function () {
                 that.groupPlanList = [];
             }, function () {

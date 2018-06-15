@@ -26,6 +26,7 @@ var controller = {
             url: 'workorder/restWoMonitorService/stopWorkOrderById',
             data: dataObj,
             success: function (result) {
+                workOrderMngModel.stopWorkOrderIsClick=true;
                 $("#stopOrder").phide();
                 $("#monitor-list-notice").pshow({ text: '中止成功', state: "success" });
             },
@@ -117,7 +118,6 @@ var controller = {
 
     },
 
-    //所有工单
 
     //查询获取评价执行人Id
     queryEvaluateId: function (dataObj) {

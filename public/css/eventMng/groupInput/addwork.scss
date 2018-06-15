@@ -36,6 +36,22 @@
         font-size: 14px;
         @content;
         border: none;
+        & > .block{
+            display: inline-block;
+            height: 30px;
+            line-height: 30px;
+            position: relative;
+            margin: 0 20px 15px 0;
+            vertical-align: top;
+            -ms-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            border-radius: 15px;
+            padding: 0 15px;
+            background-color: #f3f3f3;
+            
+        }
     }
 
     & > .bottom{
@@ -51,6 +67,13 @@
             float: right;
             line-height: 30px;
             @include percent;
+        }
+
+        & >.r{
+            color: initial;
+            position: relative;
+            margin-top: 6px;
+            margin-left: 6px;
         }
     }
 }

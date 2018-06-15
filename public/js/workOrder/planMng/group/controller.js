@@ -1,4 +1,16 @@
 controller.push([
+    {
+        // 验证集团计划中的名称重复
+        name: "verifyGroupPlanName",
+        url: "workorder/restGroupPlanService/verifyGroupPlanName",
+        configServiceName: "baseServiceUrl",
+    },
+    {
+        // 验证集团计划中的名称重复
+        name: "verifyWoPlanName",
+        url: "workorder/restWoPlanService/verifyWoPlanName",
+        configServiceName: "baseServiceUrl",
+    },
     {//查询工单类型
         name: "queryWoTypeList",
         url: "restGeneralDictService/queryWoTypeList",

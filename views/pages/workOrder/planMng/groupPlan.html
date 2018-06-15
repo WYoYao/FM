@@ -10,7 +10,7 @@
         <div class="path">
             <sitemap :maps='paths.path' :createsitemap='gobackSelPath' :back='gobackLastPath' />
         </div>
-        
+
         <div class="cite">
             <pcombobox-normal id="'isPlanSite'" sel="getGroupPlanList" bind="true">
                 <header prefix="使用状态：" placeholder="'全部'"></header>
@@ -26,7 +26,9 @@
         </div>
 
         <div class="text MT">
-            集团计划总数:<i v-text="groupPlanUse.total"></i>&nbsp;&nbsp;&nbsp;未引用计划数&nbsp;&nbsp;&nbsp;<i v-text="groupPlanUse.unUse"></i>&nbsp;&nbsp;&nbsp;
+            集团计划总数:
+            <i v-text="groupPlanUse.total"></i>&nbsp;&nbsp;&nbsp;未引用计划数&nbsp;&nbsp;&nbsp;
+            <i v-text="groupPlanUse.unUse"></i>&nbsp;&nbsp;&nbsp;
         </div>
 
     </div>
@@ -57,14 +59,19 @@
     <li v-for="(item,index) in groupPlanList">
         <div class="name MT" v-text="item.group_plan_name" :title="item.group_plan_name"></div>
         <div class="type MT" v-text="item.order_type_name" :title="item.order_type_name"></div>
-        <div class="freq" v-text="item.plan_freq_type == '3' ? '每' + item.freq_time_span.num + transfYMWD(item.freq_time_span.unit) + '1次' :
-        '每' + transfYMWD(item.freq_cycle) + item.freq_num + '次'" :title="item.plan_freq_type == '3' ? '每' + item.freq_time_span.num + transfYMWD(item.freq_time_span.unit) + '1次' :
-        '每' + transfYMWD(item.freq_cycle) + item.freq_num + '次'"></div>
+        <div class="freq" v-text="'每' + transfYMWD(item.freq_cycle) + item.freq_num + '次'" :title="'每' + transfYMWD(item.freq_cycle) + item.freq_num + '次'"></div>
         <div class="urgency" v-text="item.urgency" :title="item.urgency"></div>
         <div class="cite" v-text="item.use_status == 1 ? '已引用' : '未引用'" :title="item.use_status == 1 ? '已引用' : '未引用'"></div>
         <div class="operate">
+
+            <% if(user.authorObj.quoteGroupPlan){ %>
             <div><pbutton-blue bind="true" text="'引用计划'" @click.stop="getThisPlan(item,'site')" isborder="false" disabled="item.use_status == 1"></pbutton-blue></div>
+            <% } %>
+
+            <% if(user.authorObj.copyGroupPlan){ %>
             <div><pbutton-blue bind="true" text="'复制计划'" @click.stop="getThisPlan(item,'copy')" isborder="false"></pbutton-blue></div>
+            <% } %>
+            
         </div>
     </li>
 </script>

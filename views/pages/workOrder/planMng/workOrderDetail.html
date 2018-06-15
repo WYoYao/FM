@@ -7,12 +7,11 @@
 
 
 <div id="workOrderDetail">
-    <div class="hold"></div>
-    <div class="box">
+    <div class="box" v-if="pscrollShwo">
         <ploading-part id="workOrderDetailLoad"></ploading-part>
         <pscroll-small templateid="workOrderDetailTemplate"></pscroll-small>
     </div>
-    <div class="hold2 hold"></div>
+    <div class="line"></div>
 </div>
 
 
@@ -28,11 +27,11 @@
 
             <div class="normal">
                 <div class="key1">工单类型</div>
-                <div class="value1 MT" v-text="workOrderDetailData.order_type_name"></div>
+                <div class="value1 MT" v-text="workOrderDetailData.order_type_name ? workOrderDetailData.order_type_name : workOrderNoData"></div>
                 <div class="key1 key2">工单紧急程度</div>
-                <div class="value2 MT" v-text="workOrderDetailData.urgency"></div>
+                <div class="value2 MT" v-text="workOrderDetailData.urgency ? workOrderDetailData.urgency : workOrderNoData"></div>
                 <div class="key1 key2">建议执行人数</div>
-                <div class="value2 MT" v-text="workOrderDetailData.execute_count || 0"></div>
+                <div class="value2 MT" v-text="workOrderDetailData.execute_count ? (workOrderDetailData.execute_count + '人') : workOrderNoData"></div>
             </div>
 
             <div class="place clear" v-if="workOrderDetailData.place && _.isArray(workOrderDetailData.place) && workOrderDetailData.place.length">
@@ -46,27 +45,29 @@
 
             <div class="normal">
                 <div class="key1">要求开始时间</div>
-                <div class="value1 MT" v-text="workOrderDetailData.ask_start_time ? timeFormat(workOrderDetailData.ask_start_time,'0') : '--' "></div>
+                <div class="value1 MT" v-text="workOrderDetailData.ask_start_time ? timeFormat(workOrderDetailData.ask_start_time,'0') : workOrderNoData "></div>
                 <div class="key1 key2">要求固定时间内完成</div>
-                <div class="value2 MT" v-text="workOrderDetailData.ask_end_limit ? (workOrderDetailData.ask_end_limit + '小时') : '--'"></div>
+                <div class="value2 MT" v-text="workOrderDetailData.ask_end_limit ? (workOrderDetailData.ask_end_limit + '小时') : workOrderNoData"></div>
                 <div class="key2 key1">要求结束时间</div>
-                <div class="value2 MT" v-text="workOrderDetailData.ask_end_time ? timeFormat(workOrderDetailData.ask_end_time,'0') : '--'"></div>
+                <div class="value2 MT" v-text="workOrderDetailData.ask_end_time ? timeFormat(workOrderDetailData.ask_end_time,'0') : workOrderNoData"></div>
             </div>
 
-            <div class="normal" v-if="(workOrderDetailData.required_tools && workOrderDetailData.required_tools.length) || isShowAddTool">
+            <div class="toolBar" v-if="(workOrderDetailData.required_tools && workOrderDetailData.required_tools.length) || isShowAddTool">
                 <div class="key1">所需工具</div>
-                <div class="MT" v-text="workOrderArrToString(workOrderDetailData.required_tools)"></div>
-                <span class="tool" v-if="isShowAddTool" v-for="(item,index) in toolarr">
-                    <ptext-text placeholder="'请输入'" value="item.name" text="   " bind="true">
-                        <verify errtip=""  verifytype="space"></verify>
-                    </ptext-text>
-                    <em class="icon" @click="toolarr.splice(index,1)">
-                        x
-                    </em>
-                 </span>
-                 <span class="tool" v-if="isShowAddTool && toolarr.length<3" @click.capture="toolarr.push({name:''})">
-                     <pbutton-white text="+工具"></pbutton-white>
-                 </span>
+                <div class="MT value3">
+                    <i class="MT" v-text="workOrderArrToString(workOrderDetailData.required_tools)"></i>
+                    <span class="tool" v-if="isShowAddTool" v-for="(item,index) in toolarr">
+                        <ptext-text placeholder="'请输入'" value="item.name" text="   " bind="true">
+                            <verify errtip=""  verifytype="space"></verify>
+                        </ptext-text>
+                        <em class="icon" @click="toolarr.splice(index,1)">
+                            x
+                        </em>
+                     </span>
+                     <span class="tool" v-if="isShowAddTool && toolarr.length<99" @click.capture="toolarr.push({name:''})">
+                         <pbutton-white text="+工具"></pbutton-white>
+                     </span>
+                </div>
             </div>
 
         </div>
@@ -136,10 +137,8 @@
                                             </span>
                                         </div>
                                         <div v-for="confirm_result in steps.confirm_result" v-if="(confirm_result.info_points && confirm_result.info_points.length) || (confirm_result.customs && confirm_result.customs.length)">
-                                            <i v-for="info_points in confirm_result.info_points" v-text="(info_points.wrong_ranges || info_points.wrongs) ? info_points.name + (createInfoWrongWO(info_points.wrong_ranges,info_points.wrongs,info_points.unit) != '' ?
-                                            ' (异常范围：' + createInfoWrongWO(info_points.wrong_ranges,info_points.wrongs,info_points.unit) + ')' : '') : info_points.name"></i>
-                                            <!-- <i v-for="info_points in confirm_result.info_points" v-text="info_points.name + ' (异常范围：' + createInfoWrongWO(info_points.wrong_ranges,info_points.wrongs,info_points.unit) + ')'"></i> -->
-                                            <i v-for="customs in confirm_result.customs" v-text="createSureInfoWO(customs)"></i>
+                                            <i v-for="info_points in confirm_result.info_points" v-text="createInfoWrongWO(info_points)"></i>
+                                            <i v-for="custom in confirm_result.customs" v-text="createInfoWrongWO(custom)"></i>
                                         </div>
                                     </li>
                                     
@@ -247,25 +246,46 @@
             <div class="order" v-for="model in workOrderDetailData.wo_exec_controls">
                 <div class="head">
                     <div class="name" v-text="model.control_name"></div>
-                    <div class="time" v-text=" (model.type === 'apply' ? '申请' : model.type === 'audit' ? '审核' : model.type === 'stop' ? '中止' : '审批') + '时间 : ' + model.operate_time"></div>
+                    <div class="time" v-text=" (model.type.state == 'apply' ? '申请' : model.type.state == 'audit' ? '审核' : model.type.type == 'stop' ? '中止' : '审批') + '时间 : ' + 
+                    (new Date(yyyyMMddhhmmss2date(model.operate_time)).format('yyyy.MM.dd hh:mm'))"></div>
                 </div>
                 <div class="body">
-                    <div class="end" v-if="model.type.state === 'audit' || model.type.state === 'approval'"
-                    v-text="model.audit_result === 1 ? '通过' : '不通过'" :class="{'red' : model.audit_result == 0}"></div>
+
+                    <!-- 是否通过 审核和审批状态 -->
+                    <div class="end" v-if="model.type.state === 'audit' || model.type.state === 'approval'" :class="{'red' : model.audit_result == 0}"
+                    v-text="model.audit_result == 1 ? '通过' : ('不通过' + ((model.next_route_names && model.next_route_names.length) ? model.next_route_names.join(',') : ''))">
+                    </div>
+
+                    <!-- 审核信息 加人AddingPeople类型   -->
                     <div class="info" v-if="model.type.type === 'ap'">
-                        <div class="peo" v-text="'人数:' + model.person_num + '人'"></div>
-                        <div class="job" v-text="'专业要求:' +workOrderArrToString(model.domain_names)"></div>
-                        <div class="dop" v-text="'执行人:' + workOrderArrToString(model.person_names)"></div>
+                        <div class="peo" v-text="'人数:' + (model.person_num ? model.person_num + '人' : workOrderNoData)"></div>
+                        <div class="job" v-text="'专业要求:' + (model.domain_names ? workOrderArrToString(model.domain_names) : workOrderNoData)"></div>
+                        <div class="dop" v-text="'执行人:' + (model.person_names ? workOrderArrToString(model.person_names) : workOrderNoData)"></div>
                     </div>
+
+                    <!-- 审核信息 换人ReplacePeople类型 -->
                     <div class="info" v-if="model.type.type === 'rp'">
-                        <div class="job" v-text="'更换人员名称:' + model.replace_person_name"></div>
-                        <div class="dop" v-text="'操作时间:' + model.create_time"></div>
+                        <div class="job" v-text="'执行人:' + (model.replace_person_name ? model.replace_person_name : workOrderNoData)" ></div>
+                        <!-- <div class="dop" v-text="'操作时间:' + model.create_time ? model.create_time : workOrderNoData"></div> -->
                     </div>
+
+                    <!-- 审核信息 延期Delay类型 -->
                     <div class="info" v-if="model.type.type === 'dl'">
-                        <div class="dop" v-text="'延期小时数:' + model.delay_hour"></div>
+                        <div class="dop" v-text="'延期:' + (model.delay_hour ? model.delay_hour : workOrderNoData) + '小时'"></div>
                     </div>
-                    <div class="remark MT" v-text="model.opinion"></div>
-                    <div class="pe" v-text="'操作人:'+ model.operator_name"></div>
+
+                    <!-- 执行人 指派 -->
+                    <div class="assign" v-if="model.type.type === 'assign'" v-text="'执行人：' + ((model.next_route_names && model.next_route_names.length) ? model.next_route_names.join('、') : '')"></div>
+
+                    <!-- 申请内容 审核和审批状态-->
+                    <div class="content MT" v-text="model.apply_content" v-if="model.type.state == 'audit' || model.type.state == 'approval'"></div>
+
+                    <!-- 意见 -->
+                    <div class="opinion MT" v-text="model.opinion" v-if="model.opinion"></div>
+
+                    <!-- 操作人名字 -->
+                    <div class="pe" v-text="'操作人:'+ model.operator_name" v-if="model.operator_name"></div>
+
                 </div>
             </div>
 

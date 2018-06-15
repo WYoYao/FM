@@ -1,4 +1,13 @@
 <% include ../../../template/pageHead.html %>
+    <!--  -->
+    <link rel="stylesheet" href="../css/workOrder/planMng/term/public.css" />
+    <script src="../js/workOrder/planMng/lodash.min.js"></script>
+    <script src="../js/workOrder/planMng/polyfill.js"></script>
+
+    <script src="../js/workOrder/planMng/term/controller.js"></script>
+
+<!--  -->
+
 <style type="text/css">
     #sbPageWrap {
         padding: 16px 10px 0;
@@ -12,10 +21,7 @@
         }
 </style>
 <div id="sbPageWrap">
-        <div class="prompt-box" id="prompt-box">
-                <i class="icon">x</i>
-                <em>获取数据失败</em>
-            </div>
+       
     <div class="per-tab-navigation">
         <div class="per-tab-navigation_title">
             <ul>
@@ -40,10 +46,16 @@
                 <% include ../printCard/index.html %>
             </div>
             <%}%>
+
+   
+
         </div>
 
     </div>
-
+    <div class="prompt-box" id="prompt-box">
+            <i class="icon">x</i>
+            <em>获取数据失败</em>
+        </div>
 
 </div>
 <pnotice-message id='equipmentMessage'></pnotice-message>

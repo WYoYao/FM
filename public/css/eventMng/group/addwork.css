@@ -201,6 +201,12 @@
               font-size: 14px;
               height: 84px;
               border: none; }
+              #app .towork > .content > .right > .view > .section > .sop > .bottom >.r{
+                color: initial;
+                position: relative;
+                margin-top: 6px;
+                margin-left: 6px;
+              }
             #app .towork > .content > .right > .view > .section > .obj > .bottom {
               height: 30px;
               line-height: 30px; }
@@ -250,6 +256,21 @@
               font-size: 14px;
               height: 66px;
               border: none; }
+              #app .towork > .content > .right > .view > .section > .work > .textarea >.block{
+                display: inline-block;
+                height: 30px;
+                line-height: 30px;
+                position: relative;
+                margin: 0 20px 15px 0;
+                vertical-align: top;
+                -ms-text-overflow: ellipsis;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                border-radius: 15px;
+                padding: 0 15px;
+                background-color: #f3f3f3;
+              }
             #app .towork > .content > .right > .view > .section > .work > .bottom {
               height: 30px;
               line-height: 30px; }

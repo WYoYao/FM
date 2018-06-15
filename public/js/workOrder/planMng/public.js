@@ -382,7 +382,7 @@ v.pushComponent({
     },
     methods: {
         doornotdo: function (ev, a) {
-            debugger
+
             if (a) {
                 ev.stopPropagation();
             }
@@ -414,7 +414,8 @@ v.pushComponent({
                 m: "月",
                 w: "周",
                 d: "日",
-                q: "季"
+                q: "季",
+                h: "小时"
             }
             return obj[str]
         },
@@ -516,14 +517,17 @@ v.pushComponent({
         },
         // 后台格式转换日期格式
         yyyyMMddhhmmss2date: function (str) {
-
-            return str.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/g, function () {
-                var arr = Array.prototype.slice.call(arguments);
-                return arr.slice(1, 4).join('/') + " " + arr.slice(4, 7).join(':');
-            });
+            if (_.isString(str) && str.length && /^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/g.test(str)) {
+                return str.replace(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})$/g, function () {
+                    var arr = Array.prototype.slice.call(arguments);
+                    return arr.slice(1, 4).join('/') + " " + arr.slice(4, 7).join(':');
+                });
+            }
+            return str;
         },
         // 普通格式转换
         date2yyyyMMddhhmm: function (date) {
+            if (!date) return date;
 
             return (new Date(date)).format('yyyy.MM.dd hh:mm');
         }
@@ -551,20 +555,20 @@ $(function () {
     createPlanModuleController();
     // 获取用户信息
     // 正式提测的时候取消注释
-    // $.ajax({
-    //     url: '/userInfo',
-    //     type: 'get',
-    //     data: {},
-    //     success: function (result) {
-    //         v.instance.userInfo = result;
-    //         debugger
-    //         console.log(v.instance.userInfo);
-    //     },
-    //     error: function (error) {
-    //     },
-    //     complete: function () {
-    //     }
-    // });
+    $.ajax({
+        url: '/userInfo',
+        type: 'get',
+        data: {},
+        success: function (result) {
+            v.instance.userInfo = result;
+
+            console.log(v.instance.userInfo);
+        },
+        error: function (error) {
+        },
+        complete: function () {
+        }
+    });
 
     if (v.name.hasOwnProperty('grouphome')) v.initPage('grouphome');
 

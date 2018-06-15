@@ -137,30 +137,30 @@ controller.prototype.userInfo = function () {
         res.send(puser);
     };
 };
-
+//集团首页
 controller.prototype.blocHomePage = function () {
     return function (req, res, next) {
-        res.render('.pages/blocHomePage/index.html', { host: commonLibUrl });
+        res.render('./pages/blocHomePage/index.html', { host: commonLibUrl });
     };
 }
-
+//项目首页
 controller.prototype.proHomePage = function () {
     return function (req, res, next) {
-        res.render('./scan.html', { host: commonLibUrl });
+        res.render('./pages/blocHomePage/index.html', { host: commonLibUrl });
     };
 }
 
-
+//集团报表
 controller.prototype.blocReport = function () {
     return function (req, res, next) {
-        res.render('./scan.html', { host: commonLibUrl });
+        res.render('./pages/blocReportPage/index.html', { host: commonLibUrl });
     };
 }
 
-
+//项目报表
 controller.prototype.proReport = function () {
     return function (req, res, next) {
-        res.render('./scan.html', { host: commonLibUrl });
+        res.render('./pages/proReportPage/index.html', { host: commonLibUrl });
     };
 }
 

@@ -530,8 +530,9 @@ controller.push([
     {
         //  查询设备 需要查询查询设备专业
         name: "GeneralDict",
-        url: "restGeneralDictService/queryGeneralDictByKey",
-        argu: { dict_type: "domain_require" }
+        url: "restDictService/queryDomainSystemEquipType",
+        // url: "restGeneralDictService/queryGeneralDictByKey",
+        // argu: { dict_type: "domain_require" }
     },
     {
         //  查询设备专业系统
@@ -648,15 +649,17 @@ controller.push([
     {
         // 专业列表
         name: "GeneralDictByKey",
-        url: "restGeneralDictService/queryGeneralDictByKey",
-        argu: {
-            dict_type: "domain_require"
-        },
+        url: "restDictService/queryDomainSystemEquipType",
+        // url: "restGeneralDictService/queryGeneralDictByKey",
+        // argu: {
+        //     dict_type: "domain_require"
+        // },
         convert: addSelected
     },
     {
         name: "queryInfoPointForObject",
-        url: "restObjectService/queryInfoPointForObject",
+        url: "sop/restObjectService/queryInfoPointForObject",
+        configServiceName: "baseServiceUrl",
         argu: {},
         cb: function () {
             return _.range(20).map(index => {

@@ -12,10 +12,11 @@
             <sitemap :maps='paths.path' :createsitemap='gobackSelPath' :back='gobackLastPath' />
         </div>
 
-        <div class="name MT" v-text="planInfo.group_plan_name" :title="planInfo.group_plan_name" v-if="cache.planType === 'group' || cache.planType === 'groupD'"></div>
+        <!-- <div class="name MT" v-text="planInfo.group_plan_name" :title="planInfo.group_plan_name" v-if="cache.planType === 'group' || cache.planType === 'groupD'"></div> -->
 
         <div class="operate">
 
+            <% if(user.authorObj.cancelPlan){ %>
             <div class="delete" v-if="cache.planType === 'group' || cache.planType === 'order'">
                 <!-- <img src="../images/scrap_btn.png" alt=""> -->
                 <div class="icon" @click="(!planInfo.plan_from || (planInfo.plan_from && planInfo.plan_from == '2')) ? $('#deletePlanSure').pshow({ title: '确定要作废吗', subtitle: '作废后不可恢复' }) : void 0 ;">
@@ -26,14 +27,17 @@
                 <pbutton-borderred text="'作废计划'" icon="'x'" bind="true" isborder="false" @click="$('#deletePlanSure').pshow({ title: '确定要作废吗', subtitle: '作废后不可恢复' })" 
                 disabled="(planInfo.plan_from && planInfo.plan_from != '2')"></pbutton-borderred>
             </div>
+            <% } %>
 
             <div class="historyOrder" v-if="cache.planType === 'orderD'">
                 <pbutton-blue text="'过去发出的工单记录'" icon="'S'" bind="true" isborder="false" @click="lookHistoryOrderInfo"></pbutton-blue>
             </div>
 
+            <% if(user.authorObj.editPlan){ %>
             <div class="change" v-if="cache.planType === 'group' || cache.planType === 'order'">
                 <pbutton-blue text="'修改计划'" icon="'`'" bind="true" isborder="false" @click="changePlan"></pbutton-blue>
             </div>
+            <% } %>
 
             <div class="copy" v-if="cache.planType === 'group'">
                 <pbutton-blue text="'复制计划'" icon="'S'" bind="true" isborder="false" @click="copyPlan"></pbutton-blue>
@@ -136,8 +140,8 @@
 
             <div class="row" v-show="planInfo.suggest_executor_num" v-text="'建议执行人数：' + planInfo.suggest_executor_num"></div>
 
-            <div class="row" v-show="planInfo.place && planInfo.place.length" v-for="(item,index) in planInfo.place" v-text="'位置' + index + '：' + item.name"></div>
-
+            <div class="row" v-show="planInfo.place && planInfo.place.length" v-for="(item,index) in planInfo.place" v-text="'位置' + (index+1) + '：' + item.name"></div>
+            <!-- 精确设置计划频率 -->
             <div class="row" v-if="planInfo.plan_freq_type == 1" v-text="'计划频率：每' + transfYMWD(planInfo.freq_cycle) + planInfo.freq_num + '次'"></div>
 
             <div class="more" v-if="planInfo.plan_freq_type == 1">
@@ -189,10 +193,17 @@
 
             </div>
 
-            <div class="row" v-if="planInfo.plan_freq_type == 3" v-text="'计划频率：' + planInfo.freq_time_span.num + transfYMWD(planInfo.freq_time_span.unit) + '1次'"></div>
+            <!-- 模糊设置计划频率 -->
+            <div class="row" v-if="planInfo.plan_freq_type == 2" v-text="'计划频率：' + '每' + transfYMWD(planInfo.freq_cycle) + planInfo.freq_num + '次'"></div>
+
+            <div class="row" v-if="planInfo.plan_freq_type == 2" 
+            v-text="'相邻两次间隔不小于' + planInfo.freq_limit.num + transfYMWD(planInfo.freq_limit.unit)"></div>
+
+            <!-- 相对设置计划频率 -->
+            <div class="row" v-if="planInfo.plan_freq_type == 3" v-text="'计划频率：' + planInfo.freq_time_span.num + '日1次'"></div>
 
             <div class="row" v-if="planInfo.plan_freq_type == 3" 
-            v-text="'每次要求开始时间：' + planInfo.freq_time_span.time_hour + ':' + planInfo.freq_time_span.time_minute + '；持续' + planInfo.freq_time_span.continue + transfYMWD(planInfo.freq_time_span.unit)"></div>
+            v-text="'每次要求开始时间：' + planInfo.freq_time_span.time_hour + ':' + planInfo.freq_time_span.time_minute + '；持续' + planInfo.freq_time_span.continue + '小时'"></div>
 
 
             <!-- 只有工单计划有此项 -->

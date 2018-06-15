@@ -23,26 +23,32 @@
             </pcombobox-normal>
         </div>
         <div class="other">发单时间</div>
+        
         <div class="time">
             <ptime-calendar id="planTypeTime" orientation="down" sel="planTypeTimeSel">
                 <panel timetype="M" align="left" double="false" iscommontime="false"></panel>
             </ptime-calendar>
         </div>
+
         <div class="search">
             <psearch-delay id="'planKeyword'" bind="true" change="refreshRenderPMGrid(false)" placeholder="'输入计划名称查找'"></psearch-delay>
         </div>
+        
+        <% if(user.authorObj.groupPlan){ %>
         <div class="box">
             <pbutton-blue bind="true" text="'集团计划(' + groupPlanUse.unUse + '/' + groupPlanUse.total + ')'" @click="openGroupModule"></pbutton-blue>
         </div>
+        <% } %>
+
         <div class="box">
             <pbutton-white text="已作废计划" @click="lookDiscardGroupPlan"></pbutton-white>
         </div>
-        <div class="box">
-            <pbutton-white text="自定义计划" @click="createTermPlan"></pbutton-white>
-        </div>
-        <!-- <div class="box">
-            <pbutton-white text="自定义计划" @click="createTermPlan"></pbutton-white>
-        </div> -->
+
+        <% if(user.authorObj.customPlan){ %>
+            <div class="box">
+                <pbutton-white text="自定义计划" @click="createTermPlan"></pbutton-white>
+            </div>
+        <% } %>
 
     </div>
 
@@ -71,8 +77,8 @@
             <!-- 时间窗Start -->
             <div class="bottom">
 
-                <div class="name gray">维保名称</div>
-                <div class="period gray">维保周期</div>
+                <div class="name gray">计划名称</div>
+                <div class="period gray">计划周期</div>
                 <div class="time" id="getCellWidth">
 
                     <div>

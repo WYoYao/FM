@@ -11,9 +11,10 @@ v.pushComponent({
   },
   methods: {
     // 废弃计划
-    deletePlan : function(){
+    deletePlan: function () {
       var x = this.cache.planType == 'group' ? true : false;
-      var param = x ? { group_plan_id: this.cache.planId } : { plan_id: this.cache.planId };
+      var param = x ? { group_plan_id: this.cache.planId, person_id: this.userInfo.person_id } : { plan_id: this.cache.planId };
+      param.person_id = this.userInfo.person_id;
       var a = x ? PMA.DGP : PMA.DOP;
       a(param, function (data) {
         $("#globalnotice").pshow({ text: "作废成功", state: "success" });
@@ -24,7 +25,7 @@ v.pushComponent({
         $("#globalnotice").pshow({ text: "作废失败", state: "failure" });
       }, function () {
         $('#deletePlanSure').phide();
-       })
+      })
     },
 
     // 查看计划历史工单信息
@@ -78,7 +79,8 @@ v.pushComponent({
     // 跳转到项目计划监控,只有集团计划
     GoProPlan: function () {
       var a = this.cache.planId;
-      this.cache = { group_plan_id: a, name: "项目计划监控", freq_cycle: this.planInfo.freq_cycle,group_plan_name:this.planInfo.group_plan_name };
+      this.cache = { group_plan_id: a, name: "项目计划监控", freq_cycle: this.planInfo.freq_cycle, group_plan_name: this.planInfo.group_plan_name };
+      this.cache.is_delete_plan = true;
       v.initPage('monitoringPlan');
     },
     // 查看计划版本记录
@@ -95,6 +97,10 @@ v.pushComponent({
     lookAllPlan: function () {
       var a = psecret.create(JSON.stringify({ pt: this.cache.project_id }));
       window.open(window.location.ancestorOrigins[0] + '/frame/PlanManagement?ot=' + a);
+    },
+    computeNextDay: function (str, add) {
+      var date = new Date(this.yyyyMMddhhmmss2date(str));
+      return new Date(date.setDate(date.getDate() + (add ? 1 : -1))).format('yyyyMMddhhmmss');
     },
   },
   filters: {
@@ -115,22 +121,22 @@ v.pushComponent({
           (item.code == that.planInfo.order_type) && (that.planInfo.order_type_name = item.name);
         })
       }
-      
+
       if (that.planInfo.pit_positions && that.planInfo.pit_positions.length > 0) {
         var arr = [];
         that.planInfo.pit_positions.forEach(function (item, index) {
-            if (item.pit_position_ask_names) {
-                if (item.pit_position_ask_names.length == 1) {
-                    arr.push({ name: (item.pit_position_ask_names).toString() })
-                }
-                if (item.pit_position_ask_names.length > 1) {
-                    arr.push({ name: (item.pit_position_ask_names.join('、')).toString() });
-                }
-
+          if (item.pit_position_ask_names) {
+            if (item.pit_position_ask_names.length == 1) {
+              arr.push({ name: (item.pit_position_ask_names).toString() })
             }
+            if (item.pit_position_ask_names.length > 1) {
+              arr.push({ name: (item.pit_position_ask_names.join('、')).toString() });
+            }
+
+          }
         })
         if (arr.length > 0) {
-            that.planInfo.place = JSON.parse(JSON.stringify(arr));
+          that.planInfo.place = JSON.parse(JSON.stringify(arr));
         }
       }
     }, function () { }, function () {
@@ -143,25 +149,36 @@ v.pushComponent({
       PMA.PCH({ plan_id: that.cache.planId }, function (data) {
         data = JSON.parse(JSON.stringify(data || []));
         that.historyRecordList = data.length > 2 ? data.splice(0, 2) : data;
-        that.historyRecordList.forEach(function(model){
+        that.historyRecordList.forEach(function (model) {
           if (model.pit_positions && model.pit_positions.length > 0) {
             var arr = [];
             model.pit_positions.forEach(function (item, index) {
-                if (item.pit_position_ask_names) {
-                    if (item.pit_position_ask_names.length == 1) {
-                        arr.push({ name: (item.pit_position_ask_names).toString() })
-                    }
-                    if (item.pit_position_ask_names.length > 1) {
-                        arr.push({ name: (item.pit_position_ask_names.join('、')).toString() });
-                    }
-    
+              if (item.pit_position_ask_names) {
+                if (item.pit_position_ask_names.length == 1) {
+                  arr.push({ name: (item.pit_position_ask_names).toString() })
                 }
+                if (item.pit_position_ask_names.length > 1) {
+                  arr.push({ name: (item.pit_position_ask_names.join('、')).toString() });
+                }
+
+              }
             })
             if (arr.length > 0) {
               model.place = JSON.parse(JSON.stringify(arr));
             }
           }
         })
+        if (that.historyRecordList.length == 2) {
+          var a = that.historyRecordList;
+          // a.forEach(function(item){
+          //   if(item.plan_start_type == 1){
+          //     item.plan_start_time = computeNextDay(item.plan_start_time,true);
+          //   }
+          // })
+          if (a[0].plan_start_time == a[1].plan_end_time) {
+            a[1].plan_end_time = that.computeNextDay(a[1].plan_end_time, false);
+          }
+        }
       }, function () { }, function () {
         $("#planChangeHistoryLoading").phide();
       })

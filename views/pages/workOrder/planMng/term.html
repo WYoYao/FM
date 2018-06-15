@@ -33,88 +33,92 @@
     <script src="../js/workOrder/planMng/createPlanLook/event.js"></script>
     <script src="../js/workOrder/planMng/createPlanLook/model.js"></script>
 
-    <!-- 面包屑导航组件 -->
-    <%include ./sitemap.html %>
+    <!-- 工单详情组件 -->
+    <%include ./workOrderInfo.html %>
+        <!-- 面包屑导航组件 -->
+        <%include ./sitemap.html %>
 
-        <!-- 创建计划左侧组件 -->
-        <%include ./baseInfomation.html %>
-            <script src="/js/workOrder/planMng/baseInfomation/model.js"></script>
+            <!-- 创建计划左侧组件 -->
+            <%include ./baseInfomation.html %>
+                <script src="/js/workOrder/planMng/baseInfomation/model.js"></script>
 
-            <!--  创建的计划每个事项 Start -->
-            <script src="../js/eventMng/addwork/controller.js"></script>
-            <link rel="stylesheet" href="/css/workOrder/planMng/group/addinfo.css">
-            <link rel="stylesheet" href="/css/workOrder/planMng/group/aite.css">
-            <link rel="stylesheet" href="/css/workOrder/planMng/group/hashtag.css">
-            <link rel="stylesheet" href="/css/workOrder/planMng/group/addcontent.css">
-            <link rel="stylesheet" href="/css/workOrder/planMng/group/point.css">
-            <link rel="stylesheet" href="/css/workOrder/planMng/group/matter.css">
-            <link rel="stylesheet" href="/css/workOrder/planMng/group/examples.css">
+                <!--  创建的计划每个事项 Start -->
+                <script src="../js/eventMng/addwork/controller.js"></script>
+                <link rel="stylesheet" href="/css/workOrder/planMng/group/addinfo.css">
+                <link rel="stylesheet" href="/css/workOrder/planMng/group/aite.css">
+                <link rel="stylesheet" href="/css/workOrder/planMng/group/hashtag.css">
+                <link rel="stylesheet" href="/css/workOrder/planMng/group/addcontent.css">
+                <link rel="stylesheet" href="/css/workOrder/planMng/group/point.css">
+                <link rel="stylesheet" href="/css/workOrder/planMng/group/matter.css">
+                <link rel="stylesheet" href="/css/workOrder/planMng/group/examples.css">
+                <link rel="stylesheet" href="/css/workOrder/planMng/group/sopdetail.css">
 
-            <% include ../../eventMng/matter.html %>
-                <% include ../../eventMng/aite.html %>
-                    <%include ../../eventMng/hashtag.html %>
-                        <%include ../../eventMng/addcontent.html %>
-                            <%include ../../eventMng/addinfo.html %>
-                                <%include ../../eventMng/point.html %>
-                                    <%include ../../eventMng/Multiple.html %>
-                                        <% include ../../eventMng/examples.html %>
+                <% include ../../eventMng/matter.html %>
+                    <% include ../../eventMng/aite.html %>
+                        <%include ../../eventMng/hashtag.html %>
+                            <%include ../../eventMng/addcontent.html %>
+                                <%include ../../eventMng/addinfo.html %>
+                                    <%include ../../eventMng/point.html %>
+                                        <%include ../../eventMng/Multiple.html %>
+                                            <% include ../../eventMng/examples.html %>
+                                                <%include ../../eventMng/sopdetail.html %>
 
-                                            <!--  创建的计划每个事项 End -->
+                                                    <!--  创建的计划每个事项 End -->
 
-                                            <ploading-part id='globalloading' text="加载中..."></ploading-part>
-                                            <pnotice-message id='globalnotice'></pnotice-message>
+                                                    <ploading-part id='globalloading' text="加载中..."></ploading-part>
+                                                    <pnotice-message id='globalnotice'></pnotice-message>
 
-                                            <div id="app">
+                                                    <div id="app">
 
-                                                <!-- 计划信息版本记录侧弹窗，为planInformation.html下级文件 -->
-                                                <% include ./planHistoryInfo.html %>
+                                                        <!-- 计划信息版本记录侧弹窗，为planInformation.html下级文件 -->
+                                                        <% include ./planHistoryInfo.html %>
 
-                                                    <div class="content">
-                                                        <div pc="" class="per-loading-overall" id="gloadLoadng" _pt="ploading-global" _id="bfcifddbbdcdffiggdh" style="display: block;">
-                                                            <div class="loading-con">
-                                                                <div class="per-loading-overall_pic"></div>
-                                                                <div class="per-loading-overall_text"></div>
+                                                            <div class="content">
+                                                                <div pc="" class="per-loading-overall" id="gloadLoadng" _pt="ploading-global" _id="bfcifddbbdcdffiggdh" style="display: block;">
+                                                                    <div class="loading-con">
+                                                                        <div class="per-loading-overall_pic"></div>
+                                                                        <div class="per-loading-overall_text"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- 计划管理首页 -->
+                                                                <% include ./planManage.html %>
+
+                                                                    <!-- 工单详情 -->
+                                                                    <% include ./workOrderDetailHead.html %>
+
+                                                                        <!-- 计划详情 -->
+                                                                        <% include ./planInformation.html %>
+
+                                                                            <!-- 查看已作废的计划 -->
+                                                                            <% include ./dumpedPlan.html %>
+
+                                                                                <!-- 查看工单计划发出的工单 -->
+                                                                                <% include ./planWorkOrder.html %>
+
+                                                                                    <!-- 集团计划 -->
+                                                                                    <% include ./groupPlan.html %>
+
+                                                                                        <!-- 创建计划  -->
+                                                                                        <%include ./planCreate.html %>
+
+                                                                                            <!-- 预览计划 -->
+                                                                                            <%include ./planCreate_next.html %>
+
                                                             </div>
-                                                        </div>
-                                                        <!-- 计划管理首页 -->
-                                                        <% include ./planManage.html %>
 
-                                                            <!-- 工单详情 -->
-                                                            <% include ./workOrderDetailHead.html %>
+                                                            <pwindow-confirm id="planCreateWindow">
+                                                                <button>
+                                                                    <pbutton-blue text="确定" click="v.instance.cancelWindowsConfirm"></pbutton-blue>
+                                                                    <pbutton-white text="取消" click="v.instance.cancelWindowsCancel"></pbutton-white>
+                                                                </button>
+                                                            </pwindow-confirm>
 
-                                                                <!-- 计划详情 -->
-                                                                <% include ./planInformation.html %>
-
-                                                                    <!-- 查看已作废的计划 -->
-                                                                    <% include ./dumpedPlan.html %>
-
-                                                                        <!-- 查看工单计划发出的工单 -->
-                                                                        <% include ./planWorkOrder.html %>
-
-                                                                            <!-- 集团计划 -->
-                                                                            <% include ./groupPlan.html %>
-
-                                                                                <!-- 创建计划  -->
-                                                                                <%include ./planCreate.html %>
-
-                                                                                    <!-- 预览计划 -->
-                                                                                    <%include ./planCreate_next.html %>
-
+                                                            <div id="shadow_global"></div>
                                                     </div>
-
                                                     <pwindow-confirm id="planCreateWindow">
                                                         <button>
                                                             <pbutton-blue text="确定" click="v.instance.cancelWindowsConfirm"></pbutton-blue>
                                                             <pbutton-white text="取消" click="v.instance.cancelWindowsCancel"></pbutton-white>
                                                         </button>
                                                     </pwindow-confirm>
-
-                                                    <div id="shadow_global"></div>
-                                            </div>
-                                            <pwindow-confirm id="planCreateWindow">
-                                                <button>
-                                                    <pbutton-blue text="确定" click="v.instance.cancelWindowsConfirm"></pbutton-blue>
-                                                    <pbutton-white text="取消" click="v.instance.cancelWindowsCancel"></pbutton-white>
-                                                </button>
-                                            </pwindow-confirm>
-                                            <% include ../../../template/pageFoot.html %>
+                                                    <% include ../../../template/pageFoot.html %>

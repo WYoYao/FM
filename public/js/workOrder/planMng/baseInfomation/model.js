@@ -2,7 +2,7 @@ var pit_positions = function () {
     return {
         "pit_position_asks": [],		// 专业ID数组
         "pit_position_ask_names": [], // 专业名称数组
-        "pit_position_state": "",				//坑位状态  0-空、1-已抢单、2-确认执行
+        "pit_position_state": "0",				//坑位状态  0-空、1-已抢单、2-确认执行
         "pit_position_person_id": "",		//坑位对应人员ID
         "pit_position_person_name": ""		//坑位对应人员名称
     };
@@ -175,8 +175,10 @@ function AddWoPlan() {
         "freq_time_span": new freq_time_span(),
         "plan_freq_type": "1",
         "plan_start_type": "1",             //计划开始类型,1-发布后第二天生效，2-指定时间 ,必须
+        // "plan_start_time": new Date(+new Date() + (24 * 60 * 60 * 1000)).format('yyyyMMdd000000'),             //计划开始时间,yyyyMMddhhmmss
         "plan_start_time": "",             //计划开始时间,yyyyMMddhhmmss
         "plan_end_type": "1",
+        // "plan_end_time": new Date(+new Date() + (24 * 60 * 60 * 1000)).format('yyyyMMdd235959'),               //计划结束时间,yyyyMMddhhmmss，空值时代表一直有效
         "plan_end_time": "",               //计划结束时间,yyyyMMddhhmmss，空值时代表一直有效
         "next_route": [],						//下级路由，预览后的next_route，必须
         "draft_matters": [],               //工单事项数组,草稿的matters  ,必须
@@ -258,6 +260,8 @@ Vue.component('baseinfomation', {
     data: function () {
 
         return {
+            suggest_executor_num_isnull: false,
+            instantiated_object_flag_isnull: false,
             ignoreTimeOverlaps: [],
             // 是否有重复的内容
             TimeOverlaps: [],
@@ -310,7 +314,7 @@ Vue.component('baseinfomation', {
     //isTerm: false,
     // 是否是编辑计划
     //isEdit: false,
-    props: ['addwoplan', 'isquote', 'isterm', 'isedit', "wotypelistall"],
+    props: ['addwoplan', 'isquote', 'isterm', 'isedit', "wotypelistall", "iscopy"],
     methods: {
         // 将相对设置转换成为对应的精确设置
         convertAddWoPlan: function (addWoPlan) {
@@ -598,7 +602,7 @@ Vue.component('baseinfomation', {
 
                         if (!((start - end) >= compare) && ((start - end) > 0)) {
                             $("#globalnotice").pshow({
-                                text: '第' + ++i + '次结束时间与第' + ++index + '次开始时间间隔小于' + _that.limit.num + (_.find(_that.freq_cycleType, { code: _that.limit.unit }) || {}).name,
+                                text: '第' + ++i + '次与第' + ++index + '次间隔不小于' + _that.limit.num + (_.find(_that.freq_cycleType, { code: _that.limit.unit }) || {}).name,
                                 state: "failure"
                             });
                             return;
@@ -788,10 +792,13 @@ Vue.component('baseinfomation', {
 
                 var date = yyyyMMdd2Date(num);
 
-                $("#plan_endTime").psel({
-                    y: date.getFullYear(),
-                    M: date.getMonth() + 1,
-                    d: date.getDate()
+                this.$nextTick(function () {
+
+                    $("#plan_endTime").psel({
+                        y: date.getFullYear(),
+                        M: date.getMonth() + 1,
+                        d: date.getDate()
+                    })
                 })
             }
         },
@@ -801,10 +808,12 @@ Vue.component('baseinfomation', {
 
                 var date = yyyyMMdd2Date(num);
 
-                $("#plan_start_time_id").psel({
-                    y: date.getFullYear(),
-                    M: date.getMonth() + 1,
-                    d: date.getDate()
+                this.$nextTick(function () {
+                    $("#plan_start_time_id").psel({
+                        y: date.getFullYear(),
+                        M: date.getMonth() + 1,
+                        d: date.getDate()
+                    })
                 })
             }
         },
@@ -820,13 +829,13 @@ Vue.component('baseinfomation', {
             var _that = this;
             if (value == old) return;
 
-            _that.addWoPlan.plan_start_time = value == 2 ? new Date().format("yyyyMMdd000000") : "";
+            _that.addWoPlan.plan_start_time = value == 2 ? new Date(+new Date() + 24 * 60 * 60 * 1000).format("yyyyMMdd000000") : "";
         },
         "addWoPlan.plan_end_type": function (value, old) {
             var _that = this;
             if (value == old) return;
 
-            _that.addWoPlan.plan_end_time = value == 2 ? new Date().format("yyyyMMdd235959") : "";
+            _that.addWoPlan.plan_end_time = value == 2 ? new Date(+new Date() + 24 * 60 * 60 * 1000).format("yyyyMMdd235959") : "";
         },
         //  监听频率精度
         "addWoPlan.plan_freq_type": function (value, old) {
@@ -855,6 +864,9 @@ Vue.component('baseinfomation', {
             } else if (value == "3") {
                 _that.addWoPlan.plan_end_time = new Date().format("yyyy1231000000");
                 _that.addWoPlan.freq_time_span = new freq_time_span();
+
+
+
             }
         },
         //  监听频率次数
@@ -880,6 +892,11 @@ Vue.component('baseinfomation', {
             },
             deep: true
         },
+        "addWoPlan.freq_time_span": function (value, old) {
+            var _that = this;
+            $("#ptiemStartTime").psel({ h: _that.addWoPlan.freq_time_span.time_hour, m: _that.addWoPlan.freq_time_span.time_minute }, false);
+            $("#ptiemStartTime").psel({ h: _that.addWoPlan.freq_time_span.time_hour, m: _that.addWoPlan.freq_time_span.time_minute }, false);
+        },
         "addWoPlan.freq_time_span.time_hour": function (value, old) {
             if (value == old) return;
             var _that = this;
@@ -901,14 +918,7 @@ Vue.component('baseinfomation', {
     beforeMount: function () {
 
         var _that = this;
-        //  判断是否是编辑计划
-        //  如果是编辑计划赋值
-        // if (_that.isEdit) _that.addWoPlan = _that.addwoplan;
-        // 是否引用
-        // if (_.isBoolean(_that.isquote)) _that.isquote = _that.isquote;
-        // // 是否项目版
-        // if (_.isBoolean(_that.isterm)) _that.isterm = _that.isterm;
-        // 加载工单状态类型
+
         if (loadding) loadding.set("WorkOrderTypePromise")
         var WorkOrderTypePromise = controller.queryWoTypeListByPersonIdControlCode().then(function (res) {
 
@@ -930,19 +940,21 @@ Vue.component('baseinfomation', {
         //  选项加载完毕 附加默认值
         WorkOrderTypePromise.then(function () {
 
+            var addwoplan = function () {
+                return JSON.parse(JSON.stringify(Object.assign(new AddWoPlan(), _that.addwoplan || {})))
+            }
+
+            //  绑定基础信息
+            _that.addWoPlan = Object.assign(new AddWoPlan(), addwoplan())
+
             // 编辑情况
             if (_that.isedit) {
 
                 // 如果是想的
-
-                var addwoplan = function () {
-                    return JSON.parse(JSON.stringify(Object.assign(new AddWoPlan(), _that.addwoplan || {})))
-                }
+                _that.suggest_executor_num_isnull = _that.addwoplan.suggest_executor_num == 0;
+                _that.instantiated_object_flag_isnull = _that.addwoplan.instantiated_object_flag == 2;
 
                 new Promise(function (resolve) {
-
-                    //  绑定基础信息
-                    _that.addWoPlan = Object.assign(new AddWoPlan(), addwoplan())
 
                     // 判断生成 结束类型
                     _that.addWoPlan.plan_end_type = (_.isString(_that.addWoPlan.plan_end_time) && _that.addWoPlan.plan_end_time.length) ? '2' : '1';
@@ -1016,18 +1028,30 @@ Vue.component('baseinfomation', {
                             _that.addWoPlan.freq_time_span.unit = addwoplan().freq_time_span.unit;
                             _that.addWoPlan.freq_time_span.startTime = addwoplan().freq_time_span.startTime;
                             _that.addWoPlan.freq_time_span.continue = addwoplan().freq_time_span.continue;
+
+                            _that.$nextTick(function () {
+                                _that.addWoPlan.freq_time_span.time_hour = addwoplan().freq_time_span.time_hour;
+                                _that.addWoPlan.freq_time_span.time_minute = addwoplan().freq_time_span.time_minute;
+                            })
                         }
                     }
                 })
 
             } else {
 
+                _that.suggest_executor_num_isnull = true;
+                _that.instantiated_object_flag_isnull = true;
                 // 新建情况
                 _that.addWoPlan = new AddWoPlan();
                 _that.$nextTick(function () {
                     _that.bind_fres_times();
                 })
             }
+
+
+
+
+
         })
 
             // 闭包保存全局方法中需要的变量
