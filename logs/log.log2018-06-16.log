@@ -1,0 +1,22 @@
+[2018-06-16 09:24:11.653] [ERROR] log_file - TypeError: Cannot read property 'indexOf' of undefined
+    at parseRequest (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:261:38)
+    at e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:232:13
+    at callbacks (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\router\index.js:164:37)
+    at param (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\router\index.js:138:11)
+    at pass (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\router\index.js:145:5)
+    at nextRoute (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\router\index.js:100:7)
+    at callbacks (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\router\index.js:167:11)
+    at e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:82:9
+    at callbacks (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\router\index.js:164:37)
+    at param (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\router\index.js:138:11)
+[2018-06-16 09:28:49.899] [ERROR] log_file - TypeError: Cannot read property 'indexOf' of undefined
+    at parseRequest (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:261:38)
+    at e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:232:13
+    at callbacks (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\router\index.js:164:37)
+    at param (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\router\index.js:138:11)
+    at pass (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\router\index.js:145:5)
+    at nextRoute (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\router\index.js:100:7)
+    at callbacks (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\router\index.js:167:11)
+    at e:\Web_EMS\pweb_productList\pweb_saas\node_modules\common\publicRouter.js:82:9
+    at callbacks (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\router\index.js:164:37)
+    at param (e:\Web_EMS\pweb_productList\pweb_saas\node_modules\public_nodejs\express\lib\router\index.js:138:11)

@@ -25,7 +25,6 @@ v.pushComponent({
             v.instance.cache = { workOrderId: id }
             path ? v.instance.cache.name = path : void 0;
             v.initPage(name);
-            this.pscrollShwo = false;
             v.instance.workOrderDetailReady();
         },
         // 生成页面
@@ -33,7 +32,7 @@ v.pushComponent({
             var that = this;
             that.isShowAddTool = false;
             $("#workOrderDetailLoad").pshow();
-            console.log(this.cache);
+            this.pscrollShwo = false;
             PMA.OD({ order_id: that.cache.workOrderId }, function (data) {
                 that.workOrderDetailData = JSON.parse(JSON.stringify(data.work_order.wo_body || {}));
                 // that.workOrderDetailData = JSON.parse(JSON.stringify(data));

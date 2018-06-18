@@ -21,12 +21,12 @@
     height: 100%;
 }
 
-    .reTabWrap .selectWrap {
-        height: 50px;
-        background: #eaeef0;
-        padding: 10px 0 0 20px;
-        box-sizing: border-box;
-    }
+.reTabWrap .selectWrap {
+    height: 50px;
+    background: #eaeef0;
+    padding: 10px 0 0 20px;
+    box-sizing: border-box;
+}
 
 .selectWrap .timeType {
     width: 160px;
@@ -39,3 +39,26 @@
     float: left;
     margin-right: 12px;
 }
+
+.eachTabCont .tableLi {
+    display: flex;
+    height: 36px;
+    line-height: 36px;
+    cursor: pointer;
+    padding-left: 10px;
+    box-sizing: border-box;
+}
+
+    .eachTabCont .tableLi:nth-child(odd) {
+        background: #f7f9fb;
+    }
+
+    .eachTabCont .tableLi:nth-child(even) {
+        background: #ffffff;
+    }
+    /*flex: 1;
+overflow: hidden;
+position: relative;
+padding: 0 10px;
+font-size: 12px;
+box-sizing: border-box;*/

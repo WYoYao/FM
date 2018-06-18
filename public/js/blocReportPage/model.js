@@ -97,6 +97,22 @@ blocReportModel = {
             inspectPointNum: 89.5,
             missInspectNum: 89.5,
             missInspectRate: 56.3,
+        }, {
+            name: '项目A',
+            orderNum: 24,
+            undonePointNum: 11,
+            undonePointRate: 58,
+            overdueUndonePointNum: 58,
+            overdueUndonePointRate: 58,
+            donePointNum: 58,
+            donePointRate: 56,
+            overdueDonePointNum: 11,
+            overdueDonePointRate: 11,
+            pointUnusualRate: 89.5,
+            timelyCompleteSmall: 56.3,
+            inspectPointNum: 89.5,
+            missInspectNum: 89.5,
+            missInspectRate: 56.3,
         }
     ],
     maintainWorkOrder: [//维保工单
