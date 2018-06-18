@@ -27,10 +27,10 @@ v.pushComponent({
             matter_name: "",
             desc_objs: [],
             desc_sops: [], // Sop 列表
-            desc_works: [],  // 新建工作内容
+            desc_works: [], // 新建工作内容
             // 对象描述
-            desc_forepart: "",  //  @ 输入框文本
-            desc_aftpart: "",   //  # 输入框文本  
+            desc_forepart: "", //  @ 输入框文本
+            desc_aftpart: "", //  # 输入框文本  
             required_control: [],
         }],
         //  事项的错误信息
@@ -59,11 +59,11 @@ v.pushComponent({
             "plan_freq_type": "1",
             "instantiated_object_flag": "1",
 
-            "group_plan_id": "",              //集团计划id，必须
-            "project_ids": [],              //项目计划id集合，必须
-            "plan_start_type": "2",            //计划开始类型,1-发布成功后第二天生效，2-指定时间 ,必须
-            "plan_start_time": new Date(+new Date() + (24 * 60 * 60000)).format('yyyyMMdd000000'),            //计划开始时间,yyyyMMdd+"000000"
-            "plan_end_time": new Date(+new Date((new Date().getFullYear() + 1) + "/01/01 00:00:00") - (24 * 60 * 60000)).format('yyyyMMdd235959')               //计划结束时间,yyyyMMdd+"235959"，空值时代表一直有效
+            "group_plan_id": "", //集团计划id，必须
+            "project_ids": [], //项目计划id集合，必须
+            "plan_start_type": "2", //计划开始类型,1-发布成功后第二天生效，2-指定时间 ,必须
+            "plan_start_time": new Date(+new Date() + (24 * 60 * 60000)).format('yyyyMMdd000000'), //计划开始时间,yyyyMMdd+"000000"
+            "plan_end_time": new Date(+new Date((new Date().getFullYear() + 1) + "/01/01 00:00:00") - (24 * 60 * 60000)).format('yyyyMMdd235959') //计划结束时间,yyyyMMdd+"235959"，空值时代表一直有效
         },
         getIssueProjectListArgu: {
             group_plan_id: "JTJH6a93466d7bb7465c8f893d2ba3e83b7e"
@@ -71,6 +71,21 @@ v.pushComponent({
         IssueProjectList: [],
     },
     methods: {
+        //获取日期格式
+        getDateStringByType: function (item) {
+            if (item.cycle == 'y') {
+                return fill(item.time_month, 2) + "." + fill(item.time_day, 2) + " " + fill(item.time_hour, 2) + ":" + fill(item.time_minute, 2);
+            } else if (item.cycle == 'q') {
+                return [null, '第一个月', '第二个月', '第三个月'][item.time_season] + " " + fill(item.time_day, 2) + " " + fill(item.time_hour, 2) + ":" + fill(item.time_minute, 2);
+            } else if (item.cycle == 'w') {
+                return [null, '周一', '周二', '周三', '周四', '周五', '周六', '周日'][item.time_week] + " " + fill(item.time_hour, 2) + ":" + fill(item.time_minute, 2);
+            } else if (item.cycle == 'm') {
+                return fill(item.time_day, 2) + " " + fill(item.time_hour, 2) + ":" + fill(item.time_minute, 2);
+            } else if (item.cycle == 'd') {
+                return fill(item.time_hour, 2) + ":" + fill(item.time_minute, 2);
+            }
+            return "";
+        },
         // 将相对设置转换成为对应的精确设置
         convertAddWoPlan: function (addWoPlan) {
             // 周期设置为年
@@ -96,15 +111,15 @@ v.pushComponent({
                 return {
                     start_time: {
                         cycle: "y",
-                        time_day: addDate(yyyyMMdd2Date(startTime), index * num).format('MMdd'),          //y("0612"-6月12日)，q("312"-第三个月12号，)，m("01"-1号)，w("1"-1号，周一)，d("")
-                        time_hour: hour,                    //10时
-                        time_minute: minute,                //15分
+                        time_day: addDate(yyyyMMdd2Date(startTime), index * num).format('MMdd'), //y("0612"-6月12日)，q("312"-第三个月12号，)，m("01"-1号)，w("1"-1号，周一)，d("")
+                        time_hour: hour, //10时
+                        time_minute: minute, //15分
                     },
                     end_time: {
                         cycle: "y",
-                        time_day: addDate(yyyyMMdd2Date(startTime), index * num, hour + continuer).format('MMdd'),          //y("0612"-6月12日)，q("312"-第三个月12号，)，m("01"-1号)，w("1"-1号，周一)，d("")
-                        time_hour: addDate(yyyyMMdd2Date(startTime), index * num, hour + continuer).getHours().toString(),        //10时
-                        time_minute: minute,                //15分
+                        time_day: addDate(yyyyMMdd2Date(startTime), index * num, hour + continuer).format('MMdd'), //y("0612"-6月12日)，q("312"-第三个月12号，)，m("01"-1号)，w("1"-1号，周一)，d("")
+                        time_hour: addDate(yyyyMMdd2Date(startTime), index * num, hour + continuer).getHours().toString(), //10时
+                        time_minute: minute, //15分
                     }
                 }
             })
@@ -115,16 +130,25 @@ v.pushComponent({
 
             return addWoPlan;
         },
-        setConfirm_result: function (item, arr) {
-            // 获取原来的基础内容
-            var obj = _.isArray(item.confirm_result) && !_.isUndefined(item.confirm_result[0]) ? _.cloneDeep(item.confirm_result[0]) : {};
-            item.confirm_result = arr.map(function (info) {
+        // 所有在总集合   item 用于查询的父类 arr返回的数组
+        setConfirm_result: function (list, item, arr) {
+            // 隐藏对应显示数组
+            item.isshow = false;
+            var obj = !_.isUndefined(item) ? _.cloneDeep(item) : {};
+            var index = list.indexOf(item);
+            var len = _.filter(list, {
+                parent_id: item.obj_id
+            }).length;
+            // 当前类后面替换对应返回的数组
+            list.splice.bind(list, index + 1, len).apply(list, arr.map(function (info) {
                 return Object.assign({}, obj, info);
-            });
-
-            item.class_confirm_result = item.class_confirm_result.slice(0, 1).concat(item.confirm_result);
-
-            item.class_confirm_result[0].isshow = false;
+            }))
+            // [].splice.apply(list,index+1,len)
+            // list.splice(index+1, len, arr.map(function (info) {
+            //     return Object.assign({}, obj, info);
+            // }))
+            // 隐藏对应显示数组
+            item.isshow = false;
         },
         // 获取对象
         getObj: function (arr) {
@@ -206,7 +230,9 @@ v.pushComponent({
                 });
 
                 // matters 验证
-                if (_.filter(_that.mattersViews, { isRepeat: true }).length) return;
+                if (_.filter(_that.mattersViews, {
+                        isRepeat: true
+                    }).length) return;
 
                 // 验证名称非空
                 _that.mattersViews.forEach(function (item, index) {
@@ -215,11 +241,17 @@ v.pushComponent({
                 })
 
                 // 验证内容为空
-                if (_.filter(_that.mattersViews, { isSpace: true }).length) return;
-                if (_.filter(_that.mattersViews, { isDescForepartSpace: true }).length) return;
+                if (_.filter(_that.mattersViews, {
+                        isSpace: true
+                    }).length) return;
+                if (_.filter(_that.mattersViews, {
+                        isDescForepartSpace: true
+                    }).length) return;
 
                 // 验证重复
-                if (_.filter(_that.mattersViews, { isRepeat: true }).length) return;
+                if (_.filter(_that.mattersViews, {
+                        isRepeat: true
+                    }).length) return;
 
 
 
@@ -273,7 +305,10 @@ v.pushComponent({
 
                         item = item.map(function (info) {
                             // 有之前的返回之前的，没有之前的返回新的
-                            var find = _.find(_that.mattersViews[index].verify, { obj_name: info.obj_name, sop_name: info.sop_name });
+                            var find = _.find(_that.mattersViews[index].verify, {
+                                obj_name: info.obj_name,
+                                sop_name: info.sop_name
+                            });
                             return find ? find : info;
                         })
 
@@ -282,7 +317,9 @@ v.pushComponent({
 
 
                     bool = !_that.mattersViews.map(function (item) {
-                        return _.filter(item.verify, { selected: false }).length
+                        return _.filter(item.verify, {
+                            selected: false
+                        }).length
                     }).reduce(function (con, num) {
                         return con + num;
                     }, 0);
@@ -305,15 +342,22 @@ v.pushComponent({
 
                                 var bak = con;
 
-                                var bol = !!_.filter(res, { sop_id: info.sop_id }).length;
+                                var bol = !!_.filter(res, {
+                                    sop_id: info.sop_id
+                                }).length;
 
                                 // 再从忽略列表中查找
                                 if (!bol) {
 
-                                    if (!!_.filter(_that.mattersViews[index].sopeds, { sop_id: info.sop_id }).length) {
+                                    if (!!_.filter(_that.mattersViews[index].sopeds, {
+                                            sop_id: info.sop_id
+                                        }).length) {
 
                                         // 在原来的列表中
-                                        var bol = !!_.filter(_that.mattersViews[index].sopeds, { sop_id: info.sop_id, selected: true }).length;
+                                        var bol = !!_.filter(_that.mattersViews[index].sopeds, {
+                                            sop_id: info.sop_id,
+                                            selected: true
+                                        }).length;
                                     } else {
 
                                         // 不在原来的列表中
@@ -374,6 +418,7 @@ v.pushComponent({
                             getWoMattersPreviewPromise.then(function (res) {
                                 console.log("可以执行保存了");
                                 // 保存预览时候数据
+                                // _that.WoMattersPreview = res.published_matters;
                                 _that.WoMattersPreview = res.published_matters.map(function (item) {
 
                                     item.matter_steps = item.matter_steps.map(function (info) {
@@ -381,10 +426,14 @@ v.pushComponent({
                                         if (info.step_type == "5") {
                                             info.step_content = info.step_content.map(function (x) {
 
-                                                x.class_confirm_result = x.confirm_result ? JSON.parse(JSON.stringify(x.confirm_result)).map(function (y) {
-                                                    y.isshow = false;
-                                                    return y;
-                                                }) : [];
+                                                x.confirm_result.forEach(function (m) {
+                                                    m.isshow = false;
+                                                })
+
+                                                // x.class_confirm_result = x.confirm_result ? JSON.parse(JSON.stringify(x.confirm_result)).map(function (y) {
+                                                //     y.isshow = false;
+                                                //     return y;
+                                                // }) : [];
 
                                                 return x;
                                             })
@@ -510,7 +559,8 @@ v.pushComponent({
                  * 如果是项目中 且不全部实例化对象
                  */
                 if (_that.isterm && _that.base().addWoPlan.instantiated_object_flag != 1) {
-                    var bool = argu.published_matters.map(function (item) {
+                    var bool = true;
+                    argu.published_matters.map(function (item) {
                         return item.matter_steps;
                     }).reduce(function (con, item) {
                         return con.concat(item);
@@ -522,17 +572,26 @@ v.pushComponent({
                         return con.concat(item);
                     }, []).map(function (item) {
                         return item.confirm_result;
-                    }).map(function (item) {
-                        return item.map(function (info) {
-                            return info.obj_type;
-                        });
-                    }).map(function (item) {
-                        return item.indexOf('system_class') != -1 || item.indexOf('equip_class') != -1 || item.indexOf('space_class') != -1;
-                    }).filter(function (bool) {
-                        return bool;
-                    }).length;
+                    }).forEach(function (list) {
+                        _.filter(list, function (m) {
+                            return m.obj_type == 'system_class' || m.obj_type == 'equip_class' || m.obj_type == 'space_class';
+                        }).forEach(function (i) {
+                            bool = bool ? !!_.filter(list, {
+                                parent_id: i.obj_id
+                            }).length : bool;
+                        })
+                    })
+                    // .map(function (item) {
+                    //     return item.map(function (info) {
+                    //         return info.obj_type;
+                    //     });
+                    // }).map(function (item) {
+                    //     return item.indexOf('system_class') != -1 || item.indexOf('equip_class') != -1 || item.indexOf('space_class') != -1;
+                    // }).filter(function (bool) {
+                    //     return bool;
+                    // }).length;
 
-                    if (bool) {
+                    if (!bool) {
 
                         $("#globalnotice").pshow({
                             text: "请实例化全部系统设备空间类",
@@ -542,6 +601,7 @@ v.pushComponent({
                         return;
                     }
                 }
+
 
                 !_that.isquote ? argu.group_plan_id = "" : void 0;
 
@@ -557,9 +617,14 @@ v.pushComponent({
                         loadding.remove("addWoPlan");
                     })
                 } else {
-                    $("#globalnotice").pshow({ text: _that.iscopy ? "复制成功" : _that.isquote ? "引用成功" : '创建成功', state: "success" });
+                    $("#globalnotice").pshow({
+                        text: _that.iscopy ? "复制成功" : _that.isquote ? "引用成功" : '创建成功',
+                        state: "success"
+                    });
 
-                    createPlan_controller.addWoPlan(Object.assign({}, argu, { person_id: _that.userInfo.person_id })).then(cb).finally(function () {
+                    createPlan_controller.addWoPlan(Object.assign({}, argu, {
+                        person_id: _that.userInfo.person_id
+                    })).then(cb).finally(function () {
                         loadding.remove("addWoPlan");
                     })
                 }
@@ -580,7 +645,10 @@ v.pushComponent({
                     loadding.set("updateGroupPlan");
                     createPlan_controller.updateGroupPlan(argu).then(
                         cb,
-                        $("#globalnotice").pshow({ text: '编辑成功', state: 'success' })
+                        $("#globalnotice").pshow({
+                            text: '编辑成功',
+                            state: 'success'
+                        })
                     ).finally(function () {
                         loadding.remove("updateGroupPlan");
                     });
@@ -596,7 +664,9 @@ v.pushComponent({
                      * 添加对应计划
                      */
                     loadding.set("addGroupPlan");
-                    createPlan_controller.addGroupPlan(Object.assign({}, argu, { person_id: _that.userInfo.person_id })).then(
+                    createPlan_controller.addGroupPlan(Object.assign({}, argu, {
+                        person_id: _that.userInfo.person_id
+                    })).then(
                         function (res) {
 
                             $("#createSuccessFul").pshow({
@@ -649,7 +719,9 @@ v.pushComponent({
         submitToProjectAllBtn: function () {
             var _that = this;
 
-            var bool = !(_that.IssueProjectList.length == _.filter(_that.IssueProjectList, { selected: true }).length && _that.IssueProjectList.length);
+            var bool = !(_that.IssueProjectList.length == _.filter(_that.IssueProjectList, {
+                selected: true
+            }).length && _that.IssueProjectList.length);
 
             _that.IssueProjectList = _that.IssueProjectList.map(function (item) {
 
@@ -659,12 +731,17 @@ v.pushComponent({
         },
         submitToProject: function () {
             var _that = this;
-            _that.toProjectArgu.project_ids = _.map(_.filter(_that.IssueProjectList, { selected: true }), "project_id");
+            _that.toProjectArgu.project_ids = _.map(_.filter(_that.IssueProjectList, {
+                selected: true
+            }), "project_id");
             // 如果选中的有值才提交
             if (_that.toProjectArgu.project_ids.length) {
 
                 if (_that.toProjectArgu.plan_freq_type == "2") {
-                    $('#globalnotice').pshow({ text: '下发失败，请修改计划频率', state: 'failure' });
+                    $('#globalnotice').pshow({
+                        text: '下发失败，请修改计划频率',
+                        state: 'failure'
+                    });
                     return;
                 }
 
@@ -745,15 +822,22 @@ v.pushComponent({
 
             var newdate = +new Date(+new Date() + 24 * 60 * 60 * 1000).format('yyyyMMdd000000');
             if (obj.plan_start_type == 2 && start < newdate) {
-                $('#globalnotice').pshow({ text: '计划生效开始时间小于当前时间', state: 'failure' });
+                $('#globalnotice').pshow({
+                    text: '计划生效开始时间小于当前时间',
+                    state: 'failure'
+                });
                 return false;
-            }
-            else if (obj.plan_start_type == 2 && end && (start >= end)) {
-                $('#globalnotice').pshow({ text: '计划生效结束时间必须大于开始时间', state: 'failure' });
+            } else if (obj.plan_start_type == 2 && end && (start >= end)) {
+                $('#globalnotice').pshow({
+                    text: '计划生效结束时间必须大于开始时间',
+                    state: 'failure'
+                });
                 return false;
-            }
-            else if (end && (end < newdate)) {
-                $('#globalnotice').pshow({ text: '计划生效结束时间小于当前时间', state: 'failure' });
+            } else if (end && (end < newdate)) {
+                $('#globalnotice').pshow({
+                    text: '计划生效结束时间小于当前时间',
+                    state: 'failure'
+                });
                 return false;
             }
 
@@ -792,10 +876,18 @@ v.pushComponent({
 
                 // return;
 
-                createPlan_controller.issueGroupPlanToWoPlan(Object.assign({}, argu, { person_id: _that.userInfo.person_id })).then(function () {
-                    $('#globalnotice').pshow({ text: '下发成功', state: 'success' });
+                createPlan_controller.issueGroupPlanToWoPlan(Object.assign({}, argu, {
+                    person_id: _that.userInfo.person_id
+                })).then(function () {
+                    $('#globalnotice').pshow({
+                        text: '下发成功',
+                        state: 'success'
+                    });
                 }).catch(function () {
-                    $('#globalnotice').pshow({ text: '下发失败', state: 'failure' });
+                    $('#globalnotice').pshow({
+                        text: '下发失败',
+                        state: 'failure'
+                    });
                 })
 
                 $('#globalWindow').phide();
@@ -804,7 +896,10 @@ v.pushComponent({
         },
         //取消二次弹窗
         cancelWindows: function () {
-            $("#planCreateWindow").pshow({ title: '确定要取消吗？', subtitle: '取消后计划将不能保存！' });
+            $("#planCreateWindow").pshow({
+                title: '确定要取消吗？',
+                subtitle: '取消后计划将不能保存！'
+            });
         },
         cancelWindowsConfirm: function () {
             this.cancelWindowsCancel();
@@ -944,8 +1039,8 @@ v.pushComponent({
         }
 
 
-        _that.isquote = argu.isquote;// 是否被引用
-        _that.isedit = argu.isedit;// 是否编辑
+        _that.isquote = argu.isquote; // 是否被引用
+        _that.isedit = argu.isedit; // 是否编辑
         _that.isterm = argu.isterm; // 是否是项目版
         _that.iscopy = argu.iscopy;
 

@@ -70,26 +70,8 @@
     #app .towork > .header .ff {
       position: relative;
       width: auto; }
-      #app .towork > .header .ff >section{
-          
-      }
-      #app .towork > .header .ff >section >span{
-        display: inline-block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        max-width: 180px;
-        min-width:60px;
-        vertical-align: middle;
-      }
-      #app .towork > .header .ff >section >span.error{
-        color:#ff6666;
-      }
       #app .towork > .header .ff u {
-        cursor: pointer;
-        display: inline-block;
-        margin-left: 4px;
-     }
+        cursor: pointer; }
       #app .towork > .header .ff .block {
         position: absolute;
         width: 376px;
@@ -201,12 +183,20 @@
               font-size: 14px;
               height: 84px;
               border: none; }
-              #app .towork > .content > .right > .view > .section > .sop > .bottom >.r{
-                color: initial;
+              #app .towork > .content > .right > .view > .section > .obj > .textarea > .block {
+                display: inline-block;
+                height: 30px;
+                line-height: 30px;
                 position: relative;
-                margin-top: 6px;
-                margin-left: 6px;
-              }
+                margin: 0 20px 15px 0;
+                vertical-align: top;
+                -ms-text-overflow: ellipsis;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                border-radius: 15px;
+                padding: 0 15px;
+                background-color: #f3f3f3; }
             #app .towork > .content > .right > .view > .section > .obj > .bottom {
               height: 30px;
               line-height: 30px; }
@@ -219,6 +209,11 @@
                 font-size: 12px;
                 color: #637e99;
                 text-align: right; }
+              #app .towork > .content > .right > .view > .section > .obj > .bottom > .r {
+                color: initial;
+                position: relative;
+                margin-top: 6px;
+                margin-left: 6px; }
           #app .towork > .content > .right > .view > .section > .picture {
             margin: 20px 0; }
           #app .towork > .content > .right > .view > .section > .sop {
@@ -233,30 +228,7 @@
               padding: inherit !important;
               height: 32px;
               border: none; }
-            #app .towork > .content > .right > .view > .section > .sop > .bottom {
-              height: 30px;
-              line-height: 30px; }
-              #app .towork > .content > .right > .view > .section > .sop > .bottom > .btn {
-                float: left;
-                color: #637e99; }
-              #app .towork > .content > .right > .view > .section > .sop > .bottom > .percent {
-                float: right;
-                line-height: 30px;
-                font-size: 12px;
-                color: #637e99;
-                text-align: right; }
-          #app .towork > .content > .right > .view > .section > .work {
-            font-size: 14px;
-            color: #333333;
-            box-sizing: border-box;
-            border-bottom: 1px solid #cacaca;
-            position: relative; }
-            #app .towork > .content > .right > .view > .section > .work > .textarea {
-              padding: 16px 0;
-              font-size: 14px;
-              height: 66px;
-              border: none; }
-              #app .towork > .content > .right > .view > .section > .work > .textarea >.block{
+              #app .towork > .content > .right > .view > .section > .sop > .textarea > .block {
                 display: inline-block;
                 height: 30px;
                 line-height: 30px;
@@ -269,8 +241,49 @@
                 overflow: hidden;
                 border-radius: 15px;
                 padding: 0 15px;
-                background-color: #f3f3f3;
-              }
+                background-color: #f3f3f3; }
+            #app .towork > .content > .right > .view > .section > .sop > .bottom {
+              height: 30px;
+              line-height: 30px; }
+              #app .towork > .content > .right > .view > .section > .sop > .bottom > .btn {
+                float: left;
+                color: #637e99; }
+              #app .towork > .content > .right > .view > .section > .sop > .bottom > .percent {
+                float: right;
+                line-height: 30px;
+                font-size: 12px;
+                color: #637e99;
+                text-align: right; }
+              #app .towork > .content > .right > .view > .section > .sop > .bottom > .r {
+                color: initial;
+                position: relative;
+                margin-top: 6px;
+                margin-left: 6px; }
+          #app .towork > .content > .right > .view > .section > .work {
+            font-size: 14px;
+            color: #333333;
+            box-sizing: border-box;
+            border-bottom: 1px solid #cacaca;
+            position: relative; }
+            #app .towork > .content > .right > .view > .section > .work > .textarea {
+              padding: 16px 0;
+              font-size: 14px;
+              height: 66px;
+              border: none; }
+              #app .towork > .content > .right > .view > .section > .work > .textarea > .block {
+                display: inline-block;
+                height: 30px;
+                line-height: 30px;
+                position: relative;
+                margin: 0 20px 15px 0;
+                vertical-align: top;
+                -ms-text-overflow: ellipsis;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                border-radius: 15px;
+                padding: 0 15px;
+                background-color: #f3f3f3; }
             #app .towork > .content > .right > .view > .section > .work > .bottom {
               height: 30px;
               line-height: 30px; }
@@ -283,6 +296,11 @@
                 font-size: 12px;
                 color: #637e99;
                 text-align: right; }
+              #app .towork > .content > .right > .view > .section > .work > .bottom > .r {
+                color: initial;
+                position: relative;
+                margin-top: 6px;
+                margin-left: 6px; }
           #app .towork > .content > .right > .view > .section > .group {
             height: 30px;
             line-height: 30px;

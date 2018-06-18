@@ -201,4 +201,34 @@ body {
           #app .group_home .main .content .contenter .t_body > :nth-child(2n+1) {
             background: #f8f8f8; }
 
+.see_planDetail_grid_tab_div .block {
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  position: relative;
+  margin: 0 20px 15px 0;
+  vertical-align: top;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  border-radius: 15px;
+  padding: 0 15px;
+  background-color: #f3f3f3; }
+  .see_planDetail_grid_tab_div .block > span {
+    box-sizing: border-box;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer; }
+  .see_planDetail_grid_tab_div .block > img {
+    padding-left: 5px;
+    vertical-align: middle;
+    cursor: pointer; }
+
 /*# sourceMappingURL=grouphome.css.map */

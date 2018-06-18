@@ -70,9 +70,9 @@
                             (
                             <span v-for="(item,index) in base().addWoPlan.freq_times">
                                 <i v-text="'第'+ (index+1) +'次'"></i>
-                                <i v-text="fill(item.start_time.time_month,2) + '.'+ fill(item.start_time.time_day,2) + ' '+ fill(item.start_time.time_hour,2)+ ':'+ fill(item.start_time.time_minute,2)"></i>
+                                <i v-text="getDateStringByType(item.start_time)"></i>
                                 <em>至</em>
-                                <i v-text="fill(item.end_time.time_month,2) + '.'+ fill(item.end_time.time_day,2) + ' '+ fill(item.end_time.time_hour,2)+ ':'+ fill(item.end_time.time_minute,2)"></i>
+                                <i v-text="getDateStringByType(item.end_time)"></i>
                             </span>)
                         </div>
                     </div>
@@ -133,22 +133,28 @@
                                                     </li>
                                                     <li>
                                                         <h5>确认操作结果：</h5>
-                                                        <div v-for="(confirm_result,index4) in steps.class_confirm_result">
+                                                        <div v-for="(confirm_result,index4) in steps.confirm_result">
                                                             <!-- {{steps.confirm_result}} -->
                                                             <div class="confirm_result_div1">
                                                                 <div class="confirm_result_div2">
-                                                                    <em v-text="confirm_result.obj_name"></em>
-                                                                    <span v-for="(parents,pIndex) in confirm_result.parents">
-                                                                        (
-                                                                        <i v-for="(names,naIndex) in parents.parent_names" v-text="parents.parent_names.length == naIndex + 1?names : names + '-'"></i>)
-                                                                    </span>
+                                                                    <div class="block">
+                                                                        <span :title="confirm_result.obj_name">
+                                                                            {{confirm_result.obj_name}}
+                                                                            <template v-for="(parents,pIndex) in confirm_result.parents">
+                                                                                ( {{parents.parent_names.join('-')}}
+                                                                                <!-- <template v-for="(names,naIndex) in parents.parent_names">{{parents.parent_names.length == naIndex + 1?names : names + '-'}}</template> -->
+                                                                                )
+                                                                            </template>
+                                                                        </span>
+                                                                        <img src="../images/del.png" alt="删除图标" @click="steps.confirm_result.splice(index4,1)">
+                                                                    </div>
                                                                 </div>
                                                                 <div class="choiceObjectBtn" v-if="isterm && base().addWoPlan.instantiated_object_flag!=1">
-                                                                    <div :type="confirm_result.obj_type">
+                                                                    <div>
                                                                         <section style="position: relative;" v-show="confirm_result.obj_type == 'system_class' || confirm_result.obj_type == 'equip_class'  || confirm_result.obj_type == 'space_class'">
-                                                                            <pbutton-blue bind="true" text="'选择具体系统设备'" @click.stop="confirm_result.isshow=true"></pbutton-blue>
-                                                                            <div style="position: absolute;top: 0;left: 150px;">
-                                                                                <examples v-if="confirm_result.isshow" :cb="setConfirm_result.bind(this,steps)" :systemname="confirm_result.obj_name" :obj_id="confirm_result.obj_id"
+                                                                            <pbutton-blue bind="true" text="'选择具体系统设备'" @click.stop="confirm_result.isshow=true,console.log(confirm_result.isshow)"></pbutton-blue>
+                                                                            <div style="position: absolute;top: 0;left: 150px;" v-if="confirm_result.isshow">
+                                                                                <examples :cb="setConfirm_result.bind(this,steps.confirm_result,confirm_result)" :systemname="confirm_result.obj_name" :obj_id="confirm_result.obj_id"
                                                                                     :obj_type="confirm_result.obj_type" :objs="steps.confirm_result">
                                                                                     <examples/>
                                                                             </div>

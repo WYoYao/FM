@@ -39,15 +39,24 @@
             submit: function () {
 
                 if (_.isFunction(this.cb)) {
-                    this.cb(_.filter(this.list, { selected: true }));
+                    this.cb(_.filter(this.list, {
+                        selected: true
+                    }));
                 }
             },
             cancel: function () {
-                _.isFunction(this.cb) ? this.cb([]) : void 0;
+                _.isFunction(this.cb) ? this.cb(this.currentClassObj) : void 0;
             }
         },
         computed: {
+            currentClassObj: function () {
+                var _that=this;
+                if (!_.isArray(_that.objs)) return [];
 
+                return _.filter(_that.objs || [], function (item) {
+                    return item.parent_id == _that.obj_id;
+                });
+            }
         },
         watch: {
 
@@ -62,10 +71,13 @@
                 obj_type: _that.obj_type,
             }).then(function (res) {
 
-                var ids = _.isArray(_that.objs) ? _.map(_that.objs, 'obj_id') : [];
+                // 取当前分类下的父属性ID
+                var ids = _.isArray(_that.objs) ? _.map(_that.currentClassObj, 'obj_id') : [];
 
                 // 根据传入的已选数据把已选的对象状态修改为已选
                 res.forEach(function (item) {
+                    //  返回没的没一个实例都添加对应的父ID 用于赛选
+                    item.parent_id = _that.obj_id;
                     item.selected = ids.indexOf(item.obj_id) != -1;
                 });
 
